@@ -1,0 +1,69 @@
+# =============================================================================
+# .gitignore fuer ProfiPrompt
+# Basiert auf .gitignore-template (Software Entwicklung)
+# =============================================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+dist/
+build/
+
+# ---- Virtuelle Umgebungen ----
+venv/
+.venv/
+env/
+.env/
+
+# ---- BACH Interne Steuerungsdateien (NIEMALS in Git!) ----
+AUFGABEN.txt
+TEST.txt
+TESTS.txt
+TESTERGEBNISSE.txt
+BUGREPORT.md
+DIAGNOSE_REPORT.md
+
+# ---- Persoenliche / Sensible Daten ----
+_USER/
+.env
+.env.*
+credentials.json
+client_secret*.json
+token.json
+*.pem
+*.key
+keyring/
+
+# ---- Build-Artefakte & Releases ----
+releases/
+*.exe
+*.msi
+*.msix
+*.appx
+*.spec
+
+# ---- IDE & Editoren ----
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- Betriebssystem ----
+desktop.ini
+Thumbs.db
+.DS_Store
+ehthumbs.db
+
+# ---- Pytest ----
+.pytest_cache/
+
+# ---- Projektspezifisch ----
+prompts.json
+boards.json
+*.db
