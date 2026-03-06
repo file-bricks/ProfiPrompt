@@ -17,6 +17,10 @@ A desktop tool for managing, versioning, and organizing AI prompts. Built with P
 - **Dark Mode** -- Modernes Fusion Dark Theme
 - **Offline-First** -- Alle Daten lokal gespeichert (JSON)
 
+## Screenshots
+
+![Hauptfenster](screenshots/main.png)
+
 ## Installation
 
 ### Voraussetzungen / Requirements
