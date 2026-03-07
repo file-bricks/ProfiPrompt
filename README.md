@@ -15,7 +15,7 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 
 ## Screenshots
 
-![Hauptfenster](screenshots/main.png)
+![Main Window](screenshots/main.png)
 
 ## Voraussetzungen
 
@@ -56,7 +56,7 @@ ProfiPrompt/
 │   ├── models.py               # Datenmodelle (Prompt, Version, Board)
 │   └── icons/                  # Anwendungs-Icons
 ├── tests/
-│   └── test_basic.py           # Unit-Tests (26 Tests)
+│   └── test_basic.py           # Unit tests (26 tests)
 ├── requirements.txt
 ├── LICENSE
 └── README.md
