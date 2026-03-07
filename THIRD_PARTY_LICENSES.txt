@@ -1,0 +1,6 @@
+THIRD-PARTY LICENSES
+====================
+
+PySide6
+License: LGPL-3.0
+URL: https://pypi.org/project/PySide6/
