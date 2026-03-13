@@ -74,7 +74,7 @@ class Storage:
         return [board_from_dict(b) for b in data.get("boards", [])]
 
     def save_boards(self, boards: List[Board]):
-        data = {"boards": [b.__dict__ | {"items": [i.__dict__ for i in b.items]} for b in boards]}
+        data = {"boards": [board_to_dict(b) for b in boards]}
         self.boards_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def upsert_board(self, board: Board):

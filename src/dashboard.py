@@ -133,6 +133,52 @@ class DashboardWidget(QtWidgets.QWidget):
         self.tree.clear()
         prompts = self.storage.load_prompts()
 
+        # Update tag combo (preserve current selection)
+        current_tag = self.tag_combo.currentData()
+        self.tag_combo.blockSignals(True)
+        self.tag_combo.clear()
+        self.tag_combo.addItem("Alle Tags", "")
+        for tag in self._collect_tags(prompts):
+            self.tag_combo.addItem(tag, tag)
+        idx = self.tag_combo.findData(current_tag)
+        self.tag_combo.setCurrentIndex(idx if idx >= 0 else 0)
+        self.tag_combo.blockSignals(False)
+
+        # Apply text filter
+        search_text = self.search_edit.text().strip().lower()
+        if search_text:
+            prompts = [
+                p for p in prompts
+                if search_text in (p.title or "").lower()
+                or search_text in (p.text or "").lower()
+                or any(search_text in t.lower() for t in (p.tags or []))
+            ]
+
+        # Apply tag filter
+        selected_tag = self.tag_combo.currentData()
+        if selected_tag:
+            prompts = [
+                p for p in prompts
+                if selected_tag in (p.tags or [])
+                or any(selected_tag in (v.tags or []) for v in p.versions)
+            ]
+
+        # Apply date filter
+        date_from = self._date_or_none(self.date_from)
+        date_to = self._date_or_none(self.date_to)
+        if date_from or date_to:
+            filtered = []
+            for p in prompts:
+                p_date = QtCore.QDate.fromString(
+                    (p.updated_at or "").split("T")[0], "yyyy-MM-dd"
+                )
+                if date_from and p_date < date_from:
+                    continue
+                if date_to and p_date > date_to:
+                    continue
+                filtered.append(p)
+            prompts = filtered
+
         def safe_date(s: Optional[str]) -> str:
             return s.split("T")[0] if s else ""
 

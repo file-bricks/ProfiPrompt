@@ -206,7 +206,24 @@ class MainWindow(QMainWindow):
     # --- Exports ---
     def export_all_txt(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export TXT", "alle_prompts.txt", "Text (*.txt)")
-        if path: export_all_prompts(self.storage, self.settings, path, parent=self)
+        if not path:
+            return
+        prompts = self.storage.load_prompts()
+        parts = []
+        for p in prompts:
+            lines = [f"=== {p.title} ===", f"Zweck: {p.purpose}", f"Tags: {', '.join(p.tags or [])}",
+                     "", p.text or ""]
+            for v in sorted(p.versions, key=lambda x: x.version_number):
+                lines += ["", f"--- v{v.version_number}: {v.title} ---", v.text or ""]
+            parts.append("\n".join(lines))
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write("\n\n".join(parts))
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.information(self, "Export", "TXT erfolgreich gespeichert.")
+        except Exception as e:
+            from PySide6.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
 
     def export_all_pdf(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export PDF", "alle_prompts.pdf", "PDF (*.pdf)")

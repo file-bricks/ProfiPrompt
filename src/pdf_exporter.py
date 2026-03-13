@@ -1,5 +1,6 @@
 # pdf_exporter.py
 
+import html
 from PySide6.QtGui import QTextDocument, QFont
 from PySide6.QtPrintSupport import QPrinter
 from PySide6.QtWidgets import QMessageBox
@@ -13,24 +14,27 @@ def _init_printer(path: str) -> QPrinter:
     return printer
 
 def _render_html_for_prompt(prompt, settings) -> str:
-    html = [f"<h1>{prompt.title}</h1>"]
-    html.append(f"<p><b>Zweck:</b> {prompt.purpose}<br><b>Tags:</b> {', '.join(prompt.tags)}</p>")
-    html.append(f"<pre>{prompt.text}</pre>")
+    parts = [f"<h1>{html.escape(prompt.title or '')}</h1>"]
+    parts.append(
+        f"<p><b>Zweck:</b> {html.escape(prompt.purpose or '')}"
+        f"<br><b>Tags:</b> {html.escape(', '.join(prompt.tags or []))}</p>"
+    )
+    parts.append(f"<pre>{html.escape(prompt.text or '')}</pre>")
     include_result = getattr(settings, 'get_include_metadata', lambda: False)()
     if include_result and getattr(prompt, "last_result", "").strip():
-        html.append("<hr><pre>" + prompt.last_result + "</pre>")
-    return "".join(html)
+        parts.append("<hr><pre>" + html.escape(prompt.last_result) + "</pre>")
+    return "".join(parts)
 
 def _render_html_for_version(version, settings) -> str:
-    html = [
-        f"<h2>{version.title} <small>(v{version.version_number})</small></h2>",
-        f"<p><b>Tags:</b> {', '.join(version.tags)}</p>",
-        f"<pre>{version.text}</pre>"
+    parts = [
+        f"<h2>{html.escape(version.title or '')} <small>(v{version.version_number})</small></h2>",
+        f"<p><b>Tags:</b> {html.escape(', '.join(version.tags or []))}</p>",
+        f"<pre>{html.escape(version.text or '')}</pre>",
     ]
     include_result = getattr(settings, 'get_include_metadata', lambda: False)()
     if include_result and getattr(version, "result", "").strip():
-        html.append("<hr><pre>" + version.result + "</pre>")
-    return "".join(html)
+        parts.append("<hr><pre>" + html.escape(version.result) + "</pre>")
+    return "".join(parts)
 
 def export_single_prompt(prompt, settings, path: str, parent=None):
     html = "<html><body>" + _render_html_for_prompt(prompt, settings) + "</body></html>"
