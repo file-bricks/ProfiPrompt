@@ -1,14 +1,14 @@
 {
   "app_name": "ProfiPrompt",
-  "publisher": "CN=LukasGeiger",
-  "publisher_display": "Lukas Geiger",
-  "identity_name": "LukasGeiger.ProfiPrompt",
+  "publisher": "CN=52596601-BAB4-4F3F-B182-E8F3F273B202",
+  "publisher_display": "Geiger",
+  "identity_name": "Geiger.ProfiPrompt",
   "version": "1.0.0.0",
   "description": "Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First.",
   "executable": "ProfiPrompt.exe",
   "capabilities": "internetClient",
   "category": "Productivity",
   "age_rating": "3+",
-  "privacy_url": "",
-  "support_url": ""
+  "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
+  "support_url": "https://github.com/file-bricks/ProfiPrompt/issues"
 }

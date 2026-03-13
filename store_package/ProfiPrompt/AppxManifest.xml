@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap rescap">
+
+  <Identity Name="Geiger.ProfiPrompt"
+            Publisher="CN=52596601-BAB4-4F3F-B182-E8F3F273B202"
+            Version="1.0.0.0" />
+
+  <Properties>
+    <DisplayName>ProfiPrompt</DisplayName>
+    <PublisherDisplayName>Geiger</PublisherDisplayName>
+    <Description>Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First.</Description>
+    <Logo>icons\icon_50x50.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+
+  <Capabilities>
+    <Capability Name="internetClient"/>
+
+  </Capabilities>
+
+  <Applications>
+    <Application Id="ProfiPromptApp"
+                 Executable="dist/ProfiPrompt/ProfiPrompt.exe"
+                 EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="ProfiPrompt"
+                          Description="Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First."
+                          Square150x150Logo="icons\icon_150x150.png"
+                          Square44x44Logo="icons\icon_44x44.png"
+                          BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="icons\icon_310x150.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+</Package>
