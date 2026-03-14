@@ -1,5 +1,7 @@
 # storage.py
 import json
+import os
+import threading
 from pathlib import Path
 from typing import List, Optional, Tuple
 from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, gen_id, now_iso
@@ -10,6 +12,7 @@ class Storage:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.prompts_file = self.data_dir / "prompts.json"
         self.boards_file = self.data_dir / "boards.json"
+        self._lock = threading.Lock()
         self._ensure_files()
 
     def _ensure_files(self):
@@ -30,9 +33,17 @@ class Storage:
         return None
 
 
+    def _atomic_write(self, target: Path, data: dict):
+        """Schreibt Daten atomar: erst in .tmp, dann rename. Thread-safe durch Lock."""
+        tmp = target.with_suffix(".tmp")
+        text = json.dumps(data, ensure_ascii=False, indent=2)
+        tmp.write_text(text, encoding="utf-8")
+        os.replace(tmp, target)
+
     def save_prompts(self, prompts: List[Prompt]):
         data = {"prompts": [prompt_to_dict(p) for p in prompts]}
-        self.prompts_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        with self._lock:
+            self._atomic_write(self.prompts_file, data)
 
     def upsert_prompt(self, prompt: Prompt):
         prompts = self.load_prompts()
@@ -75,7 +86,8 @@ class Storage:
 
     def save_boards(self, boards: List[Board]):
         data = {"boards": [board_to_dict(b) for b in boards]}
-        self.boards_file.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        with self._lock:
+            self._atomic_write(self.boards_file, data)
 
     def upsert_board(self, board: Board):
         boards = self.load_boards()

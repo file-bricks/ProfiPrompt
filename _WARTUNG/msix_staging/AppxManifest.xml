@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+         IgnorableNamespaces="uap rescap desktop">
+
+  <Identity Name="Geiger.ProfiPrompt"
+            Publisher="CN=52596601-BAB4-4F3F-B182-E8F3F273B202"
+            Version="1.0.0.0"
+            ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>ProfiPrompt</DisplayName>
+    <PublisherDisplayName>Geiger</PublisherDisplayName>
+    <Logo>icons\Square150x150Logo.png</Logo>
+    <Description>Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First.</Description>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop"
+                        MinVersion="10.0.17763.0"
+                        MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+    <Resource Language="de-de" />
+  </Resources>
+
+  <Applications>
+    <Application Id="ProfiPrompt"
+                 Executable="ProfiPrompt.exe"
+                 EntryPoint="Windows.FullTrustApplication">
+
+      <uap:VisualElements DisplayName="ProfiPrompt"
+                          Description="Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First."
+                          BackgroundColor="transparent"
+                          Square150x150Logo="icons\Square150x150Logo.png"
+                          Square44x44Logo="icons\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="icons\Wide310x150Logo.png"
+                         Square310x310Logo="icons\Square310x310Logo.png" />
+      </uap:VisualElements>
+
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+
+</Package>

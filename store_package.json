@@ -6,7 +6,7 @@
   "version": "1.0.0.0",
   "description": "Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Boards, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First.",
   "executable": "ProfiPrompt.exe",
-  "capabilities": "internetClient",
+  "capabilities": "internetClient,runFullTrust",
   "category": "Productivity",
   "age_rating": "3+",
   "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",

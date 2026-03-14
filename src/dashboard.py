@@ -66,6 +66,7 @@ class DashboardWidget(QtWidgets.QWidget):
         self.storage = storage
         self.settings = settings
         self.clip = ClipboardManager(settings)
+        self._prompts_cache: List[Prompt] = []
 
         # --- Filter Controls ---
         self.search_edit = QtWidgets.QLineEdit()
@@ -86,11 +87,11 @@ class DashboardWidget(QtWidgets.QWidget):
 
         self.btn_clear = QtWidgets.QPushButton("Filter zurücksetzen")
 
-        # Connect filter signals to reload()
-        self.search_edit.textChanged.connect(self.reload)
-        self.tag_combo.currentIndexChanged.connect(self.reload)
-        self.date_from.dateChanged.connect(self.reload)
-        self.date_to.dateChanged.connect(self.reload)
+        # Filter-Aenderungen: nur Cache neu filtern (kein Disk-Zugriff)
+        self.search_edit.textChanged.connect(self._apply_filters)
+        self.tag_combo.currentIndexChanged.connect(self._apply_filters)
+        self.date_from.dateChanged.connect(self._apply_filters)
+        self.date_to.dateChanged.connect(self._apply_filters)
         self.btn_clear.clicked.connect(self._clear_filters)
         
         # --- Prompt Tree ---
@@ -114,7 +115,7 @@ class DashboardWidget(QtWidgets.QWidget):
         main_layout.addLayout(filter_layout)
         main_layout.addWidget(self.tree)
 
-        # Listen for external prompt changes
+        # Externe Datenänderungen: vollen Reload (Disk + Filter)
         bus.promptsChanged.connect(self.reload)
 
         # Initial load
@@ -125,13 +126,18 @@ class DashboardWidget(QtWidgets.QWidget):
         self.tag_combo.setCurrentIndex(0)
         self.date_from.setDate(self._date_sentinel)
         self.date_to.setDate(self._date_sentinel)
-        self.reload()
+        # Signale sind bereits mit _apply_filters verbunden; kein expliziter Aufruf noetig
 
 
     def reload(self):
-        """Neu laden aller Prompts + Versionen und Icons setzen."""
+        """Laedt Prompts von Disk neu und aktualisiert den Cache + Anzeige."""
+        self._prompts_cache = self.storage.load_prompts()
+        self._apply_filters()
+
+    def _apply_filters(self):
+        """Wendet Filter auf gecachte Prompts an (kein Disk-Zugriff)."""
         self.tree.clear()
-        prompts = self.storage.load_prompts()
+        prompts = list(self._prompts_cache)
 
         # Update tag combo (preserve current selection)
         current_tag = self.tag_combo.currentData()
@@ -351,6 +357,8 @@ class DashboardWidget(QtWidgets.QWidget):
 
     def _copy_prompt(self, prompt_id: str):
         p = self.storage.get_prompt(prompt_id)
+        if p is None:
+            return
         txt = self.clip.build_copy_text(p)
         self.clip.copy_to_clipboard(self.tree, txt)
 

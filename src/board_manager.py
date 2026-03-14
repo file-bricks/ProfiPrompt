@@ -364,17 +364,19 @@ class BoardManager(QtWidgets.QWidget):
     def _remove_item_from_board(self, tile):
         board = self.current_board()
         if not board: return
-        
-        # Filter logic
+
         pid = tile.prompt.id
         vid = tile.version.id if tile.version else None
-        
+
+        # Nur das ERSTE passende Item entfernen (pop by index), Duplikate bleiben erhalten
+        removed_one = False
         new_items = []
         for i in board.items:
-            if i.prompt_id == pid and i.version_id == vid:
+            if not removed_one and i.prompt_id == pid and i.version_id == vid:
+                removed_one = True
                 continue
             new_items.append(i)
-            
+
         board.items = new_items
         self.storage.upsert_board(board)
         self.reload_items()

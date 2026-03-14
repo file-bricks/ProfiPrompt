@@ -1,0 +1,26 @@
+{
+  "Abbrechen": {
+    "de": "Abbrechen",
+    "en": "Cancel"
+  },
+  "Als neue Version speichern": {
+    "de": "Als neue Version speichern",
+    "en": "Save as New Version"
+  },
+  "Filter zurücksetzen": {
+    "de": "Filter zurücksetzen",
+    "en": "Reset Filter"
+  },
+  "Kopier-Einstellungen": {
+    "de": "Kopier-Einstellungen",
+    "en": "Copy Settings"
+  },
+  "Löschen": {
+    "de": "Löschen",
+    "en": "Delete"
+  },
+  "Speichern": {
+    "de": "Speichern",
+    "en": "Save"
+  }
+}
