@@ -1,5 +1,5 @@
 # =============================================================================
-# .gitignore fuer ProfiPrompt
+# .gitignore für ProfiPrompt
 # Basiert auf .gitignore-template (Software Entwicklung)
 # =============================================================================
 
@@ -19,7 +19,7 @@ venv/
 env/
 .env/
 
-# ---- BACH Interne Steuerungsdateien (NIEMALS in Git!) ----
+# ---- BACH-interne Steuerungsdateien (NIEMALS in Git!) ----
 AUFGABEN.txt
 TEST.txt
 TESTS.txt
@@ -27,7 +27,7 @@ TESTERGEBNISSE.txt
 BUGREPORT.md
 DIAGNOSE_REPORT.md
 
-# ---- Persoenliche / Sensible Daten ----
+# ---- Persönliche / sensible Daten ----
 _USER/
 .env
 .env.*
@@ -36,6 +36,8 @@ client_secret*.json
 token.json
 *.pem
 *.key
+*.pfx
+*.p12
 keyring/
 
 # ---- Build-Artefakte & Releases ----
@@ -44,7 +46,8 @@ releases/
 *.msi
 *.msix
 *.appx
-*.spec
+_WARTUNG/msix_staging/
+store_package/
 
 # ---- IDE & Editoren ----
 .claude/

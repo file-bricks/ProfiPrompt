@@ -4,7 +4,7 @@ import os
 import threading
 from pathlib import Path
 from typing import List, Optional, Tuple
-from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, gen_id, now_iso
+from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, board_to_dict, gen_id, now_iso
 
 class Storage:
     def __init__(self, data_dir: Path):

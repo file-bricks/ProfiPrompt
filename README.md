@@ -5,7 +5,7 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 ## Funktionen
 
 - **Prompt-Verwaltung** -- Erstellen, Bearbeiten und Kategorisieren von Prompts
-- **Versionierung** -- Mehrere Versionen pro Prompt mit vollstaendiger Historie
+- **Versionierung** -- Mehrere Versionen pro Prompt mit vollständiger Historie
 - **Board-System** -- Prompts in thematischen Boards mit Kachel-Ansicht organisieren
 - **Drag & Drop** -- Prompts per Drag auf Boards anheften
 - **Export** -- TXT- und PDF-Export (einzeln oder alle)
@@ -25,7 +25,7 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 ## Installation
 
 ```bash
-git clone https://github.com/lukisch/ProfiPrompt.git
+git clone https://github.com/file-bricks/ProfiPrompt.git
 cd ProfiPrompt
 pip install -r requirements.txt
 ```
@@ -55,8 +55,12 @@ ProfiPrompt/
 │   ├── event_bus.py            # Event-System (Qt Signals)
 │   ├── models.py               # Datenmodelle (Prompt, Version, Board)
 │   └── icons/                  # Anwendungs-Icons
+├── locales/
+├── screenshots/
+├── store_assets/
 ├── tests/
 │   └── test_basic.py           # Unit tests (26 tests)
+├── store_package.json
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -73,6 +77,12 @@ python -m pytest tests/ -v
 ```bash
 pip install pyinstaller
 pyinstaller --onefile --windowed src/profiprompt.py
+```
+
+Für reproduzierbare Windows-Builds kann die versionierte PyInstaller-Spezifikation genutzt werden:
+
+```bash
+python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
 ```
 
 ## Autor
@@ -104,7 +114,7 @@ A desktop tool for managing, versioning, and organizing AI prompts. Built with P
 ### Installation
 
 ```bash
-git clone https://github.com/lukisch/ProfiPrompt.git
+git clone https://github.com/file-bricks/ProfiPrompt.git
 cd ProfiPrompt
 pip install -r requirements.txt
 ```
@@ -134,8 +144,12 @@ ProfiPrompt/
 │   ├── event_bus.py            # Event system (Qt Signals)
 │   ├── models.py               # Data models (Prompt, Version, Board)
 │   └── icons/                  # Application icons
+├── locales/
+├── screenshots/
+├── store_assets/
 ├── tests/
 │   └── test_basic.py           # Unit tests (26 tests)
+├── store_package.json
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -154,6 +168,12 @@ pip install pyinstaller
 pyinstaller --onefile --windowed src/profiprompt.py
 ```
 
+For reproducible Windows builds, use the versioned PyInstaller spec:
+
+```bash
+python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
+```
+
 ### Author
 
 Lukas Geiger ([@lukisch](https://github.com/lukisch))
@@ -166,9 +186,9 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 
 ## Haftung / Liability
 
-Dieses Projekt ist eine **unentgeltliche Open-Source-Schenkung** im Sinne der §§ 516 ff. BGB. Die Haftung des Urhebers ist gemäß **§ 521 BGB** auf **Vorsatz und grobe Fahrlässigkeit** beschränkt. Ergänzend gelten die Haftungsausschlüsse aus GPL-3.0 / MIT / Apache-2.0 §§ 15–16 (je nach gewählter Lizenz).
+Dieses Projekt ist eine **unentgeltliche Open-Source-Schenkung** im Sinne der §§ 516 ff. BGB. Die Haftung des Urhebers ist gemäß **§ 521 BGB** auf **Vorsatz und grobe Fahrlässigkeit** beschränkt. Ergänzend gilt der Haftungsausschluss der MIT-Lizenz.
 
 Nutzung auf eigenes Risiko. Keine Wartungszusage, keine Verfügbarkeitsgarantie, keine Gewähr für Fehlerfreiheit oder Eignung für einen bestimmten Zweck.
 
-This project is an unpaid open-source donation. Liability is limited to intent and gross negligence (§ 521 German Civil Code). Use at your own risk. No warranty, no maintenance guarantee, no fitness-for-purpose assumed.
+This project is an unpaid open-source donation under the MIT License. Liability is limited to intent and gross negligence (§ 521 German Civil Code). Use at your own risk. No warranty, no maintenance guarantee, no fitness-for-purpose assumed.
 

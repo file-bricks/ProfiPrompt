@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec file fuer ProfiPrompt
+# PyInstaller spec file für ProfiPrompt
 # Build: python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
 
 block_cipher = None
