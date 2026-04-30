@@ -8,7 +8,7 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 - **Versionierung** -- Mehrere Versionen pro Prompt mit vollständiger Historie
 - **Board-System** -- Prompts in thematischen Boards mit Kachel-Ansicht organisieren
 - **Drag & Drop** -- Prompts per Drag auf Boards anheften
-- **Export** -- TXT- und PDF-Export (einzeln oder alle)
+- **Export** -- TXT- und PDF-Export (Prompts, Versionen oder alle)
 - **Clipboard-Integration** -- Schnelles Kopieren mit konfigurierbaren Modi (Titel, Text, Ergebnis, Alles)
 - **Dark Mode** -- Modernes Fusion Dark Theme
 - **Offline-First** -- Alle Daten lokal gespeichert (JSON)
@@ -59,7 +59,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (26 tests)
+│   └── test_basic.py           # Unit tests (28 tests)
 ├── store_package.json
 ├── requirements.txt
 ├── LICENSE
@@ -101,7 +101,7 @@ A desktop tool for managing, versioning, and organizing AI prompts. Built with P
 - **Versioning** -- Multiple versions per prompt with full history
 - **Board System** -- Organize prompts in thematic boards with tile view
 - **Drag & Drop** -- Pin prompts to boards via drag
-- **Export** -- TXT and PDF export (single or all)
+- **Export** -- TXT and PDF export (prompts, versions, or all)
 - **Clipboard Integration** -- Quick copy with configurable modes (title, text, result, all)
 - **Dark Mode** -- Modern Fusion Dark Theme
 - **Offline-First** -- All data stored locally (JSON)
@@ -148,7 +148,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (26 tests)
+│   └── test_basic.py           # Unit tests (28 tests)
 ├── store_package.json
 ├── requirements.txt
 ├── LICENSE

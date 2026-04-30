@@ -233,7 +233,10 @@ class MainWindow(QMainWindow):
         p = self.dashboard.get_current_prompt()
         if not p: return
         path, _ = QFileDialog.getSaveFileName(self, "Export Prompt TXT", f"{p.title}.txt", "Text (*.txt)")
-        if path: export_single_prompt(p, self.settings, path, parent=self)
+        if not path:
+            return
+        text = ClipboardManager(self.settings).build_copy_text(p)
+        self._write_txt_export(path, text, "TXT erfolgreich gespeichert.")
 
     def export_current_prompt_pdf(self):
         p = self.dashboard.get_current_prompt()
@@ -245,13 +248,28 @@ class MainWindow(QMainWindow):
         v = self.dashboard.get_current_version()
         if not v: return
         path, _ = QFileDialog.getSaveFileName(self, "Export Version TXT", f"{v.title}.txt", "Text (*.txt)")
-        if path: export_single_version(v, path, parent=self)
+        if not path:
+            return
+        p = self.storage.get_prompt(v.prompt_id)
+        if not p:
+            QMessageBox.critical(self, "Fehler", "Zugehoeriger Prompt nicht gefunden.")
+            return
+        text = ClipboardManager(self.settings).build_copy_text(p, v)
+        self._write_txt_export(path, text, "TXT erfolgreich gespeichert.")
 
     def export_current_version_pdf(self):
         v = self.dashboard.get_current_version()
         if not v: return
         path, _ = QFileDialog.getSaveFileName(self, "Export Version PDF", f"{v.title}.pdf", "PDF (*.pdf)")
         if path: export_single_version(v, path, parent=self)
+
+    def _write_txt_export(self, path: str, text: str, success_message: str):
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(text)
+            QMessageBox.information(self, "Export", success_message)
+        except Exception as e:
+            QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
 
     # --- Handlers ---
     def open_copy_settings(self):

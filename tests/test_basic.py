@@ -404,3 +404,124 @@ def test_clipboard_manager_title_mode():
     p = Prompt(id=gen_id(), title="Nur Titel", purpose="P", text="Text")
     result = clip.build_copy_text(p)
     assert result == "Nur Titel"
+
+
+def test_main_window_current_prompt_txt_export_writes_text(tmp_path, monkeypatch):
+    """Prueft, dass der Prompt-TXT-Export keinen PDF-Exporter nutzt."""
+    import profiprompt
+    from models import CopyMode, Prompt
+    from profiprompt import MainWindow
+
+    prompt = Prompt(
+        id="p1",
+        title="Prompt Title",
+        purpose="Prompt Purpose",
+        text="Prompt body",
+        tags=["tag1"],
+        last_result="Prompt result",
+    )
+
+    class MockDashboard:
+        def get_current_prompt(self):
+            return prompt
+
+    class MockSettings:
+        def get_copy_mode(self):
+            return CopyMode.ALL
+
+        def get_include_metadata(self):
+            return True
+
+    window = MainWindow.__new__(MainWindow)
+    window.dashboard = MockDashboard()
+    window.settings = MockSettings()
+
+    out_path = tmp_path / "prompt.txt"
+    monkeypatch.setattr(
+        profiprompt.QFileDialog,
+        "getSaveFileName",
+        lambda *args, **kwargs: (str(out_path), "Text (*.txt)"),
+    )
+    monkeypatch.setattr(profiprompt.QMessageBox, "information", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        profiprompt,
+        "export_single_prompt",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("TXT export must not call PDF exporter")
+        ),
+    )
+
+    MainWindow.export_current_prompt_txt(window)
+
+    exported = out_path.read_text(encoding="utf-8")
+    assert "Prompt Title" in exported
+    assert "Prompt body" in exported
+    assert "Prompt result" in exported
+    assert "tag1" in exported
+
+
+def test_main_window_current_version_txt_export_writes_text(tmp_path, monkeypatch):
+    """Prueft, dass der Version-TXT-Export keinen PDF-Exporter nutzt."""
+    import profiprompt
+    from models import CopyMode, Prompt, Version
+    from profiprompt import MainWindow
+
+    version = Version(
+        id="v1",
+        prompt_id="p1",
+        version_number=1,
+        title="Version Title",
+        text="Version body",
+        tags=["version-tag"],
+        result="Version result",
+    )
+    prompt = Prompt(
+        id="p1",
+        title="Prompt Title",
+        purpose="Prompt Purpose",
+        text="Prompt body",
+        versions=[version],
+    )
+
+    class MockDashboard:
+        def get_current_version(self):
+            return version
+
+    class MockStorage:
+        def get_prompt(self, prompt_id):
+            return prompt if prompt_id == prompt.id else None
+
+    class MockSettings:
+        def get_copy_mode(self):
+            return CopyMode.ALL
+
+        def get_include_metadata(self):
+            return True
+
+    window = MainWindow.__new__(MainWindow)
+    window.dashboard = MockDashboard()
+    window.storage = MockStorage()
+    window.settings = MockSettings()
+
+    out_path = tmp_path / "version.txt"
+    monkeypatch.setattr(
+        profiprompt.QFileDialog,
+        "getSaveFileName",
+        lambda *args, **kwargs: (str(out_path), "Text (*.txt)"),
+    )
+    monkeypatch.setattr(profiprompt.QMessageBox, "information", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        profiprompt,
+        "export_single_version",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("TXT export must not call PDF exporter")
+        ),
+    )
+
+    MainWindow.export_current_version_txt(window)
+
+    exported = out_path.read_text(encoding="utf-8")
+    assert "Version Title" in exported
+    assert "Version body" in exported
+    assert "Version result" in exported
+    assert "version-tag" in exported

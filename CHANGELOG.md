@@ -7,10 +7,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ### Behoben / Fixed
 - Board-Speicherung importiert `board_to_dict` explizit, damit `save_boards()` serialisieren kann.
+- Einzelne Prompt- und Versions-TXT-Exports schreiben jetzt echten Plaintext statt den PDF-Exporter aufzurufen.
 
 ### Geändert / Changed
 - README und Community-Dateien auf `file-bricks/ProfiPrompt` aktualisiert.
 - Generierte Store-Staging-Artefakte werden nicht mehr als Repo-Quelldateien geführt.
+- Regressionstests für einzelne TXT-Exports ergänzt; die Testsuite umfasst jetzt 28 Unit-Tests.
 
 ## [1.0.0] - 2026-02-28
 
