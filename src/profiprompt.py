@@ -201,7 +201,7 @@ class MainWindow(QMainWindow):
         )
 
     def _show_about(self):
-        QMessageBox.information(self, "Über", "Prompt Manager v1.0\nModern Dark Edition")
+        QMessageBox.information(self, "Über", "Prompt Manager v1.0.1\nModern Dark Edition")
 
     # --- Exports ---
     def export_all_txt(self):

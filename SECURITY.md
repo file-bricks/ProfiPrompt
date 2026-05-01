@@ -1,4 +1,4 @@
-# Security Policy
+# Security Policy / Sicherheitsrichtlinie
 
 ## Reporting a Vulnerability
 
@@ -16,11 +16,25 @@ If you find a security vulnerability, please report it responsibly:
 
 We will respond as soon as possible.
 
+## Sicherheitslücken melden
+
+Wenn Sie eine Sicherheitslücke finden, melden Sie diese bitte verantwortungsvoll:
+
+1. **Öffnen Sie kein öffentliches Issue**
+2. **Nutzen Sie GitHubs [private vulnerability reporting](../../security/advisories/new)**
+3. Beschreiben Sie: Problem, Reproduktionsschritte und mögliche Auswirkungen
+
 ## Scope
 
 - Local file system access (JSON data storage)
 - PDF export functionality
 - Clipboard operations
+
+## Geltungsbereich
+
+- Lokaler Dateisystemzugriff (JSON-Datenspeicherung)
+- PDF-Exportfunktion
+- Clipboard-Operationen
 
 ## Response
 

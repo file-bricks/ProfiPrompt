@@ -1,6 +1,6 @@
 # Privacy Policy / Datenschutzerklärung
 
-**ProfiPrompt** – Last updated: 2026-03-13
+**ProfiPrompt** – Last updated: 2026-05-01
 
 ---
 
@@ -12,6 +12,7 @@
 - **No tracking:** The application contains no analytics, telemetry, or tracking mechanisms of any kind.
 - **No internet connection required:** All functionality works entirely offline. Your data stays on your device.
 - **Local storage only:** All user data (prompts, boards, settings) is stored locally on your computer.
+- **Default data folder:** The application stores prompts and boards in the local user profile under `.prompt_manager` unless you configure another path.
 - **No third-party services:** ProfiPrompt does not connect to any external servers or third-party services.
 
 If you have questions, please open an issue at: https://github.com/file-bricks/ProfiPrompt/issues
@@ -26,6 +27,7 @@ If you have questions, please open an issue at: https://github.com/file-bricks/P
 - **Kein Tracking:** Die Anwendung enthält keinerlei Analyse-, Telemetrie- oder Tracking-Mechanismen.
 - **Keine Internetverbindung erforderlich:** Alle Funktionen arbeiten vollständig offline. Ihre Daten bleiben auf Ihrem Gerät.
 - **Nur lokale Speicherung:** Alle Nutzerdaten (Prompts, Boards, Einstellungen) werden lokal auf Ihrem Computer gespeichert.
+- **Standard-Datenordner:** Die Anwendung speichert Prompts und Boards im lokalen Benutzerprofil unter `.prompt_manager`, sofern kein anderer Pfad konfiguriert wird.
 - **Keine Drittanbieter-Dienste:** ProfiPrompt stellt keine Verbindung zu externen Servern oder Drittanbieter-Diensten her.
 
 Bei Fragen eröffnen Sie bitte ein Issue unter: https://github.com/file-bricks/ProfiPrompt/issues

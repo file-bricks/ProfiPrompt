@@ -19,7 +19,7 @@ venv/
 env/
 .env/
 
-# ---- BACH-interne Steuerungsdateien (NIEMALS in Git!) ----
+# ---- Interne Steuerungsdateien (NIEMALS in Git!) ----
 AUFGABEN.txt
 TEST.txt
 TESTS.txt
@@ -69,4 +69,5 @@ ehthumbs.db
 # ---- Projektspezifisch ----
 prompts.json
 boards.json
+*.tmp
 *.db

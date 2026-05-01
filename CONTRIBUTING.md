@@ -64,7 +64,7 @@ Thank you for your interest in contributing to this project!
 ### Getting Started
 
 ```bash
-git clone https://github.com/lukisch/ProfiPrompt.git
+git clone https://github.com/file-bricks/ProfiPrompt.git
 cd ProfiPrompt
 pip install -r requirements.txt
 python src/profiprompt.py

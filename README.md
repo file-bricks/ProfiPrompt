@@ -2,6 +2,8 @@
 
 Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. Gebaut mit PySide6 (Qt6).
 
+**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben.
+
 ## Funktionen
 
 - **Prompt-Verwaltung** -- Erstellen, Bearbeiten und Kategorisieren von Prompts
@@ -12,6 +14,7 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 - **Clipboard-Integration** -- Schnelles Kopieren mit konfigurierbaren Modi (Titel, Text, Ergebnis, Alles)
 - **Dark Mode** -- Modernes Fusion Dark Theme
 - **Offline-First** -- Alle Daten lokal gespeichert (JSON)
+- **Robuste Speicherung** -- Prompts und Boards werden atomar geschrieben, um defekte JSON-Dateien bei Abbrüchen zu vermeiden
 
 ## Screenshots
 
@@ -72,6 +75,12 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
+Die Testsuite umfasst 28 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau und TXT-Exportpfade.
+
+## Datenspeicherung / Privacy
+
+ProfiPrompt arbeitet offline. Nutzerdaten werden standardmäßig im lokalen Benutzerprofil unter `.prompt_manager` gespeichert; es gibt keine Telemetrie, keine Cloud-Synchronisation und keine externen API-Aufrufe.
+
 ## EXE erstellen
 
 ```bash
@@ -95,6 +104,8 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 
 A desktop tool for managing, versioning, and organizing AI prompts. Built with PySide6 (Qt6).
 
+**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext.
+
 ### Features
 
 - **Prompt Management** -- Create, edit, and categorize prompts
@@ -105,6 +116,7 @@ A desktop tool for managing, versioning, and organizing AI prompts. Built with P
 - **Clipboard Integration** -- Quick copy with configurable modes (title, text, result, all)
 - **Dark Mode** -- Modern Fusion Dark Theme
 - **Offline-First** -- All data stored locally (JSON)
+- **Robust Persistence** -- Prompts and boards are written atomically to avoid broken JSON files after interrupted writes
 
 ### Requirements
 
@@ -160,6 +172,12 @@ ProfiPrompt/
 ```bash
 python -m pytest tests/ -v
 ```
+
+The test suite currently contains 28 unit tests for models, storage, clipboard text generation, and TXT export paths.
+
+### Data Storage / Privacy
+
+ProfiPrompt works offline. User data is stored by default in the local user profile under `.prompt_manager`; there is no telemetry, no cloud sync, and no external API access.
 
 ### Build Executable
 
