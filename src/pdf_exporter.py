@@ -41,14 +41,7 @@ def export_single_prompt(prompt, settings, path: str, parent=None):
     _export_html_to_pdf(html, path, parent)
 
 def export_single_version(version, path: str, parent=None, settings=None):
-    html_parts = [
-        f"<h2>{version.title} <small>(v{version.version_number})</small></h2>",
-        f"<p><b>Tags:</b> {', '.join(version.tags)}</p>",
-        f"<pre>{version.text}</pre>"
-    ]
-    if getattr(version, "result", "").strip():
-        html_parts.append("<hr><pre>" + version.result + "</pre>")
-    html = "<html><body>" + "".join(html_parts) + "</body></html>"
+    html = "<html><body>" + _render_html_for_version(version, settings) + "</body></html>"
     _export_html_to_pdf(html, path, parent)
 
 def export_all_prompts(storage, settings, path: str, parent=None):

@@ -252,7 +252,7 @@ class MainWindow(QMainWindow):
             return
         p = self.storage.get_prompt(v.prompt_id)
         if not p:
-            QMessageBox.critical(self, "Fehler", "Zugehoeriger Prompt nicht gefunden.")
+            QMessageBox.critical(self, "Fehler", "Zugehöriger Prompt nicht gefunden.")
             return
         text = ClipboardManager(self.settings).build_copy_text(p, v)
         self._write_txt_export(path, text, "TXT erfolgreich gespeichert.")
@@ -261,7 +261,7 @@ class MainWindow(QMainWindow):
         v = self.dashboard.get_current_version()
         if not v: return
         path, _ = QFileDialog.getSaveFileName(self, "Export Version PDF", f"{v.title}.pdf", "PDF (*.pdf)")
-        if path: export_single_version(v, path, parent=self)
+        if path: export_single_version(v, path, parent=self, settings=self.settings)
 
     def _write_txt_export(self, path: str, text: str, success_message: str):
         try:

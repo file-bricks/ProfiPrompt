@@ -67,7 +67,10 @@ ehthumbs.db
 .pytest_cache/
 
 # ---- Projektspezifisch ----
+.prompt_manager/
 prompts.json
 boards.json
 *.tmp
 *.db
+*.log
+*.bak

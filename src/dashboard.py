@@ -335,7 +335,7 @@ class DashboardWidget(QtWidgets.QWidget):
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
                 self, "PDF speichern", f"{v.title}.pdf", "PDF-Datei (*.pdf)")
             if path:
-                export_single_version(v, path, self)
+                export_single_version(v, path, parent=self, settings=self.settings)
         elif chosen == act_delete:
             if kind == "prompt":
                 if QtWidgets.QMessageBox.question(

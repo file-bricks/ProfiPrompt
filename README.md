@@ -2,7 +2,7 @@
 
 Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. Gebaut mit PySide6 (Qt6).
 
-**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben.
+**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter.
 
 ## Funktionen
 
@@ -62,7 +62,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (28 tests)
+│   └── test_basic.py           # Unit tests (30 tests)
 ├── store_package.json
 ├── requirements.txt
 ├── LICENSE
@@ -75,7 +75,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Testsuite umfasst 28 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau und TXT-Exportpfade.
+Die Testsuite umfasst 30 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau sowie TXT- und PDF-Exportpfade.
 
 ## Datenspeicherung / Privacy
 
@@ -104,7 +104,7 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 
 A desktop tool for managing, versioning, and organizing AI prompts. Built with PySide6 (Qt6).
 
-**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext.
+**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard.
 
 ### Features
 
@@ -160,7 +160,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (28 tests)
+│   └── test_basic.py           # Unit tests (30 tests)
 ├── store_package.json
 ├── requirements.txt
 ├── LICENSE
@@ -173,7 +173,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The test suite currently contains 28 unit tests for models, storage, clipboard text generation, and TXT export paths.
+The test suite currently contains 30 unit tests for models, storage, clipboard text generation, and TXT/PDF export paths.
 
 ### Data Storage / Privacy
 

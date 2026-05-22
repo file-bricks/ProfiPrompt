@@ -525,3 +525,107 @@ def test_main_window_current_version_txt_export_writes_text(tmp_path, monkeypatc
     assert "Version body" in exported
     assert "Version result" in exported
     assert "version-tag" in exported
+
+
+def test_pdf_export_single_version_respects_metadata_flag(monkeypatch):
+    """Prueft, dass der PDF-Export fuer Versionen die Metadaten-Einstellung respektiert."""
+    import pdf_exporter
+    from models import Version, gen_id
+
+    captured = {}
+
+    def fake_export_html_to_pdf(html, path, parent=None):
+        captured["html"] = html
+        captured["path"] = path
+        captured["parent"] = parent
+
+    monkeypatch.setattr(pdf_exporter, "_export_html_to_pdf", fake_export_html_to_pdf)
+
+    class MockSettings:
+        def get_include_metadata(self):
+            return False
+
+    version = Version(
+        id=gen_id(),
+        prompt_id="p1",
+        version_number=1,
+        title="Version <Title>",
+        text="Version <body>",
+        tags=["version&tag"],
+        result="Version result",
+    )
+
+    pdf_exporter.export_single_version(version, "dummy.pdf", settings=MockSettings())
+
+    assert "Version &lt;body&gt;" in captured["html"]
+    assert "Version &lt;Title&gt;" in captured["html"]
+    assert "version&amp;tag" in captured["html"]
+    assert "Version <body>" not in captured["html"]
+    assert "Version result" not in captured["html"]
+    assert captured["path"] == "dummy.pdf"
+
+
+def test_main_window_current_version_pdf_export_forwards_settings(tmp_path, monkeypatch):
+    """Prueft, dass der Version-PDF-Export die Settings an den Exporter weiterreicht."""
+    import profiprompt
+    from models import Prompt, Version
+    from profiprompt import MainWindow
+
+    version = Version(
+        id="v1",
+        prompt_id="p1",
+        version_number=1,
+        title="Version Title",
+        text="Version body",
+        tags=["version-tag"],
+        result="Version result",
+    )
+    prompt = Prompt(
+        id="p1",
+        title="Prompt Title",
+        purpose="Prompt Purpose",
+        text="Prompt body",
+        versions=[version],
+    )
+
+    class MockDashboard:
+        def get_current_version(self):
+            return version
+
+    class MockStorage:
+        def get_prompt(self, prompt_id):
+            return prompt if prompt_id == prompt.id else None
+
+    class MockSettings:
+        def get_include_metadata(self):
+            return False
+
+    window = MainWindow.__new__(MainWindow)
+    window.dashboard = MockDashboard()
+    window.storage = MockStorage()
+    window.settings = MockSettings()
+
+    out_path = tmp_path / "version.pdf"
+    captured = {}
+
+    monkeypatch.setattr(
+        profiprompt.QFileDialog,
+        "getSaveFileName",
+        lambda *args, **kwargs: (str(out_path), "PDF (*.pdf)"),
+    )
+    monkeypatch.setattr(profiprompt.QMessageBox, "information", lambda *args, **kwargs: None)
+
+    def fake_export_single_version(version_arg, path_arg, parent=None, settings=None):
+        captured["version"] = version_arg
+        captured["path"] = path_arg
+        captured["parent"] = parent
+        captured["settings"] = settings
+
+    monkeypatch.setattr(profiprompt, "export_single_version", fake_export_single_version)
+
+    MainWindow.export_current_version_pdf(window)
+
+    assert captured["version"] is version
+    assert captured["path"] == str(out_path)
+    assert captured["parent"] is window
+    assert captured["settings"] is window.settings
