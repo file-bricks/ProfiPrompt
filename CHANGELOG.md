@@ -5,6 +5,9 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Geplant / Planned
+- Plattformstrategie in `PORTIERUNGSPLAN.md` ergänzt: Windows Store bleibt Hauptkanal; Web/PWA-Companion wird bevorzugte Android/iOS/Web-Linie mit Austauschformat `profiprompt-library-v1.json`; macOS/Linux werden als P3-Smoke-Ziele geführt.
+
 ### Behoben / Fixed
 - Der Versions-PDF-Export respektiert jetzt die Metadaten-Einstellung auch dann, wenn er aus Dashboard oder Hauptfenster ausgelöst wird.
 - Versionen werden im PDF-HTML weiterhin sauber escaped; die Regressionstests decken den Exportpfad jetzt explizit ab.
