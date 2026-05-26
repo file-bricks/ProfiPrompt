@@ -1,0 +1,113 @@
+{
+  "schema_version": "profiprompt-library-v1",
+  "app": {
+    "name": "ProfiPrompt",
+    "version": "1.0.1",
+    "exported_at": "2026-05-26T19:30:00+00:00"
+  },
+  "stats": {
+    "prompt_count": 2,
+    "version_count": 3,
+    "board_count": 2,
+    "board_item_count": 3
+  },
+  "tags": ["antwort", "deutsch", "review", "workflow"],
+  "prompts": [
+    {
+      "id": "p1",
+      "title": "Code-Review auf Regressionen",
+      "purpose": "Schnelle Prüfung vor dem Commit",
+      "text": "Prüfe den Patch auf Bugs, Seiteneffekte und fehlende Tests.",
+      "tags": ["review", "workflow"],
+      "last_result": "Achte besonders auf fehlende Tests und ungeprüfte Randfälle.",
+      "created_at": "2026-05-26T17:00:00+00:00",
+      "updated_at": "2026-05-26T18:10:00+00:00",
+      "versions": [
+        {
+          "id": "v1",
+          "prompt_id": "p1",
+          "version_number": 1,
+          "title": "Kurzfassung",
+          "text": "Nenne nur die kritischsten Risiken.",
+          "result": "",
+          "tags": ["review"],
+          "created_at": "2026-05-26T17:10:00+00:00",
+          "updated_at": "2026-05-26T17:10:00+00:00"
+        },
+        {
+          "id": "v2",
+          "prompt_id": "p1",
+          "version_number": 2,
+          "title": "Mit Testfokus",
+          "text": "Suche zuerst nach Regressionen und fehlenden Tests.",
+          "result": "Tests fehlen oft an Import- und Fehlerpfaden.",
+          "tags": ["review", "workflow"],
+          "created_at": "2026-05-26T18:00:00+00:00",
+          "updated_at": "2026-05-26T18:10:00+00:00"
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "title": "Deutsche Umlaute korrigieren",
+      "purpose": "End-User-Texte sauber halten",
+      "text": "Ersetze falsche Umschreibungen und prüfe echte Umlaute: ä, ö, ü, ß.",
+      "tags": ["deutsch", "antwort"],
+      "last_result": "Bereinigt: München, Prüfpfad und Übernahme.",
+      "created_at": "2026-05-26T16:40:00+00:00",
+      "updated_at": "2026-05-26T18:05:00+00:00",
+      "versions": [
+        {
+          "id": "v3",
+          "prompt_id": "p2",
+          "version_number": 1,
+          "title": "Mit Ergebnisblock",
+          "text": "Gib die Korrekturen mit kurzer Begründung aus.",
+          "result": "Gefunden: ae/oe/ue in sichtbaren Texten.",
+          "tags": ["deutsch"],
+          "created_at": "2026-05-26T17:30:00+00:00",
+          "updated_at": "2026-05-26T18:05:00+00:00"
+        }
+      ]
+    }
+  ],
+  "boards": [
+    {
+      "id": "b1",
+      "title": "Täglich",
+      "description": "Prompts für wiederkehrende Entwicklungsarbeit",
+      "items": [
+        {
+          "id": "bi1",
+          "board_id": "b1",
+          "prompt_id": "p1",
+          "version_id": "v2",
+          "created_at": "2026-05-26T18:15:00+00:00"
+        },
+        {
+          "id": "bi2",
+          "board_id": "b1",
+          "prompt_id": "p2",
+          "version_id": null,
+          "created_at": "2026-05-26T18:16:00+00:00"
+        }
+      ],
+      "created_at": "2026-05-26T18:15:00+00:00"
+    },
+    {
+      "id": "b2",
+      "title": "Sprachpflege",
+      "description": "Texte für sichtbare Produktoberflächen",
+      "items": [
+        {
+          "id": "bi3",
+          "board_id": "b2",
+          "prompt_id": "p2",
+          "version_id": "v3",
+          "created_at": "2026-05-26T18:18:00+00:00"
+        }
+      ],
+      "created_at": "2026-05-26T18:18:00+00:00"
+    }
+  ]
+}

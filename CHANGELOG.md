@@ -5,8 +5,14 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Hinzugefügt / Added
+- `EXPORTFORMAT.md` dokumentiert das stabile Austauschformat `profiprompt-library-v1.json`.
+- Datei-Menü um `Bibliothek (JSON)` erweitert; der Export schreibt Prompts, Versionen, Boards, Board-Items, Tags, Zeitstempel und App-Metadaten als UTF-8-JSON.
+- Neuer statischer Web/PWA-Companion unter `web_companion/` für Dateiimport, Suche, Boards, Versionsumschaltung, Kopierpfade und lokalen Browser-Speicher.
+- Node-Smoke-Tests für den Companion prüfen Schema-Normalisierung, Filter, Board-Auflösung, Kopiertext und Restore aus `localStorage`.
+
 ### Geplant / Planned
-- Plattformstrategie in `PORTIERUNGSPLAN.md` ergänzt: Windows Store bleibt Hauptkanal; Web/PWA-Companion wird bevorzugte Android/iOS/Web-Linie mit Austauschformat `profiprompt-library-v1.json`; macOS/Linux werden als P3-Smoke-Ziele geführt.
+- Plattformstrategie in `PORTIERUNGSPLAN.md` ergänzt: Windows Store bleibt Hauptkanal; Android/iOS folgen über PWA-Checks auf Basis des neuen Companions; macOS/Linux werden als P3-Smoke-Ziele geführt.
 
 ### Behoben / Fixed
 - Der Versions-PDF-Export respektiert jetzt die Metadaten-Einstellung auch dann, wenn er aus Dashboard oder Hauptfenster ausgelöst wird.

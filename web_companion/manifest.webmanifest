@@ -1,0 +1,19 @@
+{
+  "name": "ProfiPrompt Companion",
+  "short_name": "PromptCompanion",
+  "description": "Offline-first Web/PWA-Companion für ProfiPrompt-Bibliotheken.",
+  "lang": "de-DE",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a1218",
+  "theme_color": "#10212c",
+  "icons": [
+    {
+      "src": "./icons/profiprompt-companion.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ProfiPrompt Companion</title>
+    <meta
+      name="description"
+      content="Offline-first Companion für ProfiPrompt-Bibliotheken mit Suche, Boards und Kopierpfaden."
+    >
+    <meta name="theme-color" content="#10212c">
+    <link rel="icon" href="./icons/profiprompt-companion.svg" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./app.css">
+  </head>
+  <body>
+    <div class="shell">
+      <header class="hero">
+        <div class="hero__copy">
+          <p class="hero__eyeline">ProfiPrompt Companion</p>
+          <h1>Prompt-Bibliotheken unterwegs lesen, filtern und kopieren</h1>
+          <p class="hero__lead">
+            Importiert <code>profiprompt-library-v1.json</code>, hält die Bibliothek lokal im
+            Browser und bleibt als kleine PWA bewusst read-only.
+          </p>
+        </div>
+        <div class="hero__panel">
+          <div class="hero__panel-row">
+            <span class="hero__label">Status</span>
+            <strong id="library-status">Keine Bibliothek geladen</strong>
+          </div>
+          <div class="hero__panel-row">
+            <span class="hero__label">Speicher</span>
+            <strong>Lokal im Browser</strong>
+          </div>
+          <div class="hero__actions">
+            <label class="button button--primary file-picker">
+              <input id="import-file" type="file" accept=".json,application/json">
+              Bibliothek importieren
+            </label>
+            <button id="clear-library" class="button button--ghost" type="button">
+              Bibliothek löschen
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="stats" aria-label="Bibliotheksstatistik">
+          <article class="stat-card">
+            <span class="stat-card__label">Prompts</span>
+            <strong id="stat-prompts">0</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__label">Versionen</span>
+            <strong id="stat-versions">0</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__label">Boards</span>
+            <strong id="stat-boards">0</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__label">Tags</span>
+            <strong id="stat-tags">0</strong>
+          </article>
+        </section>
+
+        <section class="toolbar" aria-label="Suche und Kopieroptionen">
+          <label class="field field--search">
+            <span>Suche</span>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Titel, Zweck, Tags, Text oder Board durchsuchen"
+              autocomplete="off"
+            >
+          </label>
+          <label class="field">
+            <span>Kopiermodus</span>
+            <select id="copy-mode">
+              <option value="all">Alles</option>
+              <option value="title">Titel</option>
+              <option value="text">Prompttext</option>
+              <option value="result">Ergebnis</option>
+            </select>
+          </label>
+          <label class="field field--checkbox">
+            <input id="include-metadata" type="checkbox" checked>
+            <span>Tags beim Kopieren anhängen</span>
+          </label>
+          <button id="install-app" class="button button--ghost" type="button" hidden>
+            PWA installieren
+          </button>
+        </section>
+
+        <section class="layout" aria-label="Companion-Arbeitsbereich">
+          <aside class="panel panel--boards">
+            <div class="panel__head">
+              <h2>Boards</h2>
+              <span id="board-count" class="panel__meta">0</span>
+            </div>
+            <div id="board-list" class="board-list"></div>
+          </aside>
+
+          <section class="panel panel--prompts">
+            <div class="panel__head">
+              <h2>Prompts</h2>
+              <span id="prompt-count" class="panel__meta">0 Treffer</span>
+            </div>
+            <div id="prompt-list" class="prompt-list"></div>
+          </section>
+
+          <section class="panel panel--detail">
+            <div class="panel__head">
+              <div>
+                <h2 id="detail-title">Noch nichts ausgewählt</h2>
+                <p id="detail-purpose" class="panel__subhead">
+                  Lade eine Bibliothek und wähle links ein Prompt oder Board.
+                </p>
+              </div>
+              <button id="copy-button" class="button button--primary" type="button" disabled>
+                Auswahl kopieren
+              </button>
+            </div>
+
+            <div id="detail-meta" class="detail-meta"></div>
+
+            <label class="field">
+              <span>Version</span>
+              <select id="version-select" disabled></select>
+            </label>
+
+            <div class="detail-columns">
+              <article class="detail-card">
+                <div class="detail-card__head">
+                  <h3>Prompt</h3>
+                  <span id="detail-text-label">Aktueller Stand</span>
+                </div>
+                <pre id="detail-text" class="detail-card__body empty-copy">
+Noch kein Prompt gewählt.
+                </pre>
+              </article>
+              <article class="detail-card">
+                <div class="detail-card__head">
+                  <h3>Ergebnis</h3>
+                  <span>Optional</span>
+                </div>
+                <pre id="detail-result" class="detail-card__body empty-copy">
+Kein Ergebnis vorhanden.
+                </pre>
+              </article>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 
 Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. Gebaut mit PySide6 (Qt6).
 
-**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter.
+**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json` und bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit.
 
 ## Funktionen
 
@@ -10,8 +10,9 @@ Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. 
 - **Versionierung** -- Mehrere Versionen pro Prompt mit vollständiger Historie
 - **Board-System** -- Prompts in thematischen Boards mit Kachel-Ansicht organisieren
 - **Drag & Drop** -- Prompts per Drag auf Boards anheften
-- **Export** -- TXT- und PDF-Export (Prompts, Versionen oder alle)
+- **Export** -- TXT-, PDF- und portabler JSON-Bibliotheksexport (Prompts, Versionen, Boards)
 - **Clipboard-Integration** -- Schnelles Kopieren mit konfigurierbaren Modi (Titel, Text, Ergebnis, Alles)
+- **Web/PWA-Companion** -- Read-only Bibliotheksansicht im Browser mit Suche, Boards, Versionsumschaltung und lokaler Speicherung
 - **Dark Mode** -- Modernes Fusion Dark Theme
 - **Offline-First** -- Alle Daten lokal gespeichert (JSON)
 - **Robuste Speicherung** -- Prompts und Boards werden atomar geschrieben, um defekte JSON-Dateien bei Abbrüchen zu vermeiden
@@ -62,8 +63,14 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (30 tests)
+│   └── test_basic.py           # Unit tests (33 tests)
+├── web_companion/
+│   ├── index.html              # Statischer Web/PWA-Companion
+│   ├── app.js                  # UI-State, Dateiimport, Clipboard und Renderlogik
+│   ├── library.js              # Schema-Normalisierung und Companion-Helfer
+│   └── tests/                  # Node-Smokes für den Companion
 ├── store_package.json
+├── EXPORTFORMAT.md
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -75,7 +82,19 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Testsuite umfasst 30 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau sowie TXT- und PDF-Exportpfade.
+Die Python-Testsuite umfasst 33 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade und den JSON-Bibliotheksexport. Zusätzlich prüfen 5 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade und Kopiertext.
+
+## Web/PWA-Companion
+
+Der Companion lebt unter `web_companion/` und ist bewusst klein gehalten: Dateiimport, Suche, Board-Filter, Versionsumschaltung, Clipboard-Kopie und lokaler Browser-Speicher auf Basis von `profiprompt-library-v1.json`. Er bleibt read-only und ersetzt die Desktop-App nicht.
+
+Lokal starten:
+
+```bash
+python -m http.server 4175
+```
+
+Dann `http://127.0.0.1:4175/web_companion/` öffnen, wenn der Server im Projektroot läuft.
 
 ## Datenspeicherung / Privacy
 
@@ -104,7 +123,7 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 
 A desktop tool for managing, versioning, and organizing AI prompts. Built with PySide6 (Qt6).
 
-**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard.
+**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard, adds the portable `profiprompt-library-v1.json` library export, and ships a static Web/PWA companion for mobile reading, search, and copy flows.
 
 ### Features
 
@@ -112,8 +131,9 @@ A desktop tool for managing, versioning, and organizing AI prompts. Built with P
 - **Versioning** -- Multiple versions per prompt with full history
 - **Board System** -- Organize prompts in thematic boards with tile view
 - **Drag & Drop** -- Pin prompts to boards via drag
-- **Export** -- TXT and PDF export (prompts, versions, or all)
+- **Export** -- TXT, PDF, and portable JSON library export (prompts, versions, boards)
 - **Clipboard Integration** -- Quick copy with configurable modes (title, text, result, all)
+- **Web/PWA Companion** -- Read-only browser companion with search, boards, version switching, and local storage
 - **Dark Mode** -- Modern Fusion Dark Theme
 - **Offline-First** -- All data stored locally (JSON)
 - **Robust Persistence** -- Prompts and boards are written atomically to avoid broken JSON files after interrupted writes
@@ -160,8 +180,14 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (30 tests)
+│   └── test_basic.py           # Unit tests (33 tests)
+├── web_companion/
+│   ├── index.html              # Static Web/PWA companion
+│   ├── app.js                  # UI state, file import, clipboard, rendering
+│   ├── library.js              # Schema normalization and companion helpers
+│   └── tests/                  # Node smoke tests for the companion
 ├── store_package.json
+├── EXPORTFORMAT.md
 ├── requirements.txt
 ├── LICENSE
 └── README.md
@@ -173,7 +199,19 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The test suite currently contains 30 unit tests for models, storage, clipboard text generation, and TXT/PDF export paths.
+The Python suite currently contains 33 unit tests for models, storage, clipboard text generation, TXT/PDF export paths, and the JSON library export. An additional 5 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, and copy text behavior.
+
+### Web/PWA Companion
+
+The companion lives in `web_companion/` and intentionally stays small: file import, search, board filters, version switching, clipboard copy, and local browser storage on top of `profiprompt-library-v1.json`. It is read-only by design and does not replace the desktop app.
+
+Run locally:
+
+```bash
+python -m http.server 4175
+```
+
+Then open `http://127.0.0.1:4175/web_companion/` when the server runs from the project root.
 
 ### Data Storage / Privacy
 

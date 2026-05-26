@@ -320,6 +320,127 @@ def test_storage_board_item_with_version(tmp_path):
     assert len(boards[0].items) == 2
 
 
+def test_library_export_empty_storage(tmp_path):
+    """Prueft das stabile JSON-Exportformat fuer eine leere Bibliothek."""
+    from storage import Storage
+    from library_export import SCHEMA_VERSION, build_library_export
+
+    store = Storage(tmp_path)
+    payload = build_library_export(store, exported_at="2026-05-24T00:00:00+00:00")
+
+    assert payload["schema_version"] == SCHEMA_VERSION
+    assert payload["app"]["name"] == "ProfiPrompt"
+    assert payload["app"]["version"] == "1.0.1"
+    assert payload["app"]["exported_at"] == "2026-05-24T00:00:00+00:00"
+    assert payload["stats"] == {
+        "prompt_count": 0,
+        "version_count": 0,
+        "board_count": 0,
+        "board_item_count": 0,
+    }
+    assert payload["tags"] == []
+    assert payload["prompts"] == []
+    assert payload["boards"] == []
+
+
+def test_library_export_utf8_and_board_references(tmp_path):
+    """Prueft UTF-8, Versionen, Tags und Board-Verweise im Bibliotheksexport."""
+    from storage import Storage
+    from models import Board, BoardItem, Prompt, Version
+    from library_export import write_library_export
+
+    store = Storage(tmp_path)
+    version = Version(
+        id="v1",
+        prompt_id="p1",
+        version_number=1,
+        title="Version Grüßen",
+        text="Nutze echte Umlaute: äöü ÄÖÜ ß",
+        result="Ergebnis",
+        tags=["antwort", "überblick"],
+        created_at="2026-05-24T10:00:00+00:00",
+        updated_at="2026-05-24T10:05:00+00:00",
+    )
+    prompt = Prompt(
+        id="p1",
+        title="Grußprompt",
+        purpose="Prüfung",
+        text="Schreibe Grüße.",
+        tags=["deutsch"],
+        last_result="Hallo München",
+        created_at="2026-05-24T09:00:00+00:00",
+        updated_at="2026-05-24T10:05:00+00:00",
+        versions=[version],
+    )
+    board = Board(
+        id="b1",
+        title="Board Ä",
+        description="Sammlung",
+        items=[
+            BoardItem(
+                id="bi1",
+                board_id="b1",
+                prompt_id="p1",
+                version_id="v1",
+                created_at="2026-05-24T11:00:00+00:00",
+            )
+        ],
+        created_at="2026-05-24T11:00:00+00:00",
+    )
+    store.upsert_prompt(prompt)
+    store.upsert_board(board)
+
+    out_path = tmp_path / "profiprompt-library-v1.json"
+    payload = write_library_export(store, out_path)
+    raw = out_path.read_bytes()
+    exported = json.loads(raw.decode("utf-8"))
+
+    assert b"\\u00e4" not in raw
+    assert payload == exported
+    assert exported["stats"]["prompt_count"] == 1
+    assert exported["stats"]["version_count"] == 1
+    assert exported["stats"]["board_count"] == 1
+    assert exported["tags"] == ["antwort", "deutsch", "überblick"]
+    assert exported["prompts"][0]["title"] == "Grußprompt"
+    assert exported["prompts"][0]["versions"][0]["id"] == "v1"
+    assert exported["boards"][0]["items"][0]["prompt_id"] == "p1"
+    assert exported["boards"][0]["items"][0]["version_id"] == "v1"
+
+
+def test_main_window_library_json_export_writes_file(tmp_path, monkeypatch):
+    """Prueft die Desktop-Aktion fuer den JSON-Bibliotheksexport."""
+    import profiprompt
+    from models import Prompt
+    from profiprompt import MainWindow
+
+    prompt = Prompt(id="p1", title="Prompt", purpose="Test", text="Text")
+
+    class MockStorage:
+        def load_prompts(self):
+            return [prompt]
+
+        def load_boards(self):
+            return []
+
+    window = MainWindow.__new__(MainWindow)
+    window.storage = MockStorage()
+
+    out_path = tmp_path / "library.json"
+    monkeypatch.setattr(
+        profiprompt.QFileDialog,
+        "getSaveFileName",
+        lambda *args, **kwargs: (str(out_path), "JSON (*.json)"),
+    )
+    monkeypatch.setattr(profiprompt.QMessageBox, "information", lambda *args, **kwargs: None)
+
+    MainWindow.export_library_json(window)
+
+    exported = json.loads(out_path.read_text(encoding="utf-8"))
+    assert exported["schema_version"] == "profiprompt-library-v1"
+    assert exported["stats"]["prompt_count"] == 1
+    assert exported["prompts"][0]["id"] == "p1"
+
+
 def test_storage_nonexistent_board(tmp_path):
     """Prueft Verhalten bei nicht existierendem Board."""
     from storage import Storage

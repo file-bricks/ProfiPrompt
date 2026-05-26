@@ -43,9 +43,9 @@ Begründung: Der Kernnutzen von ProfiPrompt entsteht beim Arbeiten mit KI-Tools 
 | Status | Punkt |
 |---|---|
 | vorhanden | Desktop-App, JSON-Datenmodell, Store-Listing, GitHub-Release-Struktur |
-| offen P0 | Exportformat `profiprompt-library-v1.json` spezifizieren und testen |
-| offen P1 | Export-/Import-Aktion im Desktop anbinden |
-| offen P1 | Web/PWA-Prototyp für Import, Suche, Board-Ansicht und Kopieren planen |
+| erledigt P0 | Exportformat `profiprompt-library-v1.json` spezifiziert und getestet |
+| teilweise erledigt P1 | Export-Aktion im Desktop angebunden; Import bleibt für den Companion-/Rückimport-Schritt offen |
+| erledigt P1 | `web_companion/` importiert `profiprompt-library-v1.json`, bietet Suche, Board-Ansicht, Versionsumschaltung, Kopierpfade und lokalen Browser-Speicher |
 | offen P2 | Android/iOS-PWA-Testmatrix mit Offline-Speicher und Clipboard-Rechten erstellen |
 | offen P3 | macOS/Linux-PySide6-Smoke-Test dokumentieren |
 
@@ -64,8 +64,8 @@ Stabilitätsregel: Neue Felder dürfen additiv ergänzt werden. Bestehende Felde
 
 ## Nächste Schritte
 
-1. `EXPORTFORMAT.md` anlegen und das Schema mit Beispiel dokumentieren.
-2. Desktop-Exportfunktion aus `Storage.load_prompts()` und `Storage.load_boards()` bauen.
-3. Regressionstest für Schema, UTF-8, leere Bibliothek und Board-Verweise ergänzen.
-4. Danach Web/PWA-Skelett erst anlegen, wenn der Desktop-Export stabil ist.
+1. Android-/iOS-PWA-Testmatrix mit Offline-Speicher, Clipboard-Rechten und kleinen Viewports ergänzen.
+2. Rückimport oder Merge-Strategie separat planen; der aktuelle Desktop-Export und der Web-Companion bleiben bewusst read-only.
+3. macOS-/Linux-PySide6-Smoke-Test dokumentieren.
+4. Optional später Board-spezifische Share-Links oder lokale Snapshot-Exporte prüfen, ohne Cloud-Zwang einzuführen.
 5. Windows-Store-Readiness separat weiterführen: Screenshots, WACK/Testprotokoll, finale Listing-Prüfung.

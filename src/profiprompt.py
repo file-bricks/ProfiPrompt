@@ -16,6 +16,7 @@ from dashboard import DashboardWidget
 from board_manager import BoardManager
 from copy_settings_dialog import CopySettingsDialog
 from clipboard_manager import ClipboardManager
+from library_export import write_library_export
 from pdf_exporter import (
     export_all_prompts,
     export_single_prompt,
@@ -161,6 +162,7 @@ class MainWindow(QMainWindow):
         m_file = menubar.addMenu("Datei")
         m_file.addAction(self._action("Alle Prompts (TXT)", self.export_all_txt))
         m_file.addAction(self._action("Alle Prompts (PDF)", self.export_all_pdf))
+        m_file.addAction(self._action("Bibliothek (JSON)", self.export_library_json))
         m_file.addSeparator()
         m_file.addAction(self._action("Aktueller Prompt (TXT)", self.export_current_prompt_txt))
         m_file.addAction(self._action("Aktueller Prompt (PDF)", self.export_current_prompt_pdf))
@@ -228,6 +230,26 @@ class MainWindow(QMainWindow):
     def export_all_pdf(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export PDF", "alle_prompts.pdf", "PDF (*.pdf)")
         if path: export_all_prompts(self.storage, self.settings, path, parent=self)
+
+    def export_library_json(self):
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Bibliothek exportieren",
+            "profiprompt-library-v1.json",
+            "JSON (*.json)",
+        )
+        if not path:
+            return
+        try:
+            payload = write_library_export(self.storage, path)
+            count = payload["stats"]["prompt_count"]
+            QMessageBox.information(
+                self,
+                "Export",
+                f"JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).",
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Fehler", f"JSON-Export fehlgeschlagen:\n{e}")
 
     def export_current_prompt_txt(self):
         p = self.dashboard.get_current_prompt()
