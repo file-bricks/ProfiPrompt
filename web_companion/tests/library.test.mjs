@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 
 import {
   SCHEMA_VERSION,
+  buildMobileGuide,
   buildCopyText,
+  detectClientPlatform,
   filterPrompts,
   normalizeLibraryPayload,
   parseStoredLibrary,
@@ -144,4 +146,36 @@ test("parseStoredLibrary restores a serialized library", () => {
   const library = makeLibrary();
   const restored = parseStoredLibrary(JSON.stringify(library));
   assert.equal(restored.prompts[0].versions[0].title, "Kurz");
+});
+
+test("detectClientPlatform differentiates Android, iOS and desktop", () => {
+  assert.equal(
+    detectClientPlatform("Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/136.0"),
+    "android",
+  );
+  assert.equal(
+    detectClientPlatform("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15"),
+    "ios",
+  );
+  assert.equal(detectClientPlatform("Mozilla/5.0 (Windows NT 10.0; Win64; x64)"), "desktop");
+});
+
+test("buildMobileGuide explains install and copy flows per platform", () => {
+  const iosGuide = buildMobileGuide({
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+    hasInstallPrompt: false,
+    hasLibrary: false,
+  });
+  assert.equal(iosGuide.platformLabel, "iPhone / iPad");
+  assert.match(iosGuide.installText, /Zum Home-Bildschirm/);
+  assert.match(iosGuide.copyText, /Safari/);
+
+  const androidGuide = buildMobileGuide({
+    userAgent: "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/136.0",
+    hasInstallPrompt: true,
+    hasLibrary: true,
+  });
+  assert.equal(androidGuide.platformLabel, "Android");
+  assert.match(androidGuide.installText, /Installieren-Schaltfläche/);
+  assert.match(androidGuide.importText, /lokal gespeichert/);
 });

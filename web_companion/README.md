@@ -9,6 +9,7 @@ Der Web/PWA-Companion ist die mobile und browserbasierte Leselinie für ProfiPro
 - Suche über Titel, Zweck, Tags, Prompttexte, Versionen und Boardnamen
 - Board-Ansicht mit Filter auf die enthaltenen Prompts
 - Detailansicht mit Versionsumschaltung und Clipboard-Kopie
+- mobile Hinweise für Android/iOS zu Installation, Import, Offline-Start und Copy-Fallback
 - PWA-Grundausstattung mit Manifest und Service Worker
 
 ## Lokal starten
@@ -24,6 +25,10 @@ Danach im Browser `http://127.0.0.1:4175/web_companion/` öffnen, wenn der Serve
 Für eine sofortige Demo ohne Dateidialog kann zusätzlich `?library=./sample-library.json` genutzt werden.
 
 Für lokale Browser-Tests liegt im Companion bewusst ein eigenes `package.json` mit `type: module`, damit dieselben `.js`-Module in Browser und Node-Smokes ohne MIME-Probleme funktionieren.
+
+## Android-/iOS-Testplan
+
+Die aktuelle P2-Testmatrix liegt in [PWA_TESTPLAN.md](PWA_TESTPLAN.md). Dort sind Install-, Import-, Offline-, Such- und Kopierpfade für Android Chrome und iOS Safari beschrieben.
 
 ## Grenzen
 

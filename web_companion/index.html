@@ -93,6 +93,24 @@
           </button>
         </section>
 
+        <section class="mobile-guide" aria-label="Android- und iOS-Hinweise">
+          <article class="guide-card">
+            <div class="guide-card__head">
+              <div>
+                <p class="guide-card__eyeline">P2 Mobile-Readiness</p>
+                <h2>Installieren, importieren und offline prüfen</h2>
+              </div>
+              <span id="mobile-guide-platform" class="guide-card__badge">Desktop / Laptop</span>
+            </div>
+            <ul class="guide-list">
+              <li><strong>Installieren:</strong> <span id="mobile-guide-install"></span></li>
+              <li><strong>Import:</strong> <span id="mobile-guide-import"></span></li>
+              <li><strong>Offline:</strong> <span id="mobile-guide-offline"></span></li>
+              <li><strong>Kopieren:</strong> <span id="mobile-guide-copy"></span></li>
+            </ul>
+          </article>
+        </section>
+
         <section class="layout" aria-label="Companion-Arbeitsbereich">
           <aside class="panel panel--boards">
             <div class="panel__head">
@@ -149,6 +167,29 @@ Noch kein Prompt gewählt.
 Kein Ergebnis vorhanden.
                 </pre>
               </article>
+            </div>
+
+            <div id="copy-fallback" class="copy-fallback" hidden>
+              <div class="copy-fallback__head">
+                <div>
+                  <h3>Manueller Copy-Fallback</h3>
+                  <p>Für iOS Safari oder gesperrte Zwischenablagen: Text markieren und selbst kopieren.</p>
+                </div>
+                <button id="copy-fallback-close" class="button button--ghost" type="button">
+                  Schließen
+                </button>
+              </div>
+              <textarea
+                id="copy-fallback-text"
+                class="copy-fallback__text"
+                readonly
+                aria-label="Text für manuelles Kopieren"
+              ></textarea>
+              <div class="copy-fallback__actions">
+                <button id="copy-fallback-select" class="button button--primary" type="button">
+                  Text markieren
+                </button>
+              </div>
             </div>
           </section>
         </section>

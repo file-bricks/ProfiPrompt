@@ -1,5 +1,7 @@
 import {
+  buildMobileGuide,
   buildCopyText,
+  detectClientPlatform,
   filterPrompts,
   normalizeLibraryPayload,
   parseStoredLibrary,
@@ -42,6 +44,11 @@ const elements = {
   includeMetadata: document.querySelector("#include-metadata"),
   copyButton: document.querySelector("#copy-button"),
   installApp: document.querySelector("#install-app"),
+  mobileGuidePlatform: document.querySelector("#mobile-guide-platform"),
+  mobileGuideInstall: document.querySelector("#mobile-guide-install"),
+  mobileGuideImport: document.querySelector("#mobile-guide-import"),
+  mobileGuideOffline: document.querySelector("#mobile-guide-offline"),
+  mobileGuideCopy: document.querySelector("#mobile-guide-copy"),
   versionSelect: document.querySelector("#version-select"),
   libraryStatus: document.querySelector("#library-status"),
   statPrompts: document.querySelector("#stat-prompts"),
@@ -58,6 +65,10 @@ const elements = {
   detailTextLabel: document.querySelector("#detail-text-label"),
   detailText: document.querySelector("#detail-text"),
   detailResult: document.querySelector("#detail-result"),
+  copyFallback: document.querySelector("#copy-fallback"),
+  copyFallbackText: document.querySelector("#copy-fallback-text"),
+  copyFallbackSelect: document.querySelector("#copy-fallback-select"),
+  copyFallbackClose: document.querySelector("#copy-fallback-close"),
   toast: document.querySelector("#toast"),
 };
 
@@ -110,7 +121,10 @@ function bindEvents() {
     await deferredInstallPrompt.userChoice;
     deferredInstallPrompt = null;
     elements.installApp.hidden = true;
+    renderQuickGuide();
   });
+  elements.copyFallbackSelect.addEventListener("click", selectFallbackCopyText);
+  elements.copyFallbackClose.addEventListener("click", closeCopyFallback);
 }
 
 async function onImportFileChange(event) {
@@ -186,22 +200,51 @@ async function copySelection() {
   });
   try {
     await navigator.clipboard.writeText(text);
+    closeCopyFallback();
+    showToast("Auswahl in die Zwischenablage kopiert.");
+    return;
   } catch {
-    fallbackCopy(text);
+    if (fallbackCopy(text)) {
+      closeCopyFallback();
+      showToast("Auswahl in die Zwischenablage kopiert.");
+      return;
+    }
   }
-  showToast("Auswahl in die Zwischenablage kopiert.");
+  openCopyFallback(text);
+  showToast("Zwischenablage blockiert. Bitte Text manuell kopieren.");
 }
 
 function fallbackCopy(text) {
-  const area = document.createElement("textarea");
-  area.value = text;
-  area.setAttribute("readonly", "");
-  area.style.position = "absolute";
-  area.style.left = "-9999px";
-  document.body.append(area);
-  area.select();
-  document.execCommand("copy");
-  area.remove();
+  try {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "absolute";
+    area.style.left = "-9999px";
+    document.body.append(area);
+    area.select();
+    const copied = document.execCommand("copy");
+    area.remove();
+    return copied;
+  } catch {
+    return false;
+  }
+}
+
+function openCopyFallback(text) {
+  elements.copyFallbackText.value = text;
+  elements.copyFallback.hidden = false;
+  selectFallbackCopyText();
+}
+
+function closeCopyFallback() {
+  elements.copyFallback.hidden = true;
+  elements.copyFallbackText.value = "";
+}
+
+function selectFallbackCopyText() {
+  elements.copyFallbackText.focus();
+  elements.copyFallbackText.select();
 }
 
 function restoreState() {
@@ -291,9 +334,25 @@ function getSelectedPrompt() {
 
 function render() {
   renderStats();
+  renderQuickGuide();
   renderBoards();
   renderPrompts();
   renderDetail();
+}
+
+function renderQuickGuide() {
+  const guide = buildMobileGuide({
+    userAgent: navigator.userAgent,
+    hasInstallPrompt: Boolean(deferredInstallPrompt),
+    hasLibrary: state.library != null,
+  });
+  const platform = detectClientPlatform(navigator.userAgent);
+  elements.mobileGuidePlatform.textContent = guide.platformLabel;
+  elements.mobileGuideInstall.textContent = guide.installText;
+  elements.mobileGuideImport.textContent = guide.importText;
+  elements.mobileGuideOffline.textContent = guide.offlineText;
+  elements.mobileGuideCopy.textContent = guide.copyText;
+  document.body.dataset.platform = platform;
 }
 
 function renderStats() {

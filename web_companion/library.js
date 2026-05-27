@@ -111,6 +111,55 @@ export function buildCopyText(prompt, version = null, options = {}) {
   return parts.join("\n");
 }
 
+export function detectClientPlatform(userAgent = "") {
+  const ua = normalizeQuery(userAgent);
+  if (ua.includes("android")) {
+    return "android";
+  }
+  if (ua.includes("iphone") || ua.includes("ipad") || ua.includes("ipod")) {
+    return "ios";
+  }
+  return "desktop";
+}
+
+export function buildMobileGuide(options = {}) {
+  const platform = detectClientPlatform(options.userAgent);
+  const hasInstallPrompt = options.hasInstallPrompt === true;
+  const hasLibrary = options.hasLibrary === true;
+
+  const installText =
+    platform === "ios"
+      ? "In Safari über Teilen > Zum Home-Bildschirm installieren."
+      : hasInstallPrompt
+        ? "Installieren-Schaltfläche nutzen, sobald Chrome den PWA-Prompt anbietet."
+        : "Companion einmal in Chrome öffnen; der Installieren-Button erscheint nach dem PWA-Prompt.";
+
+  const importText = hasLibrary
+    ? "Bibliothek ist lokal gespeichert. Für einen neuen Stand einfach erneut JSON importieren."
+    : "Desktop-Export profiprompt-library-v1.json bereitstellen und im Companion importieren.";
+
+  const offlineText = hasLibrary
+    ? "Nach dem ersten erfolgreichen Laden bleibt die Bibliothek lokal verfügbar; Offline-Start danach prüfen."
+    : "Für Offline-Tests zuerst online öffnen, Service Worker laden lassen und einmal eine Bibliothek importieren.";
+
+  const copyText =
+    platform === "ios"
+      ? "Safari kann die Zwischenablage blockieren. Dann erscheint ein manuelles Kopierfeld zum Markieren."
+      : "Kopieren läuft bevorzugt über die Zwischenablage; bei Sperren greift der manuelle Fallback.";
+
+  const platformLabel =
+    platform === "ios" ? "iPhone / iPad" : platform === "android" ? "Android" : "Desktop / Laptop";
+
+  return {
+    platform,
+    platformLabel,
+    installText,
+    importText,
+    offlineText,
+    copyText,
+  };
+}
+
 export function serializeLibrary(library) {
   return JSON.stringify(library);
 }

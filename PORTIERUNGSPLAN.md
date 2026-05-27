@@ -46,7 +46,7 @@ Begründung: Der Kernnutzen von ProfiPrompt entsteht beim Arbeiten mit KI-Tools 
 | erledigt P0 | Exportformat `profiprompt-library-v1.json` spezifiziert und getestet |
 | teilweise erledigt P1 | Export-Aktion im Desktop angebunden; Import bleibt für den Companion-/Rückimport-Schritt offen |
 | erledigt P1 | `web_companion/` importiert `profiprompt-library-v1.json`, bietet Suche, Board-Ansicht, Versionsumschaltung, Kopierpfade und lokalen Browser-Speicher |
-| offen P2 | Android/iOS-PWA-Testmatrix mit Offline-Speicher und Clipboard-Rechten erstellen |
+| erledigt P2 | Android/iOS-PWA-Testmatrix ergänzt; `web_companion/PWA_TESTPLAN.md` deckt Install-, Import-, Offline- und Copy-Pfade ab, Companion zeigt mobile Hinweise und einen manuellen Copy-Fallback |
 | offen P3 | macOS/Linux-PySide6-Smoke-Test dokumentieren |
 
 ## Exportformat `profiprompt-library-v1.json`
@@ -64,8 +64,7 @@ Stabilitätsregel: Neue Felder dürfen additiv ergänzt werden. Bestehende Felde
 
 ## Nächste Schritte
 
-1. Android-/iOS-PWA-Testmatrix mit Offline-Speicher, Clipboard-Rechten und kleinen Viewports ergänzen.
-2. Rückimport oder Merge-Strategie separat planen; der aktuelle Desktop-Export und der Web-Companion bleiben bewusst read-only.
-3. macOS-/Linux-PySide6-Smoke-Test dokumentieren.
-4. Optional später Board-spezifische Share-Links oder lokale Snapshot-Exporte prüfen, ohne Cloud-Zwang einzuführen.
-5. Windows-Store-Readiness separat weiterführen: Screenshots, WACK/Testprotokoll, finale Listing-Prüfung.
+1. Rückimport oder Merge-Strategie separat planen; der aktuelle Desktop-Export und der Web-Companion bleiben bewusst read-only.
+2. macOS-/Linux-PySide6-Smoke-Test dokumentieren.
+3. Optional später Board-spezifische Share-Links oder lokale Snapshot-Exporte prüfen, ohne Cloud-Zwang einzuführen.
+4. Windows-Store-Readiness separat weiterführen: Screenshots, WACK/Testprotokoll, finale Listing-Prüfung.
