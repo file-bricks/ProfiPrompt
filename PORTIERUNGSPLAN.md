@@ -1,6 +1,6 @@
 # PORTIERUNGSPLAN - ProfiPrompt
 
-Stand: 2026-05-24
+Stand: 2026-05-29
 
 ## Kurzentscheidung
 
@@ -47,7 +47,7 @@ Begründung: Der Kernnutzen von ProfiPrompt entsteht beim Arbeiten mit KI-Tools 
 | teilweise erledigt P1 | Export-Aktion im Desktop angebunden; Import bleibt für den Companion-/Rückimport-Schritt offen |
 | erledigt P1 | `web_companion/` importiert `profiprompt-library-v1.json`, bietet Suche, Board-Ansicht, Versionsumschaltung, Kopierpfade und lokalen Browser-Speicher |
 | erledigt P2 | Android/iOS-PWA-Testmatrix ergänzt; `web_companion/PWA_TESTPLAN.md` deckt Install-, Import-, Offline- und Copy-Pfade ab, Companion zeigt mobile Hinweise und einen manuellen Copy-Fallback |
-| offen P3 | macOS/Linux-PySide6-Smoke-Test dokumentieren |
+| erledigt P3 | Reproduzierbarer macOS/Linux-PySide6-Smoke über `python src/platform_smoke.py --output-dir build/platform-smoke` für Start, Storage, TXT/PDF, JSON-Export und Clipboard |
 
 ## Exportformat `profiprompt-library-v1.json`
 
@@ -65,6 +65,6 @@ Stabilitätsregel: Neue Felder dürfen additiv ergänzt werden. Bestehende Felde
 ## Nächste Schritte
 
 1. Rückimport oder Merge-Strategie separat planen; der aktuelle Desktop-Export und der Web-Companion bleiben bewusst read-only.
-2. macOS-/Linux-PySide6-Smoke-Test dokumentieren.
-3. Optional später Board-spezifische Share-Links oder lokale Snapshot-Exporte prüfen, ohne Cloud-Zwang einzuführen.
-4. Windows-Store-Readiness separat weiterführen: Screenshots, WACK/Testprotokoll, finale Listing-Prüfung.
+2. Optional später Board-spezifische Share-Links oder lokale Snapshot-Exporte prüfen, ohne Cloud-Zwang einzuführen.
+3. Windows-Store-Readiness separat weiterführen: Screenshots, WACK/Testprotokoll, finale Listing-Prüfung.
+4. Den Plattform-Smoke später optional in CI oder Release-Checks einhängen, sobald Linux/macOS-Runner gebraucht werden.

@@ -1,17 +1,17 @@
 # pdf_exporter.py
 
 import html
-from PySide6.QtGui import QTextDocument, QFont
-from PySide6.QtPrintSupport import QPrinter
+from PySide6.QtCore import QMarginsF
+from PySide6.QtGui import QTextDocument, QFont, QPageLayout, QPageSize, QPdfWriter
 from PySide6.QtWidgets import QMessageBox
 from typing import List
 
-def _init_printer(path: str) -> QPrinter:
-    printer = QPrinter(QPrinter.HighResolution)
-    printer.setOutputFormat(QPrinter.PdfFormat)
-    printer.setOutputFileName(path)
-    printer.setPageMargins(12, 12, 12, 12, QPrinter.Millimeter)
-    return printer
+def _init_printer(path: str) -> QPdfWriter:
+    writer = QPdfWriter(path)
+    writer.setResolution(300)
+    writer.setPageSize(QPageSize(QPageSize.A4))
+    writer.setPageMargins(QMarginsF(12, 12, 12, 12), QPageLayout.Millimeter)
+    return writer
 
 def _render_html_for_prompt(prompt, settings) -> str:
     parts = [f"<h1>{html.escape(prompt.title or '')}</h1>"]

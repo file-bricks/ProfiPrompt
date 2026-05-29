@@ -12,9 +12,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - Node-Smoke-Tests für den Companion prüfen Schema-Normalisierung, Filter, Board-Auflösung, Kopiertext und Restore aus `localStorage`.
 - `web_companion/PWA_TESTPLAN.md` ergänzt die Android-/iOS-Testmatrix für Installation, Import, Offline-Start, Suche und Copy-Flows.
 - Der Companion zeigt mobile Hinweise für Android/iOS direkt in der Oberfläche an.
+- Neuer reproduzierbarer Desktop-Plattform-Smoke `src/platform_smoke.py` prüft Start, Storage, TXT/PDF-Export, `profiprompt-library-v1.json`, Clipboard und UTF-8-Umlaute in einem isolierten Ausgabeordner.
+- Regressionstest `tests/test_platform_smoke.py` hält den Plattform-Smoke für macOS/Linux stabil.
 
 ### Geplant / Planned
-- Plattformstrategie in `PORTIERUNGSPLAN.md` ergänzt: Windows Store bleibt Hauptkanal; Android/iOS folgen über PWA-Checks auf Basis des neuen Companions; macOS/Linux werden als P3-Smoke-Ziele geführt.
+- Plattformstrategie in `PORTIERUNGSPLAN.md` fortgeschrieben: Windows Store bleibt Hauptkanal; Android/iOS folgen über PWA-Checks auf Basis des neuen Companions; der macOS/Linux-Smoke ist jetzt reproduzierbar dokumentiert.
 
 ### Behoben / Fixed
 - Der Versions-PDF-Export respektiert jetzt die Metadaten-Einstellung auch dann, wenn er aus Dashboard oder Hauptfenster ausgelöst wird.

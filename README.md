@@ -2,7 +2,7 @@
 
 Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. Gebaut mit PySide6 (Qt6).
 
-**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json` und bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit.
+**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json`, bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit und enthält jetzt einen reproduzierbaren Desktop-Plattform-Smoke für macOS/Linux.
 
 ## Funktionen
 
@@ -82,7 +82,29 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Python-Testsuite umfasst 33 Unit-Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade und den JSON-Bibliotheksexport. Zusätzlich prüfen 5 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade und Kopiertext.
+Die Python-Testsuite umfasst jetzt 34 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 5 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade und Kopiertext.
+
+## macOS-/Linux-Smoke
+
+Für die bestehende PySide6-App gibt es jetzt einen reproduzierbaren Desktop-Smoke, der dieselbe Codebasis ohne Nutzerprofil-Schreibzugriffe prüft:
+
+```bash
+python src/platform_smoke.py --output-dir build/platform-smoke
+```
+
+Der Lauf prüft:
+
+- App-Start über `QApplication` und `MainWindow`
+- lokale Storage-Dateien in einem isolierten Smoke-Ordner
+- TXT-Export, PDF-Export und `profiprompt-library-v1.json`
+- Clipboard-Pfad mit echtem UI-Widget
+- UTF-8 mit echten Umlauten (`Grußprompt`, `Überblick`, `äöü`)
+
+Für Headless-Läufe auf Linux oder CI bleibt `offscreen` der Standard. Interaktiv lässt sich das bei Bedarf abschalten:
+
+```bash
+python src/platform_smoke.py --output-dir build/platform-smoke --no-headless
+```
 
 ## Web/PWA-Companion
 
@@ -123,7 +145,7 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 
 A desktop tool for managing, versioning, and organizing AI prompts. Built with PySide6 (Qt6).
 
-**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard, adds the portable `profiprompt-library-v1.json` library export, and ships a static Web/PWA companion for mobile reading, search, and copy flows.
+**Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard, adds the portable `profiprompt-library-v1.json` library export, ships a static Web/PWA companion for mobile reading, search, and copy flows, and now includes a reproducible desktop platform smoke for macOS/Linux.
 
 ### Features
 
@@ -199,7 +221,17 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The Python suite currently contains 33 unit tests for models, storage, clipboard text generation, TXT/PDF export paths, and the JSON library export. An additional 5 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, and copy text behavior.
+The Python suite currently contains 34 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 5 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, and copy text behavior.
+
+### macOS/Linux Smoke
+
+The existing PySide6 desktop app now has a reproducible smoke run that avoids writes into the real user profile:
+
+```bash
+python src/platform_smoke.py --output-dir build/platform-smoke
+```
+
+It validates app startup, isolated storage, TXT/PDF export, `profiprompt-library-v1.json`, clipboard handling, and UTF-8 content with German umlauts. Headless `offscreen` mode is the default. Use `--no-headless` for an interactive local run.
 
 ### Web/PWA Companion
 
