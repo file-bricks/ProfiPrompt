@@ -1,0 +1,38 @@
+# ProfiPrompt
+
+## Canonical links
+
+- Repository: https://github.com/file-bricks/ProfiPrompt
+- Issues: https://github.com/file-bricks/ProfiPrompt/issues
+- License: MIT
+
+## Summary
+
+ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt versions, boards, clipboard copy modes, and TXT/PDF/JSON exports. The app stores user data locally as JSON and does not require cloud services or telemetry.
+
+## Main interfaces
+
+- Desktop app: `python src/profiprompt.py`
+- Windows launcher: `START.bat`
+- Library export: `profiprompt-library-v1.json`
+- Web/PWA companion: `web_companion/`
+- Platform smoke: `python src/platform_smoke.py --output-dir build/platform-smoke`
+
+## Data and privacy
+
+- Prompt and board data are local JSON files.
+- Default user data lives under the local user profile in `.prompt_manager`.
+- The Web/PWA companion is read-only and imports `profiprompt-library-v1.json` directly in the browser.
+- No telemetry, cloud sync, analytics, or external API access is part of the app.
+
+## Validation
+
+- Python tests: `python -m pytest -q`
+- Web/PWA tests: `node --test web_companion/tests/*.test.mjs`
+- Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
+
+## Scope boundaries
+
+- ProfiPrompt is a prompt-library and prompt-workflow tool, not an AI model runtime.
+- The Web/PWA companion is for reading, searching, copying, and offline browsing exported prompt libraries; the desktop app remains the writer/editor.
+- Future sync or cloud features should be explicit opt-in features and must preserve the local-first privacy model.

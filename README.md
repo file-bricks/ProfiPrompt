@@ -82,7 +82,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Python-Testsuite umfasst jetzt 34 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 5 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade und Kopiertext.
+Die Python-Testsuite umfasst jetzt 34 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 7 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade, Plattformhinweise und Kopiertext.
 
 ## macOS-/Linux-Smoke
 
@@ -221,7 +221,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The Python suite currently contains 34 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 5 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, and copy text behavior.
+The Python suite currently contains 34 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 7 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, platform guidance, and copy text behavior.
 
 ### macOS/Linux Smoke
 

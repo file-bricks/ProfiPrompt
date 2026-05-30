@@ -49,7 +49,7 @@ Alle Daten werden lokal in JSON-Dateien gespeichert. Kein Cloud-Account, keine I
 - Gebaut mit PySide6 (Qt6) für eine native Desktop-Erfahrung
 - JSON-basierte Datenspeicherung für einfaches Backup und Portabilität
 - Event-basierte Architektur für reaktive UI-Updates
-- 30 Unit Tests für zuverlässigen Betrieb
+- 34 Python-Tests und 7 Web/PWA-Smoke-Tests für zuverlässigen Betrieb
 
 ### Schlüsselwörter
 AI Prompt, Prompt Manager, Prompt Engineering, KI Prompts, ChatGPT, Claude, Versionierung, Prompt Bibliothek, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Sammlung
@@ -108,7 +108,7 @@ All data is stored locally in JSON files. No cloud account, no internet connecti
 - Built with PySide6 (Qt6) for a native desktop experience
 - JSON-based data storage for easy backup and portability
 - Event-based architecture for reactive UI updates
-- 30 unit tests for reliable operation
+- 34 Python tests and 7 Web/PWA smoke tests for reliable operation
 
 ### Keywords
 AI Prompt, Prompt Manager, Prompt Engineering, AI Prompts, ChatGPT, Claude, Versioning, Prompt Library, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Collection
