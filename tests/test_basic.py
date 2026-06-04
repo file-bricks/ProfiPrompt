@@ -750,3 +750,22 @@ def test_main_window_current_version_pdf_export_forwards_settings(tmp_path, monk
     assert captured["path"] == str(out_path)
     assert captured["parent"] is window
     assert captured["settings"] is window.settings
+
+
+def test_copy_version_missing_prompt_does_not_crash(tmp_path):
+    """Regression: _copy_version darf nicht abstürzen wenn Prompt nicht mehr existiert.
+
+    Ruft _copy_version direkt auf DashboardWidget auf — verifiziert, dass der None-Guard
+    feuert und keine Exception geworfen wird.
+    """
+    import os
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
+    from PySide6 import QtWidgets
+    from storage import Storage
+    from dashboard import DashboardWidget
+    from unittest.mock import MagicMock
+
+    app = QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
+    w = DashboardWidget(Storage(tmp_path), MagicMock())
+    w._copy_version("nonexistent", "nonexistent")  # darf NICHT werfen

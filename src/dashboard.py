@@ -364,7 +364,11 @@ class DashboardWidget(QtWidgets.QWidget):
 
     def _copy_version(self, prompt_id: str, version_id: str):
         p = self.storage.get_prompt(prompt_id)
+        if p is None:
+            return
         v = self.storage.get_version(prompt_id, version_id)
+        if v is None:
+            return
         txt = self.clip.build_copy_text(p, v)
         self.clip.copy_to_clipboard(self.tree, txt)
 
