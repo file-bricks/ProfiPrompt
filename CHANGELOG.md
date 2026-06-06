@@ -21,6 +21,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - GitHub-Actions-Workflow `ProfiPrompt tests` prüft Python 3.10/3.11/3.12, Compile-Smoke und Web/PWA-Companion-Tests.
 - Community-Workflows auf `actions/stale@v10` und `actions/first-interaction@v3` aktualisiert.
 
+### Behoben / Fixed (web_companion)
+- `service-worker.js`: fetch handler cachte 404s und opaque Responses ohne Statusprüfung — Guard `response.status !== 200 || response.type === "opaque"` ergänzt (Bug #1).
+- `service-worker.js`: ASSETS-Liste enthielt nur `profiprompt-companion.svg`, aber die 4 PNG-Icons aus dem Manifest fehlten — Offline hatten Manifest-Icons keine Cache-Abdeckung; alle 4 PNGs in ASSETS ergänzt (Bug #2).
+- `manifest.webmanifest`: `"id": "./"` ergänzt (PWA-Installierbarkeit gemäß Spec).
+- `service-worker.js`: CACHE_NAME v1→v2; `skipWaiting()` in install-Handler; `clients.claim()` in activate-`waitUntil`-Kette.
+- `tests/pwa.test.mjs`: 17 neue Node-Tests; Gesamt 25/25 grün.
+
 ### Geplant / Planned
 - Plattformstrategie in `PORTIERUNGSPLAN.md` fortgeschrieben: Windows Store bleibt Hauptkanal; Android/iOS folgen über PWA-Checks auf Basis des neuen Companions; der macOS/Linux-Smoke ist jetzt reproduzierbar dokumentiert.
 
