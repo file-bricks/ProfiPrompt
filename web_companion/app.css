@@ -308,6 +308,15 @@ pre {
   transform: none;
 }
 
+.button:focus-visible,
+.field input[type="search"]:focus-visible,
+.field select:focus-visible,
+.field input[type="checkbox"]:focus-visible,
+.copy-fallback__text:focus-visible {
+  outline: 3px solid rgba(255, 177, 74, 0.92);
+  outline-offset: 3px;
+}
+
 .button--primary {
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: #16120a;
@@ -320,16 +329,16 @@ pre {
   color: var(--text);
 }
 
-.file-picker {
-  position: relative;
-  overflow: hidden;
-}
-
-.file-picker input {
+.file-input-visually-hidden {
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .layout {

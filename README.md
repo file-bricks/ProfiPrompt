@@ -63,7 +63,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (33 tests)
+│   └── test_basic.py           # Unit tests (34 tests)
 ├── web_companion/
 │   ├── index.html              # Statischer Web/PWA-Companion
 │   ├── app.js                  # UI-State, Dateiimport, Clipboard und Renderlogik
@@ -82,7 +82,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Python-Testsuite umfasst jetzt 34 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 7 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade, Plattformhinweise und Kopiertext.
+Die Python-Testsuite umfasst jetzt 35 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 25 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade, Plattformhinweise und Kopiertext.
 
 ## macOS-/Linux-Smoke
 
@@ -202,7 +202,7 @@ ProfiPrompt/
 ├── screenshots/
 ├── store_assets/
 ├── tests/
-│   └── test_basic.py           # Unit tests (33 tests)
+│   └── test_basic.py           # Unit tests (34 tests)
 ├── web_companion/
 │   ├── index.html              # Static Web/PWA companion
 │   ├── app.js                  # UI state, file import, clipboard, rendering
@@ -221,7 +221,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The Python suite currently contains 34 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 7 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, platform guidance, and copy text behavior.
+The Python suite currently contains 35 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 25 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, platform guidance, and copy text behavior.
 
 ### macOS/Linux Smoke
 

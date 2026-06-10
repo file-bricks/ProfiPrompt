@@ -38,6 +38,7 @@ const state = {
 
 const elements = {
   importFile: document.querySelector("#import-file"),
+  importTrigger: document.querySelector("#import-trigger"),
   clearLibrary: document.querySelector("#clear-library"),
   searchInput: document.querySelector("#search-input"),
   copyMode: document.querySelector("#copy-mode"),
@@ -87,6 +88,7 @@ function bootstrap() {
 
 function bindEvents() {
   elements.importFile.addEventListener("change", onImportFileChange);
+  elements.importTrigger.addEventListener("click", openImportPicker);
   elements.clearLibrary.addEventListener("click", clearLibrary);
   elements.searchInput.addEventListener("input", (event) => {
     state.query = event.target.value;
@@ -125,6 +127,18 @@ function bindEvents() {
   });
   elements.copyFallbackSelect.addEventListener("click", selectFallbackCopyText);
   elements.copyFallbackClose.addEventListener("click", closeCopyFallback);
+}
+
+function openImportPicker() {
+  try {
+    if (typeof elements.importFile.showPicker === "function") {
+      elements.importFile.showPicker();
+      return;
+    }
+  } catch {
+    // Fall through to click() when showPicker() is unsupported or blocked.
+  }
+  elements.importFile.click();
 }
 
 async function onImportFileChange(event) {

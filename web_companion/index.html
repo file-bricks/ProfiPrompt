@@ -34,10 +34,17 @@
             <strong>Lokal im Browser</strong>
           </div>
           <div class="hero__actions">
-            <label class="button button--primary file-picker">
-              <input id="import-file" type="file" accept=".json,application/json">
+            <input
+              id="import-file"
+              class="file-input-visually-hidden"
+              type="file"
+              accept=".json,application/json"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+            <button id="import-trigger" class="button button--primary" type="button">
               Bibliothek importieren
-            </label>
+            </button>
             <button id="clear-library" class="button button--ghost" type="button">
               Bibliothek löschen
             </button>

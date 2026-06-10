@@ -74,3 +74,8 @@ boards.json
 *.db
 *.log
 *.bak
+DECISIONS.md
+PORTIERUNGSPLAN.md
+TODO.md
+DONE.md
+build_exe.bat
