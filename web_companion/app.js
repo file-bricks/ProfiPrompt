@@ -230,19 +230,19 @@ async function copySelection() {
 }
 
 function fallbackCopy(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "absolute";
+  area.style.left = "-9999px";
+  document.body.append(area);
   try {
-    const area = document.createElement("textarea");
-    area.value = text;
-    area.setAttribute("readonly", "");
-    area.style.position = "absolute";
-    area.style.left = "-9999px";
-    document.body.append(area);
     area.select();
-    const copied = document.execCommand("copy");
-    area.remove();
-    return copied;
+    return document.execCommand("copy");
   } catch {
     return false;
+  } finally {
+    area.remove();
   }
 }
 

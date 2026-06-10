@@ -127,3 +127,7 @@ test("app.js ensureSelection setzt stale boardId zurück (Bug #3 Fix)", () => {
   assert.match(appSrc, /state\.boardId\s*!==\s*["']all["']/);
   assert.match(appSrc, /state\.library\.boards\.some/);
 });
+
+test("app.js fallbackCopy entfernt textarea via finally (Bug #5 Fix — kein DOM-Leak)", () => {
+  assert.match(appSrc, /finally\s*\{[\s\S]*?area\.remove\(\)/);
+});
