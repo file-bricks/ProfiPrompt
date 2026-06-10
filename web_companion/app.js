@@ -119,9 +119,10 @@ function bindEvents() {
     if (!deferredInstallPrompt) {
       return;
     }
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
+    const pendingPrompt = deferredInstallPrompt;
     deferredInstallPrompt = null;
+    pendingPrompt.prompt();
+    await pendingPrompt.userChoice;
     elements.installApp.hidden = true;
     renderQuickGuide();
   });
@@ -308,6 +309,10 @@ function ensureSelection() {
     state.promptId = null;
     state.versionId = "";
     return;
+  }
+
+  if (state.boardId !== "all" && !state.library.boards.some((board) => board.id === state.boardId)) {
+    state.boardId = "all";
   }
 
   const prompts = getVisiblePrompts();

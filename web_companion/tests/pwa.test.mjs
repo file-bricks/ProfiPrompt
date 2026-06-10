@@ -107,3 +107,23 @@ test("index.html verweist auf manifest.webmanifest", () => {
 test("app.js registriert service-worker.js", () => {
   assert.match(appSrc, /service-worker\.js/);
 });
+
+// --- Bug-Fix-Regressionstests ---
+
+test("SW fetch nutzt ignoreSearch:true (Bug #1 Fix — Offline bei ?-Params)", () => {
+  assert.match(swSrc, /ignoreSearch\s*:\s*true/);
+});
+
+test("index.html hat apple-touch-icon (Bug #4 Fix — iOS Homescreen)", () => {
+  assert.match(indexSrc, /rel="apple-touch-icon"/);
+});
+
+test("app.js nullt deferredInstallPrompt vor prompt() (Bug #2 Fix — kein Doppel-Trigger)", () => {
+  assert.match(appSrc, /deferredInstallPrompt\s*=\s*null/);
+  assert.match(appSrc, /pendingPrompt\.prompt\(\)/);
+});
+
+test("app.js ensureSelection setzt stale boardId zurück (Bug #3 Fix)", () => {
+  assert.match(appSrc, /state\.boardId\s*!==\s*["']all["']/);
+  assert.match(appSrc, /state\.library\.boards\.some/);
+});
