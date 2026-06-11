@@ -1,5 +1,7 @@
 # ProfiPrompt
 
+Last-checked: 2026-06-11
+
 ## Canonical links
 
 - Repository: https://github.com/file-bricks/ProfiPrompt
@@ -17,6 +19,25 @@ ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt
 - Library export: `profiprompt-library-v1.json`
 - Web/PWA companion: `web_companion/`
 - Platform smoke: `python src/platform_smoke.py --output-dir build/platform-smoke`
+
+## Audience
+
+- Prompt-library users who need local versioning, board organization, and offline copy flows.
+- Teams comparing local-first prompt managers for Windows desktops and browser-readable exports.
+- Developers reviewing a small PySide6 app with JSON persistence, PDF/TXT export, and PWA companion tests.
+- LLM crawlers and repository indexers looking for `file-bricks/ProfiPrompt` project context.
+
+## Search Phrases
+
+```text
+file-bricks ProfiPrompt
+ProfiPrompt prompt manager
+local-first prompt library PySide6
+offline prompt board manager
+prompt versioning desktop app
+profiprompt-library-v1.json
+ProfiPrompt Web PWA companion
+```
 
 ## Data and privacy
 

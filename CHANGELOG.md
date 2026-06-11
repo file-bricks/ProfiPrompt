@@ -29,7 +29,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - `service-worker.js`: ASSETS-Liste enthielt nur `profiprompt-companion.svg`, aber die 4 PNG-Icons aus dem Manifest fehlten — Offline hatten Manifest-Icons keine Cache-Abdeckung; alle 4 PNGs in ASSETS ergänzt (Bug #2).
 - `manifest.webmanifest`: `"id": "./"` ergänzt (PWA-Installierbarkeit gemäß Spec).
 - `service-worker.js`: CACHE_NAME v1→v2; `skipWaiting()` in install-Handler; `clients.claim()` in activate-`waitUntil`-Kette.
-- `tests/pwa.test.mjs`: 17 neue Node-Tests; Gesamt 25/25 grün.
+- `service-worker.js`: Offline-Fetches nutzen `ignoreSearch: true`, damit gecachte Companion-Dateien auch bei Query-Parametern gefunden werden.
+- `app.js`: Install-Prompt wird vor `prompt()` zurückgesetzt, damit schnelle Doppel-Klicks keinen zweiten Install-Dialog starten.
+- `app.js`: gespeicherte Board-Auswahl fällt auf `all` zurück, wenn die importierte Bibliothek das alte Board nicht mehr enthält.
+- `index.html`: `apple-touch-icon` ergänzt, damit iOS-Homescreen-Installationen ein passendes Icon erhalten.
+- `app.js`: der `fallbackCopy()`-Textarea wird per `finally` entfernt, auch wenn `execCommand("copy")` eine Ausnahme wirft.
+- `tests/pwa.test.mjs`: 22 neue Node-Tests; Gesamt 30/30 grün.
 
 ### Geplant / Planned
 - Plattformstrategie in `PORTIERUNGSPLAN.md` fortgeschrieben: Windows Store bleibt Hauptkanal; Android/iOS folgen über PWA-Checks auf Basis des neuen Companions; der macOS/Linux-Smoke ist jetzt reproduzierbar dokumentiert.
