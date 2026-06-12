@@ -82,7 +82,12 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Python-Testsuite umfasst jetzt 35 Tests für Modelle, Storage, Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport und den reproduzierbaren Desktop-Plattform-Smoke. Zusätzlich prüfen 30 Node-Smoke-Tests den Web/PWA-Companion gegen das Bibliotheksschema, Filterpfade, Plattformhinweise, Kopiertext und PWA-Regressionspfade.
+Die Python-Testsuite umfasst jetzt 36 Tests für Modelle, Storage,
+Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport, den
+reproduzierbaren Desktop-Plattform-Smoke und den Store-Screenshot-Generator.
+Zusätzlich prüfen 30 Node-Smoke-Tests den Web/PWA-Companion gegen das
+Bibliotheksschema, Filterpfade, Plattformhinweise, Kopiertext und
+PWA-Regressionspfade.
 
 ## macOS-/Linux-Smoke
 
@@ -117,6 +122,17 @@ python -m http.server 4175
 ```
 
 Dann `http://127.0.0.1:4175/web_companion/` öffnen, wenn der Server im Projektroot läuft.
+
+## Windows-Store-Screenshots
+
+Für den Store-Strang gibt es einen reproduzierbaren Screenshot-Satz unter
+`README/screenshots/store/`. Er wird aus redigierten Demo-Daten erzeugt und
+fasst vier Kernansichten der Desktop-App zusammen:
+
+```bash
+python generate_store_screenshots.py
+python -m pytest -q tests/test_store_screenshots.py
+```
 
 ## Datenspeicherung / Privacy
 

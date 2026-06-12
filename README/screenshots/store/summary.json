@@ -1,0 +1,10 @@
+{
+  "headless": true,
+  "qt_platform": "offscreen",
+  "screenshots": {
+    "main-window": "C:\\Users\\User\\OneDrive\\.TOPICS\\.SOFTWARE\\LLM\\REL_ProfiPrompt\\README\\screenshots\\store\\main-window.png",
+    "search-and-versions": "C:\\Users\\User\\OneDrive\\.TOPICS\\.SOFTWARE\\LLM\\REL_ProfiPrompt\\README\\screenshots\\store\\search-and-versions.png",
+    "boards-and-launch": "C:\\Users\\User\\OneDrive\\.TOPICS\\.SOFTWARE\\LLM\\REL_ProfiPrompt\\README\\screenshots\\store\\boards-and-launch.png",
+    "support-focus": "C:\\Users\\User\\OneDrive\\.TOPICS\\.SOFTWARE\\LLM\\REL_ProfiPrompt\\README\\screenshots\\store\\support-focus.png"
+  }
+}
