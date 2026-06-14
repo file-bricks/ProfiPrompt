@@ -82,7 +82,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-Die Python-Testsuite umfasst jetzt 36 Tests für Modelle, Storage,
+Die Python-Testsuite umfasst jetzt 41 Tests für Modelle, Storage,
 Clipboard-Textaufbau, TXT-/PDF-Exportpfade, den JSON-Bibliotheksexport, den
 reproduzierbaren Desktop-Plattform-Smoke und den Store-Screenshot-Generator.
 Zusätzlich prüfen 30 Node-Smoke-Tests den Web/PWA-Companion gegen das
@@ -132,6 +132,14 @@ fasst vier Kernansichten der Desktop-App zusammen:
 ```bash
 python generate_store_screenshots.py
 python -m pytest -q tests/test_store_screenshots.py
+```
+
+Der zugehörige Store-Preflight bündelt Paket-, Listing-, Screenshot- und
+WACK-Prüfung:
+
+```bash
+python scripts/check_store_readiness.py
+python scripts/check_store_readiness.py review-wack-report --report <wack-report.xml>
 ```
 
 ## Datenspeicherung / Privacy
@@ -237,7 +245,7 @@ ProfiPrompt/
 python -m pytest tests/ -v
 ```
 
-The Python suite currently contains 35 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, and the reproducible desktop platform smoke. An additional 30 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, platform guidance, copy text behavior, and PWA regression paths.
+The Python suite currently contains 41 tests for models, storage, clipboard text generation, TXT/PDF export paths, the JSON library export, the reproducible desktop platform smoke, and the store-readiness helpers. An additional 30 Node smoke tests cover the Web/PWA companion schema handling, filters, board resolution, platform guidance, copy text behavior, and PWA regression paths.
 
 ### macOS/Linux Smoke
 

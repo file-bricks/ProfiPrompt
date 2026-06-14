@@ -24,6 +24,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   Windows-Store-Screenshots aus redigierten Demo-Daten nach
   `README/screenshots/store/`; `tests/test_store_screenshots.py` sichert die
   PNG-Erzeugung und Grundstruktur ab.
+- Neuer Store-Preflight `scripts/check_store_readiness.py` prüft
+  `store_package.json`, `releases/windowsstore/store_settings.json`,
+  `STORE_LISTING.md`, Screenshot-Summary, `releases/ProfiPrompt.msix` und
+  vorhandene `wack_*.xml`-Reports reproduzierbar im Repo.
+- `tests/test_store_readiness.py` deckt Store-Metadaten, Listing-Marker,
+  fehlenden WACK-Report und die XML-Auswertung regressionssicher ab.
 - `llms.txt` ergänzt kanonische Links, Interfaces, Datenschutzgrenzen und Validierungsbefehle für Crawler und LLM-Agenten.
 - GitHub-Actions-Workflow `ProfiPrompt tests` prüft Python 3.10/3.11/3.12, Compile-Smoke und Web/PWA-Companion-Tests.
 - Community-Workflows auf `actions/stale@v10` und `actions/first-interaction@v3` aktualisiert.
@@ -47,6 +53,9 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - Der Versions-PDF-Export respektiert jetzt die Metadaten-Einstellung auch dann, wenn er aus Dashboard oder Hauptfenster ausgelöst wird.
 - Versionen werden im PDF-HTML weiterhin sauber escaped; die Regressionstests decken den Exportpfad jetzt explizit ab.
 - Wenn mobile Browser die Zwischenablage sperren, fällt der Companion jetzt sichtbar auf ein manuelles Copy-Feld zurück statt still zu scheitern.
+- `STORE_LISTING.md` und `releases/windowsstore/store_settings.json` wurden
+  auf den aktuellen Export-/Companion-/Teststand sowie die korrekten
+  GitHub-Privacy-/Support-Links gehoben.
 
 ## [1.0.1] - 2026-05-01
 

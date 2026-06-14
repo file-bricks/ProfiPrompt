@@ -26,7 +26,7 @@ Kopieren Sie Prompts mit einem Klick in die Zwischenablage. Konfigurierbare Kopi
 
 **Export:**
 
-Exportieren Sie einzelne Prompts oder Ihre gesamte Sammlung als TXT- oder PDF-Datei. Ideal für Dokumentation, Archivierung oder zum Teilen mit Kollegen.
+Exportieren Sie einzelne Prompts oder Ihre gesamte Sammlung als TXT-, PDF- oder portable JSON-Datei. Die Bibliothek `profiprompt-library-v1.json` speist zusätzlich den read-only Web/PWA-Companion für mobiles Nachschlagen, Suchen und Kopieren.
 
 **Dark Mode:**
 
@@ -49,7 +49,9 @@ Alle Daten werden lokal in JSON-Dateien gespeichert. Kein Cloud-Account, keine I
 - Gebaut mit PySide6 (Qt6) für eine native Desktop-Erfahrung
 - JSON-basierte Datenspeicherung für einfaches Backup und Portabilität
 - Event-basierte Architektur für reaktive UI-Updates
-- 34 Python-Tests und 7 Web/PWA-Smoke-Tests für zuverlässigen Betrieb
+- 41 Python-Tests und 30 Web/PWA-Smoke-Tests für zuverlässigen Betrieb
+- Datenschutz: https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md
+- Support: https://github.com/file-bricks/ProfiPrompt/issues
 
 ### Schlüsselwörter
 AI Prompt, Prompt Manager, Prompt Engineering, KI Prompts, ChatGPT, Claude, Versionierung, Prompt Bibliothek, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Sammlung
@@ -85,7 +87,7 @@ Copy prompts to the clipboard with a single click. Configurable copy modes let y
 
 **Export:**
 
-Export individual prompts or your entire collection as TXT or PDF files. Ideal for documentation, archiving, or sharing with colleagues.
+Export individual prompts or your entire collection as TXT, PDF, or portable JSON. The `profiprompt-library-v1.json` library also powers the read-only Web/PWA companion for mobile lookup, search, and copy flows.
 
 **Dark Mode:**
 
@@ -108,7 +110,9 @@ All data is stored locally in JSON files. No cloud account, no internet connecti
 - Built with PySide6 (Qt6) for a native desktop experience
 - JSON-based data storage for easy backup and portability
 - Event-based architecture for reactive UI updates
-- 34 Python tests and 7 Web/PWA smoke tests for reliable operation
+- 41 Python tests and 30 Web/PWA smoke tests for reliable operation
+- Privacy: https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md
+- Support: https://github.com/file-bricks/ProfiPrompt/issues
 
 ### Keywords
 AI Prompt, Prompt Manager, Prompt Engineering, AI Prompts, ChatGPT, Claude, Versioning, Prompt Library, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Collection
