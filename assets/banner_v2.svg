@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="100%" height="100%">
+  <!-- Definitions for gradients and filters -->
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0F1D" />
+      <stop offset="50%" stop-color="#0E1326" />
+      <stop offset="100%" stop-color="#151B33" />
+    </linearGradient>
+
+    <!-- Glowing Background Accents -->
+    <radialGradient id="blueGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+    
+    <radialGradient id="goldGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="purpleGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Technical Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1" />
+    </pattern>
+
+    <!-- Reflective Gold Gradient for Trophy -->
+    <linearGradient id="goldReflective" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8A640F" />
+      <stop offset="15%" stop-color="#D4AF37" />
+      <stop offset="30%" stop-color="#FFF3A8" />
+      <stop offset="45%" stop-color="#F9D04B" />
+      <stop offset="55%" stop-color="#D4AF37" />
+      <stop offset="75%" stop-color="#FFFDF0" />
+      <stop offset="100%" stop-color="#8A640F" />
+    </linearGradient>
+    
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D4AF37" />
+      <stop offset="50%" stop-color="#FFF3A8" />
+      <stop offset="100%" stop-color="#8A640F" />
+    </linearGradient>
+
+    <!-- Branch Path Gradients -->
+    <linearGradient id="gradA" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="gradB" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <linearGradient id="gradC" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="gradD" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <linearGradient id="gradMergeD" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EC4899" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="gradMergeB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="gradE" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#A855F7" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Outfit:wght@400;500;700;900&amp;display=swap');
+    .font-title {
+      font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 900;
+    }
+    .font-tagline {
+      font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+    }
+    .font-badge {
+      font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+    }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="1200" height="340" fill="url(#bgGrad)" rx="16" />
+  
+  <!-- Subtle Radial Glows for Depth -->
+  <circle cx="280" cy="180" r="160" fill="url(#blueGlow)" />
+  <circle cx="460" cy="120" r="120" fill="url(#goldGlow)" />
+  <circle cx="390" cy="200" r="110" fill="url(#purpleGlow)" opacity="0.6" />
+  
+  <!-- Grid overlay -->
+  <rect width="1200" height="340" fill="url(#grid)" rx="16" />
+  <rect x="0.5" y="0.5" width="1199" height="339" rx="15.5" fill="none" stroke="url(#goldBorder)" stroke-opacity="0.2" stroke-width="1" />
+
+  <!-- LEFT GROUP: Branching Version Tree & Winning Trophy (Inside Safe Zone x:80..1120 y:60..300) -->
+  <g id="version-tree-group">
+    
+    <!-- Underlay paths for clean overlap gaps -->
+    <g stroke="#0A0F1D" stroke-width="8" stroke-linecap="round" fill="none">
+      <!-- Path A -->
+      <path d="M 100,220 L 180,220" />
+      <!-- Path B -->
+      <path d="M 180,220 C 210,220 220,160 250,160 L 320,160" />
+      <!-- Path D -->
+      <path d="M 180,220 C 210,220 220,270 250,270 L 320,270" />
+      <!-- Path C -->
+      <path d="M 320,160 C 350,160 360,125 390,125 L 460,125" />
+      <!-- Path Merge D -->
+      <path d="M 320,270 C 350,270 360,200 390,200" />
+      <!-- Path Merge B -->
+      <path d="M 320,160 C 350,160 360,200 390,200" />
+      <!-- Path E -->
+      <path d="M 390,200 L 450,200" />
+    </g>
+
+    <!-- Colored Branch Paths -->
+    <g stroke-width="4" stroke-linecap="round" fill="none">
+      <!-- Main Branch A -->
+      <path d="M 100,220 L 180,220" stroke="url(#gradA)" />
+      <!-- Upper Branch B -->
+      <path d="M 180,220 C 210,220 220,160 250,160 L 320,160" stroke="url(#gradB)" />
+      <!-- Lower Branch D -->
+      <path d="M 180,220 C 210,220 220,270 250,270 L 320,270" stroke="url(#gradD)" />
+      <!-- Winning Branch C -->
+      <path d="M 320,160 C 350,160 360,125 390,125 L 460,125" stroke="url(#gradC)" />
+      <!-- Merge Branch Lower D to E -->
+      <path d="M 320,270 C 350,270 360,200 390,200" stroke="url(#gradMergeD)" />
+      <!-- Merge Branch Upper B to E -->
+      <path d="M 320,160 C 350,160 360,200 390,200" stroke="url(#gradMergeB)" />
+      <!-- Merge Main Branch E -->
+      <path d="M 390,200 L 450,200" stroke="url(#gradE)" />
+    </g>
+
+    <!-- Commit Nodes -->
+    <g stroke-width="3" fill="#0A0F1D">
+      <!-- Node A1 -->
+      <circle cx="120" cy="220" r="6" stroke="#3B82F6" />
+      <!-- Node A2 -->
+      <circle cx="180" cy="220" r="6" stroke="#6366F1" />
+      <!-- Node B1 -->
+      <circle cx="250" cy="160" r="6" stroke="#06B6D4" />
+      <!-- Node B2 -->
+      <circle cx="320" cy="160" r="6" stroke="#06B6D4" />
+      <!-- Node D1 -->
+      <circle cx="250" cy="270" r="6" stroke="#EC4899" />
+      <!-- Node D2 -->
+      <circle cx="320" cy="270" r="6" stroke="#EC4899" />
+      <!-- Node C1 -->
+      <circle cx="390" cy="125" r="6" stroke="#F59E0B" />
+      <!-- Node E1 -->
+      <circle cx="390" cy="200" r="6" stroke="#8B5CF6" />
+      <!-- Node E2 -->
+      <circle cx="450" cy="200" r="6" stroke="#A855F7" />
+      
+      <!-- Node C2 (Winning Node) -->
+      <!-- Special highlight node with an inner golden core -->
+      <circle cx="460" cy="125" r="8" fill="#FFF3A8" stroke="#F59E0B" stroke-width="3.5" />
+    </g>
+
+    <!-- Winning Trophy (Pokal) -->
+    <g id="winning-trophy">
+      <!-- Trophy Base -->
+      <rect x="446" y="106" width="28" height="5" rx="1" fill="url(#goldReflective)" />
+      <!-- Pedestal -->
+      <path d="M 450,106 L 454,98 L 466,98 L 470,106 Z" fill="url(#goldReflective)" opacity="0.9" />
+      <!-- Stem -->
+      <rect x="457" y="90" width="6" height="9" fill="url(#goldReflective)" />
+      <!-- Collar -->
+      <rect x="454" y="88" width="12" height="2" rx="0.5" fill="url(#goldReflective)" />
+      <!-- Cup Bowl -->
+      <path d="M 454,88 C 450,81 442,79 442,67 L 478,67 C 478,79 470,81 466,88 Z" fill="url(#goldReflective)" />
+      <!-- Rim -->
+      <rect x="440" y="65" width="40" height="3" rx="1" fill="url(#goldReflective)" />
+      <!-- Handles -->
+      <path d="M 442,70 C 430,70 432,82 449,82 C 446,78 438,78 438,74 C 438,72 440,72 442,72 Z" fill="url(#goldReflective)" />
+      <path d="M 478,70 C 490,70 488,82 471,82 C 474,78 482,78 482,74 C 482,72 480,72 478,72 Z" fill="url(#goldReflective)" />
+      <!-- Sparkles -->
+      <path d="M 478,62 Q 478,66 482,66 Q 478,66 478,70 Q 478,66 474,66 Q 478,66 478,62 Z" fill="#FFFFFF" />
+      <path d="M 440,75 Q 440,78 443,78 Q 440,78 440,81 Q 440,78 437,78 Q 440,78 440,75 Z" fill="#FFFFFF" opacity="0.8" />
+    </g>
+
+    <!-- Version Labels -->
+    <g class="font-mono" font-size="10" fill="#94A3B8" opacity="0.75" text-anchor="middle">
+      <text x="120" y="240">v1.0</text>
+      <text x="180" y="240">v1.1</text>
+      <text x="320" y="180">v1.2</text>
+      <text x="320" y="290">v1.2-beta</text>
+      <text x="450" y="220">v1.3</text>
+      <text x="460" y="145" fill="#F59E0B" font-weight="bold" opacity="0.9">v2.0-win</text>
+    </g>
+  </g>
+
+  <!-- RIGHT GROUP: Typography and Badges -->
+  <g id="text-group">
+    <!-- Main Wordmark -->
+    <text x="540" y="160" class="font-title" font-size="76" fill="#FFFFFF">Profi<tspan fill="url(#goldReflective)">Prompt</tspan><tspan fill="url(#goldReflective)" font-weight="300" opacity="0.85">|</tspan></text>
+    
+    <!-- Tagline -->
+    <text x="545" y="210" class="font-tagline" font-size="22" fill="#94A3B8">Manage &amp; Version your AI Prompts</text>
+    
+    <!-- Badges / Pill Tags -->
+    <!-- Pill 1: Prompt Versioning -->
+    <g id="pill-1">
+      <rect x="545" y="242" width="160" height="30" rx="15" fill="rgba(30, 41, 59, 0.7)" stroke="url(#goldBorder)" stroke-opacity="0.25" stroke-width="1.2" />
+      <circle cx="562" cy="257" r="3.5" fill="url(#goldReflective)" />
+      <text x="633" y="261" class="font-badge" font-size="12" fill="#FFFFFF" text-anchor="middle">Prompt Versioning</text>
+    </g>
+    
+    <!-- Pill 2: A/B Testing -->
+    <g id="pill-2">
+      <rect x="717" y="242" width="115" height="30" rx="15" fill="rgba(30, 41, 59, 0.7)" stroke="url(#goldBorder)" stroke-opacity="0.25" stroke-width="1.2" />
+      <circle cx="734" cy="257" r="3.5" fill="url(#goldReflective)" />
+      <text x="782.5" y="261" class="font-badge" font-size="12" fill="#FFFFFF" text-anchor="middle">A/B Testing</text>
+    </g>
+    
+    <!-- Pill 3: Git Workflows -->
+    <g id="pill-3">
+      <rect x="844" y="242" width="135" height="30" rx="15" fill="rgba(30, 41, 59, 0.7)" stroke="url(#goldBorder)" stroke-opacity="0.25" stroke-width="1.2" />
+      <circle cx="861" cy="257" r="3.5" fill="url(#goldReflective)" />
+      <text x="919.5" y="261" class="font-badge" font-size="12" fill="#FFFFFF" text-anchor="middle">Git Workflows</text>
+    </g>
+  </g>
+</svg>
