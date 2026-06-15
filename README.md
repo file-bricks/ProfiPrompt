@@ -1,6 +1,15 @@
+<img src="assets/banner.svg" width="100%" alt="ProfiPrompt Banner">
+
 # ProfiPrompt
 
-Ein Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts. Gebaut mit PySide6 (Qt6).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-lightgrey.svg)]()
+[![Offline-first](https://img.shields.io/badge/offline--first-yes-green.svg)]()
+
+> Desktop-Tool zur Verwaltung, Versionierung und Organisation von AI-Prompts — gebaut mit PySide6 (Qt6).
+
+
 
 **Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json`, bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit und enthält jetzt einen reproduzierbaren Desktop-Plattform-Smoke für macOS/Linux.
 
