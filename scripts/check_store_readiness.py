@@ -30,6 +30,20 @@ REQUIRED_LISTING_MARKERS = (
     "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
     "https://github.com/file-bricks/ProfiPrompt/issues",
 )
+LISTING_FIELD_LABELS = {
+    "Deutsch": {
+        "short_description": "Kurzbeschreibung",
+        "description": "Beschreibung",
+        "keywords": "Schlüsselwörter",
+        "category": "Kategorie",
+    },
+    "English": {
+        "short_description": "Short Description",
+        "description": "Description",
+        "keywords": "Keywords",
+        "category": "Category",
+    },
+}
 
 
 def project_root(root: Path | None = None) -> Path:
@@ -101,6 +115,54 @@ def listing_text(root: Path | None = None) -> str:
     return (project_root(root) / "STORE_LISTING.md").read_text(encoding="utf-8")
 
 
+def parse_store_listing_sections(text: str) -> dict[str, dict[str, str]]:
+    sections: dict[str, dict[str, str]] = {language: {} for language in LISTING_FIELD_LABELS}
+    current_language: str | None = None
+    current_field: str | None = None
+    buffer: list[str] = []
+
+    def flush() -> None:
+        nonlocal buffer
+        if current_language is None or current_field is None:
+            buffer = []
+            return
+        value = "\n".join(buffer).strip()
+        if value:
+            sections[current_language][current_field] = value
+        buffer = []
+
+    for raw_line in text.splitlines():
+        stripped = raw_line.strip()
+        if stripped.startswith("## "):
+            flush()
+            candidate = stripped[3:].strip()
+            current_language = candidate if candidate in LISTING_FIELD_LABELS else None
+            current_field = None
+            continue
+        if current_language and stripped.startswith("### "):
+            flush()
+            heading = stripped[4:].strip()
+            current_field = next(
+                (
+                    field
+                    for field, label in LISTING_FIELD_LABELS[current_language].items()
+                    if heading.startswith(label)
+                ),
+                None,
+            )
+            continue
+        if stripped == "---":
+            flush()
+            current_language = None
+            current_field = None
+            continue
+        if current_language and current_field:
+            buffer.append(raw_line)
+
+    flush()
+    return sections
+
+
 def validate_required_docs(root: Path | None = None) -> list[str]:
     base = project_root(root)
     findings = []
@@ -156,6 +218,8 @@ def validate_windowsstore_settings(root: Path | None = None) -> list[str]:
 
 def validate_store_listing(root: Path | None = None) -> list[str]:
     text = listing_text(root)
+    sections = parse_store_listing_sections(text)
+    expected_category = str(load_store_package(root).get("category", "")).strip()
     findings = []
 
     for marker in REQUIRED_LISTING_MARKERS:
@@ -166,6 +230,45 @@ def validate_store_listing(root: Path | None = None) -> list[str]:
         findings.append("STORE_LISTING.md nennt nicht den aktuellen Python-Teststand.")
     if "30 Web/PWA-Smoke-Tests" not in text and "30 Web/PWA smoke tests" not in text:
         findings.append("STORE_LISTING.md nennt nicht den aktuellen Web/PWA-Teststand.")
+
+    for language, labels in LISTING_FIELD_LABELS.items():
+        parsed = sections.get(language, {})
+        for field, label in labels.items():
+            value = parsed.get(field, "")
+            if not value:
+                findings.append(f"STORE_LISTING.md fehlt im Abschnitt {language}: {label}")
+                continue
+            if "TODO" in value:
+                findings.append(f"STORE_LISTING.md enthält TODO-Platzhalter im Abschnitt {language}: {label}")
+
+        short_description = parsed.get("short_description", "")
+        if short_description:
+            if "\n" in short_description:
+                findings.append(
+                    f"STORE_LISTING.md Kurzbeschreibung ist im Abschnitt {language} mehrzeilig."
+                )
+            if len(short_description) > 100:
+                findings.append(
+                    f"STORE_LISTING.md Kurzbeschreibung überschreitet 100 Zeichen im Abschnitt {language}."
+                )
+
+        description = parsed.get("description", "")
+        if description and "ProfiPrompt" not in description:
+            findings.append(f"STORE_LISTING.md nennt den App-Namen nicht im Abschnitt {language}.")
+
+        keywords = parsed.get("keywords", "")
+        if keywords:
+            keyword_count = len([part.strip() for part in re.split(r"[,;]", keywords) if part.strip()])
+            if keyword_count < 5:
+                findings.append(
+                    f"STORE_LISTING.md hat zu wenige Schlüsselwörter im Abschnitt {language}: {keyword_count}"
+                )
+
+        category = parsed.get("category", "")
+        if category and expected_category and expected_category not in category:
+            findings.append(
+                f"STORE_LISTING.md Kategorie enthält nicht {expected_category} im Abschnitt {language}."
+            )
 
     return findings
 

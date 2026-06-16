@@ -151,6 +151,10 @@ python scripts/check_store_readiness.py
 python scripts/check_store_readiness.py review-wack-report --report <wack-report.xml>
 ```
 
+Für `STORE_LISTING.md` validiert der Preflight zusätzlich beide Sprachblöcke,
+die 100-Zeichen-Kurzbeschreibungen, nichtleere Schlüsselwort- und
+Kategorie-Felder sowie die Kategorie-Ausrichtung zu `store_package.json`.
+
 ## Datenspeicherung / Privacy
 
 ProfiPrompt arbeitet offline. Nutzerdaten werden standardmäßig im lokalen Benutzerprofil unter `.prompt_manager` gespeichert; es gibt keine Telemetrie, keine Cloud-Synchronisation und keine externen API-Aufrufe.
@@ -312,4 +316,3 @@ Dieses Projekt ist eine **unentgeltliche Open-Source-Schenkung** im Sinne der §
 Nutzung auf eigenes Risiko. Keine Wartungszusage, keine Verfügbarkeitsgarantie, keine Gewähr für Fehlerfreiheit oder Eignung für einen bestimmten Zweck.
 
 This project is an unpaid open-source donation under the MIT License. Liability is limited to intent and gross negligence (§ 521 German Civil Code). Use at your own risk. No warranty, no maintenance guarantee, no fitness-for-purpose assumed.
-

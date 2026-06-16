@@ -44,6 +44,83 @@ def test_store_listing_mentions_current_store_scope_and_links():
     assert "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md" in listing
     assert "https://github.com/file-bricks/ProfiPrompt/issues" in listing
 
+def test_parse_store_listing_sections_reads_both_languages():
+    module = load_module()
+
+    sections = module.parse_store_listing_sections(module.listing_text())
+
+    assert sections["Deutsch"]["short_description"].startswith("AI-Prompt-Manager:")
+    assert sections["Deutsch"]["category"] == "Productivity / AI Tools"
+    assert sections["English"]["short_description"].startswith("AI Prompt Manager:")
+    assert sections["English"]["category"] == "Productivity / AI Tools"
+
+
+def test_validate_store_listing_flags_overlong_short_description_and_missing_category(tmp_path):
+    module = load_module()
+
+    (tmp_path / "releases" / "GitHub" / "v1.0.1").mkdir(parents=True)
+    (tmp_path / "store_package.json").write_text(
+        json.dumps(
+            {
+                "app_name": "ProfiPrompt",
+                "identity_name": "Geiger.ProfiPrompt",
+                "version": "1.0.1.0",
+                "capabilities": "internetClient,runFullTrust",
+                "category": "Productivity",
+            },
+            indent=2,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "STORE_LISTING.md").write_text(
+        """# Store Listing -- ProfiPrompt
+
+## Deutsch
+
+### Kurzbeschreibung (max 100 Zeichen)
+Diese Kurzbeschreibung ist absichtlich deutlich länger als einhundert Zeichen, damit der Preflight genau hier anschlägt.
+
+### Beschreibung (max 10.000 Zeichen)
+ProfiPrompt mit Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests und
+30 Web/PWA-Smoke-Tests.
+
+### Schlüsselwörter
+AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+
+### Kategorie
+AI Tools
+
+---
+
+## English
+
+### Short Description (max 100 chars)
+AI Prompt Manager: create, version, organize in boards, and export your prompts.
+
+### Description (max 10,000 chars)
+ProfiPrompt with Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests and
+30 Web/PWA-Smoke-Tests.
+
+### Keywords
+AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+
+### Category
+Productivity / AI Tools
+""",
+        encoding="utf-8",
+    )
+
+    findings = module.validate_store_listing(tmp_path)
+
+    assert "STORE_LISTING.md Kurzbeschreibung überschreitet 100 Zeichen im Abschnitt Deutsch." in findings
+    assert "STORE_LISTING.md Kategorie enthält nicht Productivity im Abschnitt Deutsch." in findings
+
 
 @_releases_present
 def test_evaluate_store_readiness_reports_only_missing_wack_report():
@@ -161,16 +238,44 @@ def test_evaluate_store_readiness_accepts_fixture_with_passing_wack_report(tmp_p
         (tmp_path / "README" / "screenshots" / "store" / f"{key}.png").write_bytes(b"png")
     (tmp_path / "releases" / "ProfiPrompt.msix").write_bytes(b"msix")
     (tmp_path / "STORE_LISTING.md").write_text(
-        "\n".join(
-            [
-                "Web/PWA-Companion",
-                "profiprompt-library-v1.json",
-                "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
-                "https://github.com/file-bricks/ProfiPrompt/issues",
-                    "41 Python-Tests",
-                "30 Web/PWA-Smoke-Tests",
-            ]
-        ),
+        """# Store Listing -- ProfiPrompt
+
+## Deutsch
+
+### Kurzbeschreibung (max 100 Zeichen)
+AI-Prompt-Manager: Prompts erstellen, versionieren, in Boards organisieren und exportieren.
+
+### Beschreibung (max 10.000 Zeichen)
+ProfiPrompt mit Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests und
+30 Web/PWA-Smoke-Tests.
+
+### Schlüsselwörter
+AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+
+### Kategorie
+Productivity / AI Tools
+
+---
+
+## English
+
+### Short Description (max 100 chars)
+AI Prompt Manager: create, version, organize in boards, and export your prompts.
+
+### Description (max 10,000 chars)
+ProfiPrompt with Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests and
+30 Web/PWA-Smoke-Tests.
+
+### Keywords
+AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+
+### Category
+Productivity / AI Tools
+""",
         encoding="utf-8",
     )
     for name in module.REQUIRED_DOCS:
