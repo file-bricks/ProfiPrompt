@@ -1,4 +1,4 @@
-const CACHE_NAME = "profiprompt-companion-v2";
+const CACHE_NAME = "profiprompt-companion-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -13,6 +13,7 @@ const ASSETS = [
   "./icons/Icon-512.png",
   "./icons/Icon-maskable-192.png",
   "./icons/Icon-maskable-512.png",
+  "./icons/apple-touch-icon-180.png",
 ];
 
 self.addEventListener("install", (event) => {

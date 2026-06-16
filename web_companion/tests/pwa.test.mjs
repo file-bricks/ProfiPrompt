@@ -11,6 +11,7 @@ const manifest = JSON.parse(readFileSync(resolve(root, "manifest.webmanifest"), 
 const swSrc = readFileSync(resolve(root, "service-worker.js"), "utf8");
 const indexSrc = readFileSync(resolve(root, "index.html"), "utf8");
 const appSrc = readFileSync(resolve(root, "app.js"), "utf8");
+const cssSrc = readFileSync(resolve(root, "app.css"), "utf8");
 
 // --- manifest tests ---
 
@@ -70,9 +71,9 @@ test("SW CACHE_NAME enthält 'profiprompt'", () => {
   assert.match(swSrc, /profiprompt/i);
 });
 
-test("SW CACHE_NAME ist v2 (nicht mehr v1)", () => {
-  assert.match(swSrc, /profiprompt-companion-v2/);
-  assert.doesNotMatch(swSrc, /profiprompt-companion-v1/);
+test("SW CACHE_NAME ist v3 (nicht mehr v2)", () => {
+  assert.match(swSrc, /profiprompt-companion-v3/);
+  assert.doesNotMatch(swSrc, /profiprompt-companion-v2/);
 });
 
 test("SW hat skipWaiting()", () => {
@@ -130,4 +131,43 @@ test("app.js ensureSelection setzt stale boardId zurück (Bug #3 Fix)", () => {
 
 test("app.js fallbackCopy entfernt textarea via finally (Bug #5 Fix — kein DOM-Leak)", () => {
   assert.match(appSrc, /finally\s*\{[\s\S]*?area\.remove\(\)/);
+});
+
+// --- iOS PWA-Härtung (P4b, 2026-06-16) ---
+
+test("index.html viewport enthält viewport-fit=cover", () => {
+  assert.match(indexSrc, /viewport-fit=cover/);
+});
+
+test("index.html apple-touch-icon zeigt auf apple-touch-icon-180.png (kein maskable-Icon)", () => {
+  assert.match(indexSrc, /apple-touch-icon.*apple-touch-icon-180\.png/s);
+  assert.doesNotMatch(indexSrc, /apple-touch-icon.*Icon-maskable/s);
+});
+
+test("index.html hat apple-mobile-web-app-title", () => {
+  assert.match(indexSrc, /apple-mobile-web-app-title/);
+});
+
+test("index.html hat apple-mobile-web-app-status-bar-style", () => {
+  assert.match(indexSrc, /apple-mobile-web-app-status-bar-style/);
+});
+
+test("index.html setzt KEIN apple-mobile-web-app-capable (deprecated seit iOS 11.3)", () => {
+  assert.doesNotMatch(indexSrc, /apple-mobile-web-app-capable/);
+});
+
+test("apple-touch-icon-180.png existiert auf Disk", () => {
+  assert.ok(existsSync(resolve(root, "icons/apple-touch-icon-180.png")));
+});
+
+test("apple-touch-icon-180.png ist in SW ASSETS enthalten", () => {
+  assert.match(swSrc, /apple-touch-icon-180\.png/);
+});
+
+test("app.css enthält safe-area-inset-Werte für .shell", () => {
+  assert.match(cssSrc, /safe-area-inset/);
+});
+
+test("app.css nutzt env(safe-area-inset-bottom) im toast", () => {
+  assert.match(cssSrc, /safe-area-inset-bottom/);
 });

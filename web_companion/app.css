@@ -59,7 +59,10 @@ pre {
 .shell {
   width: min(1440px, calc(100vw - 32px));
   margin: 0 auto;
-  padding: 24px 0 40px;
+  padding-top: max(24px, env(safe-area-inset-top, 0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+  padding-bottom: max(40px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
 }
 
 .hero {
@@ -540,8 +543,8 @@ pre {
 
 .toast {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: max(20px, env(safe-area-inset-right, 0px));
+  bottom: max(20px, env(safe-area-inset-bottom, 0px));
   max-width: min(360px, calc(100vw - 32px));
   padding: 14px 16px;
   border: 1px solid rgba(255, 177, 74, 0.24);
