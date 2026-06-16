@@ -4,9 +4,18 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
+_PROJECT_ROOT = Path(__file__).resolve().parents[1]
+_RELEASES_GITHUB = _PROJECT_ROOT / "releases" / "GitHub"
+_releases_present = pytest.mark.skipif(
+    not _RELEASES_GITHUB.exists(),
+    reason="releases/ ist gitignored und in CI nicht vorhanden; Test läuft nur im lokalen Build-Tree",
+)
+
 
 def load_module():
-    module_path = Path(__file__).resolve().parents[1] / "scripts" / "check_store_readiness.py"
+    module_path = _PROJECT_ROOT / "scripts" / "check_store_readiness.py"
     spec = importlib.util.spec_from_file_location("check_store_readiness", module_path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
@@ -14,6 +23,7 @@ def load_module():
     return module
 
 
+@_releases_present
 def test_store_files_match_current_release_metadata():
     module = load_module()
 
@@ -35,6 +45,7 @@ def test_store_listing_mentions_current_store_scope_and_links():
     assert "https://github.com/file-bricks/ProfiPrompt/issues" in listing
 
 
+@_releases_present
 def test_evaluate_store_readiness_reports_only_missing_wack_report():
     module = load_module()
 
