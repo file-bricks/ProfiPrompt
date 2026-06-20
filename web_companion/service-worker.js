@@ -50,7 +50,7 @@ self.addEventListener("fetch", (event) => {
           return response;
         }
         const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
         return response;
       }).catch(() => new Response("Offline", { status: 503, statusText: "Service Unavailable" }));
     }),

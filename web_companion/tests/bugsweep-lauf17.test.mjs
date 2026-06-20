@@ -70,3 +70,13 @@ test("Bug #6: service-worker.js fetch-Handler hat .catch() als Offline-Fallback"
     "service-worker.js fetch-Handler muss .catch() haben — unhandled rejection bei Offline + Uncached Ressource"
   );
 });
+
+// Bug #7: service-worker.js — detached caches.open().then(cache.put) ohne .catch()
+// QuotaExceededError unter Cache-Storage-Druck auf Mobile Safari bleibt als unhandled rejection
+test("Bug #7: service-worker.js detached cache.put-Kette hat .catch() (QuotaExceededError unter Cache-Druck)", async () => {
+  const sw = await src("service-worker.js");
+  assert.ok(
+    sw.includes("cache.put(event.request, clone)).catch("),
+    "cache.put-Kette muss .catch(() => {}) haben — QuotaExceededError unter Cache-Speicherdruck auf Mobile Safari würde als unhandled rejection feuern"
+  );
+});
