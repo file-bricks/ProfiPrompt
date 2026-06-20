@@ -11,7 +11,7 @@
 
 
 
-**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json`, bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit und enthält jetzt einen reproduzierbaren Desktop-Plattform-Smoke für macOS/Linux.
+**Aktueller Stand:** Version 1.0.1 behebt die Board-Speicherung und stellt sicher, dass einzelne TXT-Exporte echten Plaintext schreiben. Der aktuelle Unreleased-Stand reicht die Metadaten-Einstellung auch an Versions-PDFs aus Hauptfenster und Dashboard weiter, ergänzt den portablen Bibliotheksexport `profiprompt-library-v1.json`, bringt einen statischen Web/PWA-Companion für mobile Lese-, Such- und Kopierpfade mit und enthält einen reproduzierbaren Desktop-Plattform-Smoke für macOS/Linux. Der Store-Preflight prüft Listing, Screenshots, Paketmetadaten und WACK-Reports CI-tauglich; Desktop-Icon-Assets sind als Quellassets versioniert.
 
 ## Funktionen
 
@@ -79,6 +79,8 @@ ProfiPrompt/
 │   ├── library.js              # Schema-Normalisierung und Companion-Helfer
 │   └── tests/                  # Node-Smokes für den Companion
 ├── store_package.json
+├── DesktopIcon.ico
+├── DesktopIcon.png
 ├── EXPORTFORMAT.md
 ├── requirements.txt
 ├── LICENSE
@@ -154,6 +156,8 @@ python scripts/check_store_readiness.py review-wack-report --report <wack-report
 Für `STORE_LISTING.md` validiert der Preflight zusätzlich beide Sprachblöcke,
 die 100-Zeichen-Kurzbeschreibungen, nichtleere Schlüsselwort- und
 Kategorie-Felder sowie die Kategorie-Ausrichtung zu `store_package.json`.
+Tests mit lokalen Release-Artefakten werden automatisch übersprungen, wenn
+`releases/GitHub/` in einem sauberen CI-Checkout fehlt.
 
 ## Datenspeicherung / Privacy
 
@@ -183,6 +187,7 @@ Lukas Geiger ([@lukisch](https://github.com/lukisch))
 A desktop tool for managing, versioning, and organizing AI prompts. Built with PySide6 (Qt6).
 
 **Current status:** Version 1.0.1 fixes board persistence and ensures individual TXT exports write real plaintext. The current unreleased state also forwards the metadata setting to version PDF exports from the main window and dashboard, adds the portable `profiprompt-library-v1.json` library export, ships a static Web/PWA companion for mobile reading, search, and copy flows, and now includes a reproducible desktop platform smoke for macOS/Linux.
+The Store preflight validates listing text, screenshots, package metadata, and WACK reports in a CI-friendly way. Desktop icon assets are versioned as source assets.
 
 ### Features
 
@@ -246,6 +251,8 @@ ProfiPrompt/
 │   ├── library.js              # Schema normalization and companion helpers
 │   └── tests/                  # Node smoke tests for the companion
 ├── store_package.json
+├── DesktopIcon.ico
+├── DesktopIcon.png
 ├── EXPORTFORMAT.md
 ├── requirements.txt
 ├── LICENSE

@@ -283,6 +283,8 @@ def validate_screenshots(root: Path | None = None) -> list[str]:
 
     for key, raw_path in screenshots.items():
         path = Path(raw_path)
+        if not path.is_absolute():
+            path = project_root(root) / path
         if not path.exists():
             findings.append(f"Store-Screenshot fehlt: {key} -> {path}")
 

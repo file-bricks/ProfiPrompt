@@ -11,6 +11,7 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 ### Build / Release
 - EXE neu gebaut 2026-06-01 (PyInstaller COLLECT, `ProfiPrompt.spec` → `C:\_Local_DEV\codex_build\profiprompt`); 34/34 Tests grün, Smoke-Test bestanden. Vorherige EXE: 2026-05-01. Anlass: pdf_exporter.py 2026-05-29. Hinweis: kein build_exe.bat vorhanden — direkter PyInstaller-Aufruf mit explizitem `--distpath`.
 - Der Store-Preflight prüft `STORE_LISTING.md` jetzt strukturell auf beide Sprachblöcke, 100-Zeichen-Kurzbeschreibungen, nichtleere Schlüsselwort-/Kategorie-Felder und die Kategorie-Ausrichtung zu `store_package.json`; `AUFGABEN.txt`, `PORTIERUNGSPLAN.md` und README führen den Listing-Schritt damit als erledigt.
+- GitHub-Repo-Hygiene aktualisiert: `LOCK*.txt` und `docs/superpowers/` bleiben ignoriert, `DesktopIcon.ico` und `DesktopIcon.png` sind als Quellassets dokumentiert, und Store-Readiness-Tests überspringen lokale Release-Artefaktprüfungen in sauberen CI-Checkouts.
 
 ### Hinzugefügt / Added
 - `EXPORTFORMAT.md` dokumentiert das stabile Austauschformat `profiprompt-library-v1.json`.

@@ -184,7 +184,11 @@ def _capture(window: MainWindow, output_path: Path) -> str:
         raise RuntimeError(f"Screenshot konnte nicht erzeugt werden: {output_path}")
     if not pixmap.save(str(output_path), "PNG"):
         raise RuntimeError(f"Screenshot konnte nicht gespeichert werden: {output_path}")
-    return str(output_path)
+    resolved = output_path.resolve()
+    try:
+        return resolved.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return str(resolved)
 
 
 def render_store_screenshots(output_dir: str | Path, *, headless: bool = True) -> dict[str, Any]:

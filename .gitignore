@@ -26,6 +26,9 @@ TESTS.txt
 TESTERGEBNISSE.txt
 BUGREPORT.md
 DIAGNOSE_REPORT.md
+LOCK.txt
+LOCK.*.txt
+LOCK*.txt
 
 # ---- Persönliche / sensible Daten ----
 _USER/
@@ -79,3 +82,4 @@ PORTIERUNGSPLAN.md
 TODO.md
 DONE.md
 build_exe.bat
+docs/superpowers/
