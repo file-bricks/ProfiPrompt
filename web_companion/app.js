@@ -154,7 +154,11 @@ async function onImportFileChange(event) {
     state.boardId = "all";
     state.promptId = payload.prompts[0]?.id ?? null;
     state.versionId = "";
-    localStorage.setItem(STORAGE_KEYS.library, serializeLibrary(payload));
+    try {
+      localStorage.setItem(STORAGE_KEYS.library, serializeLibrary(payload));
+    } catch {
+      // QuotaExceededError in Safari Private Browsing oder bei vollem Speicher
+    }
     persistUiState();
     ensureSelection();
     render();
@@ -182,7 +186,11 @@ async function maybeLoadLibraryFromQuery() {
     state.boardId = "all";
     state.promptId = payload.prompts[0]?.id ?? null;
     state.versionId = "";
-    localStorage.setItem(STORAGE_KEYS.library, serializeLibrary(payload));
+    try {
+      localStorage.setItem(STORAGE_KEYS.library, serializeLibrary(payload));
+    } catch {
+      // QuotaExceededError in Safari Private Browsing oder bei vollem Speicher
+    }
     persistUiState();
     ensureSelection();
     render();
@@ -197,7 +205,7 @@ function clearLibrary() {
   state.boardId = "all";
   state.promptId = null;
   state.versionId = "";
-  localStorage.removeItem(STORAGE_KEYS.library);
+  try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
   persistUiState();
   render();
   showToast("Lokale Bibliothek gelöscht.");
@@ -263,13 +271,19 @@ function selectFallbackCopyText() {
 }
 
 function restoreState() {
-  const storedLibrary = localStorage.getItem(STORAGE_KEYS.library);
-  const storedUi = localStorage.getItem(STORAGE_KEYS.ui);
+  let storedLibrary = null;
+  let storedUi = null;
+  try {
+    storedLibrary = localStorage.getItem(STORAGE_KEYS.library);
+    storedUi = localStorage.getItem(STORAGE_KEYS.ui);
+  } catch {
+    // localStorage blocked by security policy (Safari Private, sandboxed iframe)
+  }
 
   try {
     state.library = parseStoredLibrary(storedLibrary);
   } catch {
-    localStorage.removeItem(STORAGE_KEYS.library);
+    try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
   }
 
   try {
@@ -281,7 +295,7 @@ function restoreState() {
     state.copyMode = typeof ui.copyMode === "string" ? ui.copyMode : "all";
     state.includeMetadata = ui.includeMetadata !== false;
   } catch {
-    localStorage.removeItem(STORAGE_KEYS.ui);
+    try { localStorage.removeItem(STORAGE_KEYS.ui); } catch { /* storage blocked */ }
   }
 
   elements.searchInput.value = state.query;
@@ -291,17 +305,21 @@ function restoreState() {
 }
 
 function persistUiState() {
-  localStorage.setItem(
-    STORAGE_KEYS.ui,
-    JSON.stringify({
-      boardId: state.boardId,
-      promptId: state.promptId,
-      versionId: state.versionId,
-      query: state.query,
-      copyMode: state.copyMode,
-      includeMetadata: state.includeMetadata,
-    }),
-  );
+  try {
+    localStorage.setItem(
+      STORAGE_KEYS.ui,
+      JSON.stringify({
+        boardId: state.boardId,
+        promptId: state.promptId,
+        versionId: state.versionId,
+        query: state.query,
+        copyMode: state.copyMode,
+        includeMetadata: state.includeMetadata,
+      }),
+    );
+  } catch {
+    // QuotaExceededError in Safari Private Browsing oder bei vollem Speicher
+  }
 }
 
 function ensureSelection() {
