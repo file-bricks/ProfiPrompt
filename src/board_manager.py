@@ -29,7 +29,7 @@ class PromptTile(QtWidgets.QFrame):
 
         self.setObjectName("PromptTile")
         self.setFixedSize(260, 190)
-        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
         self.setStyleSheet(self._tile_styles(font_family))
         
         # Etwas dezenterer Schatten für Dark Mode
@@ -48,7 +48,7 @@ class PromptTile(QtWidgets.QFrame):
         title_lbl = QtWidgets.QLabel(prompt.title)
         title_lbl.setObjectName("PromptTitle")
         title_lbl.setWordWrap(True)
-        title_lbl.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        title_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         vbox.addWidget(title_lbl)
 
         # Content Logic
@@ -77,14 +77,14 @@ class PromptTile(QtWidgets.QFrame):
         preview = QtWidgets.QLabel(prev_txt)
         preview.setObjectName("Preview")
         preview.setWordWrap(True)
-        preview.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        preview.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
 
         vbox.addWidget(badge)
         vbox.addWidget(subtitle)
         vbox.addSpacing(4)
         vbox.addWidget(preview, stretch=1)
 
-        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self._on_custom_menu)
 
     def _tile_styles(self, font_family: Optional[str]) -> str:
@@ -147,7 +147,7 @@ class PromptTile(QtWidgets.QFrame):
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         super().mousePressEvent(event)
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             self._drag_start_pos = event.pos()
 
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
@@ -164,23 +164,23 @@ class PromptTile(QtWidgets.QFrame):
         
         # Pixmap für Drag erstellen (visuelles Feedback)
         pixmap = self.grab()
-        drag.setPixmap(pixmap.scaledToWidth(150, QtCore.Qt.SmoothTransformation))
+        drag.setPixmap(pixmap.scaledToWidth(150, QtCore.Qt.TransformationMode.SmoothTransformation))
         drag.setHotSpot(QtCore.QPoint(75, 50))
 
         self.dragStart.emit(self.prompt.id, self.version.id if self.version else None)
-        drag.exec(QtCore.Qt.MoveAction)
+        drag.exec(QtCore.Qt.DropAction.MoveAction)
         self._drag_start_pos = None
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
         super().mouseReleaseEvent(event)
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if not self._suppress_click:
                 self.clicked.emit(self.prompt.id, self.version.id if self.version else None)
             self._suppress_click = False
 
     def mouseDoubleClickEvent(self, event: QtGui.QMouseEvent):
         super().mouseDoubleClickEvent(event)
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             self._suppress_click = True
             self.doubleClicked.emit(self.prompt.id, self.version.id if self.version else None)
 
@@ -316,7 +316,7 @@ class BoardManager(QtWidgets.QWidget):
                 row += 1
         
         # Spacer damit alles oben links bleibt
-        spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.grid.addItem(spacer, row + 1, 0)
 
     # --- Actions ---
@@ -330,7 +330,7 @@ class BoardManager(QtWidgets.QWidget):
     def delete_current_board(self):
         b = self.current_board()
         if not b: return
-        if QtWidgets.QMessageBox.question(self, "Löschen", f"Board '{b.title}' wirklich löschen?") == QtWidgets.QMessageBox.Yes:
+        if QtWidgets.QMessageBox.question(self, "Löschen", f"Board '{b.title}' wirklich löschen?") == QtWidgets.QMessageBox.StandardButton.Yes:
             self.storage.delete_board(b.id)
             bus.boardsChanged.emit()
 

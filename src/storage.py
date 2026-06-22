@@ -23,7 +23,10 @@ class Storage:
 
     # --- Prompts ---
     def load_prompts(self) -> List[Prompt]:
-        data = json.loads(self.prompts_file.read_text(encoding="utf-8"))
+        try:
+            data = json.loads(self.prompts_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, ValueError):
+            data = {}
         return [prompt_from_dict(p) for p in data.get("prompts", [])]
     
     def get_prompt(self, prompt_id: str) -> Optional[Prompt]:
@@ -81,7 +84,10 @@ class Storage:
 
     # --- Boards ---
     def load_boards(self) -> List[Board]:
-        data = json.loads(self.boards_file.read_text(encoding="utf-8"))
+        try:
+            data = json.loads(self.boards_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, ValueError):
+            data = {}
         return [board_from_dict(b) for b in data.get("boards", [])]
 
     def save_boards(self, boards: List[Board]):

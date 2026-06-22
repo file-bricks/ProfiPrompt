@@ -140,11 +140,11 @@ class MainWindow(QMainWindow):
         # Dock: Boards
         self.boardDock = QDockWidget("Boards", self)
         self.boardDock.setObjectName("BoardsDock")
-        self.boardDock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-        
+        self.boardDock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
+
         self.boardManager = BoardManager(self.storage, self.settings)
         self.boardDock.setWidget(self.boardManager)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.boardDock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.boardDock)
 
         # Menü & Aktionen
         self._build_menu()

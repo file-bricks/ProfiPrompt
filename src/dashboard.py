@@ -32,11 +32,11 @@ class PromptTree(QtWidgets.QTreeWidget):
         )
         # Letzte beiden Spalten für Icons freihalten
         self.setColumnCount(7)
-        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.setDragEnabled(True)
         self.setAcceptDrops(False)
-        self.setDragDropMode(QtWidgets.QAbstractItemView.DragOnly)
-        self.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.DragOnly)
+        self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setAlternatingRowColors(True)
         self.setUniformRowHeights(True)
         
@@ -45,14 +45,14 @@ class PromptTree(QtWidgets.QTreeWidget):
         return [self.MIME_TYPE]
 
     def mimeData(self, items: List[QtWidgets.QTreeWidgetItem]) -> QtCore.QMimeData:
-        tup = items[0].data(0, QtCore.Qt.UserRole)
+        tup = items[0].data(0, QtCore.Qt.ItemDataRole.UserRole)
         blob = json.dumps(tup)
         md = QtCore.QMimeData()
         md.setData(self.MIME_TYPE, blob.encode("utf-8"))
         return md
 
     def supportedDragActions(self) -> QtCore.Qt.DropAction:
-        return QtCore.Qt.CopyAction
+        return QtCore.Qt.DropAction.CopyAction
 
 class DashboardWidget(QtWidgets.QWidget):
     def __init__(
@@ -199,7 +199,7 @@ class DashboardWidget(QtWidgets.QWidget):
             parent.setText(2, ", ".join(p.tags or []))
             parent.setText(3, safe_date(p.created_at))
             parent.setText(4, safe_date(p.updated_at))
-            parent.setData(0, QtCore.Qt.UserRole, ("prompt", p.id))
+            parent.setData(0, QtCore.Qt.ItemDataRole.UserRole, ("prompt", p.id))
 
             # Büroklammer‐Icon in Spalte 5, wenn Versionen existieren
             if p.versions:
@@ -220,7 +220,7 @@ class DashboardWidget(QtWidgets.QWidget):
                 child.setText(2, ", ".join(v.tags or []))
                 child.setText(3, safe_date(v.created_at))
                 child.setText(4, safe_date(v.updated_at))
-                child.setData(0, QtCore.Qt.UserRole, ("version", p.id, v.id))
+                child.setData(0, QtCore.Qt.ItemDataRole.UserRole, ("version", p.id, v.id))
 
                 # Clipboard‐Button für die Version in Spalte 6
                 btn_ver_copy = QtWidgets.QToolButton()
@@ -252,7 +252,7 @@ class DashboardWidget(QtWidgets.QWidget):
             return
 
         # Eintrag angeklickt: Prompt-/Version‐Menü
-        kind, pid, *rest = item.data(0, QtCore.Qt.UserRole)
+        kind, pid, *rest = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
         vid = rest[0] if rest else None
         p = self.storage.get_prompt(pid)
         v = self.storage.get_version(pid, vid) if kind == "version" and vid else None
@@ -340,14 +340,14 @@ class DashboardWidget(QtWidgets.QWidget):
             if kind == "prompt":
                 if QtWidgets.QMessageBox.question(
                     self, "Löschen", f"Prompt „{p.title}“ wirklich löschen?"
-                ) == QtWidgets.QMessageBox.Yes:
+                ) == QtWidgets.QMessageBox.StandardButton.Yes:
                     self.storage.delete_prompt(p.id)
                     bus.promptsChanged.emit()
             else:
                 if QtWidgets.QMessageBox.question(
                     self, "Löschen",
                     f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
-                ) == QtWidgets.QMessageBox.Yes:
+                ) == QtWidgets.QMessageBox.StandardButton.Yes:
                     p.versions = [x for x in p.versions if x.id != v.id]
                     p.updated_at = now_iso()
                     self.storage.upsert_prompt(p)
@@ -381,7 +381,7 @@ class DashboardWidget(QtWidgets.QWidget):
         it = self.tree.currentItem()
         if not it:
             return None
-        data = it.data(0, QtCore.Qt.UserRole)
+        data = it.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if data and data[0] == "prompt":
             return self.storage.get_prompt(data[1])
         return None
@@ -390,7 +390,7 @@ class DashboardWidget(QtWidgets.QWidget):
         it = self.tree.currentItem()
         if not it:
             return None
-        data = it.data(0, QtCore.Qt.UserRole)
+        data = it.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if data and data[0] == "version":
             _, pid, vid = data
             return self.storage.get_version(pid, vid)
@@ -416,7 +416,7 @@ class DashboardWidget(QtWidgets.QWidget):
         item: QtWidgets.QTreeWidgetItem,
         column: int
     ):
-        data = item.data(0, QtCore.Qt.UserRole)
+        data = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
         if not data:
             return
 
