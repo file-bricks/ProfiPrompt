@@ -399,10 +399,16 @@ class BoardManager(QtWidgets.QWidget):
 
         if md.hasFormat(self.MIME):
             # Format: json [kind, pid, vid?]
-            blob = md.data(self.MIME).data().decode("utf-8")
-            arr = json.loads(blob)
-            pid = arr[1]
-            if len(arr) > 2: vid = arr[2]
+            # Bugsweep 19 BUG-04: json.loads + arr[1] ungeschuetzt -> korrupte/fremde MIME-Daten
+            # (kein Array, zu kurz) crashten den Drop. Breit fangen und Drop ignorieren.
+            try:
+                blob = md.data(self.MIME).data().decode("utf-8")
+                arr = json.loads(blob)
+                pid = arr[1]
+                if len(arr) > 2: vid = arr[2]
+            except (json.JSONDecodeError, IndexError, TypeError, KeyError, UnicodeDecodeError):
+                event.ignore()
+                return
         
         elif md.hasText():
             # Format: "pid|vid" (aus PromptTile)

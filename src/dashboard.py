@@ -45,6 +45,10 @@ class PromptTree(QtWidgets.QTreeWidget):
         return [self.MIME_TYPE]
 
     def mimeData(self, items: List[QtWidgets.QTreeWidgetItem]) -> QtCore.QMimeData:
+        # Bugsweep 19 BUG-01: Qt darf mimeData() mit leerer Item-Liste aufrufen -> items[0]
+        # waere ein IndexError. Leeres QMimeData zurueckgeben.
+        if not items:
+            return QtCore.QMimeData()
         tup = items[0].data(0, QtCore.Qt.ItemDataRole.UserRole)
         blob = json.dumps(tup)
         md = QtCore.QMimeData()
@@ -252,10 +256,19 @@ class DashboardWidget(QtWidgets.QWidget):
             return
 
         # Eintrag angeklickt: Prompt-/Version‐Menü
-        kind, pid, *rest = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        # Bugsweep 19 BUG-02: data(0,UserRole) kann None sein (Item ohne UserRole) -> Unpack
+        # auf None waere TypeError.
+        data = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        if not data:
+            return
+        kind, pid, *rest = data
         vid = rest[0] if rest else None
         p = self.storage.get_prompt(pid)
         v = self.storage.get_version(pid, vid) if kind == "version" and vid else None
+        # Bugsweep 19 BUG-07: p/v koennen None sein (inzwischen geloescht) -> spaeter p.title /
+        # v.version_number crashten. Kein Menue fuer nicht mehr existierende Eintraege.
+        if p is None or (kind == "version" and v is None):
+            return
 
         # Copy Aktionen
         if kind == "prompt":
@@ -428,8 +441,12 @@ class DashboardWidget(QtWidgets.QWidget):
         if kind == "prompt":
             dlg = PromptDialog(self.storage, p, self)
         else:
-            vid = rest[0]
-            v = self.storage.get_version(pid, vid)
+            # Bugsweep 19 BUG-03: rest[0] ungeschuetzt -> IndexError bei defektem 2er-Tupel
+            # ("version", pid) ohne vid; zudem v-None-Guard.
+            vid = rest[0] if rest else None
+            v = self.storage.get_version(pid, vid) if vid else None
+            if v is None:
+                return
             dlg = VersionDialog(self.storage, p, v, self)
 
         if dlg.exec() == QtWidgets.QDialog.Accepted:

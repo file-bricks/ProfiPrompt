@@ -92,10 +92,29 @@ def board_to_dict(b: Board) -> Dict[str, Any]:
     return asdict(b)
 
 
+def version_from_dict(v: Dict[str, Any]) -> Version:
+    """Reconstruct a Version from a dict (feldweise, schema-drift-robust)."""
+    # Bugsweep 19 BUG-01: feldweise statt Version(**v) -> ein unbekannter ODER fehlender Key
+    # in alten/fremden JSONs (z.B. library_export-Import) brach sonst den GANZEN load_prompts
+    # mit TypeError/KeyError (der JSONDecodeError-Guard greift dafuer NICHT). id/prompt_id hart
+    # (echter Bruch statt Zombie-Objekt mit id=None), Rest mit Defaults -> alle Felder erhalten.
+    return Version(
+        id=v["id"],
+        prompt_id=v["prompt_id"],
+        version_number=v.get("version_number", 0),
+        title=v.get("title", ""),
+        text=v.get("text", ""),
+        result=v.get("result", ""),
+        tags=v.get("tags") or [],
+        created_at=v.get("created_at", now_iso()),
+        updated_at=v.get("updated_at", now_iso()),
+    )
+
+
 def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     """Reconstruct a Prompt (and its Versions) from a dict."""
     versions_data = d.get("versions", [])
-    versions = [Version(**v) for v in versions_data]
+    versions = [version_from_dict(v) for v in versions_data]
     return Prompt(
         id=d["id"],
         title=d["title"],
@@ -110,14 +129,22 @@ def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
 
 
 def boarditem_from_dict(d: Dict[str, Any]) -> BoardItem:
-    """Reconstruct a BoardItem from a dict."""
-    return BoardItem(**d)
+    """Reconstruct a BoardItem from a dict (feldweise, schema-drift-robust)."""
+    # Bugsweep 19 BUG-01: feldweise statt BoardItem(**d) -> unbekannter/fehlender Key bricht
+    # sonst den ganzen Board-Load. id/board_id/prompt_id hart, Rest mit Defaults.
+    return BoardItem(
+        id=d["id"],
+        board_id=d["board_id"],
+        prompt_id=d["prompt_id"],
+        version_id=d.get("version_id"),
+        created_at=d.get("created_at", now_iso()),
+    )
 
 
 def board_from_dict(d: Dict[str, Any]) -> Board:
     """Reconstruct a Board (and its BoardItems) from a dict."""
     items_data = d.get("items", [])
-    items = [BoardItem(**i) for i in items_data]
+    items = [boarditem_from_dict(i) for i in items_data]
     return Board(
         id=d["id"],
         title=d["title"],

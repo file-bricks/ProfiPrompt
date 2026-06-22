@@ -150,8 +150,10 @@ class MainWindow(QMainWindow):
         self._build_menu()
 
         # Event-Bus Connects
-        bus.promptsChanged.connect(self.dashboard.reload)
-        bus.boardsChanged.connect(self.boardManager.reload)
+        # Bugsweep 19 BUG-06: dashboard.reload / boardManager.reload werden bereits
+        # widget-seitig verbunden (DashboardWidget bzw. BoardManager __init__). Die
+        # frueheren zusaetzlichen Connects hier fuehrten zu DOPPELTEM reload (doppelter
+        # Disk-Zugriff + Tree/Grid-Rebuild) bei jedem promptsChanged/boardsChanged.
         bus.copyRequested.connect(self.handle_copy_request)
         bus.dragRequested.connect(self.handle_drag_request)
 

@@ -38,8 +38,13 @@ class ClipboardManager:
         return "\n".join(parts)
 
     def copy_to_clipboard(self, widget, text: str):
-        QtWidgets.QApplication.clipboard().setText(text)
-        QtWidgets.QToolTip.showText(
-            widget.mapToGlobal(widget.rect().center()),
-            "Kopiert 📋"
-        )
+        # Bugsweep 19 BUG-05: clipboard() kann None sein (keine QApplication-Instanz, z.B. Test/
+        # Headless) -> .setText crashte. BUG-06: widget kann None sein (nicht-visueller Aufruf).
+        cb = QtWidgets.QApplication.clipboard()
+        if cb is not None:
+            cb.setText(text)
+        if widget is not None:
+            QtWidgets.QToolTip.showText(
+                widget.mapToGlobal(widget.rect().center()),
+                "Kopiert 📋"
+            )
