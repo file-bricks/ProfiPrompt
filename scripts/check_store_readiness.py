@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
+import hashlib
 import json
 import re
 import sys
@@ -75,6 +77,10 @@ def screenshot_summary_path(root: Path | None = None) -> Path:
 
 def build_guide_path(root: Path | None = None) -> Path:
     return project_root(root) / "releases" / "windowsstore" / "BUILD.md"
+
+
+def store_test_protocol_dir(root: Path | None = None) -> Path:
+    return project_root(root) / "releases" / "windowsstore" / "test_reports"
 
 
 def latest_release_version(root: Path | None = None) -> str:
@@ -383,6 +389,159 @@ def format_wack_summary(summary: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def display_path(path: Path, root: Path | None = None) -> str:
+    base = project_root(root).resolve()
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(base).as_posix()
+    except ValueError:
+        return str(resolved)
+
+
+def file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def current_protocol_timestamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def protocol_filename(timestamp: str) -> str:
+    compact = timestamp.replace("-", "").replace(":", "").replace("T", "_").replace("Z", "")
+    return f"store_readiness_{compact}.md"
+
+
+def _safe_findings(label: str, validator: Any, root: Path | None = None) -> list[str]:
+    try:
+        return list(validator(root))
+    except Exception as exc:  # pragma: no cover - defensive report path
+        return [f"{label}: {exc}"]
+
+
+def protocol_message(message: str, root: Path | None = None) -> str:
+    base = str(project_root(root).resolve())
+    return message.replace(base, ".").replace("\\", "/")
+
+
+def store_material_findings(root: Path | None = None) -> dict[str, list[str]]:
+    validators: tuple[tuple[str, Any], ...] = (
+        ("Pflichtdateien", validate_required_docs),
+        ("Store-Paket", validate_store_package),
+        ("Store-Settings", validate_windowsstore_settings),
+        ("Store-Listing", validate_store_listing),
+        ("Screenshots", validate_screenshots),
+        ("MSIX", validate_msix),
+        ("Build-Anleitung", validate_build_guide),
+    )
+    return {label: _safe_findings(label, validator, root) for label, validator in validators}
+
+
+def render_status_list(findings: list[str], root: Path | None = None) -> list[str]:
+    if not findings:
+        return ["  - OK"]
+    return [f"  - WARN: {protocol_message(finding, root)}" for finding in findings]
+
+
+def render_store_test_protocol(root: Path | None = None, generated_at: str | None = None) -> str:
+    base = project_root(root)
+    package = load_store_package(root)
+    generated = generated_at or current_protocol_timestamp()
+    package_path = msix_path(root)
+    materials = store_material_findings(root)
+
+    lines = [
+        "# ProfiPrompt Windows Store Testprotokoll",
+        "",
+        f"Erzeugt: {generated}",
+        "Scope: Lokales Pre-Submission-Protokoll. Ein echter WACK-XML-Report bleibt das finale Gate.",
+        "",
+        "## Paket",
+        "",
+        f"- App: {package.get('app_name', 'unbekannt')}",
+        f"- Identity: {package.get('identity_name', 'unbekannt')}",
+        f"- Store-Version: {package.get('version', 'unbekannt')}",
+        f"- Kategorie: {package.get('category', 'unbekannt')}",
+        f"- Privacy URL: {package.get('privacy_url', 'unbekannt')}",
+        f"- Support URL: {package.get('support_url', 'unbekannt')}",
+        "",
+        "## MSIX",
+        "",
+        f"- Pfad: {display_path(package_path, root)}",
+    ]
+
+    if package_path.exists():
+        lines.extend(
+            [
+                f"- Größe: {package_path.stat().st_size} Bytes",
+                f"- SHA256: {file_sha256(package_path)}",
+            ]
+        )
+    else:
+        lines.append("- Status: WARN - MSIX fehlt lokal.")
+
+    lines.extend(["", "## Materialien", ""])
+    for label, findings in materials.items():
+        lines.append(f"- {label}:")
+        lines.extend(render_status_list(findings, root))
+
+    lines.extend(["", "## WACK", ""])
+    try:
+        report = latest_wack_report(root)
+        summary = summarize_wack_report(report)
+        lines.extend(
+            [
+                f"- Report: {display_path(report, root)}",
+                f"- Gesamtergebnis: {summary['overall_result']}",
+                f"- Zählung: PASS {summary['pass_count']} | FAIL {summary['fail_count']} | WARNING {summary['warning_count']}",
+            ]
+        )
+        for requirement in summary["requirements"]:
+            if requirement["result"] != "PASS":
+                lines.append(f"- {requirement['result']}: {requirement['title']}")
+                for detail in requirement["details"]:
+                    lines.append(f"  - {detail}")
+    except FileNotFoundError:
+        lines.extend(
+            [
+                "- Status: WARN - WACK-XML fehlt.",
+                "- Blocker: Keine WACK-XML-Reports im Testreport-Verzeichnis gefunden.",
+                f"- Zielpfad: {display_path(store_test_protocol_dir(root), root)}/wack_YYYYMMDD_HHMMSS.xml",
+            ]
+        )
+
+    all_findings = [finding for findings in materials.values() for finding in findings]
+    lines.extend(["", "## Nächstes Gate", ""])
+    if all_findings:
+        lines.append("- Material-Warnungen zuerst beheben, dann WACK erneut ausführen.")
+    else:
+        lines.append("- Store-Materialien sind lokal vollständig; als Nächstes WACK als Administrator ausführen.")
+    lines.append("- Danach: `python scripts/check_store_readiness.py review-wack-report`.")
+    lines.append("- Finaler Preflight: `python scripts/check_store_readiness.py`.")
+    lines.append("")
+
+    # The protocol is safe to keep locally: paths are repo-relative and no user prompt data is included.
+    text = "\n".join(lines)
+    if str(base.resolve()) in text:
+        raise ValueError("Testprotokoll enthält einen absoluten Projektpfad.")
+    return text
+
+
+def write_store_test_protocol(
+    root: Path | None = None,
+    output: Path | None = None,
+    generated_at: str | None = None,
+) -> Path:
+    generated = generated_at or current_protocol_timestamp()
+    target = output or (store_test_protocol_dir(root) / protocol_filename(generated))
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(render_store_test_protocol(root, generated_at=generated), encoding="utf-8")
+    return target.resolve()
+
+
 def evaluate_store_readiness(root: Path | None = None) -> list[str]:
     findings: list[str] = []
     for validator in (
@@ -424,17 +583,28 @@ def main(argv: list[str] | None = None) -> int:
         "command",
         nargs="?",
         default="check",
-        choices=("check", "review-wack-report"),
-        help="check = kompletter Store-Preflight, review-wack-report = XML-Report auswerten",
+        choices=("check", "review-wack-report", "write-test-protocol"),
+        help=(
+            "check = kompletter Store-Preflight, review-wack-report = XML-Report auswerten, "
+            "write-test-protocol = lokales Store-Testprotokoll schreiben"
+        ),
     )
     parser.add_argument("--report", help="Pfad zu einem konkreten WACK-XML-Report")
     parser.add_argument("--report-dir", help="Alternatives WACK-Report-Verzeichnis")
+    parser.add_argument("--output", help="Zielpfad für write-test-protocol")
+    parser.add_argument("--generated-at", help="ISO-Zeitstempel für reproduzierbare Protokolle")
     args = parser.parse_args(argv)
 
     if args.command == "review-wack-report":
         report_dir = Path(args.report_dir).resolve() if args.report_dir else None
         report = Path(args.report).resolve() if args.report else latest_wack_report(report_dir=report_dir)
         print(format_wack_summary(summarize_wack_report(report)))
+        return 0
+
+    if args.command == "write-test-protocol":
+        output = Path(args.output).resolve() if args.output else None
+        target = write_store_test_protocol(output=output, generated_at=args.generated_at)
+        print(f"STORE TESTPROTOKOLL: {target}")
         return 0
 
     findings = evaluate_store_readiness()

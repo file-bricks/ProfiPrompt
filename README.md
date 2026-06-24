@@ -150,6 +150,7 @@ WACK-Prüfung:
 
 ```bash
 python scripts/check_store_readiness.py
+python scripts/check_store_readiness.py write-test-protocol
 python scripts/check_store_readiness.py review-wack-report --report <wack-report.xml>
 ```
 
@@ -158,6 +159,9 @@ die 100-Zeichen-Kurzbeschreibungen, nichtleere Schlüsselwort- und
 Kategorie-Felder sowie die Kategorie-Ausrichtung zu `store_package.json`.
 Tests mit lokalen Release-Artefakten werden automatisch übersprungen, wenn
 `releases/GitHub/` in einem sauberen CI-Checkout fehlt.
+`write-test-protocol` schreibt ein lokales Markdown-Protokoll unter
+`releases/windowsstore/test_reports/`, enthält MSIX-Hash, Materialstatus und
+markiert fehlende WACK-XML bewusst als offenes Gate.
 
 ## Datenspeicherung / Privacy
 
