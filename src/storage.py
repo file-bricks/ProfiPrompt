@@ -23,9 +23,13 @@ class Storage:
 
     # --- Prompts ---
     def load_prompts(self) -> List[Prompt]:
+        # Bugsweep 28 BUG-PS02: OSError (inkl. FileNotFoundError/PermissionError) war
+        # ungefangen — z.B. wenn prompts.json zwischen _ensure_files und dem Lesen
+        # gelöscht wird (fehlgeschlagener .tmp-Rename, OneDrive-Lock). UnicodeDecodeError
+        # ist bereits via ValueError abgedeckt; OSError fehlte komplett.
         try:
             data = json.loads(self.prompts_file.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, ValueError):
+        except (json.JSONDecodeError, ValueError, OSError):
             data = {}
         return [prompt_from_dict(p) for p in data.get("prompts", [])]
     
@@ -84,9 +88,10 @@ class Storage:
 
     # --- Boards ---
     def load_boards(self) -> List[Board]:
+        # Bugsweep 28 BUG-PS02: identisch zu load_prompts — OSError ungefangen.
         try:
             data = json.loads(self.boards_file.read_text(encoding="utf-8"))
-        except (json.JSONDecodeError, ValueError):
+        except (json.JSONDecodeError, ValueError, OSError):
             data = {}
         return [board_from_dict(b) for b in data.get("boards", [])]
 

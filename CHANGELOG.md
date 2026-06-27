@@ -5,6 +5,19 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bugfixes (Bugsweep 2026-06-28 — Storage/Persistenz)
+- **BUG-PS01 (KRIT):** `prompt_from_dict` in `models.py` krachte mit `KeyError: 'title'`
+  bei alten oder fremden JSON-Exporten ohne `title`-Feld und riss den gesamten
+  `load_prompts`-Aufruf mit. Fix: `title=d["title"]` → `title=d.get("title", "")`;
+  konsistent mit der `version_from_dict`/`boarditem_from_dict`-Härtung aus Sweep 19.
+  Regressionstests: `tests/test_bugsweep_storage_20260628.py`.
+- **BUG-PS02 (MITTEL):** `load_prompts` und `load_boards` in `storage.py` fingen keinen
+  `OSError` (inkl. `FileNotFoundError`, `PermissionError`) — eine zwischen `_ensure_files`
+  und dem Lesezugriff gelöschte Datei (z.B. OneDrive-Lock, fehlgeschlagener `.tmp`-Rename)
+  ließ die App hart crashen. Fix: `except`-Klausel um `OSError` erweitert.
+  `UnicodeDecodeError` war bereits über `ValueError` abgedeckt (im Test verifiziert).
+  74/74 Tests grün.
+
 ### Planung / Platform
 - Portierungsplan am 2026-06-07 usecase-basiert aktualisiert: Windows Desktop bleibt Master-App und Store-Hauptkanal; Web/PWA bleibt read-only Companion für Web, Android und iOS; macOS/Linux bleiben Source-Smoke-Ziele; native Mobile-Voll-App, Cloud-Zwang und Server-Sync sind weiterhin Nicht-Ziele.
 
