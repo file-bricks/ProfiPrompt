@@ -17,3 +17,12 @@ test("import action uses a visible button while the file input stays out of tab 
   );
   assert.doesNotMatch(html, /<label class="button button--primary file-picker">/);
 });
+
+test("toast feedback is exposed as a polite live status", async () => {
+  const html = await readFile(htmlPath, "utf8");
+
+  assert.match(
+    html,
+    /<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden><\/div>/,
+  );
+});
