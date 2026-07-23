@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QFileDialog,
 )
-from PySide6.QtGui import QAction, QPalette, QColor
+from PySide6.QtGui import QAction, QActionGroup, QPalette, QColor
 from PySide6.QtCore import Qt
 
 from settings_manager import SettingsManager
@@ -22,6 +22,41 @@ from pdf_exporter import (
     export_single_prompt,
     export_single_version,
 )
+
+# --- Uebersetzung / i18n (Welle-1 U1: sichtbarer DE/EN-Sprachschalter) -------
+import os
+from pathlib import Path
+
+
+def _app_base_dir() -> Path:
+    """Basisverzeichnis fuer gebuendelte Daten (locales/translator).
+
+    Frozen (PyInstaller): sys._MEIPASS; sonst der Repo-Root (Parent von src/).
+    """
+    if getattr(sys, "frozen", False):
+        return Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+    return Path(__file__).resolve().parent.parent
+
+
+_BASE_DIR = _app_base_dir()
+if str(_BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(_BASE_DIR))
+
+try:
+    from translator import TranslationSystem
+except Exception:  # pragma: no cover - Uebersetzung ist optional
+    TranslationSystem = None
+
+
+def make_translator(lang: str):
+    """Erzeugt ein TranslationSystem mit robuster locales-Aufloesung (oder None)."""
+    if TranslationSystem is None:
+        return None
+    try:
+        return TranslationSystem(lang, app_dir=_BASE_DIR)
+    except Exception:
+        return None
+
 
 def apply_dark_theme(app):
     """Setzt ein modernes Dark-Theme (Fusion Style)."""
@@ -129,6 +164,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.storage = storage
         self.settings = settings
+        self.translator = make_translator(self.settings.get_language())
 
         self.setWindowTitle("Prompt Manager")
         self.resize(1300, 850)
@@ -157,39 +193,83 @@ class MainWindow(QMainWindow):
         bus.copyRequested.connect(self.handle_copy_request)
         bus.dragRequested.connect(self.handle_drag_request)
 
+    def _t(self, key: str) -> str:
+        """Uebersetzt key in die aktuelle Sprache (Fallback: key selbst)."""
+        return self.translator.t(key) if self.translator is not None else key
+
     def _build_menu(self):
         menubar = self.menuBar()
+        _t = self._t
 
         # Datei
-        m_file = menubar.addMenu("Datei")
-        m_file.addAction(self._action("Alle Prompts (TXT)", self.export_all_txt))
-        m_file.addAction(self._action("Alle Prompts (PDF)", self.export_all_pdf))
-        m_file.addAction(self._action("Bibliothek (JSON)", self.export_library_json))
+        m_file = menubar.addMenu(_t("Datei"))
+        m_file.addAction(self._action(_t("Alle Prompts (TXT)"), self.export_all_txt))
+        m_file.addAction(self._action(_t("Alle Prompts (PDF)"), self.export_all_pdf))
+        m_file.addAction(self._action(_t("Bibliothek (JSON)"), self.export_library_json))
         m_file.addSeparator()
-        m_file.addAction(self._action("Aktueller Prompt (TXT)", self.export_current_prompt_txt))
-        m_file.addAction(self._action("Aktueller Prompt (PDF)", self.export_current_prompt_pdf))
+        m_file.addAction(self._action(_t("Aktueller Prompt (TXT)"), self.export_current_prompt_txt))
+        m_file.addAction(self._action(_t("Aktueller Prompt (PDF)"), self.export_current_prompt_pdf))
         m_file.addSeparator()
-        m_file.addAction(self._action("Aktuelle Version (TXT)", self.export_current_version_txt))
-        m_file.addAction(self._action("Aktuelle Version (PDF)", self.export_current_version_pdf))
+        m_file.addAction(self._action(_t("Aktuelle Version (TXT)"), self.export_current_version_txt))
+        m_file.addAction(self._action(_t("Aktuelle Version (PDF)"), self.export_current_version_pdf))
         m_file.addSeparator()
-        m_file.addAction(self._action("Beenden", QApplication.instance().quit))
+        m_file.addAction(self._action(_t("Beenden"), QApplication.instance().quit))
 
         # Bearbeiten
-        m_edit = menubar.addMenu("Bearbeiten")
-        m_edit.addAction(self._action("Neuen Prompt erstellen", self.dashboard.create_prompt))
-        m_edit.addAction(self._action("Kopier-Einstellungen …", self.open_copy_settings))
+        m_edit = menubar.addMenu(_t("Bearbeiten"))
+        m_edit.addAction(self._action(_t("Neuen Prompt erstellen"), self.dashboard.create_prompt))
+        m_edit.addAction(self._action(_t("Kopier-Einstellungen …"), self.open_copy_settings))
 
         # Ansicht
-        m_view = menubar.addMenu("Ansicht")
-        toggle_boards = QAction("Boards anzeigen/ausblenden", self, checkable=True)
-        toggle_boards.setChecked(True)
+        m_view = menubar.addMenu(_t("Ansicht"))
+        toggle_boards = QAction(_t("Boards anzeigen/ausblenden"), self, checkable=True)
+        toggle_boards.setChecked(self.boardDock.isVisible())
         toggle_boards.toggled.connect(self.boardDock.setVisible)
         m_view.addAction(toggle_boards)
 
         # Hilfe
-        m_help = menubar.addMenu("Hilfe")
-        m_help.addAction(self._action("Anleitung", self._show_help))
-        m_help.addAction(self._action("Über Prompt Manager", self._show_about))
+        m_help = menubar.addMenu(_t("Hilfe"))
+        m_help.addAction(self._action(_t("Anleitung"), self._show_help))
+        m_help.addAction(self._action(_t("Über Prompt Manager"), self._show_about))
+
+        # Sprache / Language (Welle-1 U1: sichtbarer DE/EN-Schalter)
+        m_lang = menubar.addMenu("Sprache / Language")
+        cur = self.translator.get_language() if self.translator is not None else "de"
+        lang_group = QActionGroup(self)
+        lang_group.setExclusive(True)
+        act_de = QAction("Deutsch", self, checkable=True)
+        act_de.setChecked(cur == "de")
+        act_de.triggered.connect(lambda: self.change_language("de"))
+        act_en = QAction("English", self, checkable=True)
+        act_en.setChecked(cur == "en")
+        act_en.triggered.connect(lambda: self.change_language("en"))
+        lang_group.addAction(act_de)
+        lang_group.addAction(act_en)
+        m_lang.addAction(act_de)
+        m_lang.addAction(act_en)
+
+    def change_language(self, lang: str):
+        """Setzt die Sprache, persistiert sie und stellt die Menueleiste live um."""
+        self.settings.set_language(lang)
+        if self.translator is not None:
+            self.translator.set_language(lang)
+        self.retranslate()
+        if lang == "de":
+            QMessageBox.information(
+                self, "Sprache / Language",
+                "Sprache auf Deutsch umgestellt. Einige Texte werden erst nach "
+                "einem Neustart übersetzt.",
+            )
+        else:
+            QMessageBox.information(
+                self, "Sprache / Language",
+                "Language switched to English. Some texts update after a restart.",
+            )
+
+    def retranslate(self):
+        """Baut die Menueleiste in der aktuellen Sprache neu auf."""
+        self.menuBar().clear()
+        self._build_menu()
 
     def _action(self, text: str, slot):
         act = QAction(text, self)

@@ -31,6 +31,14 @@ class SmokeSettings:
     def get_include_metadata(self) -> bool:
         return self._include_metadata
 
+    def get_language(self) -> str:
+        lang = self.qs.value("ui/language", "de", type=str)
+        return lang if lang in ("de", "en") else "de"
+
+    def set_language(self, lang: str) -> None:
+        if lang in ("de", "en"):
+            self.qs.setValue("ui/language", lang)
+
 
 class _MemorySettingsStore:
     def __init__(self) -> None:

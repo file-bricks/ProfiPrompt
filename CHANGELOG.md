@@ -5,6 +5,18 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Neue Funktionen / Features
+- **Welle-1 U1 — sichtbarer DE/EN-Sprachschalter** (`src/profiprompt.py`,
+  `src/settings_manager.py`, `locales/translations.json`): Neues Menü „Sprache /
+  Language" (Deutsch/English, exklusiv wählbar) in der Menüleiste. Die
+  Menüleiste stellt sofort um (Live-Retranslate), tiefer liegende Texte folgen
+  nach einem Neustart (Hinweis-Dialog). Die Auswahl wird in den bestehenden
+  QSettings (`ui/language`) persistiert und beim Start geladen. Das bisher
+  ungenutzte `translator.py` / `locales/translations.json` ist damit im UI
+  verdrahtet (robuste locales-Auflösung für Source- und Frozen-Build; `.spec`
+  nachgezogen). `translator.py` erhielt zusätzlich den isinstance-Guard gegen
+  korrupte Einträge. Regressionstests: `tests/test_language_switch.py`.
+
 ### Bugfixes (Bugsweep 2026-06-28 — Storage/Persistenz)
 - **BUG-PS01 (KRIT):** `prompt_from_dict` in `models.py` krachte mit `KeyError: 'title'`
   bei alten oder fremden JSON-Exporten ohne `title`-Feld und riss den gesamten

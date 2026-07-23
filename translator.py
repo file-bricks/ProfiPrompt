@@ -83,8 +83,11 @@ class TranslationSystem:
         Returns:
             Uebersetzter Text oder Key als Fallback
         """
-        if key in self.translations:
-            return self.translations[key].get(self.current_lang, key)
+        entry = self.translations.get(key)
+        if isinstance(entry, dict):
+            # isinstance-Guard: bei korrupter translations.json (Wert kein dict)
+            # wuerde .get() sonst mit AttributeError crashen.
+            return entry.get(self.current_lang, key)
 
         if self._is_german(key):
             self.translations[key] = {"de": key, "en": ""}

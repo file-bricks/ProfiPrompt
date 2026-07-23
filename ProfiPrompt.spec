@@ -6,11 +6,12 @@ block_cipher = None
 
 a = Analysis(
     ['src/profiprompt.py'],
-    pathex=['src'],
+    pathex=['src', '.'],
     binaries=[],
     datas=[
         ('src/icons', 'icons'),
         ('locales', 'locales'),
+        ('translator.py', '.'),
     ],
     hiddenimports=[
         'PySide6.QtWidgets',

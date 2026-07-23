@@ -41,6 +41,17 @@ class SettingsManager(QtCore.QObject):
             self.qs.sync()
             self.copyModeChanged.emit(mode)
 
+    def get_language(self) -> str:
+        """Gespeicherte UI-Sprache ('de'/'en'), Default 'de'."""
+        lang = self.qs.value("ui/language", "de", type=str)
+        return lang if lang in ("de", "en") else "de"
+
+    def set_language(self, lang: str):
+        """Persistiert die UI-Sprache in den QSettings."""
+        if lang in ("de", "en"):
+            self.qs.setValue("ui/language", lang)
+            self.qs.sync()
+
     def get_include_metadata(self) -> bool:
         return self.qs.value("copy/include_metadata", False, type=bool)
 

@@ -22,5 +22,73 @@
   "Speichern": {
     "de": "Speichern",
     "en": "Save"
+  },
+  "Datei": {
+    "de": "Datei",
+    "en": "File"
+  },
+  "Bearbeiten": {
+    "de": "Bearbeiten",
+    "en": "Edit"
+  },
+  "Ansicht": {
+    "de": "Ansicht",
+    "en": "View"
+  },
+  "Hilfe": {
+    "de": "Hilfe",
+    "en": "Help"
+  },
+  "Alle Prompts (TXT)": {
+    "de": "Alle Prompts (TXT)",
+    "en": "All Prompts (TXT)"
+  },
+  "Alle Prompts (PDF)": {
+    "de": "Alle Prompts (PDF)",
+    "en": "All Prompts (PDF)"
+  },
+  "Bibliothek (JSON)": {
+    "de": "Bibliothek (JSON)",
+    "en": "Library (JSON)"
+  },
+  "Aktueller Prompt (TXT)": {
+    "de": "Aktueller Prompt (TXT)",
+    "en": "Current Prompt (TXT)"
+  },
+  "Aktueller Prompt (PDF)": {
+    "de": "Aktueller Prompt (PDF)",
+    "en": "Current Prompt (PDF)"
+  },
+  "Aktuelle Version (TXT)": {
+    "de": "Aktuelle Version (TXT)",
+    "en": "Current Version (TXT)"
+  },
+  "Aktuelle Version (PDF)": {
+    "de": "Aktuelle Version (PDF)",
+    "en": "Current Version (PDF)"
+  },
+  "Beenden": {
+    "de": "Beenden",
+    "en": "Quit"
+  },
+  "Neuen Prompt erstellen": {
+    "de": "Neuen Prompt erstellen",
+    "en": "Create New Prompt"
+  },
+  "Kopier-Einstellungen …": {
+    "de": "Kopier-Einstellungen …",
+    "en": "Copy Settings …"
+  },
+  "Boards anzeigen/ausblenden": {
+    "de": "Boards anzeigen/ausblenden",
+    "en": "Show/Hide Boards"
+  },
+  "Anleitung": {
+    "de": "Anleitung",
+    "en": "Guide"
+  },
+  "Über Prompt Manager": {
+    "de": "Über Prompt Manager",
+    "en": "About Prompt Manager"
   }
 }
