@@ -16,6 +16,43 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
   verdrahtet (robuste locales-Auflösung für Source- und Frozen-Build; `.spec`
   nachgezogen). `translator.py` erhielt zusätzlich den isinstance-Guard gegen
   korrupte Einträge. Regressionstests: `tests/test_language_switch.py`.
+- **Welle-1 U2 — Hell-/Dunkel-Theme umschaltbar** (`src/theme.py` (neu),
+  `src/profiprompt.py`, `src/settings_manager.py`, `src/board_manager.py`): Neuer
+  Menüpunkt „Bearbeiten → Darstellung …". Die Theme-Logik wurde aus
+  `profiprompt.py` in ein eigenes Modul `theme.py` ausgelagert; neben dem
+  bisherigen Dunkel-Theme gibt es jetzt eine sauber definierte Hell-Palette (kein
+  bloßes Invertieren: eigene Fusion-Palette + Stylesheet). Die Board-Flächenfarbe
+  folgt dem Theme (vorher hart `#252525`). Umschaltung erfolgt live (App-Palette
+  wird zur Laufzeit neu gesetzt, Board-Kacheln + Tree-Icons neu gezeichnet). Die
+  Auswahl wird in den QSettings (`ui/theme`) persistiert — analog zu `ui/language`.
+  `apply_dark_theme` bleibt als Kompat-Wrapper (von `platform_smoke.py` /
+  `generate_store_screenshots.py` genutzt). Regressionstests:
+  `tests/test_appearance_u2_u3_u4.py`.
+- **Welle-1 U3 — Kachelfarben konfigurierbar** (`src/theme.py`,
+  `src/board_manager.py`, `src/settings_manager.py`, `src/appearance_dialog.py`
+  (neu)): Getrennte Basis-Farbwahl für Haupt-Prompt- und Versionsprompt-Kacheln
+  über einen `QColorDialog` im Darstellungs-Dialog. Aus der gewählten Farbe wird
+  eine kohärente Kachel-Palette abgeleitet (Farbverlauf, Rand, Badge, lesbarer
+  Text per Luminanz-Kontrast), damit jede Wunschfarbe stimmig wirkt. Persistenz
+  in QSettings (`tiles/color_main`/`tiles/color_version`); Default = bisherige
+  Farben (`#5D4037` / `#37474F`); „Zurücksetzen"-Knopf stellt die Standardfarben
+  wieder her. Die zuvor hart kodierten Kachelfarben sind entfernt.
+- **Welle-1 U4 — echte transparente UI-Icons** (`src/icons/*.png` (neu),
+  `scripts/generate_ui_icons.py` (neu), `src/dashboard.py`): Die Clipboard- und
+  Büroklammer-Icons in der Prompt-Liste waren eingebettete Rasterbilder ohne
+  Alphakanal. Ersetzt durch schlanke, transparente Linien-Icons (128×128 PNG mit
+  Alphakanal, aus SVG gerendert) in je einer hellen und dunklen Variante; die App
+  wählt die theme-passende Variante, sodass die Icons auf hellem UND dunklem
+  Hintergrund sichtbar sind (wichtig wegen U2). Die alten `clipboard.ico/.jpg`
+  und `paperclip.ico/.jpg` wurden entfernt.
+
+### Tests / Infrastruktur
+- Neue `tests/conftest.py`: leitet die App-QSettings (IniFormat/UserScope)
+  session-weit in ein Temp-Verzeichnis um (Tests schreiben nicht mehr in das echte
+  `%APPDATA%\PromptManager`) und stellt eine gemeinsame `QApplication`-Fixture
+  bereit. `tests/test_appearance_u2_u3_u4.py` deckt U2/U3/U4 ab (Persistenz,
+  Theme-/Farbhelfer, Appearance-Dialog, Icon-Transparenz, Regressionsschutz gegen
+  wieder eingeführte harte Farben). Suite: 103 passed / 3 skipped.
 
 ### Bugfixes (Bugsweep 2026-06-28 — Storage/Persistenz)
 - **BUG-PS01 (KRIT):** `prompt_from_dict` in `models.py` krachte mit `KeyError: 'title'`
