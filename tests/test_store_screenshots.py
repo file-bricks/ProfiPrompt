@@ -60,11 +60,26 @@ def test_store_screenshots_present_and_nonempty():
 
 @pytest.mark.skipif(not _HAS_QT, reason="PySide6 fehlt")
 def test_generator_guard_flags_tofu_under_offscreen():
-    """Abnahmekriterium: unter offscreen erkennt der Guard Tofu und wirft."""
+    """Abnahmekriterium: unter offscreen bricht der Generator ab.
+
+    Zwei getrennte Aussagen, die frueher vermengt waren:
+
+    * ``_assert_font_rendering`` ist ein *Policy-Gate*: unter der
+      offscreen-Plattform wirft es immer, unabhaengig von der gemessenen
+      Schriftqualitaet. Das gilt auf jeder Plattform und wird hier gesichert.
+    * ``font_rendering_works`` ist eine *Messung*. Dass offscreen Tofu liefert,
+      ist eine Windows-Eigenart (siehe Kommentar oben); der Linux-Runner der
+      GitHub Actions rendert offscreen via Fontconfig korrekt und meldet daher
+      zu Recht True. Die Tofu-Erwartung gilt deshalb nur unter Windows -- dort
+      bleibt sie als Welle-1-U6-Regressionsschutz scharf.
+    """
     app = QApplication.instance()
     if app is None or QApplication.platformName() != "offscreen":
         pytest.skip("kein aktiver offscreen-Kontext")
-    assert gen.font_rendering_works(app) is False
+    if sys.platform.startswith("win"):
+        assert gen.font_rendering_works(app) is False, (
+            "Guard erkennt offscreen-Tofu unter Windows nicht mehr"
+        )
     with pytest.raises(RuntimeError):
         gen._assert_font_rendering(app)
 
