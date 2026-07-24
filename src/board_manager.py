@@ -13,6 +13,7 @@ from event_bus import bus
 from clipboard_manager import ClipboardManager
 from prompt_dialog import PromptDialog, VersionDialog
 from pdf_exporter import export_single_prompt, export_single_version
+import theme as theme_mod
 
 class PromptTile(QtWidgets.QFrame):
     clicked          = QtCore.Signal(str, object)
@@ -20,7 +21,8 @@ class PromptTile(QtWidgets.QFrame):
     contextRequested = QtCore.Signal(QtWidgets.QFrame, QtCore.QPoint)
     dragStart        = QtCore.Signal(str, object)
 
-    def __init__(self, prompt: Prompt, version: Optional[Version], font_family: Optional[str], parent=None):
+    def __init__(self, prompt: Prompt, version: Optional[Version], font_family: Optional[str],
+                 tile_palette: Optional[Dict] = None, parent=None):
         super().__init__(parent)
         self.prompt = prompt
         self.version = version
@@ -30,7 +32,7 @@ class PromptTile(QtWidgets.QFrame):
         self.setObjectName("PromptTile")
         self.setFixedSize(260, 190)
         self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-        self.setStyleSheet(self._tile_styles(font_family))
+        self.setStyleSheet(self._tile_styles(font_family, tile_palette))
         
         # Etwas dezenterer Schatten für Dark Mode
         shadow = QtWidgets.QGraphicsDropShadowEffect(self)
@@ -87,63 +89,15 @@ class PromptTile(QtWidgets.QFrame):
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self._on_custom_menu)
 
-    def _tile_styles(self, font_family: Optional[str]) -> str:
-        # DARK MODE FARBEN
-        # Main Prompt: Warmes Dunkel-Orange/Braun
-        # Version: Dunkles Slate-Blue
-        
-        font_css = f"font-family:'{font_family}';" if font_family else ""
-
-        if self.version is None:
-            # Haupt-Prompt Design
-            bg_grad = "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #5D4037, stop:1 #4E342E)"
-            border = "#8D6E63"
-            badge_bg = "#FF7043"
-            text_col = "#EFEBE9"
-            sub_col = "#BCAAA4"
-        else:
-            # Version Design
-            bg_grad = "qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #37474F, stop:1 #263238)"
-            border = "#78909C"
-            badge_bg = "#42A5F5"
-            text_col = "#ECEFF1"
-            sub_col = "#B0BEC5"
-
-        return f"""
-        QFrame#PromptTile {{
-            background: {bg_grad};
-            border: 1px solid {border};
-            border-radius: 8px;
-            {font_css}
-        }}
-        QFrame#PromptTile:hover {{
-            border: 1px solid {badge_bg};
-        }}
-        QLabel#PromptTitle {{
-            font-size: 15px;
-            font-weight: bold;
-            color: {text_col};
-        }}
-        QLabel#Badge {{
-            background-color: {badge_bg};
-            color: white;
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-size: 10px;
-            font-weight: bold;
-            max-width: 60px; /* Begrenzung damit es wie ein Tag aussieht */
-        }}
-        QLabel#Subtitle {{
-            color: {sub_col};
-            font-size: 12px;
-            font-style: italic;
-        }}
-        QLabel#Preview {{
-            color: {text_col};
-            font-size: 11px;
-            background: transparent;
-        }}
-        """
+    def _tile_styles(self, font_family: Optional[str], palette: Optional[Dict] = None) -> str:
+        # Kachelfarben sind konfigurierbar (U3): der Aufrufer liefert eine aus der
+        # gewaehlten Basisfarbe abgeleitete Palette. Fallback = Default-Basisfarbe
+        # der jeweiligen Kachelart (Haupt-Prompt vs. Version).
+        if palette is None:
+            base = (theme_mod.DEFAULT_TILE_MAIN if self.version is None
+                    else theme_mod.DEFAULT_TILE_VERSION)
+            palette = theme_mod.derive_tile_palette(base)
+        return theme_mod.tile_stylesheet(palette, font_family)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         super().mousePressEvent(event)
@@ -215,13 +169,13 @@ class BoardManager(QtWidgets.QWidget):
         # Scroll Area
         self.scroll = QtWidgets.QScrollArea()
         self.scroll.setWidgetResizable(True)
-        # Style für ScrollArea Container Background im Darkmode
-        self.scroll.setStyleSheet("QScrollArea { border: none; background-color: #252525; }")
-        
+
         self.container = QtWidgets.QWidget()
         self.container.setObjectName("BoardContainer")
-        self.container.setStyleSheet("QWidget#BoardContainer { background-color: #252525; }")
-        
+
+        # Board-Flaechen-Hintergrund folgt dem Theme (U2)
+        self._apply_surface_styles()
+
         self.grid = QtWidgets.QGridLayout(self.container)
         self.grid.setContentsMargins(20, 20, 20, 20)
         self.grid.setHorizontalSpacing(20)
@@ -248,6 +202,17 @@ class BoardManager(QtWidgets.QWidget):
     def _get_tile_font_family(self) -> Optional[str]:
         fam = self.settings.qs.value("tiles/font_family", "", type=str)
         return fam or None
+
+    def _apply_surface_styles(self):
+        """Setzt den Board-Flaechen-Hintergrund passend zum aktuellen Theme (U2)."""
+        surf = theme_mod.board_surface_color(self.settings.get_theme())
+        self.scroll.setStyleSheet(f"QScrollArea {{ border: none; background-color: {surf}; }}")
+        self.container.setStyleSheet(f"QWidget#BoardContainer {{ background-color: {surf}; }}")
+
+    def apply_theme_and_reload(self):
+        """Nach Theme-/Farbwechsel: Flaeche + Kacheln neu einfaerben (Live-Umschaltung)."""
+        self._apply_surface_styles()
+        self.reload_items()
 
     def choose_tile_font(self):
         cur_fam = self._get_tile_font_family()
@@ -292,19 +257,24 @@ class BoardManager(QtWidgets.QWidget):
         prompts_map = {p.id: p for p in self.storage.load_prompts()}
         font_family = self._get_tile_font_family()
 
+        # Konfigurierbare Kachelfarben (U3): je eine abgeleitete Palette fuer
+        # Haupt-Prompt- und Versions-Kacheln, einmal pro Reload berechnet.
+        main_pal = theme_mod.derive_tile_palette(self.settings.get_tile_color("main"))
+        version_pal = theme_mod.derive_tile_palette(self.settings.get_tile_color("version"))
+
         # Responsive Grid Logic (fixe Spaltenanzahl ist oft unflexibel, hier 3)
-        cols = 3 
+        cols = 3
         row, col = 0, 0
-        
+
         for item in board.items:
             p = prompts_map.get(item.prompt_id)
             if not p: continue
-            
+
             v = None
             if item.version_id:
                 v = next((x for x in p.versions if x.id == item.version_id), None)
 
-            tile = PromptTile(p, v, font_family, self)
+            tile = PromptTile(p, v, font_family, version_pal if v else main_pal, self)
             tile.clicked.connect(self._on_tile_clicked)
             tile.doubleClicked.connect(self._on_tile_double_clicked)
             tile.contextRequested.connect(self._on_tile_context_menu)

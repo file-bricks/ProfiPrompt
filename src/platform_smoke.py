@@ -39,6 +39,16 @@ class SmokeSettings:
         if lang in ("de", "en"):
             self.qs.setValue("ui/language", lang)
 
+    def get_theme(self) -> str:
+        theme = self.qs.value("ui/theme", "dark", type=str)
+        return theme if theme in ("dark", "light") else "dark"
+
+    def get_tile_color(self, kind: str) -> str:
+        import theme as theme_mod
+        default = (theme_mod.DEFAULT_TILE_MAIN if kind == "main"
+                   else theme_mod.DEFAULT_TILE_VERSION)
+        return self.qs.value(f"tiles/color_{kind}", default, type=str) or default
+
 
 class _MemorySettingsStore:
     def __init__(self) -> None:

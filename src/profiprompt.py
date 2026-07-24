@@ -58,112 +58,20 @@ def make_translator(lang: str):
         return None
 
 
+from theme import apply_theme
+from appearance_dialog import AppearanceDialog
+
+
 def apply_dark_theme(app):
-    """Setzt ein modernes Dark-Theme (Fusion Style)."""
-    app.setStyle("Fusion")
-    
-    dark_palette = QPalette()
-    
-    # Farbdefinitionen
-    c_bg = QColor(40, 40, 40)
-    c_base = QColor(30, 30, 30)
-    c_text = QColor(220, 220, 220)
-    c_highlight = QColor(66, 165, 245)  # Ein modernes Blau
-    c_highlight_text = QColor(255, 255, 255)
-    c_btn = QColor(50, 50, 50)
-
-    dark_palette.setColor(QPalette.Window, c_bg)
-    dark_palette.setColor(QPalette.WindowText, c_text)
-    dark_palette.setColor(QPalette.Base, c_base)
-    dark_palette.setColor(QPalette.AlternateBase, c_bg)
-    dark_palette.setColor(QPalette.ToolTipBase, c_highlight)
-    dark_palette.setColor(QPalette.ToolTipText, c_highlight_text)
-    dark_palette.setColor(QPalette.Text, c_text)
-    dark_palette.setColor(QPalette.Button, c_btn)
-    dark_palette.setColor(QPalette.ButtonText, c_text)
-    dark_palette.setColor(QPalette.BrightText, Qt.red)
-    dark_palette.setColor(QPalette.Link, c_highlight)
-    dark_palette.setColor(QPalette.Highlight, c_highlight)
-    dark_palette.setColor(QPalette.HighlightedText, c_highlight_text)
-    
-    app.setPalette(dark_palette)
-
-    # Globales CSS für Feinheiten
-    app.setStyleSheet(f"""
-        QMainWindow {{
-            background-color: {c_bg.name()};
-        }}
-        QToolTip {{ 
-            color: #ffffff; 
-            background-color: {c_highlight.name()}; 
-            border: 1px solid {c_bg.name()}; 
-        }}
-        /* Eingabefelder */
-        QLineEdit, QTextEdit, QPlainTextEdit {{
-            background-color: #2b2b2b;
-            border: 1px solid #555;
-            border-radius: 4px;
-            padding: 4px;
-            color: #eee;
-            selection-background-color: {c_highlight.name()};
-        }}
-        QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {{
-            border: 1px solid {c_highlight.name()};
-        }}
-        /* Listen und Bäume */
-        QTreeWidget, QListWidget {{
-            background-color: #2b2b2b;
-            border: 1px solid #444;
-            alternate-background-color: #323232;
-        }}
-        QHeaderView::section {{
-            background-color: #383838;
-            color: #ddd;
-            padding: 4px;
-            border: none;
-            border-right: 1px solid #555;
-            border-bottom: 1px solid #555;
-        }}
-        /* Buttons */
-        QPushButton {{
-            background-color: #3d3d3d;
-            border: 1px solid #555;
-            border-radius: 4px;
-            padding: 5px 12px;
-            color: #eee;
-        }}
-        QPushButton:hover {{
-            background-color: #4d4d4d;
-            border-color: {c_highlight.name()};
-        }}
-        QPushButton:pressed {{
-            background-color: {c_highlight.name()};
-            color: white;
-        }}
-        /* Scrollbars */
-        QScrollBar:vertical {{
-            border: none;
-            background: #2b2b2b;
-            width: 10px;
-            margin: 0px;
-        }}
-        QScrollBar::handle:vertical {{
-            background: #555;
-            min-height: 20px;
-            border-radius: 5px;
-        }}
-        QDockWidget::title {{
-            background: #323232;
-            padding-left: 5px;
-            padding-top: 4px;
-        }}
-    """)
+    """Kompat-Wrapper: setzt das Dark-Theme (Theme-Logik jetzt in theme.py)."""
+    return apply_theme(app, "dark")
 
 class MainWindow(QMainWindow):
     def __init__(self, storage: Storage, settings: SettingsManager):
         super().__init__()
         self.storage = storage
         self.settings = settings
+        self.app = QApplication.instance()
         self.translator = make_translator(self.settings.get_language())
 
         self.setWindowTitle("Prompt Manager")
@@ -219,6 +127,7 @@ class MainWindow(QMainWindow):
         m_edit = menubar.addMenu(_t("Bearbeiten"))
         m_edit.addAction(self._action(_t("Neuen Prompt erstellen"), self.dashboard.create_prompt))
         m_edit.addAction(self._action(_t("Kopier-Einstellungen …"), self.open_copy_settings))
+        m_edit.addAction(self._action(_t("Darstellung …"), self.open_appearance_settings))
 
         # Ansicht
         m_view = menubar.addMenu(_t("Ansicht"))
@@ -379,6 +288,18 @@ class MainWindow(QMainWindow):
     def open_copy_settings(self):
         CopySettingsDialog(self.settings, self).exec()
 
+    def open_appearance_settings(self):
+        """Darstellung (U2 Theme + U3 Kachelfarben); wendet Aenderungen live an."""
+        dlg = AppearanceDialog(self.settings, self)
+        if dlg.exec() == dlg.DialogCode.Accepted:
+            # Theme app-weit live umschalten (Fusion-Palette + Stylesheet)
+            if self.app is not None:
+                apply_theme(self.app, self.settings.get_theme())
+            # Dashboard neu laden -> theme-passende Tree-Icons neu waehlen (U4)
+            self.dashboard.reload()
+            # Board-Kacheln + Flaeche neu einfaerben (U2 Flaeche, U3 Farben)
+            self.boardManager.apply_theme_and_reload()
+
     def handle_copy_request(self, kind, item_id, parent):
         clipboard = QApplication.clipboard()
         clip_mgr = ClipboardManager(self.settings)
@@ -421,11 +342,11 @@ class MainWindow(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     app.setApplicationName("Prompt Manager")
-    
-    # Hier wird das Design geladen
-    apply_dark_theme(app)
 
     settings = SettingsManager()
+    # Theme aus den Einstellungen anwenden (Hell/Dunkel, U2)
+    apply_theme(app, settings.get_theme())
+
     # Pfad aus settings oder standard
     storage = Storage(settings.get_data_path())
 
