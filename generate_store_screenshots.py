@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any
 
 from PySide6 import QtCore
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QFont, QPainter, QPixmap
 from PySide6.QtWidgets import QApplication
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -149,9 +151,60 @@ def seed_store_storage(storage: Storage) -> None:
     storage.save_boards(boards)
 
 
-def _ensure_offscreen() -> None:
-    if "QT_QPA_PLATFORM" not in os.environ and QApplication.instance() is None:
-        os.environ["QT_QPA_PLATFORM"] = "offscreen"
+def _force_native_platform() -> None:
+    """Entfernt eine erzwungene offscreen-Plattform VOR der QApplication-Erzeugung.
+
+    WICHTIG (Root-Cause des Tofu-Bugs): Unter QT_QPA_PLATFORM=offscreen rendert
+    Qt auf Windows KEINE echten Glyphen -- jede Glyphe wird als .notdef-Kaestchen
+    (Tofu) gerastert. window.grab() liefert dann ein Bild voller Kaestchen. Fuer
+    lesbare Screenshots muss die native Plattform aktiv sein; das Fenster bleibt
+    trotzdem unsichtbar (Qt.WA_DontShowOnScreen).
+    """
+    if os.environ.get("QT_QPA_PLATFORM") == "offscreen" and QApplication.instance() is None:
+        del os.environ["QT_QPA_PLATFORM"]
+
+
+def _render_char(ch: str, font: QFont, size: QSize) -> bytes:
+    pm = QPixmap(size)
+    pm.fill(QtCore.Qt.white)
+    p = QPainter(pm)
+    p.setFont(font)
+    p.drawText(pm.rect(), QtCore.Qt.AlignCenter, ch)
+    p.end()
+    return bytes(pm.toImage().constBits())
+
+
+def font_rendering_works(app: QApplication) -> bool:
+    """True, wenn die aktuelle Plattform echte Glyphen rendert.
+
+    Rendert mehrere unterschiedliche Zeichen einzeln. Bei echtem Rendering sehen
+    sie verschieden aus; bei Tofu ist jedes das gleiche .notdef-Kaestchen -> alle
+    Renderings identisch.
+    """
+    font = app.font()
+    size = QSize(48, 48)
+    probes = ["A", "B", "g", "8", "M"]
+    renders = [_render_char(ch, font, size) for ch in probes]
+    blank = _render_char(" ", font, size)
+    distinct = len(set(renders))
+    non_blank = sum(1 for r in renders if r != blank)
+    return distinct >= 3 and non_blank >= len(probes) - 1
+
+
+def _assert_font_rendering(app: QApplication) -> None:
+    platform = QApplication.platformName()
+    if platform == "offscreen":
+        raise RuntimeError(
+            "Qt laeuft unter der 'offscreen'-Plattform -- Screenshots wuerden Tofu "
+            "(Kaestchen statt Text) enthalten. QT_QPA_PLATFORM=offscreen nicht setzen; "
+            "der Generator nutzt WA_DontShowOnScreen auf der nativen Plattform."
+        )
+    if not font_rendering_works(app):
+        raise RuntimeError(
+            f"Font-Rendering-Selbsttest fehlgeschlagen (Plattform '{platform}'): "
+            "gerenderte Glyphen sind nicht unterscheidbar (Tofu-Verdacht). "
+            "Abbruch, um kein defektes Screenshot-Set zu erzeugen."
+        )
 
 
 def _select_tree_item(window: MainWindow, prompt_index: int, version_index: int | None = None) -> None:
@@ -196,10 +249,11 @@ def render_store_screenshots(output_dir: str | Path, *, headless: bool = True) -
     output_dir.mkdir(parents=True, exist_ok=True)
 
     if headless:
-        _ensure_offscreen()
+        _force_native_platform()
 
     app = QApplication.instance() or QApplication([])
     apply_dark_theme(app)
+    _assert_font_rendering(app)
 
     summary_path = output_dir / "summary.json"
 
@@ -209,6 +263,8 @@ def render_store_screenshots(output_dir: str | Path, *, headless: bool = True) -
         seed_store_storage(storage)
 
         window = MainWindow(storage, settings)
+        # Fenster nie sichtbar zeigen, aber echtes Rendering auf nativer Plattform.
+        window.setAttribute(QtCore.Qt.WA_DontShowOnScreen, True)
         window.resize(1600, 960)
         window.show()
         window.raise_()

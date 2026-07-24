@@ -1,6 +1,6 @@
 {
   "headless": true,
-  "qt_platform": "offscreen",
+  "qt_platform": "",
   "screenshots": {
     "main-window": "README/screenshots/store/main-window.png",
     "search-and-versions": "README/screenshots/store/search-and-versions.png",
