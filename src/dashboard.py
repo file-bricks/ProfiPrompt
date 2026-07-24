@@ -192,8 +192,15 @@ class DashboardWidget(QtWidgets.QWidget):
         def safe_date(s: Optional[str]) -> str:
             return s.split("T")[0] if s else ""
 
-        PAPERCLIP_ICON = _os.path.join(_ICON_DIR, "paperclip.ico")
-        CLIPBOARD_ICON = _os.path.join(_ICON_DIR, "clipboard.ico")
+        # Transparente Icons, theme-passend (U4): helles Icon auf dunklem Theme,
+        # dunkles Icon auf hellem Theme -> auf beiden Hintergruenden sichtbar (U2).
+        try:
+            _theme = self.settings.get_theme()
+        except Exception:
+            _theme = "dark"
+        _variant = "light" if _theme == "dark" else "dark"
+        PAPERCLIP_ICON = _os.path.join(_ICON_DIR, f"paperclip-{_variant}.png")
+        CLIPBOARD_ICON = _os.path.join(_ICON_DIR, f"clipboard-{_variant}.png")
 
         for p in sorted(prompts, key=lambda x: x.updated_at or "", reverse=True):
             # Top‐Level‐Item für Prompt
