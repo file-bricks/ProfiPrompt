@@ -1,6 +1,6 @@
 # ProfiPrompt
 
-Last-checked: 2026-06-11
+Last-checked: 2026-07-26
 
 ## Canonical links
 
@@ -49,8 +49,9 @@ ProfiPrompt Web PWA companion
 
 ## Validation
 
-- Python tests: `python -m pytest -q`
-- Web/PWA tests: `node --test web_companion/tests/*.test.mjs`
+- Python tests: `python -m pytest` (103 passed)
+- Web/PWA tests: `node --test web_companion/tests/*.test.js web_companion/tests/*.mjs` (46 passed)
+- Total test suite: 149 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`
 

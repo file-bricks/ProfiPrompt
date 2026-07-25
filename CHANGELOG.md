@@ -5,6 +5,16 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-07-26
+
+### Discoverability, SEO & Doku-Wartung
+- **PEP 621 Standardisierung:** Standardisierte `pyproject.toml` mit Projekt-Metadaten, Schlüsselwörtern, URLs und Pytest-Optionen (`pythonpath = "."`, `testpaths = ["tests"]`) angelegt.
+- **Visual Badges & i18n:** Shields.io Badges (Python 3.10+, PySide6 Qt6, Pytest 103 passed, Web Companion 46 passed, Windows, Offline-first, LLM-Ready `llms.txt`) & Sprach-Umschalter (`[English](README.md) | [Deutsch](README_de.md)`) integriert.
+- **GFM Callout & Systemarchitektur:** KI/LLM-Integrationshinweis (`> [!NOTE]`) für maschinenlesbaren Kontext und Mermaid-Systemarchitekturdiagramm in `README.md` und `README_de.md` eingebunden.
+- **Deutsche Dokumentation:** Eigene deutsche `README_de.md` mit 100% i18n-Parität, Screenshot-Verweisen und rechtlichem Haftungsausschluss (§ 521 BGB) neu erstellt.
+- **llms.txt Synchronisation:** Timestamp `Last-checked: 2026-07-26` und Testsuiten-Gesamtzahl (149 passed) in `llms.txt` verifiziert und synchronisiert.
+
+
 ### Neue Funktionen / Features
 - **Welle-1 U1 — sichtbarer DE/EN-Sprachschalter** (`src/profiprompt.py`,
   `src/settings_manager.py`, `locales/translations.json`): Neues Menü „Sprache /
