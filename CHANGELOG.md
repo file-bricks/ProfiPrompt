@@ -5,6 +5,9 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Discoverability & Sichtbarkeit (2026-07-29)
+- `llms.txt` Last-checked-Zeitstempel auf `2026-07-29` aktualisiert; SEO-Keywords, kanonische Repository-URLs (`file-bricks/ProfiPrompt`), Validierungsbefehle (`pytest`, Node-Companion-Smoke) und Scope-Grenzen im Rahmen der Discoverability-Hygiene auf Vollständigkeit und Parität verifiziert.
+
 ## [1.0.2] - 2026-07-26
 
 ### Discoverability, SEO & Doku-Wartung
@@ -13,7 +16,6 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - **GFM Callout & Systemarchitektur:** KI/LLM-Integrationshinweis (`> [!NOTE]`) für maschinenlesbaren Kontext und Mermaid-Systemarchitekturdiagramm in `README.md` und `README_de.md` eingebunden.
 - **Deutsche Dokumentation:** Eigene deutsche `README_de.md` mit 100% i18n-Parität, Screenshot-Verweisen und rechtlichem Haftungsausschluss (§ 521 BGB) neu erstellt.
 - **llms.txt Synchronisation:** Timestamp `Last-checked: 2026-07-26` und Testsuiten-Gesamtzahl (149 passed) in `llms.txt` verifiziert und synchronisiert.
-
 
 ### Neue Funktionen / Features
 - **Welle-1 U1 — sichtbarer DE/EN-Sprachschalter** (`src/profiprompt.py`,
