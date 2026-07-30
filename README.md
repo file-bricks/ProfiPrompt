@@ -1,4 +1,4 @@
-<img src="assets/banner_v2.svg" width="100%" alt="ProfiPrompt Banner">
+<img src="assets/banner.png" width="100%" alt="ProfiPrompt Banner">
 
 # ProfiPrompt
 
