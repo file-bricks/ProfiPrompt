@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "profiprompt"
-version = "1.0.1"
+version = "1.0.2"
 description = "Local-first PySide6 desktop application for AI prompt management, prompt versioning, board organization, and PWA companion export."
 readme = "README.md"
 authors = [{ name = "Lukas Geiger", email = "lukas@example.com" }]

@@ -5,6 +5,11 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Technische Hygiene & Maintenance Check (2026-08-02)
+- **Version Alignment & Metadata:** `pyproject.toml` Version auf `1.0.2` synchronisiert (Parität mit Release 1.0.2 im Changelog).
+- **LLM Indexing & Timestamps:** `llms.txt` Last-checked-Zeitstempel auf `2026-08-02` aktualisiert.
+- **Verifikation & Testabdeckung:** Testsuite-Verifikation abgeschlossen — 103 Python-Pytest-Tests + 46 Node.js-Web-Companion-Tests = 149 Tests 100% grün (0 Fehler).
+
 ### Discoverability & Sichtbarkeit (2026-07-29)
 - `llms.txt` Last-checked-Zeitstempel auf `2026-07-29` aktualisiert; SEO-Keywords, kanonische Repository-URLs (`file-bricks/ProfiPrompt`), Validierungsbefehle (`pytest`, Node-Companion-Smoke) und Scope-Grenzen im Rahmen der Discoverability-Hygiene auf Vollständigkeit und Parität verifiziert.
 
