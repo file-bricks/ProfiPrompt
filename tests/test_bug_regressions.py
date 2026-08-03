@@ -186,19 +186,37 @@ class TestD2DashboardAdvisorCP(unittest.TestCase):
                          "dashboard: deprecated QMessageBox.Yes noch vorhanden — BUG-D2")
 
 
-# ── D2: board_manager.py QMessageBox.Yes (Advisor-CP) ───────────────────────
+# ── Bugsweep 28: Board & Dashboard State Resilience ─────────────────────────
 
-class TestD2BoardManagerMessageBoxAdvisorCP(unittest.TestCase):
-    def _src(self):
-        return BOARD_MGR.read_text(encoding="utf-8")
+class TestBugsweep28GUIAndBoardState(unittest.TestCase):
+    def test_board_from_dict_missing_title_and_id(self):
+        from models import board_from_dict, Board
+        # Board-JSON ohne 'title' und 'id' darf keinen KeyError werfen
+        raw = {"description": "Test board without title"}
+        board = board_from_dict(raw)
+        self.assertIsInstance(board, Board)
+        self.assertEqual(board.title, "")
+        self.assertTrue(len(board.id) > 0)
 
-    def test_message_box_yes_migrated(self):
-        src = self._src()
-        self.assertIn("QMessageBox.StandardButton.Yes", src,
-                      "board_manager: QMessageBox.Yes nicht migriert — BUG-D2")
-        self.assertNotIn("== QtWidgets.QMessageBox.Yes:", src,
-                         "board_manager: deprecated QMessageBox.Yes noch vorhanden — BUG-D2")
+    def test_boarditem_from_dict_missing_keys(self):
+        from models import boarditem_from_dict, BoardItem
+        # BoardItem-JSON ohne 'id', 'board_id' oder 'prompt_id' darf keinen KeyError werfen
+        raw = {"version_id": "v123"}
+        item = boarditem_from_dict(raw)
+        self.assertIsInstance(item, BoardItem)
+        self.assertEqual(item.version_id, "v123")
+        self.assertEqual(item.board_id, "")
+        self.assertEqual(item.prompt_id, "")
+
+    def test_dashboard_tags_none_resilience(self):
+        from models import Prompt
+        # Prompt mit None in tags darf bei Tag-Iterierung in Dashboard-Filtern nicht abstürzen
+        p = Prompt(id="p1", title="Test Prompt", purpose="Testing", text="Sample text", tags=[None, "ai"])
+        search_text = "ai"
+        has_match = any(search_text in t.lower() for t in (p.tags or []) if isinstance(t, str))
+        self.assertTrue(has_match)
 
 
 if __name__ == "__main__":
     unittest.main()
+

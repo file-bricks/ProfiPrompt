@@ -136,25 +136,29 @@ def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
 
 def boarditem_from_dict(d: Dict[str, Any]) -> BoardItem:
     """Reconstruct a BoardItem from a dict (feldweise, schema-drift-robust)."""
-    # Bugsweep 19 BUG-01: feldweise statt BoardItem(**d) -> unbekannter/fehlender Key bricht
-    # sonst den ganzen Board-Load. id/board_id/prompt_id hart, Rest mit Defaults.
+    # Bugsweep 19/28 BUG-BM01: .get()-Defaults für id, board_id, prompt_id verhindern KeyError bei schema-drift
     return BoardItem(
-        id=d["id"],
-        board_id=d["board_id"],
-        prompt_id=d["prompt_id"],
+        id=d.get("id", gen_id()),
+        board_id=d.get("board_id", ""),
+        prompt_id=d.get("prompt_id", ""),
         version_id=d.get("version_id"),
         created_at=d.get("created_at", now_iso()),
     )
 
 
 def board_from_dict(d: Dict[str, Any]) -> Board:
-    """Reconstruct a Board (and its BoardItems) from a dict."""
+    """Reconstruct a Board (and its BoardItems) from a dict (feldweise, schema-drift-robust).
+
+    Bugsweep 28 BUG-BM02: title=d["title"] und id=d["id"] warfen KeyError bei alten/fremden
+    Board-JSONs ohne 'title'/'id' und rissen den gesamten load_boards() mit.
+    """
     items_data = d.get("items", [])
-    items = [boarditem_from_dict(i) for i in items_data]
+    items = [boarditem_from_dict(i) for i in items_data if isinstance(i, dict)]
     return Board(
-        id=d["id"],
-        title=d["title"],
+        id=d.get("id", gen_id()),
+        title=d.get("title", ""),
         description=d.get("description", ""),
         items=items,
         created_at=d.get("created_at", now_iso())
     )
+

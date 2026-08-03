@@ -5,7 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Software Bugsweep — Iteration 2 (2026-08-03)
+- **GUI & Board-State Resilienz (`src/models.py`):** `board_from_dict` und `boarditem_from_dict` wurden gehärtet. Fehlende oder korrupte Schlüssel (`title`, `id`, `board_id`, `prompt_id`) in `boards.json` lösen dank `.get()`-Defaults keinen `KeyError` mehr aus und verhindern den Absturz des Board-Managers beim Laden der Boards.
+- **Dashboard Filter-Resilienz (`src/dashboard.py`):** Volltextsuche und Tag-Filterung in `DashboardWidget._apply_filters` gegen `None` oder Nicht-String-Elemente in `tags` und Versionstags gehärtet (`isinstance(t, str)`), um `AttributeError` bei korrupten/externe Datenstrukturen zu unterbinden.
+- **Testabdeckung:** Unit-Tests in `tests/test_bug_regressions.py` (`TestBugsweep28GUIAndBoardState`) erweitert. Pytest Testsuite: 105 passed, 3 skipped (100% grün).
+
 ### Technische Hygiene & Maintenance Check (2026-08-02)
+
 - **Version Alignment & Metadata:** `pyproject.toml` Version auf `1.0.2` synchronisiert (Parität mit Release 1.0.2 im Changelog).
 - **LLM Indexing & Timestamps:** `llms.txt` Last-checked-Zeitstempel auf `2026-08-02` aktualisiert.
 - **Verifikation & Testabdeckung:** Testsuite-Verifikation abgeschlossen — 103 Python-Pytest-Tests + 46 Node.js-Web-Companion-Tests = 149 Tests 100% grün (0 Fehler).

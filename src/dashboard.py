@@ -161,7 +161,7 @@ class DashboardWidget(QtWidgets.QWidget):
                 p for p in prompts
                 if search_text in (p.title or "").lower()
                 or search_text in (p.text or "").lower()
-                or any(search_text in t.lower() for t in (p.tags or []))
+                or any(search_text in t.lower() for t in (p.tags or []) if isinstance(t, str))
             ]
 
         # Apply tag filter
@@ -169,9 +169,10 @@ class DashboardWidget(QtWidgets.QWidget):
         if selected_tag:
             prompts = [
                 p for p in prompts
-                if selected_tag in (p.tags or [])
-                or any(selected_tag in (v.tags or []) for v in p.versions)
+                if (p.tags and selected_tag in p.tags)
+                or any(v.tags and selected_tag in v.tags for v in p.versions)
             ]
+
 
         # Apply date filter
         date_from = self._date_or_none(self.date_from)
