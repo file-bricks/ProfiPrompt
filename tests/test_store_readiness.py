@@ -99,7 +99,7 @@ https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests und
 30 Web/PWA-Smoke-Tests.
 
 ### Schlüsselwörter
-AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Kategorie
 Productivity / AI Tools
@@ -118,7 +118,7 @@ https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests and
 30 Web/PWA-Smoke-Tests.
 
 ### Keywords
-AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Category
 Productivity / AI Tools
@@ -226,7 +226,7 @@ https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests und
 30 Web/PWA-Smoke-Tests.
 
 ### Schlüsselwörter
-AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Kategorie
 AI Tools
@@ -245,7 +245,7 @@ https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests and
 30 Web/PWA-Smoke-Tests.
 
 ### Keywords
-AI Prompt, Prompt Manager, ChatGPT, Claude, LLM
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Category
 Productivity / AI Tools

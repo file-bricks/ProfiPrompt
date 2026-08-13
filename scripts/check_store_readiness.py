@@ -47,6 +47,29 @@ LISTING_FIELD_LABELS = {
     },
 }
 
+# Microsoft Store: maximal 7 Suchbegriffe je Sprach-Listing.
+MAX_STORE_KEYWORDS = 7
+
+# Fremde Produkttitel duerfen nach Store-Policy 10.1.3 (Search Terms) NICHT als
+# Suchbegriff verwendet werden. Die Einreichung vom 2026-08-10 wurde am
+# 2026-08-11 genau deshalb abgelehnt ("ChatGPT", "Claude" in allen Listings).
+FOREIGN_BRAND_TERMS = (
+    "ChatGPT", "OpenAI", "GPT-4", "GPT-5", "Claude", "Anthropic", "Gemini",
+    "Bard", "Copilot", "Llama", "Mistral", "Perplexity", "Midjourney",
+    "Notion", "Obsidian", "Evernote", "OneNote", "Grok", "DeepSeek",
+)
+
+
+def matched_foreign_brand(text: str) -> str | None:
+    """Gibt den ersten gefundenen fremden Produkttitel zurueck, sonst None.
+
+    Vergleich auf Wortgrenzen, damit z. B. "Prompt Template" nicht anschlaegt.
+    """
+    for brand in FOREIGN_BRAND_TERMS:
+        if re.search(rf"(?<!\w){re.escape(brand)}(?!\w)", text, re.IGNORECASE):
+            return brand
+    return None
+
 
 def project_root(root: Path | None = None) -> Path:
     return root or PROJECT_ROOT
@@ -264,11 +287,25 @@ def validate_store_listing(root: Path | None = None) -> list[str]:
 
         keywords = parsed.get("keywords", "")
         if keywords:
-            keyword_count = len([part.strip() for part in re.split(r"[,;]", keywords) if part.strip()])
+            keyword_parts = [part.strip() for part in re.split(r"[,;]", keywords) if part.strip()]
+            keyword_count = len(keyword_parts)
             if keyword_count < 5:
                 findings.append(
                     f"STORE_LISTING.md hat zu wenige Schlüsselwörter im Abschnitt {language}: {keyword_count}"
                 )
+            if keyword_count > MAX_STORE_KEYWORDS:
+                findings.append(
+                    f"STORE_LISTING.md hat zu viele Schlüsselwörter im Abschnitt {language}: "
+                    f"{keyword_count} (Microsoft erlaubt maximal {MAX_STORE_KEYWORDS})"
+                )
+            for part in keyword_parts:
+                hit = matched_foreign_brand(part)
+                if hit:
+                    findings.append(
+                        f"STORE_LISTING.md nennt im Abschnitt {language} den fremden Produkttitel "
+                        f"\"{hit}\" als Suchbegriff (\"{part}\") — verstößt gegen Store-Policy 10.1.3 "
+                        f"(Search Terms) und führte am 2026-08-11 zur Ablehnung."
+                    )
 
         category = parsed.get("category", "")
         if category and expected_category and expected_category not in category:

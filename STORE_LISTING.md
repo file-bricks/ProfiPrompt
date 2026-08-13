@@ -54,7 +54,7 @@ Alle Daten werden lokal in JSON-Dateien gespeichert. Kein Cloud-Account, keine I
 - Support: https://github.com/file-bricks/ProfiPrompt/issues
 
 ### Schlüsselwörter
-AI Prompt, Prompt Manager, Prompt Engineering, KI Prompts, ChatGPT, Claude, Versionierung, Prompt Bibliothek, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Sammlung
+Prompt Manager, Prompt Engineering, KI Prompts, Prompt Bibliothek, Prompt Organizer, Prompt Verwaltung, LLM
 
 ### Kategorie
 Productivity / AI Tools
@@ -115,7 +115,7 @@ All data is stored locally in JSON files. No cloud account, no internet connecti
 - Support: https://github.com/file-bricks/ProfiPrompt/issues
 
 ### Keywords
-AI Prompt, Prompt Manager, Prompt Engineering, AI Prompts, ChatGPT, Claude, Versioning, Prompt Library, Prompt Organizer, AI Tools, LLM, Prompt Template, Prompt Collection
+Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, Prompt Organizer, Prompt Template, LLM
 
 ### Category
 Productivity / AI Tools
