@@ -10,5 +10,6 @@
   "category": "Productivity",
   "age_rating": "3+",
   "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
-  "support_url": "https://github.com/file-bricks/ProfiPrompt/issues"
+  "support_url": "https://github.com/file-bricks/ProfiPrompt/issues",
+  "languages": "en-us,de-de"
 }
