@@ -5,6 +5,29 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Store-Preflight: Suchbegriff-Policy gilt jetzt für alle Quellen (2026-08-14)
+
+Nachprüfung des markenbezogenen Zertifizierungsfehlers (Ablehnung vom 2026-08-11,
+Store-Policy 10.1.3 „Search Terms"). Ergebnis der Messung: Der beanstandete Verstoß
+ist in **allen vier** Suchbegriff-Quellen behoben — je 7 Begriffe, kein fremder
+Produkttitel. Korrigiert wurde die Ursache, die den Verstoß überhaupt durchließ.
+
+- **Gemeinsame Prüfregel (`scripts/check_store_readiness.py`):** Marken- und
+  Obergrenzenprüfung in `keyword_policy_findings()` herausgezogen. Bisher hing die
+  Prüfung ausschließlich an `STORE_LISTING.md` — die Einreichung zieht ihre
+  Suchbegriffe aber zusätzlich aus `releases/windowsstore/store_settings.json`
+  (speist MSIX-Build und Submission-Sheet). Diese Datei lief bis jetzt komplett
+  ohne Suchbegriff-Prüfung durch; genau dort blieb der Verstoß unsichtbar.
+- **`validate_windowsstore_settings()`** prüft das `keywords`-Feld nun gegen
+  dieselbe Policy (Obergrenze 7, keine fremden Produkttitel). Die Untergrenze von
+  5 Begriffen bleibt dem redaktionell gepflegten Haupt-Listing vorbehalten
+  (`require_minimum=False`).
+- **Testabdeckung:** 4 neue Tests in `tests/test_store_readiness.py` — Markentreffer,
+  Obergrenze, kein Fehlalarm auf „Prompt Template", Untergrenzen-Schalter sowie
+  Positiv-/Negativfall für `store_settings.json`. Testsuite: 109 passed, 3 skipped.
+- **Nicht geändert:** Beschreibungstexte. Die Nennung von KI-Werkzeugen ist dort
+  beschreibend und war nicht Gegenstand der Ablehnung.
+
 ### Software Bugsweep — Iteration 2 (2026-08-03)
 - **GUI & Board-State Resilienz (`src/models.py`):** `board_from_dict` und `boarditem_from_dict` wurden gehärtet. Fehlende oder korrupte Schlüssel (`title`, `id`, `board_id`, `prompt_id`) in `boards.json` lösen dank `.get()`-Defaults keinen `KeyError` mehr aus und verhindern den Absturz des Board-Managers beim Laden der Boards.
 - **Dashboard Filter-Resilienz (`src/dashboard.py`):** Volltextsuche und Tag-Filterung in `DashboardWidget._apply_filters` gegen `None` oder Nicht-String-Elemente in `tags` und Versionstags gehärtet (`isinstance(t, str)`), um `AttributeError` bei korrupten/externe Datenstrukturen zu unterbinden.

@@ -71,6 +71,45 @@ def matched_foreign_brand(text: str) -> str | None:
     return None
 
 
+def keyword_policy_findings(
+    keywords: str, source: str, *, require_minimum: bool = True
+) -> list[str]:
+    """Prueft eine Suchbegriff-Liste gegen die Store-Policy.
+
+    Wird von JEDER Datei genutzt, aus der Suchbegriffe in die Einreichung
+    gelangen koennen. Die Ablehnung vom 2026-08-11 entstand, weil die Pruefung
+    nur an STORE_LISTING.md hing, die Einreichung ihre Suchbegriffe aber aus
+    mehreren Quellen zieht.
+
+    `source` benennt die geprueste Datei/Stelle fuer die Meldung.
+    `require_minimum` steuert die Untergrenze (nur fuer das Haupt-Listing
+    sinnvoll, in dem die Suchbegriffe redaktionell gepflegt werden).
+    """
+    if not keywords:
+        return []
+
+    parts = [part.strip() for part in re.split(r"[,;]", keywords) if part.strip()]
+    findings = []
+
+    if require_minimum and len(parts) < 5:
+        findings.append(f"{source} hat zu wenige Schlüsselwörter: {len(parts)}")
+    if len(parts) > MAX_STORE_KEYWORDS:
+        findings.append(
+            f"{source} hat zu viele Schlüsselwörter: {len(parts)} "
+            f"(Microsoft erlaubt maximal {MAX_STORE_KEYWORDS})"
+        )
+    for part in parts:
+        hit = matched_foreign_brand(part)
+        if hit:
+            findings.append(
+                f"{source} nennt den fremden Produkttitel \"{hit}\" als Suchbegriff "
+                f"(\"{part}\") — verstößt gegen Store-Policy 10.1.3 (Search Terms) "
+                f"und führte am 2026-08-11 zur Ablehnung."
+            )
+
+    return findings
+
+
 def project_root(root: Path | None = None) -> Path:
     return root or PROJECT_ROOT
 
@@ -242,6 +281,18 @@ def validate_windowsstore_settings(root: Path | None = None) -> list[str]:
     if settings.get("capabilities") != package.get("capabilities"):
         findings.append("Store-Settings verwenden nicht die aktuellen Capabilities.")
 
+    # Aus dieser Datei ziehen der MSIX-Build und das Submission-Sheet ihre
+    # Suchbegriffe. Sie muss deshalb dieselbe Policy-Pruefung durchlaufen wie
+    # STORE_LISTING.md - sonst bleibt genau der Weg offen, ueber den der
+    # Verstoss vom 2026-08-10 in die Einreichung gelangte.
+    findings.extend(
+        keyword_policy_findings(
+            str(settings.get("keywords", "")),
+            "releases/windowsstore/store_settings.json",
+            require_minimum=False,
+        )
+    )
+
     return findings
 
 
@@ -285,27 +336,12 @@ def validate_store_listing(root: Path | None = None) -> list[str]:
         if description and "ProfiPrompt" not in description:
             findings.append(f"STORE_LISTING.md nennt den App-Namen nicht im Abschnitt {language}.")
 
-        keywords = parsed.get("keywords", "")
-        if keywords:
-            keyword_parts = [part.strip() for part in re.split(r"[,;]", keywords) if part.strip()]
-            keyword_count = len(keyword_parts)
-            if keyword_count < 5:
-                findings.append(
-                    f"STORE_LISTING.md hat zu wenige Schlüsselwörter im Abschnitt {language}: {keyword_count}"
-                )
-            if keyword_count > MAX_STORE_KEYWORDS:
-                findings.append(
-                    f"STORE_LISTING.md hat zu viele Schlüsselwörter im Abschnitt {language}: "
-                    f"{keyword_count} (Microsoft erlaubt maximal {MAX_STORE_KEYWORDS})"
-                )
-            for part in keyword_parts:
-                hit = matched_foreign_brand(part)
-                if hit:
-                    findings.append(
-                        f"STORE_LISTING.md nennt im Abschnitt {language} den fremden Produkttitel "
-                        f"\"{hit}\" als Suchbegriff (\"{part}\") — verstößt gegen Store-Policy 10.1.3 "
-                        f"(Search Terms) und führte am 2026-08-11 zur Ablehnung."
-                    )
+        findings.extend(
+            keyword_policy_findings(
+                parsed.get("keywords", ""),
+                f"STORE_LISTING.md (Abschnitt {language})",
+            )
+        )
 
         category = parsed.get("category", "")
         if category and expected_category and expected_category not in category:

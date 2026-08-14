@@ -345,3 +345,78 @@ def test_write_store_test_protocol_creates_timestamped_markdown(tmp_path):
     text = target.read_text(encoding="utf-8")
     assert "Erzeugt: 2026-06-25T00:00:00Z" in text
     assert "Store-Materialien sind lokal vollständig" in text
+
+
+def test_keyword_policy_flags_foreign_brand_and_upper_bound():
+    """Die Regel, an der die Einreichung vom 2026-08-10 scheiterte.
+
+    Policy 10.1.3 (Search Terms): fremde Produkttitel sind als Suchbegriff
+    unzulaessig, und Microsoft erlaubt hoechstens sieben Begriffe.
+    """
+    module = load_module()
+
+    brand_hit = module.keyword_policy_findings(
+        "Prompt Manager, ChatGPT, LLM, Prompt Library, Prompt Organizer",
+        "QUELLE",
+    )
+    assert any("ChatGPT" in finding and "10.1.3" in finding for finding in brand_hit)
+
+    too_many = module.keyword_policy_findings(
+        "a1, a2, a3, a4, a5, a6, a7, a8",
+        "QUELLE",
+    )
+    assert any("zu viele Schlüsselwörter: 8" in finding for finding in too_many)
+
+    # "Prompt Template" darf NICHT als Treffer auf "Template" o. ae. anschlagen.
+    clean = module.keyword_policy_findings(
+        "Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, "
+        "Prompt Organizer, Prompt Template, LLM",
+        "QUELLE",
+    )
+    assert clean == []
+
+
+def test_keyword_policy_minimum_only_applies_where_requested():
+    module = load_module()
+
+    assert module.keyword_policy_findings("nur, zwei", "QUELLE") != []
+    assert module.keyword_policy_findings("nur, zwei", "QUELLE", require_minimum=False) == []
+
+
+def test_validate_windowsstore_settings_flags_foreign_brand_in_keywords(tmp_path):
+    """store_settings.json speist Build und Submission-Sheet - und wurde bisher
+    nicht auf Suchbegriffe geprueft. Genau diese Luecke liess den Verstoss durch.
+    """
+    module = load_module()
+    make_store_readiness_fixture(tmp_path)
+
+    settings_path = tmp_path / "releases" / "windowsstore" / "store_settings.json"
+    settings = json.loads(settings_path.read_text(encoding="utf-8"))
+    settings["keywords"] = "Prompt Manager, Claude, LLM"
+    settings_path.write_text(
+        json.dumps(settings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+
+    findings = module.validate_windowsstore_settings(tmp_path)
+
+    assert any(
+        "store_settings.json" in finding and "Claude" in finding and "10.1.3" in finding
+        for finding in findings
+    ), findings
+
+
+def test_validate_windowsstore_settings_accepts_policy_conform_keywords(tmp_path):
+    module = load_module()
+    make_store_readiness_fixture(tmp_path)
+
+    settings_path = tmp_path / "releases" / "windowsstore" / "store_settings.json"
+    settings = json.loads(settings_path.read_text(encoding="utf-8"))
+    settings["keywords"] = (
+        "Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, "
+        "Prompt Organizer, Prompt Template, LLM"
+    )
+    settings_path.write_text(
+        json.dumps(settings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+
+    assert module.validate_windowsstore_settings(tmp_path) == []
