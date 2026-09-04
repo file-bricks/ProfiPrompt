@@ -1,7 +1,7 @@
 {
   "name": "ProfiPrompt Companion",
   "short_name": "PromptCompanion",
-  "description": "Offline-first Web/PWA-Companion für ProfiPrompt-Bibliotheken.",
+  "description": "Offline-first Web/PWA-Companion f\u00fcr ProfiPrompt-Bibliotheken.",
   "lang": "de-DE",
   "id": "./",
   "start_url": "./index.html",
@@ -11,26 +11,38 @@
   "theme_color": "#10212c",
   "icons": [
     {
-      "src": "./icons/Icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "./icons/Icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "./icons/Icon-maskable-192.png",
+      "src": "icons/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "./icons/Icon-maskable-512.png",
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }
