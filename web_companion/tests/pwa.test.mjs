@@ -71,8 +71,8 @@ test("SW CACHE_NAME enthält 'profiprompt'", () => {
   assert.match(swSrc, /profiprompt/i);
 });
 
-test("SW CACHE_NAME ist v3 (nicht mehr v2)", () => {
-  assert.match(swSrc, /profiprompt-companion-v3/);
+test("SW CACHE_NAME ist v4 (nicht mehr v3)", () => {
+  assert.match(swSrc, /profiprompt-companion-v4/);
   assert.doesNotMatch(swSrc, /profiprompt-companion-v2/);
 });
 
