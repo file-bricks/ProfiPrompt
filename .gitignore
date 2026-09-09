@@ -44,7 +44,19 @@ token.json
 keyring/
 
 # ---- Build-Artefakte & Releases ----
-releases/
+releases/*
+!releases/windowsstore/
+releases/windowsstore/*
+!releases/windowsstore/BUILD.md
+!releases/windowsstore/WACK_PROTOCOL.md
+!releases/windowsstore/store_listing_de.md
+!releases/windowsstore/store_listing_en.md
+!releases/windowsstore/store_settings.json
+!releases/windowsstore/SUBMISSION-SHEET.md
+!releases/windowsstore/test_reports/
+releases/windowsstore/test_reports/*
+!releases/windowsstore/test_reports/README.md
+!releases/windowsstore/test_reports/*.md
 *.exe
 *.msi
 *.msix

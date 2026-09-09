@@ -149,15 +149,16 @@ def latest_release_version(root: Path | None = None) -> str:
     release_root = project_root(root) / "releases" / "GitHub"
     versions: list[tuple[int, ...]] = []
     version_map: dict[tuple[int, ...], str] = {}
-    for entry in release_root.iterdir():
-        if not entry.is_dir():
-            continue
-        match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)", entry.name)
-        if match is None:
-            continue
-        key = tuple(int(part) for part in match.groups())
-        versions.append(key)
-        version_map[key] = ".".join(match.groups())
+    if release_root.exists():
+        for entry in release_root.iterdir():
+            if not entry.is_dir():
+                continue
+            match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)", entry.name)
+            if match is None:
+                continue
+            key = tuple(int(part) for part in match.groups())
+            versions.append(key)
+            version_map[key] = ".".join(match.groups())
     if not versions:
         raise FileNotFoundError(f"Keine GitHub-Release-Ordner gefunden in {release_root}")
     return version_map[max(versions)]
@@ -248,10 +249,14 @@ def validate_store_package(root: Path | None = None) -> list[str]:
         findings.append("store_package.json hat einen unerwarteten App-Namen.")
     if package.get("identity_name") != "Geiger.ProfiPrompt":
         findings.append("store_package.json hat einen unerwarteten Identity-Namen.")
-    if package.get("version") != expected_store_version(root):
-        findings.append(
-            f"Store-Version stimmt nicht: {package.get('version')} != {expected_store_version(root)}"
-        )
+    try:
+        expected_version = expected_store_version(root)
+        if package.get("version") != expected_version:
+            findings.append(
+                f"Store-Version stimmt nicht: {package.get('version')} != {expected_version}"
+            )
+    except FileNotFoundError as exc:
+        findings.append(f"Store-Version konnte nicht gegen GitHub-Releases validiert werden: {exc}")
 
     capabilities = {part.strip() for part in str(package.get("capabilities", "")).split(",") if part.strip()}
     if "runFullTrust" not in capabilities:
@@ -687,7 +692,11 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     print("STORE READINESS: OK")
-    print(f"- store_version: {expected_store_version()}")
+    try:
+        store_ver = expected_store_version()
+    except FileNotFoundError:
+        store_ver = load_store_package().get("version", "unbekannt")
+    print(f"- store_version: {store_ver}")
     print(f"- msix: {msix_path().resolve()}")
     print(f"- screenshots: {screenshot_summary_path().resolve()}")
     print(f"- latest_wack: {latest_wack_report().resolve()}")

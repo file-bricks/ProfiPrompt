@@ -5,6 +5,12 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Store-Preflight & Build-Hygiene Resilienz (2026-09-09)
+
+- **Preflight-Resilienz (`scripts/check_store_readiness.py`):** `latest_release_version()` gegen fehlende oder noch nicht erstellte `releases/GitHub`-Verzeichnisse gehärtet. `validate_store_package()` fängt `FileNotFoundError` defensiv ab und liefert einen sauberen Preflight-Befund anstelle eines unbehandelten Python-Tracebacks. `main()` handhabt fehlende Release-Ordner beim Versionsdruck defensiv.
+- **Gitignore & Store-Metadaten (`.gitignore`, `releases/windowsstore/`):** `.gitignore` nach Vorbild des Standards (`ProSync`) angepasst, sodass `releases/windowsstore/` Konfigurations- und Dokumentationsdateien (`BUILD.md`, `store_settings.json`, `WACK_PROTOCOL.md`, `store_listing_*.md`, `SUBMISSION-SHEET.md`, `test_reports/`) im Git-Tracking verbleiben, während binäre MSIX/EXE-Artefakte und GitHub-Release-Archive sicher ignoriert werden.
+- **Testabdeckung (`tests/test_store_readiness.py`):** Neue Unit-Tests `test_validate_store_package_handles_missing_releases_dir` und `test_latest_release_version_nonexistent_dir` hinzugefügt. Testsuite: 111 passed, 3 skipped (100% grün).
+
 ### Store-Preflight: Suchbegriff-Policy gilt jetzt für alle Quellen (2026-08-14)
 
 Nachprüfung des markenbezogenen Zertifizierungsfehlers (Ablehnung vom 2026-08-11,

@@ -420,3 +420,26 @@ def test_validate_windowsstore_settings_accepts_policy_conform_keywords(tmp_path
     )
 
     assert module.validate_windowsstore_settings(tmp_path) == []
+
+
+def test_validate_store_package_handles_missing_releases_dir(tmp_path):
+    module = load_module()
+    (tmp_path / "store_package.json").write_text(
+        json.dumps(
+            {
+                "app_name": "ProfiPrompt",
+                "identity_name": "Geiger.ProfiPrompt",
+                "version": "1.0.1.0",
+                "capabilities": "internetClient,runFullTrust",
+            }
+        ),
+        encoding="utf-8",
+    )
+    findings = module.validate_store_package(tmp_path)
+    assert any("Store-Version konnte nicht gegen GitHub-Releases validiert werden" in f for f in findings)
+
+
+def test_latest_release_version_nonexistent_dir(tmp_path):
+    module = load_module()
+    with pytest.raises(FileNotFoundError, match="Keine GitHub-Release-Ordner"):
+        module.latest_release_version(tmp_path)
