@@ -119,15 +119,15 @@ def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     den version_from_dict/boarditem_from_dict in Sweep 19 bereits behoben hatten.
     id bleibt hart (Zombie-Objekt mit id=None wäre schlechter), Rest mit .get()-Defaults.
     """
-    versions_data = d.get("versions", [])
-    versions = [version_from_dict(v) for v in versions_data]
+    versions_data = d.get("versions") or []
+    versions = [version_from_dict(v) for v in versions_data if isinstance(v, dict)]
     return Prompt(
         id=d["id"],
-        title=d.get("title", ""),
-        purpose=d.get("purpose", ""),
-        text=d.get("text", ""),
-        tags=d.get("tags", []),
-        last_result=d.get("last_result", ""),
+        title=d.get("title") or "",
+        purpose=d.get("purpose") or "",
+        text=d.get("text") or "",
+        tags=d.get("tags") or [],
+        last_result=d.get("last_result") or "",
         created_at=d.get("created_at", now_iso()),
         updated_at=d.get("updated_at", now_iso()),
         versions=versions

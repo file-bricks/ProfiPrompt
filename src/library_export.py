@@ -38,6 +38,7 @@ def write_library_export(storage, path: str | Path) -> dict[str, Any]:
     """Write the portable library export as UTF-8 JSON and return the payload."""
     payload = build_library_export(storage)
     target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -48,16 +49,19 @@ def write_library_export(storage, path: str | Path) -> dict[str, Any]:
 def _build_stats(prompts: list[Prompt], boards: list[Board]) -> dict[str, int]:
     return {
         "prompt_count": len(prompts),
-        "version_count": sum(len(prompt.versions) for prompt in prompts),
+        "version_count": sum(len(prompt.versions) for prompt in prompts if prompt and prompt.versions),
         "board_count": len(boards),
-        "board_item_count": sum(len(board.items) for board in boards),
+        "board_item_count": sum(len(board.items) for board in boards if board and board.items),
     }
 
 
 def _collect_tags(prompts: list[Prompt]) -> list[str]:
     tags: set[str] = set()
     for prompt in prompts:
-        tags.update(tag for tag in prompt.tags if tag)
-        for version in prompt.versions:
-            tags.update(tag for tag in version.tags if tag)
+        if prompt and prompt.tags:
+            tags.update(str(tag).strip() for tag in prompt.tags if tag is not None and str(tag).strip())
+        if prompt and prompt.versions:
+            for version in prompt.versions:
+                if version and version.tags:
+                    tags.update(str(tag).strip() for tag in version.tags if tag is not None and str(tag).strip())
     return sorted(tags, key=str.casefold)

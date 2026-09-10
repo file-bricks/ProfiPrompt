@@ -9,15 +9,19 @@ class ClipboardManager:
 
     def build_copy_text(
         self,
-        prompt: Prompt,
+        prompt: Optional[Prompt],
         version: Optional[Version] = None
     ) -> str:
+        if prompt is None and version is None:
+            return ""
+
         mode         = self.settings.get_copy_mode()
         include_meta = self.settings.get_include_metadata()
 
-        title  = version.title        if version else prompt.title
-        text   = version.text         if version else prompt.text
-        result = (version.result or "") if version else (prompt.last_result or "")
+        title = (version.title or "") if version else ((prompt.title or "") if prompt else "")
+        text = (version.text or "") if version else ((prompt.text or "") if prompt else "")
+        result = (version.result or "") if version else ((prompt.last_result or "") if prompt else "")
+        raw_tags = (version.tags or []) if version else ((prompt.tags or []) if prompt else [])
 
         parts = []
         if mode == CopyMode.TITLE:
@@ -27,12 +31,20 @@ class ClipboardManager:
         elif mode == CopyMode.RESULT:
             parts.append(result)
         elif mode == CopyMode.ALL:
-            parts.append(f"{title}\n\n{text}")
+            if title and text:
+                parts.append(f"{title}\n\n{text}")
+            elif title:
+                parts.append(title)
+            elif text:
+                parts.append(text)
+            else:
+                parts.append("")
             if result.strip():
                 parts.append(f"--- Ergebnis ---\n{result}")
 
         if include_meta:
-            tags = ", ".join((version.tags if version else prompt.tags) or [])
+            clean_tags = [str(t) for t in (raw_tags or []) if t is not None and str(t).strip()]
+            tags = ", ".join(clean_tags)
             parts.append(f"[Tags: {tags or '–'}]")
 
         return "\n".join(parts)
