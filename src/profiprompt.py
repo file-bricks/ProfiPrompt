@@ -203,11 +203,23 @@ class MainWindow(QMainWindow):
             return
         prompts = self.storage.load_prompts()
         parts = []
-        for p in prompts:
-            lines = [f"=== {p.title} ===", f"Zweck: {p.purpose}", f"Tags: {', '.join(p.tags or [])}",
-                     "", p.text or ""]
-            for v in sorted(p.versions, key=lambda x: x.version_number):
-                lines += ["", f"--- v{v.version_number}: {v.title} ---", v.text or ""]
+        for p in prompts or []:
+            if not p:
+                continue
+            p_tags = ", ".join(
+                str(t).strip() for t in (p.tags or []) if t is not None and str(t).strip()
+            )
+            lines = [
+                f"=== {p.title or ''} ===",
+                f"Zweck: {p.purpose or ''}",
+                f"Tags: {p_tags}",
+                "",
+                p.text or ""
+            ]
+            versions = [v for v in (p.versions or []) if v is not None]
+            for v in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
+                v_num = getattr(v, "version_number", None) or "?"
+                lines += ["", f"--- v{v_num}: {v.title or ''} ---", v.text or ""]
             parts.append("\n".join(lines))
         try:
             with open(path, "w", encoding="utf-8") as f:

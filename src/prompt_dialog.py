@@ -52,15 +52,20 @@ class PromptDialog(QtWidgets.QDialog):
 
     def _populate(self):
         p = self.prompt
-        self.title_edit.setText(p.title)
-        self.purpose_edit.setText(p.purpose)
-        self.tags_edit.setText(", ".join(p.tags))
-        self.text_edit.setPlainText(p.text)
-        self.result_edit.setPlainText(p.last_result)
+        self.title_edit.setText(p.title or "")
+        self.purpose_edit.setText(p.purpose or "")
+        tag_items = [
+            str(t).strip() for t in (p.tags or []) if t is not None and str(t).strip()
+        ]
+        self.tags_edit.setText(", ".join(tag_items))
+        self.text_edit.setPlainText(p.text or "")
+        self.result_edit.setPlainText(p.last_result or "")
         self.versions_list.clear()
-        for v in sorted(p.versions, key=lambda x: x.version_number):
-            item = QtWidgets.QListWidgetItem(f"v{v.version_number} — {v.title}")
-            item.setToolTip(v.text)
+        versions = [v for v in (p.versions or []) if v is not None]
+        for v in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
+            v_num = getattr(v, "version_number", None) or "?"
+            item = QtWidgets.QListWidgetItem(f"v{v_num} — {v.title or ''}")
+            item.setToolTip(v.text or "")
             self.versions_list.addItem(item)
 
     def on_save(self):
@@ -106,17 +111,28 @@ class VersionDialog(QtWidgets.QDialog):
         self.setWindowTitle("Version bearbeiten" if is_edit else "Neue Version anlegen")
 
         # Kontext/Status
+        p_title = self.prompt.title or "" if self.prompt else ""
+        v_title = (self.version.title or "") if is_edit and self.version else ""
+        v_num = getattr(self.version, "version_number", None) or "?" if is_edit and self.version else ""
         context_lbl = QtWidgets.QLabel(
-            f"Prompt: {self.prompt.title}"
-            + (f"\nBearbeite: v{self.version.version_number} — {self.version.title}" if is_edit else "")
+            f"Prompt: {p_title}"
+            + (f"\nBearbeite: v{v_num} — {v_title}" if is_edit else "")
         )
         context_lbl.setStyleSheet("color:#666;")
 
         # Felder
-        self.title_edit = QtWidgets.QLineEdit(self.version.title if is_edit else "")
-        self.tags_edit = QtWidgets.QLineEdit(", ".join(self.version.tags if is_edit else (self.prompt.tags or [])))
-        self.text_edit = QtWidgets.QPlainTextEdit(self.version.text if is_edit else (self.prompt.text or ""))
-        self.result_edit = QtWidgets.QPlainTextEdit(self.version.result if is_edit else "")
+        raw_tags = (self.version.tags if is_edit and self.version else (getattr(self.prompt, "tags", []) or []))
+        tag_items = [
+            str(t).strip() for t in (raw_tags or []) if t is not None and str(t).strip()
+        ]
+        self.title_edit = QtWidgets.QLineEdit((self.version.title or "") if is_edit and self.version else "")
+        self.tags_edit = QtWidgets.QLineEdit(", ".join(tag_items))
+        self.text_edit = QtWidgets.QPlainTextEdit(
+            (self.version.text or "") if is_edit and self.version else (getattr(self.prompt, "text", "") or "")
+        )
+        self.result_edit = QtWidgets.QPlainTextEdit(
+            (getattr(self.version, "result", "") or "") if is_edit and self.version else ""
+        )
 
         form = QtWidgets.QFormLayout()
         form.addRow("Titel*", self.title_edit)

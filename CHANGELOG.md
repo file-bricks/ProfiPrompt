@@ -5,6 +5,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Software Bugsweep — Export, Dialog & Tag-Aggregation Resilienz (2026-09-11)
+
+- **PDF-Export & Druck-Initialisierung (`src/pdf_exporter.py`):**
+  - `_init_printer(path)` stellt das übergeordnete Verzeichnis via `Path(path).parent.mkdir(parents=True, exist_ok=True)` sicher, um Speicherfehler bei neuen Zielpfaden zu verhindern.
+  - `_render_html_for_prompt` und `_render_html_for_version` gegen `None`-Werte in `last_result` und `result` gehärtet (`AttributeError` auf `.strip()` eliminiert).
+  - Robuste Tag-Formatierung via `_format_tags()` schützt vor `TypeError` bei `None` oder heterogenen Datentypen in Tag-Listen.
+  - `export_single_prompt_with_versions` fängt `prompt.versions = None` sowie `version_number = None` sicher ab.
+- **Dashboard & Filterung (`src/dashboard.py`):**
+  - `_collect_tags()` gegen `None`-Versionen und heterogene Tags abgesichert; Tag-Sortierung erfolgt stabil via `casefold`.
+  - Tag-Filterung (`self.tag_combo`) und Child-Item-Generierung handhaben `versions = None` und `version_number = None` defensiv ohne `TypeError`.
+  - Bundle-Export (`_export_bundle_txt`) und Kontextmenü-Aktionen (`act_copy_full`, Löschabfrage) defensiv gegen `None`-Versionen gehärtet.
+- **Dialog-Resilienz (`src/prompt_dialog.py`):**
+  - `PromptDialog._populate()` und `VersionDialog.__init__()` gegen `None`-Attribute (`title`, `purpose`, `text`, `last_result`, `tags`) geschützt, da PySide6-Widget-Setter (`setText`, `setPlainText`) `None` mit `TypeError` abweisen.
+- **Text-Export (`src/profiprompt.py`):**
+  - `export_all_txt()` gegen `None`-Werte in Titeln, Zweck, Versionen und heterogene Tags gehärtet.
+- **Testabdeckung (`tests/test_bugsweep_export_dialog_resilience_20260911.py`):**
+  - 8 neue Regressions- und Resilienztests hinzugefügt (`test_ed01` bis `test_ed06`). Testsuite: 128 passed, 3 skipped (100% grün).
+
 ### Store-Preflight & Build-Hygiene Resilienz (2026-09-09)
 
 - **Preflight-Resilienz (`scripts/check_store_readiness.py`):** `latest_release_version()` gegen fehlende oder noch nicht erstellte `releases/GitHub`-Verzeichnisse gehärtet. `validate_store_package()` fängt `FileNotFoundError` defensiv ab und liefert einen sauberen Preflight-Befund anstelle eines unbehandelten Python-Tracebacks. `main()` handhabt fehlende Release-Ordner beim Versionsdruck defensiv.

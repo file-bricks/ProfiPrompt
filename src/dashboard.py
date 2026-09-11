@@ -170,7 +170,7 @@ class DashboardWidget(QtWidgets.QWidget):
             prompts = [
                 p for p in prompts
                 if (p.tags and selected_tag in p.tags)
-                or any(v.tags and selected_tag in v.tags for v in p.versions)
+                or any(v.tags and selected_tag in v.tags for v in (p.versions or []))
             ]
 
 
@@ -183,6 +183,12 @@ class DashboardWidget(QtWidgets.QWidget):
                 p_date = QtCore.QDate.fromString(
                     (p.updated_at or "").split("T")[0], "yyyy-MM-dd"
                 )
+                if not p_date.isValid():
+                    p_date = QtCore.QDate.fromString(
+                        (p.created_at or "").split("T")[0], "yyyy-MM-dd"
+                    )
+                if not p_date.isValid():
+                    continue
                 if date_from and p_date < date_from:
                     continue
                 if date_to and p_date > date_to:
@@ -193,8 +199,7 @@ class DashboardWidget(QtWidgets.QWidget):
         def safe_date(s: Optional[str]) -> str:
             return s.split("T")[0] if s else ""
 
-        # Transparente Icons, theme-passend (U4): helles Icon auf dunklem Theme,
-        # dunkles Icon auf hellem Theme -> auf beiden Hintergruenden sichtbar (U2).
+        # Theme-abhängige Icons ermitteln (U4)
         try:
             _theme = self.settings.get_theme()
         except Exception:
@@ -208,7 +213,10 @@ class DashboardWidget(QtWidgets.QWidget):
             parent = QtWidgets.QTreeWidgetItem(self.tree)
             parent.setText(0, p.title or "")
             parent.setText(1, p.purpose or "")
-            parent.setText(2, ", ".join(p.tags or []))
+            p_tags_str = ", ".join(
+                str(t).strip() for t in (p.tags or []) if t is not None and str(t).strip()
+            )
+            parent.setText(2, p_tags_str)
             parent.setText(3, safe_date(p.created_at))
             parent.setText(4, safe_date(p.updated_at))
             parent.setData(0, QtCore.Qt.ItemDataRole.UserRole, ("prompt", p.id))
@@ -225,11 +233,16 @@ class DashboardWidget(QtWidgets.QWidget):
             self.tree.setItemWidget(parent, 6, btn_copy)
 
             # Child‐Items für jede Version
-            for v in sorted(p.versions, key=lambda x: x.version_number):
+            versions = [v for v in (p.versions or []) if v is not None]
+            for v in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
                 child = QtWidgets.QTreeWidgetItem(parent)
-                child.setText(0, f"v{v.version_number} — {v.title or ''}")
+                v_num = getattr(v, "version_number", None) or "?"
+                child.setText(0, f"v{v_num} — {v.title or ''}")
                 child.setText(1, "")
-                child.setText(2, ", ".join(v.tags or []))
+                v_tags_str = ", ".join(
+                    str(t).strip() for t in (v.tags or []) if t is not None and str(t).strip()
+                )
+                child.setText(2, v_tags_str)
                 child.setText(3, safe_date(v.created_at))
                 child.setText(4, safe_date(v.updated_at))
                 child.setData(0, QtCore.Qt.ItemDataRole.UserRole, ("version", p.id, v.id))
@@ -320,7 +333,8 @@ class DashboardWidget(QtWidgets.QWidget):
             self.clip.copy_to_clipboard(self.tree, txt)
         elif kind == "prompt" and chosen == act_copy_full:
             parts = [self.clip.build_copy_text(p)]
-            for vv in sorted(p.versions, key=lambda x: x.version_number):
+            versions = [vv for vv in (p.versions or []) if vv is not None]
+            for vv in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
                 parts.append(self.clip.build_copy_text(p, vv))
             self.clip.copy_to_clipboard(self.tree, "\n\n".join(parts))
         elif kind == "prompt" and chosen == act_new_ver:
@@ -369,7 +383,7 @@ class DashboardWidget(QtWidgets.QWidget):
                     self, "Löschen",
                     f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
                 ) == QtWidgets.QMessageBox.StandardButton.Yes:
-                    p.versions = [x for x in p.versions if x.id != v.id]
+                    p.versions = [x for x in (p.versions or []) if x.id != v.id]
                     p.updated_at = now_iso()
                     self.storage.upsert_prompt(p)
                     bus.promptsChanged.emit()
@@ -420,11 +434,14 @@ class DashboardWidget(QtWidgets.QWidget):
 
     def _collect_tags(self, prompts: List[Prompt]) -> List[str]:
         tags = set()
-        for p in prompts:
-            tags.update(t for t in (p.tags or []) if t)
-            for v in p.versions:
-                tags.update(t for t in (v.tags or []) if t)
-        return sorted(tags)
+        for p in prompts or []:
+            if p and p.tags:
+                tags.update(str(t).strip() for t in p.tags if t is not None and str(t).strip())
+            if p and p.versions:
+                for v in p.versions:
+                    if v and v.tags:
+                        tags.update(str(t).strip() for t in v.tags if t is not None and str(t).strip())
+        return sorted(tags, key=str.casefold)
 
 
     def _date_or_none(self, d_edit: QtWidgets.QDateEdit) -> Optional[QtCore.QDate]:
@@ -491,7 +508,8 @@ class DashboardWidget(QtWidgets.QWidget):
         if not path:
             return
         parts = [self.clip.build_copy_text(p)]
-        for ver in sorted(p.versions, key=lambda x: x.version_number or 0):
+        versions = [ver for ver in (p.versions or []) if ver is not None]
+        for ver in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
             parts.append(self.clip.build_copy_text(p, ver))
         with open(path, "w", encoding="utf-8") as f:
             f.write("\n\n".join(parts))
