@@ -1,6 +1,65 @@
-THIRD-PARTY LICENSES
-====================
+THIRD-PARTY SOFTWARE LICENSES
+=============================
+
+This document lists the third-party dependencies, libraries, and build tools
+used by ProfiPrompt along with their respective license and SPDX identifiers.
 
 PySide6
-License: LGPL-3.0
+License: LGPL-3.0-only
+SPDX: LGPL-3.0-only
 URL: https://pypi.org/project/PySide6/
+Notice: Official Python Qt6 bindings for desktop UI, dialogs, clipboard, and rendering (>=6.5.0)
+
+shiboken6
+License: LGPL-3.0-only
+SPDX: LGPL-3.0-only
+URL: https://pypi.org/project/shiboken6/
+Notice: C++ binding generator and runtime support library for PySide6
+
+PyInstaller
+License: GPL-2.0-or-later WITH Bootloader-exception
+SPDX: GPL-2.0-or-later WITH Bootloader-exception
+URL: https://www.pyinstaller.org/
+Notice: Standalone executable packaging for Windows desktop releases (ProfiPrompt.spec)
+
+pyinstaller-hooks-contrib
+License: Apache-2.0
+SPDX: Apache-2.0
+URL: https://github.com/pyinstaller/pyinstaller-hooks-contrib
+Notice: Community packaging hooks for PySide6 and standard libraries
+
+altgraph
+License: MIT
+SPDX: MIT
+URL: https://pypi.org/project/altgraph/
+Notice: Static dependency graph analysis used by PyInstaller
+
+packaging
+License: Apache-2.0 OR BSD-2-Clause
+SPDX: Apache-2.0 OR BSD-2-Clause
+URL: https://pypi.org/project/packaging/
+Notice: PEP 440 and PEP 508 version parsing and specification utilities
+
+pytest
+License: MIT
+SPDX: MIT
+URL: https://pytest.org/
+Notice: Automated testing framework (>=9.1.1 hardened against CVE-2025-7117 / GHSA-6w46-j5rx-g56g)
+
+pluggy
+License: MIT
+SPDX: MIT
+URL: https://pypi.org/project/pluggy/
+Notice: Plugin management and hook execution mechanism for pytest
+
+iniconfig
+License: MIT
+SPDX: MIT
+URL: https://pypi.org/project/iniconfig/
+Notice: Lightweight INI/configuration parser for pytest and pyproject.toml
+
+ruff
+License: MIT OR Apache-2.0
+SPDX: MIT OR Apache-2.0
+URL: https://github.com/astral-sh/ruff
+Notice: Fast Python linter and code analysis tooling (>=0.9.0)

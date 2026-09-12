@@ -29,6 +29,8 @@ DIAGNOSE_REPORT.md
 LOCK.txt
 LOCK.*.txt
 LOCK*.txt
+LOCK.*
+*.lock
 
 # ---- Persönliche / sensible Daten ----
 _USER/
@@ -37,10 +39,13 @@ _USER/
 credentials.json
 client_secret*.json
 token.json
+secrets.*
 *.pem
 *.key
 *.pfx
 *.p12
+*.cer
+*.crt
 keyring/
 
 # ---- Build-Artefakte & Releases ----
@@ -95,3 +100,16 @@ TODO.md
 DONE.md
 build_exe.bat
 docs/superpowers/
+
+# ---- Multi-Host-Synchronisation & Konfliktschutz ----
+*.sync-conflict-*
+*.conflict
+*-CONFLIT-*
+*-conflict-*
+*-WORKSTATION-LG*
+*-ASUS-GEI*
+
+# ---- Web-Companion / Node Test Caches ----
+node_modules/
+coverage/
+.nyc_output/

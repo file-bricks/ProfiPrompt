@@ -7,7 +7,7 @@ name = "profiprompt"
 version = "1.0.2"
 description = "Local-first PySide6 desktop application for AI prompt management, prompt versioning, board organization, and PWA companion export."
 readme = "README.md"
-authors = [{ name = "Lukas Geiger", email = "lukas@example.com" }]
+authors = [{ name = "Lukas Geiger", email = "support@lukasgeiger.com" }]
 license = { text = "MIT" }
 keywords = ["pyside6", "qt6", "prompt-manager", "prompt-engineering", "local-first", "llm", "pwa", "versioning"]
 classifiers = [
@@ -26,11 +26,22 @@ dependencies = [
     "PySide6>=6.5.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.9.0",
+]
+build = [
+    "pyinstaller>=6.10.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/file-bricks/ProfiPrompt"
 Repository = "https://github.com/file-bricks/ProfiPrompt.git"
 Issues = "https://github.com/file-bricks/ProfiPrompt/issues"
 Changelog = "https://github.com/file-bricks/ProfiPrompt/blob/master/CHANGELOG.md"
+Security = "https://github.com/file-bricks/ProfiPrompt/blob/master/SECURITY.md"
+"Third-Party Licenses" = "https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.txt"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

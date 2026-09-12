@@ -13,7 +13,7 @@ Stand: 2026-06-14
 ## Schritt 1: EXE bauen und Store-Artefakte prüfen
 
 ```bash
-cd "C:\Users\User\OneDrive\.TOPICS\.SOFTWARE\LLM\REL_ProfiPrompt"
+cd "C:\_Local_DEV\repos\ProfiPrompt"
 build_exe.bat
 python scripts/check_store_readiness.py
 ```
