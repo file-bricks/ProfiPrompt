@@ -1,0 +1,150 @@
+================================================================================
+PROFIPROMPT -- MARKETING, DISCOVERABILITY & DESIGN LOG
+================================================================================
+
+[2026-09-13 12:45 CEST] [GITHUBBOT_ONE_REPO_MARKETING_AND_DESIGN] (Pfad B)
+Maintainer: Lukas Geiger (file-bricks / open-bricks)
+Repository: file-bricks/ProfiPrompt
+Branch: master
+Target Version: 1.0.2
+
+--------------------------------------------------------------------------------
+1. EXECUTIVE SUMMARY & VALUE PROPOSITION
+--------------------------------------------------------------------------------
+ProfiPrompt solves the fragmentation and privacy crisis in modern prompt engineering:
+while developers and knowledge workers spend hundreds of hours refining generative AI
+prompts, system instructions, and chain-of-thought workflows, their intellectual
+property is typically scattered across raw text files, ephemeral chat windows, or
+proprietary cloud platforms that log user inputs and monetize data.
+
+ProfiPrompt delivers a clean, local-first PySide6 desktop suite combined with a mobile
+Web/PWA companion, giving users complete ownership of their prompt library:
+1. Unlimited Prompt Versioning & History: Track every iteration, test result, and
+   refinement with timestamped change history and A/B comparison.
+2. Thematic Visual Kanban Boards: Drag-and-drop prompts into specialized project
+   boards for rapid context switching and workflow grouping.
+3. Multi-Mode Instant Clipboard Engine: Copy prompt titles, body text, execution
+   results, or structured markdown directly into active LLM sessions.
+4. Portable Zero-Lock-in Architecture: Export entire libraries into open standard
+   `profiprompt-library-v1.json`, formatted TXT bundles, or vector-rendered PDFs.
+5. Air-Gapped Zero-Egress Privacy: 100% offline data persistence in atomic JSON
+   files without telemetry, remote analytics, or server requirements.
+6. Offline Web/PWA Companion: Seamlessly inspect, search, and copy prompt libraries
+   on mobile devices and tablets via a standalone client-side PWA.
+
+--------------------------------------------------------------------------------
+2. TARGET AUDIENCE & STAKEHOLDER PERSONAS
+--------------------------------------------------------------------------------
+1. [PERSONA-1] Prompt Engineers & Generative AI Practitioners:
+   - Needs: Systematic version control for system prompts, few-shot templates, and
+     complex chain-of-thought instructions; quick comparison of prompt revisions.
+   - Pain Points: Losing effective prompt variations in endless chat history or
+     unstructured notes; inability to track prompt outcomes and output results.
+   - Solution: ProfiPrompt provides unlimited version trees per prompt, dedicated
+     result tracking per version, and instant multi-mode clipboard copying.
+
+2. [PERSONA-2] Desktop Power Users & Solo Developers:
+   - Needs: Keyboard-friendly, lightning-fast desktop experience with low memory
+     footprint, system-tray readiness, and seamless dark mode integration.
+   - Pain Points: Bloated Electron apps that consume excessive RAM and slow down
+     development workspaces.
+   - Solution: Native PySide6 (Qt6) desktop architecture with native Qt styling,
+     Fusion Dark theme, and zero CPU/network overhead.
+
+3. [PERSONA-3] Privacy-Conscious Enterprise & Compliance Officers (GDPR / DSGVO):
+   - Needs: Absolute guarantee of data isolation for sensitive enterprise prompts,
+     proprietary business logic, legal templates, and internal guidelines.
+   - Pain Points: Cloud-based prompt tools leaking trade secrets, transmitting user
+     telemetry, or exposing confidential corporate IP to external servers.
+   - Solution: 100% offline local-first storage (`.prompt_manager/`), atomic JSON
+     persistence, zero external network sockets, and an audited zero-egress guarantee.
+
+4. [PERSONA-4] Multi-Device Knowledge Workers & Prompt Curators:
+   - Needs: Accessing curated prompt collections across desktop workstations, laptops,
+     tablets, and smartphones without maintaining paid cloud synchronization.
+   - Pain Points: Incompatible proprietary export formats and vendor lock-in.
+   - Solution: Portable `profiprompt-library-v1.json` export combined with the
+     offline-first Web/PWA companion running directly in any modern mobile browser.
+
+--------------------------------------------------------------------------------
+3. HIGH-INTENT SEARCH QUERIES & DISCOVERABILITY TARGETS
+--------------------------------------------------------------------------------
+English High-Intent Search Queries:
+- "local-first prompt manager desktop"
+- "offline ai prompt versioning tool"
+- "pyside6 qt6 prompt library"
+- "open source prompt manager windows"
+- "zero telemetry prompt organizer"
+- "prompt engineering version control"
+- "export prompt library json pdf txt"
+- "offline pwa prompt companion"
+- "self hosted prompt database"
+- "gdpr compliant prompt repository"
+
+German High-Intent Suchbegriffe:
+- "lokaler prompt manager desktop"
+- "ki prompts verwalten und versionieren"
+- "offline prompt bibliothek python qt"
+- "prompt engineering verwaltung lokal"
+- "prompt versionierung ohne cloud"
+- "datenschutz prompt speicher dsgvo"
+- "prompts exportieren pdf json txt"
+- "pwa prompt begleiter offline"
+- "prompts sortieren kanban board"
+- "open source prompt verwaltung windows"
+
+--------------------------------------------------------------------------------
+4. COMPETITIVE POSITIONING & 10-DIMENSION COMPARATIVE MATRIX
+--------------------------------------------------------------------------------
++----+------------------------------------+-------------+---------------+---------------+----------------+
+| #  | Feature / Dimension                | ProfiPrompt | Plain Notes / | Cloud Prompt  | Generic Text   |
+|    |                                    | (file-bricks| Obsidian / MD | SaaS (SaaS UI)| Snippet Tools  |
++----+------------------------------------+-------------+---------------+---------------+----------------+
+| 1  | 100% Local-First & Zero-Egress     | YES (Strict)| YES (Local)   | NO (Cloud)    | YES (Local)    |
+| 2  | Unlimited Versioning per Prompt    | YES (Native)| NO (Manual/Git| Limited       | NO (Single val)|
+| 3  | Execution Result Tracking          | YES (Built-in) NO           | Limited       | NO             |
+| 4  | Visual Kanban / Thematic Boards    | YES (DragDrop) NO (Plugins) | YES           | NO (Flat lists)|
+| 5  | Multi-Mode Clipboard Engine        | YES (4 Modes) NO (Raw copy) | NO (Single)   | Basic Paste    |
+| 6  | Multi-Format Exporters (PDF/TXT/JSON)YES (Native)| Limited       | Proprietary   | NO             |
+| 7  | Standalone Offline Web/PWA CompanionYES (Built-in) NO           | NO (Online)   | NO             |
+| 8  | Atomic Storage & Corruption Shield | YES (Safe)  | Varies        | Cloud DB      | Varies         |
+| 9  | Zero Subscription / 100% Open MIT  | YES (MIT)   | Free / Paid   | Paid ($10-30/m)Freemium / Paid |
+| 10 | Open Portable Standard (`v1.json`) | YES (Open)  | Markdown only | Vendor Lock-in| Proprietary DB |
++----+------------------------------------+-------------+---------------+---------------+----------------+
+
+--------------------------------------------------------------------------------
+5. DISCOVERABILITY & MARKETING STRATEGY
+--------------------------------------------------------------------------------
+- Cross-Ecosystem Linking: Integrated across file-bricks, doc-bricks, and open-bricks
+  umbrellas as the flagship AI prompt management workstation.
+- Open Standards: Documented `EXPORTFORMAT.md` standardizes `profiprompt-library-v1.json`
+  for seamless interoperability with other LLM developer tooling.
+- Packaging & Distribution Channels:
+  - Microsoft Store package readiness (`store_package.json`, `releases/windowsstore/`).
+  - Standalone portable Windows executable via PyInstaller (`ProfiPrompt.spec`, `START.bat`).
+  - PyPI package standard via PEP 621 compliant `pyproject.toml`.
+- Comprehensive Bilingual Documentation: 100% reciprocal anchor parity between
+  `README.md` and `README_de.md` with 17-point quick navigation.
+
+--------------------------------------------------------------------------------
+6. GOVERNANCE, SECURITY & RUNTIME INVARIANTS
+--------------------------------------------------------------------------------
+ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENSES.md:
+- INV-LOCAL-01: 100% Local-First & Zero Egress (no network sockets, no telemetry).
+- INV-OFFLINE-02: Full Offline Autonomy (works air-gapped without internet).
+- INV-ATOMIC-03: Atomic File Persistence (tempfile + replace writes).
+- INV-SCHEMA-04: Open Portable Schema (profiprompt-library-v1.json).
+- INV-UNPRIV-05: Non-Elevation & RunAsInvoker (unprivileged user space).
+- INV-BACKUP-06: Fail-Safe Backup & Recovery (automatic .bak preservation).
+- INV-COPY-07: Local Clipboard Safety (memory-only sanitized clipboard access).
+- INV-PRINT-08: Deterministic Multi-Format Rendering (Qt vector print engine).
+- INV-PWA-09: Read-Only Companion Isolation (PWA companion runs sandboxed).
+- INV-SLA-10: 48h Response / 5d Triage Security SLA (security@file-bricks.org).
+
+--------------------------------------------------------------------------------
+7. VERIFICATION & TEST SUITE SUMMARY
+--------------------------------------------------------------------------------
+- Python Pytest Suite: 138 passed, 3 skipped (100% green).
+- Web/PWA Companion Suite: 46 passed Node.js tests (100% green).
+- Total Automated Verification: 184 tests passing (100% green).
+- Quality Gates: Ruff clean, Compileall clean, Git diff clean.

@@ -5,6 +5,29 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Discoverability, Marketing & Visual Architecture — Pfad B (2026-09-13)
+
+- **Bilinguale Navigationsarchitektur mit 100% reziproker Parität (`README.md`, `README_de.md`):**
+  - Vollständige 17-Punkte-Schnellnavigation mit wechselseitiger Abschnitts- und Anker-Parität eingeführt.
+  - Shields.io-Badges auf aktuellen Stand gebracht (Version 1.0.2, 138 Pytest-Tests grün, 46 Web-Companion-Tests grün, Gesamt: 184 bestandene automatisierte Tests).
+  - Banner-Einbindung vereinheitlicht (`assets/banner.png` 1200x340) und Callout-Blöcke für maschinenlesbaren LLM-Kontext synchronisiert.
+- **Zielgruppen-Personas & Discoverability:**
+  - 4 strukturierte Stakeholder-Personas (`[PERSONA-1]` Prompt-Engineers & LLM-Praktiker, `[PERSONA-2]` Desktop Power-User & Solo-Entwickler, `[PERSONA-3]` Datenschutz- und Compliance-Beauftragte, `[PERSONA-4]` Multi-Device Wissensarbeiter & Prompt-Kuratoren) in Dokumentation und Marketing-Protokoll etabliert.
+  - Bilinguale High-Intent-Suchbegriffe (DE/EN) für maximale Auffindbarkeit in Entwickler- und Enterprise-Suchanfragen.
+- **10-Dimensionen-Vergleichsmatrix:**
+  - Systematischer Vergleich gegenüber 4 Alternativen (ProfiPrompt, reine Notizen/Obsidian, Cloud-Prompt-SaaS, generische Snippet-Tools) entlang 10 Kernkriterien (Local-First, Versionsbäume, Ergebnis-Tracking, Kanban-Boards, Clipboard-Engine, Multi-Format-Exporte, PWA-Begleiter, atomare Speicherung, Lizenz/Kosten, offener Standard).
+- **Drittanbieter-Lizenzinventar & Governance-Laufzeit-Invarianten (`THIRD_PARTY_LICENSES.md`):**
+  - Umfassendes Lizenz-Audit mit SPDX-Kennungen für PySide6, shiboken6, PyInstaller, Packaging, Pytest, Pluggy, Iniconfig und Ruff.
+  - 10 strikte Laufzeit- und Betriebs-Invarianten (`INV-LOCAL-01` bis `INV-SLA-10`) formal verankert.
+  - Parität mit `THIRD_PARTY_LICENSES.txt` gewahrt.
+- **Marketing- & Discoverability-Register (`MARKETING-LOG.txt`):**
+  - Eigenständiges Marketing-Register für Pfad-B-Audits, Personas, Suchbegriffe und Wettbewerbsanalyse angelegt.
+- **Projekt-Metadaten & LLM-Indexierung (`pyproject.toml`, `llms.txt`):**
+  - `pyproject.toml` URLs um Marketing Log und Third-Party Licenses erweitert.
+  - `llms.txt` Zeitstempel auf 2026-09-13 aktualisiert, Testzähler (184 Tests 100% grün) synchronisiert und direkte Verweise auf Marketing- und Lizenz-Dokumente ergänzt.
+- **Automatisierte Vertragstests (`tests/test_security_license_contract.py`):**
+  - Neue Vertragstests für 17-Punkte-Navigationsparität, Persona-Definitionen, Vergleichsmatrix, 10 Governance-Invarianten und Metadaten-Synchronisation hinzugefügt. Testsuite wächst auf 138 bestandene Pytest-Tests.
+
 ### Software Bugsweep — Export, Dialog & Tag-Aggregation Resilienz (2026-09-11)
 
 - **PDF-Export & Druck-Initialisierung (`src/pdf_exporter.py`):**

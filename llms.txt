@@ -1,6 +1,6 @@
 # ProfiPrompt
 
-Last-checked: 2026-08-03
+Last-checked: 2026-09-13
 
 
 ## Canonical links
@@ -8,6 +8,8 @@ Last-checked: 2026-08-03
 - Repository: https://github.com/file-bricks/ProfiPrompt
 - Issues: https://github.com/file-bricks/ProfiPrompt/issues
 - License: MIT
+- Third-Party Licenses: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md
+- Marketing Log: https://github.com/file-bricks/ProfiPrompt/blob/master/MARKETING-LOG.txt
 
 ## Summary
 
@@ -22,12 +24,12 @@ ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt
 - Platform smoke: `python src/platform_smoke.py --output-dir build/platform-smoke`
 - Store readiness protocol: `python scripts/check_store_readiness.py write-test-protocol`
 
-## Audience
+## Audience & Personas
 
-- Prompt-library users who need local versioning, board organization, and offline copy flows.
-- Teams comparing local-first prompt managers for Windows desktops and browser-readable exports.
-- Developers reviewing a small PySide6 app with JSON persistence, PDF/TXT export, and PWA companion tests.
-- LLM crawlers and repository indexers looking for `file-bricks/ProfiPrompt` project context.
+- [PERSONA-1] Prompt Engineers & LLM Practitioners: Prompt version control, iteration history, result tracking, and prompt testing.
+- [PERSONA-2] Desktop Power Users & Solo Developers: Local-first productivity, instant multi-mode clipboard, visual kanban boards.
+- [PERSONA-3] Privacy-Conscious Enterprise & Compliance Officers: Zero-egress, 100% offline data isolation, GDPR/DSGVO compliance.
+- [PERSONA-4] Multi-Device Knowledge Workers & Curators: Portable `profiprompt-library-v1.json` format and mobile Web/PWA companion.
 
 ## Search Phrases
 
@@ -39,6 +41,9 @@ offline prompt board manager
 prompt versioning desktop app
 profiprompt-library-v1.json
 ProfiPrompt Web PWA companion
+zero telemetry prompt manager
+open source prompt repository
+offline pwa prompt companion
 ```
 
 ## Data and privacy
@@ -47,12 +52,13 @@ ProfiPrompt Web PWA companion
 - Default user data lives under the local user profile in `.prompt_manager`.
 - The Web/PWA companion is read-only and imports `profiprompt-library-v1.json` directly in the browser.
 - No telemetry, cloud sync, analytics, or external API access is part of the app.
+- Governed by 10 strict runtime invariants (INV-LOCAL-01 through INV-SLA-10) detailed in `THIRD_PARTY_LICENSES.md`.
 
 ## Validation
 
-- Python tests: `python -m pytest` (103 passed)
+- Python tests: `python -m pytest` (138 passed, 3 skipped)
 - Web/PWA tests: `node --test web_companion/tests/*.test.js web_companion/tests/*.mjs` (46 passed)
-- Total test suite: 149 passing tests (100% green)
+- Total test suite: 184 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`
 

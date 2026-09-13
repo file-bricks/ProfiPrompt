@@ -151,3 +151,107 @@ def test_local_first_and_offline_invariants() -> None:
         text = source_file.read_text(encoding="utf-8")
         for pat in disallowed_patterns:
             assert not pat.search(text), f"Found disallowed telemetry/analytics pattern {pat.pattern} in {source_file.name}"
+
+
+def test_third_party_licenses_markdown_and_invariants() -> None:
+    """Verify THIRD_PARTY_LICENSES.md exists, documents dependencies, and defines all 10 runtime invariants."""
+    md_file = ROOT / "THIRD_PARTY_LICENSES.md"
+    assert md_file.is_file(), "THIRD_PARTY_LICENSES.md must exist"
+    content = md_file.read_text(encoding="utf-8")
+
+    # Invariants verification
+    expected_invariants = [
+        "INV-LOCAL-01",
+        "INV-OFFLINE-02",
+        "INV-ATOMIC-03",
+        "INV-SCHEMA-04",
+        "INV-UNPRIV-05",
+        "INV-BACKUP-06",
+        "INV-COPY-07",
+        "INV-PRINT-08",
+        "INV-PWA-09",
+        "INV-SLA-10",
+    ]
+    for inv in expected_invariants:
+        assert inv in content, f"Governance invariant {inv} missing in THIRD_PARTY_LICENSES.md"
+
+    # Core packages verification
+    required_packages = ["PySide6", "shiboken6", "PyInstaller", "pytest", "ruff"]
+    for pkg in required_packages:
+        assert pkg in content, f"Package {pkg} missing from THIRD_PARTY_LICENSES.md"
+
+
+def test_marketing_log_and_personas_contract() -> None:
+    """Verify MARKETING-LOG.txt exists, has recent Pfad B entry, 4 personas, matrix, and search queries."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file(), "MARKETING-LOG.txt must exist"
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "GITHUBBOT_ONE_REPO_MARKETING_AND_DESIGN" in mkt_text
+    assert "2026-09-13" in mkt_text
+
+    for i in range(1, 5):
+        assert f"[PERSONA-{i}]" in mkt_text, f"[PERSONA-{i}] missing in MARKETING-LOG.txt"
+
+    # Matrix checks
+    assert "100% Local-First" in mkt_text
+    assert "profiprompt-library-v1.json" in mkt_text
+
+
+def test_readme_navigation_and_reciprocal_anchor_parity() -> None:
+    """Verify README.md and README_de.md have 17-point navigation with 100% reciprocal structure parity."""
+    en_readme = ROOT / "README.md"
+    de_readme = ROOT / "README_de.md"
+    assert en_readme.is_file() and de_readme.is_file()
+
+    en_text = en_readme.read_text(encoding="utf-8")
+    de_text = de_readme.read_text(encoding="utf-8")
+
+    # Find numbered navigation entries: e.g. 1. [Title](#anchor)
+    nav_pattern = re.compile(r"^\d+\.\s+\[([^\]]+)\]\((#[^\)]+)\)", re.MULTILINE)
+    en_nav = nav_pattern.findall(en_text)
+    de_nav = nav_pattern.findall(de_text)
+
+    assert len(en_nav) == 17, f"Expected 17 navigation points in README.md, found {len(en_nav)}"
+    assert len(de_nav) == 17, f"Expected 17 navigation points in README_de.md, found {len(de_nav)}"
+
+    # Ensure all anchor targets exist as section headers in their respective files
+    for title, anchor in en_nav:
+        anchor_id = anchor.lstrip("#")
+        # Check that header corresponding to anchor_id exists
+        # In markdown: ## 1. Overview & Value Proposition -> #1-overview--value-proposition
+        assert any(
+            re.sub(r"[^\w\s-]", "", h.lower()).strip().replace(" ", "-") == anchor_id
+            for h in re.findall(r"^##\s+(.+)$", en_text, re.MULTILINE)
+        ), f"Anchor {anchor} from navigation not found as section header in README.md"
+
+    for title, anchor in de_nav:
+        anchor_id = anchor.lstrip("#")
+        assert any(
+            re.sub(r"[^\w\s-]", "", h.lower()).strip().replace(" ", "-") == anchor_id
+            for h in re.findall(r"^##\s+(.+)$", de_text, re.MULTILINE)
+        ), f"Anchor {anchor} from navigation not found as section header in README_de.md"
+
+    # Check that both READMEs contain the 4 personas and comparative matrix
+    for p_id in ["[PERSONA-1]", "[PERSONA-2]", "[PERSONA-3]", "[PERSONA-4]"]:
+        assert p_id in en_text, f"{p_id} missing in README.md"
+        assert p_id in de_text, f"{p_id} missing in README_de.md"
+
+    assert "Comparative Matrix" in en_text or "comparative-matrix" in en_text
+    assert "Vergleichsmatrix" in de_text or "vergleichsmatrix" in de_text
+
+
+def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
+    """Verify llms.txt and pyproject.toml reference updated marketing log and licenses."""
+    llms_file = ROOT / "llms.txt"
+    assert llms_file.is_file()
+    llms_text = llms_file.read_text(encoding="utf-8")
+    assert "Last-checked: 2026-09-13" in llms_text
+    assert "THIRD_PARTY_LICENSES.md" in llms_text
+    assert "MARKETING-LOG.txt" in llms_text
+
+    pyproject_file = ROOT / "pyproject.toml"
+    assert pyproject_file.is_file()
+    pyproject_text = pyproject_file.read_text(encoding="utf-8")
+    assert "THIRD_PARTY_LICENSES.md" in pyproject_text
+    assert "MARKETING-LOG.txt" in pyproject_text
