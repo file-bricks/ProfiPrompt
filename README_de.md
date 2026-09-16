@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 138 passed](https://img.shields.io/badge/Pytest-138%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 141 passed](https://img.shields.io/badge/Pytest-141%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Lokal--First%20%7C%20Zero--Egress-success.svg)]()
@@ -311,7 +311,7 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # PWA-Installationsmanifest
 │   ├── service-worker.js       # Offline-Cache-Engine
 │   └── tests/                  # Node.js-Testsuite (46 Tests)
-├── tests/                      # Pytest-Regressionstestsuite (134+ Tests)
+├── tests/                      # Pytest-Regressionstestsuite (141+ Tests)
 ├── CHANGELOG.md                # Änderungsprotokoll nach Keep a Changelog
 ├── EXPORTFORMAT.md             # Standard-Spezifikation für JSON-Bibliotheken
 ├── LICENSE                     # MIT-Lizenz
@@ -330,10 +330,10 @@ ProfiPrompt/
 
 ## 14. Tests & Qualitätssicherung
 
-Das Projekt wird durch **180+ automatisierte Tests** abgesichert:
+Das Projekt wird durch **185+ automatisierte Tests** abgesichert:
 
 ```bash
-# Python Pytest Testsuite ausführen (134 bestanden, 3 übersprungen)
+# Python Pytest Testsuite ausführen (141 bestanden, 3 übersprungen)
 pytest -v
 
 # Web-Companion Node.js Tests ausführen (46 bestanden)

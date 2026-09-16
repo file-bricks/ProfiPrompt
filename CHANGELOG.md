@@ -5,6 +5,27 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Repository Hygiene, CI Workflow Hardening & Multi-Host Protection — Pfad A (2026-09-16)
+
+- **GitHub Actions Workflow Härtung (`.github/workflows/`):**
+  - `tests.yml`: Top-Level `concurrency` mit `cancel-in-progress: true` hinzugefügt; Job-Timeouts etabliert (`python`: 15 min, `web-companion`: 10 min); Testlauf auf standardisierte Pytest-Flags `python -m pytest -ra -v` umgestellt.
+  - `stale.yml`: Concurrency-Absicherung mit `cancel-in-progress: true` und Job-Timeout von 10 Minuten eingeführt.
+  - `welcome.yml`: Concurrency-Absicherung mit `cancel-in-progress: true` und Job-Timeout von 5 Minuten eingeführt.
+- **Multi-Host- & Cloud-Sync-Schutz (`.gitignore`):**
+  - Lock-System-Ausschlüsse für kanonisches Multi-Agenten-Locking gehärtet (`LOCK`, `LOCK.permissions.json`, `uv.lock`, `!package-lock.json`).
+  - Umfassende Multi-Host- und OneDrive-Konfliktmasken hinzugefügt (`* (copy)*`, `* (Kopie)*`, `*conflicted copy*`, `*-WORKSTATION*`, `*-ASUS*`, `*-LAPTOP*`, `*-Mac Studio*`, `*.sync-temp-*`, `*.orig`, `*.rej`).
+  - Test- und Coverage-Caches geblockt (`.coverage.*`, `.hypothesis/`, `.turbo/`, `wheelhouse/`, `.wheel-smoke/`).
+- **Paket- & Tooling-Konfiguration (`pyproject.toml`):**
+  - PEP 621 Metadaten-URLs um `"Parent Organization"` (`file-bricks`), `"Umbrella Ecosystem"` (`open-bricks`) und `"LLM Ready"` (`llms.txt`) ergänzt.
+  - Pytest-Konfiguration mit `minversion = "7.0"` und `addopts = "-ra -v"` verankert.
+  - `[tool.ruff]` und `[tool.ruff.lint]` standardisiert; Codebase auf 100% ruff-Konformität gebracht.
+- **Dokumentations- & LLM-Kontext-Synchronisation (`llms.txt`, `README.md`, `README_de.md`, `MARKETING-LOG.txt`):**
+  - `llms.txt`: `Last-checked: 2026-09-16` aktualisiert, Testzähler auf 141 bestandene Pytest-Tests und 187 Gesamttests synchronisiert.
+  - `README.md` & `README_de.md`: Pytest-Badge auf 141 Tests aktualisiert und Testübersichten synchronisiert.
+  - `MARKETING-LOG.txt`: Abschnitt 8 für Pfad-A-Hygiene-Audit ergänzt.
+- **Automatisierte Vertragstests (`tests/test_security_license_contract.py`):**
+  - Neue Vertragstests `test_ci_workflow_guardrails`, `test_pep621_and_tool_configuration` und `test_marketing_log_hygiene_audit_recency` implementiert; `test_gitignore_security_and_multi_host_hardening` um Multi-Host- und Lock-Muster erweitert. Testsuite: 141 passed, 3 skipped (100% grün).
+
 ### Discoverability, Marketing & Visual Architecture — Pfad B (2026-09-13)
 
 - **Bilinguale Navigationsarchitektur mit 100% reziproker Parität (`README.md`, `README_de.md`):**

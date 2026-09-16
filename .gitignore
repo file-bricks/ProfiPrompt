@@ -26,11 +26,15 @@ TESTS.txt
 TESTERGEBNISSE.txt
 BUGREPORT.md
 DIAGNOSE_REPORT.md
+LOCK
 LOCK.txt
 LOCK.*.txt
 LOCK*.txt
 LOCK.*
+LOCK.permissions.json
 *.lock
+uv.lock
+!package-lock.json
 
 # ---- Persönliche / sensible Daten ----
 _USER/
@@ -102,14 +106,33 @@ build_exe.bat
 docs/superpowers/
 
 # ---- Multi-Host-Synchronisation & Konfliktschutz ----
+* (copy)*
+* (Copy)*
+* (kopie)*
+* (Kopie)*
+*conflicted copy*
+*-WORKSTATION*
+*-WORKSTATION-LG*
+*-ASUS*
+*-ASUS-GEI*
+*-LAPTOP*
+*-Mac Studio*
+*.sync-temp-*
 *.sync-conflict-*
 *.conflict
 *-CONFLIT-*
 *-conflict-*
-*-WORKSTATION-LG*
-*-ASUS-GEI*
+*.orig
+*.rej
 
-# ---- Web-Companion / Node Test Caches ----
+# ---- Web-Companion / Test & Coverage Caches ----
 node_modules/
+.coverage
+.coverage.*
 coverage/
+htmlcov/
+.hypothesis/
+.turbo/
 .nyc_output/
+wheelhouse/
+.wheel-smoke/

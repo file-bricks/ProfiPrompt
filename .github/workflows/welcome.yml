@@ -10,9 +10,14 @@ permissions:
   issues: write
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   welcome:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/first-interaction@v3
         with:

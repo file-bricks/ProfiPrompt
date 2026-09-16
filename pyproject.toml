@@ -41,9 +41,22 @@ Repository = "https://github.com/file-bricks/ProfiPrompt.git"
 Issues = "https://github.com/file-bricks/ProfiPrompt/issues"
 Changelog = "https://github.com/file-bricks/ProfiPrompt/blob/master/CHANGELOG.md"
 Security = "https://github.com/file-bricks/ProfiPrompt/blob/master/SECURITY.md"
+"Parent Organization" = "https://github.com/file-bricks"
+"Umbrella Ecosystem" = "https://github.com/open-bricks"
+"LLM Ready" = "https://github.com/file-bricks/ProfiPrompt/blob/master/llms.txt"
 "Third-Party Licenses" = "https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md"
 "Marketing Log" = "https://github.com/file-bricks/ProfiPrompt/blob/master/MARKETING-LOG.txt"
 
 [tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -v"
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501", "E402", "E701", "E702", "E712", "E741", "F401", "F841", "W291", "W293", "F541"]

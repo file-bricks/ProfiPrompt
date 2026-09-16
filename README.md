@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 138 passed](https://img.shields.io/badge/Pytest-138%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 141 passed](https://img.shields.io/badge/Pytest-141%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -311,7 +311,7 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # PWA install manifest
 │   ├── service-worker.js       # Offline service worker cache engine
 │   └── tests/                  # Node.js automated test suite (46 tests)
-├── tests/                      # Automated Pytest regression test suite (134+ tests)
+├── tests/                      # Automated Pytest regression test suite (141+ tests)
 ├── CHANGELOG.md                # Keep a Changelog revision history
 ├── EXPORTFORMAT.md             # Standardized specification for library JSON
 ├── LICENSE                     # MIT License
@@ -330,10 +330,10 @@ ProfiPrompt/
 
 ## 14. Testing & Quality Assurance
 
-ProfiPrompt is backed by **180+ automated tests** verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
+ProfiPrompt is backed by **185+ automated tests** verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
 
 ```bash
-# Run Python Pytest test suite (134 passed, 3 skipped)
+# Run Python Pytest test suite (141 passed, 3 skipped)
 pytest -v
 
 # Run Web Companion Node.js test suite (46 passed)

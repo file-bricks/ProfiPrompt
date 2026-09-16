@@ -30,7 +30,8 @@ def has(src, n):
 
 # --- models: ECHTE Round-Trip-Tests (BUG-01) ---
 def test_version_roundtrip_preserves_all_fields():
-    import importlib, models
+    import importlib
+    import models
     importlib.reload(models)
     d = {
         "id": "vid1", "prompt_id": "pid1", "version_number": 7,
@@ -45,7 +46,8 @@ def test_version_roundtrip_preserves_all_fields():
 
 
 def test_version_from_dict_survives_unknown_and_missing_key():
-    import importlib, models
+    import importlib
+    import models
     importlib.reload(models)
     # Extra-Key (Forward-Compat) + fehlendes optionales Feld -> darf NICHT werfen (Version(**v) tat es).
     v = models.version_from_dict({"id": "i", "prompt_id": "p", "future_field": 1})
@@ -54,7 +56,8 @@ def test_version_from_dict_survives_unknown_and_missing_key():
 
 
 def test_boarditem_roundtrip_and_unknown_key():
-    import importlib, models
+    import importlib
+    import models
     importlib.reload(models)
     d = {"id": "b1", "board_id": "bd1", "prompt_id": "p1",
          "version_id": "v1", "created_at": "2020-01-01T00:00:00+00:00"}
@@ -69,7 +72,9 @@ def test_boarditem_roundtrip_and_unknown_key():
 
 # --- clipboard: echter None-Guard-Test (BUG-05/06) ---
 def test_clipboard_no_qapp_no_crash():
-    import importlib, clipboard_manager, settings_manager
+    import importlib
+    import clipboard_manager
+    import settings_manager
     importlib.reload(clipboard_manager)
     # ohne QApplication darf copy_to_clipboard nicht crashen (clipboard()/widget None)
     cm = clipboard_manager.ClipboardManager.__new__(clipboard_manager.ClipboardManager)

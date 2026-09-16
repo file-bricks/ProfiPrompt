@@ -76,15 +76,19 @@ def test_gitignore_security_and_multi_host_hardening() -> None:
         assert pat in content, f"Secret pattern {pat} missing in .gitignore"
 
     # Multi-host sync hardening
-    for host_pat in ["*-WORKSTATION-LG*", "*-ASUS-GEI*", "*.sync-conflict-*", "*.conflict"]:
+    for host_pat in [
+        "*-WORKSTATION-LG*", "*-ASUS-GEI*", "*.sync-conflict-*", "*.conflict",
+        "* (copy)*", "*-WORKSTATION*", "*-ASUS*", "*-LAPTOP*", "*-Mac Studio*", "*.sync-temp-*"
+    ]:
         assert host_pat in content, f"Sync conflict pattern {host_pat} missing in .gitignore"
 
     # Multi-agent lock system fail-closed patterns
-    for lock_pat in ["LOCK.*", "*.lock", "LOCK*.txt"]:
+    for lock_pat in ["LOCK\n", "LOCK.*", "*.lock", "LOCK*.txt", "uv.lock", "!package-lock.json"]:
         assert lock_pat in content, f"Lock pattern {lock_pat} missing in .gitignore"
 
-    # Web companion test cache patterns
-    assert "node_modules/" in content, "node_modules/ pattern missing in .gitignore"
+    # Web companion test & coverage cache patterns
+    for cache_pat in [".coverage.*", ".hypothesis/", ".turbo/", "wheelhouse/", ".wheel-smoke/", "node_modules/"]:
+        assert cache_pat in content, f"Cache pattern {cache_pat} missing in .gitignore"
 
 
 def test_no_hardcoded_user_paths_in_python_code() -> None:
@@ -246,7 +250,7 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert "Last-checked: 2026-09-13" in llms_text
+    assert re.search(r"Last-checked:\s*2026-09-(?:13|16)", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
 
@@ -255,3 +259,51 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     pyproject_text = pyproject_file.read_text(encoding="utf-8")
     assert "THIRD_PARTY_LICENSES.md" in pyproject_text
     assert "MARKETING-LOG.txt" in pyproject_text
+
+
+def test_ci_workflow_guardrails() -> None:
+    """Verify all GitHub Actions workflows define concurrency cancel-in-progress and execution timeouts."""
+    workflows_dir = ROOT / ".github" / "workflows"
+    assert workflows_dir.is_dir(), ".github/workflows must exist"
+
+    tests_yml = (workflows_dir / "tests.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in tests_yml, "tests.yml must define concurrency"
+    assert "cancel-in-progress: true" in tests_yml, "tests.yml must set cancel-in-progress"
+    assert "timeout-minutes: 15" in tests_yml, "tests.yml python job must set timeout-minutes: 15"
+    assert "timeout-minutes: 10" in tests_yml, "tests.yml web-companion job must set timeout-minutes: 10"
+    assert "pytest -ra -v" in tests_yml, "tests.yml must invoke pytest with -ra -v flags"
+
+    stale_yml = (workflows_dir / "stale.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in stale_yml, "stale.yml must define concurrency"
+    assert "cancel-in-progress: true" in stale_yml, "stale.yml must set cancel-in-progress"
+    assert "timeout-minutes: 10" in stale_yml, "stale.yml must set timeout-minutes: 10"
+
+    welcome_yml = (workflows_dir / "welcome.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in welcome_yml, "welcome.yml must define concurrency"
+    assert "cancel-in-progress: true" in welcome_yml, "welcome.yml must set cancel-in-progress"
+    assert "timeout-minutes: 5" in welcome_yml, "welcome.yml must set timeout-minutes: 5"
+
+
+def test_pep621_and_tool_configuration() -> None:
+    """Verify pyproject.toml includes parent ecosystem URLs, pytest addopts, and ruff settings."""
+    pyproject_file = ROOT / "pyproject.toml"
+    assert pyproject_file.is_file()
+    text = pyproject_file.read_text(encoding="utf-8")
+
+    assert '"Parent Organization" = "https://github.com/file-bricks"' in text
+    assert '"Umbrella Ecosystem" = "https://github.com/open-bricks"' in text
+    assert '"LLM Ready" = "https://github.com/file-bricks/ProfiPrompt/blob/master/llms.txt"' in text
+    assert 'addopts = "-ra -v"' in text
+    assert "[tool.ruff]" in text
+    assert "[tool.ruff.lint]" in text
+
+
+def test_marketing_log_hygiene_audit_recency() -> None:
+    """Verify MARKETING-LOG.txt includes Section 8 documenting the Pfad A technical hygiene audit."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file()
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "8. REPOSITORY HYGIENE & CI CONTRACT AUDIT" in mkt_text
+    assert "2026-09-16" in mkt_text
+    assert "Pfad A" in mkt_text

@@ -148,3 +148,21 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
 - Web/PWA Companion Suite: 46 passed Node.js tests (100% green).
 - Total Automated Verification: 184 tests passing (100% green).
 - Quality Gates: Ruff clean, Compileall clean, Git diff clean.
+
+--------------------------------------------------------------------------------
+8. REPOSITORY HYGIENE & CI CONTRACT AUDIT (2026-09-16, Pfad A)
+--------------------------------------------------------------------------------
+- Continuous Integration Hardening:
+  - Added top-level concurrency cancel-in-progress to tests.yml, stale.yml, and welcome.yml.
+  - Added job-level timeouts: python (15m), web-companion (10m), stale (10m), welcome (5m).
+  - Standardized pytest runner invocation to `python -m pytest -ra -v`.
+- Multi-Host & Cloud-Sync Hardening (.gitignore):
+  - Added strict multi-agent lock patterns: LOCK, LOCK.permissions.json, uv.lock, !package-lock.json.
+  - Added multi-host conflict copy masks: * (copy)*, * (Kopie)*, *conflicted copy*, *-WORKSTATION*, *-ASUS*, *-LAPTOP*, *-Mac Studio*, *.sync-temp-*, *.orig*, *.rej*.
+  - Added test/coverage caches: .coverage.*, .hypothesis/, .turbo/, wheelhouse/, .wheel-smoke/.
+- Packaging & Tooling Standard (pyproject.toml):
+  - Expanded [project.urls] with "Parent Organization", "Umbrella Ecosystem", and "LLM Ready".
+  - Configured [tool.pytest.ini_options] with minversion = "7.0" and addopts = "-ra -v".
+  - Configured [tool.ruff] and [tool.ruff.lint] achieving 100% clean repository linting.
+- Automated Contract Testing:
+  - Added automated contract tests covering CI concurrency/timeouts, multi-host gitignore defense, PEP 621 URLs, and hygiene log recency.
