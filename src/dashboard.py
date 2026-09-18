@@ -383,9 +383,9 @@ class DashboardWidget(QtWidgets.QWidget):
                     self, "Löschen",
                     f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
                 ) == QtWidgets.QMessageBox.StandardButton.Yes:
+                    self.storage.delete_version(p.id, v.id)
                     p.versions = [x for x in (p.versions or []) if x.id != v.id]
                     p.updated_at = now_iso()
-                    self.storage.upsert_prompt(p)
                     bus.promptsChanged.emit()
 
     # -- Copy‐Shortcuts für Tree‐Icons -------------------------------

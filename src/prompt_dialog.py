@@ -192,8 +192,18 @@ class VersionDialog(QtWidgets.QDialog):
         v.result = result
         v.updated_at = now_iso()
 
-        self.prompt.updated_at = now_iso()
-        self.storage.upsert_prompt(self.prompt)  # gesamte Prompt-Struktur inkl. Versionen speichern
+        # Bugsweep 2026-09-18 BUG-VD01: self.prompt.versions synchronisieren, falls
+        # self.version als separates Objekt geladen wurde (z.B. get_prompt vs get_version)
+        if self.prompt:
+            idx = next((i for i, ev in enumerate(self.prompt.versions) if ev.id == v.id), -1)
+            if idx >= 0:
+                self.prompt.versions[idx] = v
+            else:
+                self.prompt.versions.append(v)
+            self.prompt.updated_at = now_iso()
+
+        pid = self.prompt.id if self.prompt else v.prompt_id
+        self.storage.upsert_version(pid, v)
         self.accept()
 
     def _on_save_create(self):
@@ -215,4 +225,7 @@ class VersionDialog(QtWidgets.QDialog):
             updated_at=now_iso(),
         )
         self.storage.add_version(self.prompt.id, new_v)
+        if self.prompt:
+            self.prompt.versions.append(new_v)
+            self.prompt.updated_at = now_iso()
         self.accept()

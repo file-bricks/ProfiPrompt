@@ -383,10 +383,13 @@ class BoardManager(QtWidgets.QWidget):
         elif md.hasText():
             # Format: "pid|vid" (aus PromptTile)
             parts = md.text().split("|")
-            pid = parts[0]
-            if len(parts) > 1 and parts[1]: vid = parts[1]
+            pid = parts[0].strip() or None
+            if len(parts) > 1 and parts[1].strip():
+                vid = parts[1].strip()
 
-        if pid:
+        if pid and self.storage.get_prompt(pid):
+            if vid and not self.storage.get_version(pid, vid):
+                vid = None
             ok, _ = self.storage.add_item_to_board(board.id, pid, vid)
             if ok: self.reload_items()
             

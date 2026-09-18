@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bugfix & Board-Persistenz-Härtung — Bugsweep (2026-09-18)
+
+- **VersionDialog Persistenz & Synchronisation (`src/prompt_dialog.py`, `src/storage.py`):**
+  - **BUG-VD01 (KRIT):** In `VersionDialog._on_save_update()` wurden Version-Edits nicht in `storage` persistiert, da `VersionDialog` Instanzen aus getrennten `load_prompts()`-Aufrufen (`get_prompt()` vs `get_version()`) erhielt und In-Place-Änderungen am losgelösten Version-Objekt die Versionsliste des Prompts unberührt ließen. Behoben durch explizite Synchronisation der In-Memory-Versionsliste und Speicherung via `storage.upsert_version()`.
+  - **BUG-VD02 (HOCH):** `Storage.upsert_version()` und `Storage.delete_version()` als atomare Methoden zur gezielten Versionsverwaltung hinzugefügt.
+  - **BUG-VD03 (MITTEL):** Kaskadierende Bereinigung verwaister `BoardItem`-Referenzen: Bei `delete_prompt()` und `delete_version()` werden nun alle assoziierten BoardItems aus `boards.json` bereinigt, um tote Verweise zu verhindern.
+  - **BUG-VD04 (MITTEL):** Drag & Drop Härtung in `src/board_manager.py` und `src/storage.py`: Text- und MIME-Payloads werden gestrippt; ungültige oder verwaiste Prompt-IDs werden vor Persistierung in Boards abgewiesen.
+  - **Regressionstests (`tests/test_bugsweep_version_dialog_persistence_20260918.py`):** 6 neue automatisierte Tests decken Version-Edits, Versions-Upserts, Board-Bereinigung und Drop-Validierung ab.
+
 ### Repository Hygiene, CI Workflow Hardening & Multi-Host Protection — Pfad A (2026-09-16)
 
 - **GitHub Actions Workflow Härtung (`.github/workflows/`):**
