@@ -166,3 +166,23 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
   - Configured [tool.ruff] and [tool.ruff.lint] achieving 100% clean repository linting.
 - Automated Contract Testing:
   - Added automated contract tests covering CI concurrency/timeouts, multi-host gitignore defense, PEP 621 URLs, and hygiene log recency.
+
+--------------------------------------------------------------------------------
+9. MULTI-LANGUAGE EXPANSION & SPANISH PARITY (2026-09-20, Policy P-006 Tier-2)
+--------------------------------------------------------------------------------
+- Tier-2 6-Language Standard Expansion:
+  - Upgraded translation engine (translator.py) to TranslationSystem v2.0 supporting DE, EN, ES, ZH, JA, RU.
+  - Implemented 4-tier deterministic fallback chain (target -> en -> de -> key).
+  - Expanded locales/translations.json to 74 keys with 100% parity across all 6 languages (0 missing, 0 empty).
+  - Enhanced manage_translations.py with `--check` automated validation flag.
+  - Updated SettingsManager and platform_smoke to support all 6 languages with persistent QSettings roundtrip.
+  - Dynamically generated language switcher menu in GUI (profiprompt.py) with localized restart notifications.
+- Spanish Documentation (Policy P-006 Leerlauf-Sprachzug Stufe 2):
+  - Created README_es.md with 100% reciprocal 17-point navigation structure, anchors, badges, personas, and comparative matrix.
+  - Updated README.md and README_de.md language switcher headers to link to Español.
+- Quality & Contract Verification:
+  - Added tests/test_i18n_tier2_contract.py verifying dictionary parity, fallbacks, parameter formatting, and helpers.
+  - Expanded tests/test_language_switch.py to verify roundtrip across all 6 languages.
+  - Expanded tests/test_security_license_contract.py to enforce reciprocal anchor parity for README_es.md.
+  - Python test suite increased to 152 passed tests (100% green); Node companion suite 40 passed.
+

@@ -1,6 +1,6 @@
 # ProfiPrompt
 
-Last-checked: 2026-09-16
+Last-checked: 2026-09-20
 
 
 ## Canonical links
@@ -10,10 +10,11 @@ Last-checked: 2026-09-16
 - License: MIT
 - Third-Party Licenses: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md
 - Marketing Log: https://github.com/file-bricks/ProfiPrompt/blob/master/MARKETING-LOG.txt
+- Documentation: [English](README.md) | [Deutsch](README_de.md) | [Español](README_es.md)
 
 ## Summary
 
-ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt versions, boards, clipboard copy modes, and TXT/PDF/JSON exports. The app stores user data locally as JSON and does not require cloud services or telemetry.
+ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt versions, boards, clipboard copy modes, and TXT/PDF/JSON exports. The app stores user data locally as JSON and does not require cloud services or telemetry. Fully supports 6 languages (DE, EN, ES, ZH, JA, RU) under Policy P-006 Tier-2.
 
 ## Main interfaces
 
@@ -23,6 +24,7 @@ ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt
 - Web/PWA companion: `web_companion/`
 - Platform smoke: `python src/platform_smoke.py --output-dir build/platform-smoke`
 - Store readiness protocol: `python scripts/check_store_readiness.py write-test-protocol`
+- Translation check: `python manage_translations.py --check`
 
 ## Audience & Personas
 
@@ -56,8 +58,8 @@ offline pwa prompt companion
 
 ## Validation
 
-- Python tests: `python -m pytest` (141 passed, 3 skipped)
-- Web/PWA tests: `node --test web_companion/tests/*.test.js web_companion/tests/*.mjs` (46 passed)
+- Python tests: `python -m pytest` (152 passed, 3 skipped)
+- Web/PWA tests: `node --test web_companion/tests/*.test.js web_companion/tests/*.mjs` (40 passed)
 - Total test suite: 187 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`

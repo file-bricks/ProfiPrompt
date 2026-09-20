@@ -1,98 +1,594 @@
 {
-  "Abbrechen": {
-    "de": "Abbrechen",
-    "en": "Cancel"
-  },
-  "Als neue Version speichern": {
-    "de": "Als neue Version speichern",
-    "en": "Save as New Version"
-  },
-  "Filter zurücksetzen": {
-    "de": "Filter zurücksetzen",
-    "en": "Reset Filter"
-  },
-  "Kopier-Einstellungen": {
-    "de": "Kopier-Einstellungen",
-    "en": "Copy Settings"
-  },
-  "Löschen": {
-    "de": "Löschen",
-    "en": "Delete"
-  },
-  "Speichern": {
-    "de": "Speichern",
-    "en": "Save"
-  },
   "Datei": {
     "de": "Datei",
-    "en": "File"
+    "en": "File",
+    "es": "Archivo",
+    "zh": "文件",
+    "ja": "ファイル",
+    "ru": "Файл"
   },
   "Bearbeiten": {
     "de": "Bearbeiten",
-    "en": "Edit"
+    "en": "Edit",
+    "es": "Editar",
+    "zh": "编辑",
+    "ja": "編集",
+    "ru": "Правка"
   },
   "Ansicht": {
     "de": "Ansicht",
-    "en": "View"
+    "en": "View",
+    "es": "Ver",
+    "zh": "视图",
+    "ja": "表示",
+    "ru": "Вид"
   },
   "Hilfe": {
     "de": "Hilfe",
-    "en": "Help"
-  },
-  "Alle Prompts (TXT)": {
-    "de": "Alle Prompts (TXT)",
-    "en": "All Prompts (TXT)"
-  },
-  "Alle Prompts (PDF)": {
-    "de": "Alle Prompts (PDF)",
-    "en": "All Prompts (PDF)"
-  },
-  "Bibliothek (JSON)": {
-    "de": "Bibliothek (JSON)",
-    "en": "Library (JSON)"
-  },
-  "Aktueller Prompt (TXT)": {
-    "de": "Aktueller Prompt (TXT)",
-    "en": "Current Prompt (TXT)"
-  },
-  "Aktueller Prompt (PDF)": {
-    "de": "Aktueller Prompt (PDF)",
-    "en": "Current Prompt (PDF)"
-  },
-  "Aktuelle Version (TXT)": {
-    "de": "Aktuelle Version (TXT)",
-    "en": "Current Version (TXT)"
-  },
-  "Aktuelle Version (PDF)": {
-    "de": "Aktuelle Version (PDF)",
-    "en": "Current Version (PDF)"
+    "en": "Help",
+    "es": "Ayuda",
+    "zh": "帮助",
+    "ja": "ヘルプ",
+    "ru": "Справка"
   },
   "Beenden": {
     "de": "Beenden",
-    "en": "Quit"
+    "en": "Quit",
+    "es": "Salir",
+    "zh": "退出",
+    "ja": "終了",
+    "ru": "Выход"
+  },
+  "Speichern": {
+    "de": "Speichern",
+    "en": "Save",
+    "es": "Guardar",
+    "zh": "保存",
+    "ja": "保存",
+    "ru": "Сохранить"
+  },
+  "Abbrechen": {
+    "de": "Abbrechen",
+    "en": "Cancel",
+    "es": "Cancelar",
+    "zh": "取消",
+    "ja": "キャンセル",
+    "ru": "Отмена"
+  },
+  "Löschen": {
+    "de": "Löschen",
+    "en": "Delete",
+    "es": "Eliminar",
+    "zh": "删除",
+    "ja": "削除",
+    "ru": "Удалить"
+  },
+  "Zurücksetzen": {
+    "de": "Zurücksetzen",
+    "en": "Reset",
+    "es": "Restablecer",
+    "zh": "重置",
+    "ja": "リセット",
+    "ru": "Сбросить"
+  },
+  "OK": {
+    "de": "OK",
+    "en": "OK",
+    "es": "Aceptar",
+    "zh": "确定",
+    "ja": "OK",
+    "ru": "ОК"
   },
   "Neuen Prompt erstellen": {
     "de": "Neuen Prompt erstellen",
-    "en": "Create New Prompt"
+    "en": "Create New Prompt",
+    "es": "Crear nuevo prompt",
+    "zh": "创建新提示词",
+    "ja": "新規プロンプト作成",
+    "ru": "Создать новый промпт"
+  },
+  "Version erstellen": {
+    "de": "Version erstellen",
+    "en": "Create Version",
+    "es": "Crear versión",
+    "zh": "创建版本",
+    "ja": "バージョン作成",
+    "ru": "Создать версию"
+  },
+  "Als neue Version speichern": {
+    "de": "Als neue Version speichern",
+    "en": "Save as New Version",
+    "es": "Guardar como nueva versión",
+    "zh": "另存为新版本",
+    "ja": "新しいバージョンとして保存",
+    "ru": "Сохранить как новую версию"
+  },
+  "Filter zurücksetzen": {
+    "de": "Filter zurücksetzen",
+    "en": "Reset Filter",
+    "es": "Restablecer filtros",
+    "zh": "重置筛选",
+    "ja": "フィルターをリセット",
+    "ru": "Сбросить фильтр"
+  },
+  "Kopier-Einstellungen": {
+    "de": "Kopier-Einstellungen",
+    "en": "Copy Settings",
+    "es": "Configuración de copia",
+    "zh": "复制设置",
+    "ja": "コピー設定",
+    "ru": "Настройки копирования"
   },
   "Kopier-Einstellungen …": {
     "de": "Kopier-Einstellungen …",
-    "en": "Copy Settings …"
+    "en": "Copy Settings …",
+    "es": "Configuración de copia …",
+    "zh": "复制设置 …",
+    "ja": "コピー設定 …",
+    "ru": "Настройки копирования …"
+  },
+  "Darstellung": {
+    "de": "Darstellung",
+    "en": "Appearance",
+    "es": "Apariencia",
+    "zh": "外观",
+    "ja": "外観",
+    "ru": "Внешний вид"
   },
   "Darstellung …": {
     "de": "Darstellung …",
-    "en": "Appearance …"
+    "en": "Appearance …",
+    "es": "Apariencia …",
+    "zh": "外观 …",
+    "ja": "外観 …",
+    "ru": "Внешний вид …"
   },
   "Boards anzeigen/ausblenden": {
     "de": "Boards anzeigen/ausblenden",
-    "en": "Show/Hide Boards"
+    "en": "Show/Hide Boards",
+    "es": "Mostrar/Ocultar paneles",
+    "zh": "显示/隐藏面板",
+    "ja": "ボードの表示/非表示",
+    "ru": "Показать/Скрыть доски"
   },
   "Anleitung": {
     "de": "Anleitung",
-    "en": "Guide"
+    "en": "Guide",
+    "es": "Instrucciones",
+    "zh": "使用说明",
+    "ja": "使い方",
+    "ru": "Руководство"
   },
   "Über Prompt Manager": {
     "de": "Über Prompt Manager",
-    "en": "About Prompt Manager"
+    "en": "About Prompt Manager",
+    "es": "Acerca de Prompt Manager",
+    "zh": "关于 Prompt Manager",
+    "ja": "Prompt Manager について",
+    "ru": "О программе Prompt Manager"
+  },
+  "Über": {
+    "de": "Über",
+    "en": "About",
+    "es": "Acerca de",
+    "zh": "关于",
+    "ja": "バージョン情報",
+    "ru": "О программе"
+  },
+  "Alle Prompts (TXT)": {
+    "de": "Alle Prompts (TXT)",
+    "en": "All Prompts (TXT)",
+    "es": "Todos los prompts (TXT)",
+    "zh": "所有提示词 (TXT)",
+    "ja": "すべてのプロンプト (TXT)",
+    "ru": "Все промпты (TXT)"
+  },
+  "Alle Prompts (PDF)": {
+    "de": "Alle Prompts (PDF)",
+    "en": "All Prompts (PDF)",
+    "es": "Todos los prompts (PDF)",
+    "zh": "所有提示词 (PDF)",
+    "ja": "すべてのプロンプト (PDF)",
+    "ru": "Все промпты (PDF)"
+  },
+  "Bibliothek (JSON)": {
+    "de": "Bibliothek (JSON)",
+    "en": "Library (JSON)",
+    "es": "Biblioteca (JSON)",
+    "zh": "提示词库 (JSON)",
+    "ja": "ライブラリ (JSON)",
+    "ru": "Библиотека (JSON)"
+  },
+  "Aktueller Prompt (TXT)": {
+    "de": "Aktueller Prompt (TXT)",
+    "en": "Current Prompt (TXT)",
+    "es": "Prompt actual (TXT)",
+    "zh": "当前提示词 (TXT)",
+    "ja": "現在のプロンプト (TXT)",
+    "ru": "Текущий промпт (TXT)"
+  },
+  "Aktueller Prompt (PDF)": {
+    "de": "Aktueller Prompt (PDF)",
+    "en": "Current Prompt (PDF)",
+    "es": "Prompt actual (PDF)",
+    "zh": "当前提示词 (PDF)",
+    "ja": "現在のプロンプト (PDF)",
+    "ru": "Текущий промпт (PDF)"
+  },
+  "Aktuelle Version (TXT)": {
+    "de": "Aktuelle Version (TXT)",
+    "en": "Current Version (TXT)",
+    "es": "Versión actual (TXT)",
+    "zh": "当前版本 (TXT)",
+    "ja": "現在のバージョン (TXT)",
+    "ru": "Текущая версия (TXT)"
+  },
+  "Aktuelle Version (PDF)": {
+    "de": "Aktuelle Version (PDF)",
+    "en": "Current Version (PDF)",
+    "es": "Versión actual (PDF)",
+    "zh": "当前版本 (PDF)",
+    "ja": "現在のバージョン (PDF)",
+    "ru": "Текущая версия (PDF)"
+  },
+  "Sprache / Language": {
+    "de": "Sprache / Language",
+    "en": "Language",
+    "es": "Idioma",
+    "zh": "语言",
+    "ja": "言語",
+    "ru": "Язык"
+  },
+  "Suche in Titel/Text/Tags …": {
+    "de": "Suche in Titel/Text/Tags …",
+    "en": "Search in title/text/tags …",
+    "es": "Buscar en título/texto/etiquetas …",
+    "zh": "搜索标题/正文/标签 …",
+    "ja": "タイトル/テキスト/タグを検索 …",
+    "ru": "Поиск по названию/тексту/тегам …"
+  },
+  "Suche:": {
+    "de": "Suche:",
+    "en": "Search:",
+    "es": "Buscar:",
+    "zh": "搜索:",
+    "ja": "検索:",
+    "ru": "Поиск:"
+  },
+  "Tag:": {
+    "de": "Tag:",
+    "en": "Tag:",
+    "es": "Etiqueta:",
+    "zh": "标签:",
+    "ja": "タグ:",
+    "ru": "Тег:"
+  },
+  "Von:": {
+    "de": "Von:",
+    "en": "From:",
+    "es": "Desde:",
+    "zh": "起始:",
+    "ja": "開始:",
+    "ru": "С:"
+  },
+  "Bis:": {
+    "de": "Bis:",
+    "en": "To:",
+    "es": "Hasta:",
+    "zh": "截止:",
+    "ja": "終了:",
+    "ru": "По:"
+  },
+  "Board:": {
+    "de": "Board:",
+    "en": "Board:",
+    "es": "Panel:",
+    "zh": "面板:",
+    "ja": "ボード:",
+    "ru": "Доска:"
+  },
+  "Kopiert! 📋": {
+    "de": "Kopiert! 📋",
+    "en": "Copied! 📋",
+    "es": "¡Copiado! 📋",
+    "zh": "已复制! 📋",
+    "ja": "コピーしました! 📋",
+    "ru": "Скопировано! 📋"
+  },
+  "Neu": {
+    "de": "Neu",
+    "en": "New",
+    "es": "Nuevo",
+    "zh": "新建",
+    "ja": "新規",
+    "ru": "Новый"
+  },
+  "Prompt bearbeiten": {
+    "de": "Prompt bearbeiten",
+    "en": "Edit Prompt",
+    "es": "Editar prompt",
+    "zh": "编辑提示词",
+    "ja": "プロンプトを編集",
+    "ru": "Редактировать промпт"
+  },
+  "Version bearbeiten": {
+    "de": "Version bearbeiten",
+    "en": "Edit Version",
+    "es": "Editar versión",
+    "zh": "编辑版本",
+    "ja": "バージョンを編集",
+    "ru": "Редактировать версию"
+  },
+  "Neuer Prompt": {
+    "de": "Neuer Prompt",
+    "en": "New Prompt",
+    "es": "Nuevo prompt",
+    "zh": "新建提示词",
+    "ja": "新規プロンプト",
+    "ru": "Новый промпт"
+  },
+  "Neue Version": {
+    "de": "Neue Version",
+    "en": "New Version",
+    "es": "Nueva versión",
+    "zh": "新建版本",
+    "ja": "新規バージョン",
+    "ru": "Новая версия"
+  },
+  "Titel:": {
+    "de": "Titel:",
+    "en": "Title:",
+    "es": "Título:",
+    "zh": "标题:",
+    "ja": "タイトル:",
+    "ru": "Название:"
+  },
+  "Zweck:": {
+    "de": "Zweck:",
+    "en": "Purpose:",
+    "es": "Propósito:",
+    "zh": "用途:",
+    "ja": "用途:",
+    "ru": "Назначение:"
+  },
+  "Tags (kommagetrennt):": {
+    "de": "Tags (kommagetrennt):",
+    "en": "Tags (comma-separated):",
+    "es": "Etiquetas (separadas por comas):",
+    "zh": "标签 (逗号分隔):",
+    "ja": "タグ (カンマ区切り):",
+    "ru": "Теги (через запятую):"
+  },
+  "Prompt-Text:": {
+    "de": "Prompt-Text:",
+    "en": "Prompt Text:",
+    "es": "Texto del prompt:",
+    "zh": "提示词内容:",
+    "ja": "プロンプトテキスト:",
+    "ru": "Текст промпта:"
+  },
+  "Letztes Ergebnis:": {
+    "de": "Letztes Ergebnis:",
+    "en": "Last Result:",
+    "es": "Último resultado:",
+    "zh": "最新结果:",
+    "ja": "最新の結果:",
+    "ru": "Последний результат:"
+  },
+  "Titel und Prompt-Text sind Pflichtfelder.": {
+    "de": "Titel und Prompt-Text sind Pflichtfelder.",
+    "en": "Title and prompt text are required.",
+    "es": "El título y el texto del prompt son campos obligatorios.",
+    "zh": "标题和提示词内容为必填项。",
+    "ja": "タイトルとプロンプトテキストは必須項目です。",
+    "ru": "Название и текст промпта обязательны для заполнения."
+  },
+  "Zugehöriger Prompt nicht gefunden.": {
+    "de": "Zugehöriger Prompt nicht gefunden.",
+    "en": "Associated prompt not found.",
+    "es": "No se encontró el prompt asociado.",
+    "zh": "未找到关联的提示词。",
+    "ja": "関連するプロンプトが見つかりません。",
+    "ru": "Связанный промпт не найден."
+  },
+  "Möchten Sie diesen Prompt wirklich löschen?": {
+    "de": "Möchten Sie diesen Prompt wirklich löschen?",
+    "en": "Do you really want to delete this prompt?",
+    "es": "¿Realmente desea eliminar este prompt?",
+    "zh": "您确定要删除此提示词吗？",
+    "ja": "このプロンプトを本当に削除しますか？",
+    "ru": "Вы действительно хотите удалить этот промпт?"
+  },
+  "Möchten Sie diese Version wirklich löschen?": {
+    "de": "Möchten Sie diese Version wirklich löschen?",
+    "en": "Do you really want to delete this version?",
+    "es": "¿Realmente desea eliminar esta versión?",
+    "zh": "您确定要删除此版本吗？",
+    "ja": "このバージョンを本当に削除しますか？",
+    "ru": "Вы действительно хотите удалить эту версию?"
+  },
+  "Bestätigung": {
+    "de": "Bestätigung",
+    "en": "Confirmation",
+    "es": "Confirmación",
+    "zh": "确认",
+    "ja": "確認",
+    "ru": "Подтверждение"
+  },
+  "Erfolg": {
+    "de": "Erfolg",
+    "en": "Success",
+    "es": "Éxito",
+    "zh": "成功",
+    "ja": "成功",
+    "ru": "Успешно"
+  },
+  "Fehler": {
+    "de": "Fehler",
+    "en": "Error",
+    "es": "Error",
+    "zh": "错误",
+    "ja": "エラー",
+    "ru": "Ошибка"
+  },
+  "Hinweis": {
+    "de": "Hinweis",
+    "en": "Notice",
+    "es": "Aviso",
+    "zh": "提示",
+    "ja": "お知らせ",
+    "ru": "Примечание"
+  },
+  "Prompt erfolgreich exportiert.": {
+    "de": "Prompt erfolgreich exportiert.",
+    "en": "Prompt successfully exported.",
+    "es": "Prompt exportado con éxito.",
+    "zh": "提示词导出成功。",
+    "ja": "プロンプトを正常にエクスポートしました。",
+    "ru": "Промпт успешно экспортирован."
+  },
+  "Version erfolgreich exportiert.": {
+    "de": "Version erfolgreich exportiert.",
+    "en": "Version successfully exported.",
+    "es": "Versión exportada con éxito.",
+    "zh": "版本导出成功。",
+    "ja": "バージョンを正常にエクスポートしました。",
+    "ru": "Версия успешно экспортирована."
+  },
+  "Bundle erfolgreich exportiert.": {
+    "de": "Bundle erfolgreich exportiert.",
+    "en": "Bundle successfully exported.",
+    "es": "Paquete exportado con éxito.",
+    "zh": "软件包导出成功。",
+    "ja": "バンドルを正常にエクスポートしました。",
+    "ru": "Пакет успешно экспортирован."
+  },
+  "TXT erfolgreich gespeichert.": {
+    "de": "TXT erfolgreich gespeichert.",
+    "en": "TXT successfully saved.",
+    "es": "TXT guardado con éxito.",
+    "zh": "TXT 保存成功。",
+    "ja": "TXT が正常に保存されました。",
+    "ru": "TXT успешно сохранен."
+  },
+  "PDF erfolgreich gespeichert.": {
+    "de": "PDF erfolgreich gespeichert.",
+    "en": "PDF successfully saved.",
+    "es": "PDF guardado con éxito.",
+    "zh": "PDF 保存成功。",
+    "ja": "PDF が正常に保存されました。",
+    "ru": "PDF успешно сохранен."
+  },
+  "Boards": {
+    "de": "Boards",
+    "en": "Boards",
+    "es": "Paneles",
+    "zh": "面板",
+    "ja": "ボード",
+    "ru": "Доски"
+  },
+  "Neues Board": {
+    "de": "Neues Board",
+    "en": "New Board",
+    "es": "Nuevo panel",
+    "zh": "新建面板",
+    "ja": "新規ボード",
+    "ru": "Новая доска"
+  },
+  "Board umbenennen": {
+    "de": "Board umbenennen",
+    "en": "Rename Board",
+    "es": "Renombrar panel",
+    "zh": "重命名面板",
+    "ja": "ボードの名前を変更",
+    "ru": "Переименовать доску"
+  },
+  "Board löschen": {
+    "de": "Board löschen",
+    "en": "Delete Board",
+    "es": "Eliminar panel",
+    "zh": "删除面板",
+    "ja": "ボードを削除",
+    "ru": "Удалить доску"
+  },
+  "Theme:": {
+    "de": "Theme:",
+    "en": "Theme:",
+    "es": "Tema:",
+    "zh": "主题:",
+    "ja": "テーマ:",
+    "ru": "Тема:"
+  },
+  "Dunkel": {
+    "de": "Dunkel",
+    "en": "Dark",
+    "es": "Oscuro",
+    "zh": "暗色",
+    "ja": "ダーク",
+    "ru": "Темная"
+  },
+  "Hell": {
+    "de": "Hell",
+    "en": "Light",
+    "es": "Claro",
+    "zh": "亮色",
+    "ja": "ライト",
+    "ru": "Светлая"
+  },
+  "Hauptprompt-Farbe:": {
+    "de": "Hauptprompt-Farbe:",
+    "en": "Main Prompt Color:",
+    "es": "Color del prompt principal:",
+    "zh": "主提示词颜色:",
+    "ja": "メインプロンプトの色:",
+    "ru": "Цвет основного промпта:"
+  },
+  "Versionsprompt-Farbe:": {
+    "de": "Versionsprompt-Farbe:",
+    "en": "Version Prompt Color:",
+    "es": "Color de versión de prompt:",
+    "zh": "版本提示词颜色:",
+    "ja": "バージョンプロンプトの色:",
+    "ru": "Цвет версии промпта:"
+  },
+  "Farbe wählen": {
+    "de": "Farbe wählen",
+    "en": "Choose Color",
+    "es": "Elegir color",
+    "zh": "选择颜色",
+    "ja": "色を選択",
+    "ru": "Выбрать цвет"
+  },
+  "Kopier-Modus:": {
+    "de": "Kopier-Modus:",
+    "en": "Copy Mode:",
+    "es": "Modo de copia:",
+    "zh": "复制模式:",
+    "ja": "コピーモード:",
+    "ru": "Режим копирования:"
+  },
+  "Nur Prompt-Text": {
+    "de": "Nur Prompt-Text",
+    "en": "Prompt Text Only",
+    "es": "Solo texto del prompt",
+    "zh": "仅提示词内容",
+    "ja": "プロンプトテキストのみ",
+    "ru": "Только текст промпта"
+  },
+  "Vollständig mit Metadaten": {
+    "de": "Vollständig mit Metadaten",
+    "en": "Full with Metadata",
+    "es": "Completo con metadatos",
+    "zh": "包含完整元数据",
+    "ja": "メタデータ付き完全版",
+    "ru": "Полный с метаданными"
+  },
+  "In Zwischenablage kopieren": {
+    "de": "In Zwischenablage kopieren",
+    "en": "Copy to Clipboard",
+    "es": "Copiar al portapapeles",
+    "zh": "复制到剪贴板",
+    "ja": "クリップボードにコピー",
+    "ru": "Копировать в буфер обмена"
   }
 }

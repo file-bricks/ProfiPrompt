@@ -27,6 +27,23 @@ def test_menu_keys_translate():
     assert tr.t("Beenden") == "Quit"
     assert tr.t("Bearbeiten") == "Edit"
     assert tr.t("Über Prompt Manager") == "About Prompt Manager"
+    # Umschalten auf ES (Tier-2)
+    tr.set_language("es")
+    assert tr.t("Datei") == "Archivo"
+    assert tr.t("Beenden") == "Salir"
+    assert tr.t("Hilfe") == "Ayuda"
+    # Umschalten auf ZH (Tier-2)
+    tr.set_language("zh")
+    assert tr.t("Datei") == "文件"
+    assert tr.t("Hilfe") == "帮助"
+    # Umschalten auf JA (Tier-2)
+    tr.set_language("ja")
+    assert tr.t("Datei") == "ファイル"
+    assert tr.t("Hilfe") == "ヘルプ"
+    # Umschalten auf RU (Tier-2)
+    tr.set_language("ru")
+    assert tr.t("Datei") == "Файл"
+    assert tr.t("Hilfe") == "Справка"
 
 
 def test_settings_language_roundtrip(tmp_path):
@@ -35,15 +52,16 @@ def test_settings_language_roundtrip(tmp_path):
     sm.qs = QtCore.QSettings(str(ini), QtCore.QSettings.IniFormat)
     # Default
     assert sm.get_language() == "de"
-    # Speichern + persistiert auf Platte
-    sm.set_language("en")
-    assert sm.get_language() == "en"
-    sm2 = SettingsManager()
-    sm2.qs = QtCore.QSettings(str(ini), QtCore.QSettings.IniFormat)
-    assert sm2.get_language() == "en"  # "Neustart"-Simulation
+    # Speichern + persistiert auf Platte fuer alle 6 Sprachen
+    for lang in ("en", "es", "zh", "ja", "ru", "de"):
+        sm.set_language(lang)
+        assert sm.get_language() == lang
+        sm2 = SettingsManager()
+        sm2.qs = QtCore.QSettings(str(ini), QtCore.QSettings.IniFormat)
+        assert sm2.get_language() == lang  # "Neustart"-Simulation
     # Ungueltige Sprache wird abgelehnt
-    sm2.set_language("fr")
-    assert sm2.get_language() == "en"
+    sm.set_language("fr")
+    assert sm.get_language() == "de"
 
 
 def test_translator_guard_handles_corrupt_entry(tmp_path):

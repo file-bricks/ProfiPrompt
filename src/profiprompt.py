@@ -141,21 +141,25 @@ class MainWindow(QMainWindow):
         m_help.addAction(self._action(_t("Anleitung"), self._show_help))
         m_help.addAction(self._action(_t("Über Prompt Manager"), self._show_about))
 
-        # Sprache / Language (Welle-1 U1: sichtbarer DE/EN-Schalter)
+        # Sprache / Language (Policy P-006: Tier-2 6-Sprachen-Standard)
         m_lang = menubar.addMenu("Sprache / Language")
-        cur = self.translator.get_language() if self.translator is not None else "de"
+        cur = self.translator.get_language() if self.translator is not None else self.settings.get_language()
         lang_group = QActionGroup(self)
         lang_group.setExclusive(True)
-        act_de = QAction("Deutsch", self, checkable=True)
-        act_de.setChecked(cur == "de")
-        act_de.triggered.connect(lambda: self.change_language("de"))
-        act_en = QAction("English", self, checkable=True)
-        act_en.setChecked(cur == "en")
-        act_en.triggered.connect(lambda: self.change_language("en"))
-        lang_group.addAction(act_de)
-        lang_group.addAction(act_en)
-        m_lang.addAction(act_de)
-        m_lang.addAction(act_en)
+        lang_names = {
+            "de": "Deutsch",
+            "en": "English",
+            "es": "Español",
+            "zh": "简体中文",
+            "ja": "日本語",
+            "ru": "Русский",
+        }
+        for code, label in lang_names.items():
+            act = QAction(label, self, checkable=True)
+            act.setChecked(cur == code)
+            act.triggered.connect(lambda checked=False, c=code: self.change_language(c))
+            lang_group.addAction(act)
+            m_lang.addAction(act)
 
     def change_language(self, lang: str):
         """Setzt die Sprache, persistiert sie und stellt die Menueleiste live um."""
@@ -163,17 +167,16 @@ class MainWindow(QMainWindow):
         if self.translator is not None:
             self.translator.set_language(lang)
         self.retranslate()
-        if lang == "de":
-            QMessageBox.information(
-                self, "Sprache / Language",
-                "Sprache auf Deutsch umgestellt. Einige Texte werden erst nach "
-                "einem Neustart übersetzt.",
-            )
-        else:
-            QMessageBox.information(
-                self, "Sprache / Language",
-                "Language switched to English. Some texts update after a restart.",
-            )
+        messages = {
+            "de": "Sprache auf Deutsch umgestellt. Einige Texte werden erst nach einem Neustart übersetzt.",
+            "en": "Language switched to English. Some texts update after a restart.",
+            "es": "Idioma cambiado a español. Algunos textos se actualizarán tras reiniciar.",
+            "zh": "语言已切换为中文。部分文本将在重启后生效。",
+            "ja": "言語を日本語に切り替えました。一部のテキストは再起動後に反映されます。",
+            "ru": "Язык переключен на русский. Некоторые тексты обновятся после перезапуска.",
+        }
+        msg = messages.get(lang, messages["en"])
+        QMessageBox.information(self, "Sprache / Language", msg)
 
     def retranslate(self):
         """Baut die Menueleiste in der aktuellen Sprache neu auf."""

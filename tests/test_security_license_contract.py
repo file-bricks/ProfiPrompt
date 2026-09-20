@@ -203,27 +203,29 @@ def test_marketing_log_and_personas_contract() -> None:
 
 
 def test_readme_navigation_and_reciprocal_anchor_parity() -> None:
-    """Verify README.md and README_de.md have 17-point navigation with 100% reciprocal structure parity."""
+    """Verify README.md, README_de.md, and README_es.md have 17-point navigation with 100% reciprocal structure parity."""
     en_readme = ROOT / "README.md"
     de_readme = ROOT / "README_de.md"
-    assert en_readme.is_file() and de_readme.is_file()
+    es_readme = ROOT / "README_es.md"
+    assert en_readme.is_file() and de_readme.is_file() and es_readme.is_file()
 
     en_text = en_readme.read_text(encoding="utf-8")
     de_text = de_readme.read_text(encoding="utf-8")
+    es_text = es_readme.read_text(encoding="utf-8")
 
     # Find numbered navigation entries: e.g. 1. [Title](#anchor)
     nav_pattern = re.compile(r"^\d+\.\s+\[([^\]]+)\]\((#[^\)]+)\)", re.MULTILINE)
     en_nav = nav_pattern.findall(en_text)
     de_nav = nav_pattern.findall(de_text)
+    es_nav = nav_pattern.findall(es_text)
 
     assert len(en_nav) == 17, f"Expected 17 navigation points in README.md, found {len(en_nav)}"
     assert len(de_nav) == 17, f"Expected 17 navigation points in README_de.md, found {len(de_nav)}"
+    assert len(es_nav) == 17, f"Expected 17 navigation points in README_es.md, found {len(es_nav)}"
 
     # Ensure all anchor targets exist as section headers in their respective files
     for title, anchor in en_nav:
         anchor_id = anchor.lstrip("#")
-        # Check that header corresponding to anchor_id exists
-        # In markdown: ## 1. Overview & Value Proposition -> #1-overview--value-proposition
         assert any(
             re.sub(r"[^\w\s-]", "", h.lower()).strip().replace(" ", "-") == anchor_id
             for h in re.findall(r"^##\s+(.+)$", en_text, re.MULTILINE)
@@ -236,13 +238,22 @@ def test_readme_navigation_and_reciprocal_anchor_parity() -> None:
             for h in re.findall(r"^##\s+(.+)$", de_text, re.MULTILINE)
         ), f"Anchor {anchor} from navigation not found as section header in README_de.md"
 
-    # Check that both READMEs contain the 4 personas and comparative matrix
+    for title, anchor in es_nav:
+        anchor_id = anchor.lstrip("#")
+        assert any(
+            re.sub(r"[^\w\s-]", "", h.lower()).strip().replace(" ", "-") == anchor_id
+            for h in re.findall(r"^##\s+(.+)$", es_text, re.MULTILINE)
+        ), f"Anchor {anchor} from navigation not found as section header in README_es.md"
+
+    # Check that all READMEs contain the 4 personas and comparative matrix
     for p_id in ["[PERSONA-1]", "[PERSONA-2]", "[PERSONA-3]", "[PERSONA-4]"]:
         assert p_id in en_text, f"{p_id} missing in README.md"
         assert p_id in de_text, f"{p_id} missing in README_de.md"
+        assert p_id in es_text, f"{p_id} missing in README_es.md"
 
     assert "Comparative Matrix" in en_text or "comparative-matrix" in en_text
     assert "Vergleichsmatrix" in de_text or "vergleichsmatrix" in de_text
+    assert "Matriz comparativa" in es_text or "matriz-comparativa" in es_text
 
 
 def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
@@ -250,7 +261,7 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert re.search(r"Last-checked:\s*2026-09-(?:13|16)", llms_text), "llms.txt must have recent Last-checked date"
+    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20)", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
 

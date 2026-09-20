@@ -42,14 +42,16 @@ class SettingsManager(QtCore.QObject):
             self.qs.sync()
             self.copyModeChanged.emit(mode)
 
+    SUPPORTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")
+
     def get_language(self) -> str:
-        """Gespeicherte UI-Sprache ('de'/'en'), Default 'de'."""
+        """Gespeicherte UI-Sprache ('de', 'en', 'es', 'zh', 'ja', 'ru'), Default 'de'."""
         lang = self.qs.value("ui/language", "de", type=str)
-        return lang if lang in ("de", "en") else "de"
+        return lang if lang in self.SUPPORTED_LANGUAGES else "de"
 
     def set_language(self, lang: str):
         """Persistiert die UI-Sprache in den QSettings."""
-        if lang in ("de", "en"):
+        if lang in self.SUPPORTED_LANGUAGES:
             self.qs.setValue("ui/language", lang)
             self.qs.sync()
 

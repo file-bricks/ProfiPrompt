@@ -5,7 +5,22 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
-### Bugfix & Board-Persistenz-Härtung — Bugsweep (2026-09-18)
+### Multi-Language Expansion & Spanische Dokumentation — Policy P-006 Tier-2 (2026-09-20)
+
+- **Tier-2 6-Sprachen-Ausbau (`translator.py`, `locales/translations.json`, `manage_translations.py`):**
+  - **TranslationSystem v2.0:** Auf 6 Sprachen ausgebaut (`de`, `en`, `es`, `zh`, `ja`, `ru`) mit deterministischer 4-Stufen-Fallback-Kette (`target_lang` -> `en` -> `de` -> `key`), sicherer atomarer Datei-Persistierung (`.tmp` + rename) und Keyword-Interpolation `t(key, **kwargs)`.
+  - **100% Parität des Wörterbuchs:** `locales/translations.json` auf 74 Keys erweitert, die alle GUI-Elemente (Menüleiste, Datei-, Bearbeiten-, Ansicht-, Hilfe-Menüs, Darstellungsdialog, Kopier-Einstellungen, Prompt- und Versions-Dialoge, Dashboard-Filter, Bestätigungs- und Fehlermeldungen) über alle 6 Sprachen lückenlos und nicht-leer abdecken.
+  - **Paritäts-Prüfer & CLI:** `manage_translations.py` mit `argparse`, `--check`-Modus (Exit-Code 1 bei Lücken, 0 bei 100% Parität) und robuster UTF-8-Ausgabe ausgerüstet.
+  - **Settings & Smoke-Integration:** `SettingsManager` und `MockSettings` in `src/platform_smoke.py` auf `SUPPORTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")` erweitert mit persistenter `QSettings`-Speicherung.
+  - **Dynamisches Menü:** Menüpunkt „Sprache / Language“ in `src/profiprompt.py` wird dynamisch für alle 6 Sprachen erzeugt; `change_language()` gibt lokalisierte Neustart-Hinweise in der gewählten Sprache aus.
+- **Spanische Dokumentation (Policy P-006 Leerlauf-Sprachzug Stufe 2):**
+  - `README_es.md` mit 100% reziproker 17-Punkte-Navigationsstruktur, Anker-Parität, Shields-Badges, 4 Personas, 10 Governance-Invarianten und 10-Dimensionen-Vergleichsmatrix angelegt.
+  - Sprachwechsler-Kopfzeilen in `README.md`, `README_de.md` und `README_es.md` um `[Español](README_es.md)` synchronisiert.
+- **Automatisierte Vertragstests & Qualitätssicherung:**
+  - `tests/test_i18n_tier2_contract.py`: 5 neue Vertragstests für Wörterbuch-Integrität (74 Keys, 100% Parität), 4-Stufen-Fallback, Keyword-Interpolation, Klassen-Hilfsmethoden und Subprozess-Prüfung via `manage_translations.py --check`.
+  - `tests/test_language_switch.py`: Umschalten und QSettings-Roundtrip über alle 6 Sprachen sowie Zurückweisung ungültiger Sprachen erweitert.
+  - `tests/test_security_license_contract.py`: Navigations- und Anker-Vertragstest auf `README_es.md` erweitert; Datumsprüfung auf 2026-09-20 aktualisiert. Testsuite wächst auf 152 bestandene Pytest-Tests (100% grün).
+
 
 - **VersionDialog Persistenz & Synchronisation (`src/prompt_dialog.py`, `src/storage.py`):**
   - **BUG-VD01 (KRIT):** In `VersionDialog._on_save_update()` wurden Version-Edits nicht in `storage` persistiert, da `VersionDialog` Instanzen aus getrennten `load_prompts()`-Aufrufen (`get_prompt()` vs `get_version()`) erhielt und In-Place-Änderungen am losgelösten Version-Objekt die Versionsliste des Prompts unberührt ließen. Behoben durch explizite Synchronisation der In-Memory-Versionsliste und Speicherung via `storage.upsert_version()`.

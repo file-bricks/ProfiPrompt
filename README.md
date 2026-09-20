@@ -2,13 +2,13 @@
 
 # ProfiPrompt — Local-First AI Prompt Management & Versioning Workstation
 
-**English** | [Deutsch](README_de.md)
+**English** | [Deutsch](README_de.md) | [Español](README_es.md)
 
 [![Version: 1.0.2](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/file-bricks/ProfiPrompt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 141 passed](https://img.shields.io/badge/Pytest-141%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 152 passed](https://img.shields.io/badge/Pytest-152%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
