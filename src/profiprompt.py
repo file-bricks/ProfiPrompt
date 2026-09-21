@@ -60,6 +60,16 @@ def make_translator(lang: str):
 
 from theme import apply_theme
 from appearance_dialog import AppearanceDialog
+try:
+    from app_icon_loader import load_app_icon, get_app_icon
+except ImportError:
+    try:
+        from src.app_icon_loader import load_app_icon, get_app_icon
+    except ImportError:
+        def load_app_icon():
+            from PySide6.QtGui import QIcon
+            return QIcon()
+        get_app_icon = load_app_icon
 
 
 def apply_dark_theme(app):
@@ -75,6 +85,7 @@ class MainWindow(QMainWindow):
         self.translator = make_translator(self.settings.get_language())
 
         self.setWindowTitle("Prompt Manager")
+        self.setWindowIcon(load_app_icon())
         self.resize(1300, 850)
 
         # Zentraler Bereich: Dashboard
@@ -357,6 +368,7 @@ class MainWindow(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     app.setApplicationName("Prompt Manager")
+    app.setWindowIcon(load_app_icon())
 
     settings = SettingsManager()
     # Theme aus den Einstellungen anwenden (Hell/Dunkel, U2)
