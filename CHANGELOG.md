@@ -5,6 +5,31 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Discoverability, Visual Architecture, Level 1 SBOM & Governance Audit — Pfad B (2026-09-22)
+
+- **GitHub Topics & Discoverability Saturation:**
+  - Expanded GitHub repository topics to full saturation (20/20 topics) via `gh repo edit`: added `developer-tools`, `fail-closed`, `file-bricks`, `open-bricks`, `zero-egress` alongside prompt engineering, local-first, PySide6, PWA, and desktop keywords.
+  - Aligned `pyproject.toml` keywords array to 20 keywords matching repository topics and domain discoverability.
+- **Canonical Root Attribution & Package Metadata:**
+  - Created canonical root `NOTICE` attribution file documenting Lukas Geiger, `file-bricks`, `open-bricks`, MIT license, and Level 1 SBOM references.
+  - Updated `pyproject.toml` with `license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]` and `"Notice"` entry under `[project.urls]`.
+- **Level 1 SBOM Invariant Cross-Reference Matrix & Non-Elevation (`THIRD_PARTY_LICENSES.md`):**
+  - Added Section 7: Level 1 SBOM Invariant Cross-Reference Matrix mapping all 10 invariants (`INV-LOCAL-01` through `INV-SLA-10`) to architectural implementation files, automated test suites, and compliance status.
+  - Added Section 8: Unprivileged Non-Elevation Certification (`RunAsInvoker`) guaranteeing execution entirely in unprivileged user space without administrative elevation.
+  - Added Section 9: Zero-Copyleft Isolation Guarantee detailing dynamic linking of LGPL-3.0 libraries (`PySide6`, `shiboken6`) and decoupling of build-time tools.
+- **Trilingual README Parity, Dual Anchors & Visual Architecture (`README.md`, `README_de.md`, `README_es.md`):**
+  - Implemented reciprocal dual HTML anchors (`<a id="sec-01"></a><a id="overview"></a>...`) before each of the 17 `## ` sections across English, German, and Spanish documentation.
+  - Added dual Mermaid architecture diagrams: autonumbered `sequenceDiagram` for prompt versioning & clipboard lifecycle alongside existing `flowchart TD` architecture diagram.
+  - Added shields badges for `attribution: NOTICE` and `verified: 2026-09-22`, updated Pytest badge to `157 passed | 100%`, and added quick document reference navigation bar.
+  - Strengthened Section 17 with statutory liability limitation (§ 521 BGB Gefälligkeitsrecht) and 48-Hour Security Response SLA.
+- **Machine-Readable AI Context (`llms.txt`):**
+  - Updated audit timestamp to `2026-09-22`.
+  - Added canonical reference to `NOTICE`, updated test suite verification numbers to 160 Pytest + 46 Node.js = 206 passing tests (100% green), and documented Level 1 SBOM invariants and statutory disclaimer.
+- **Automated Contract Tests & Quality Assurance (`tests/test_security_license_contract.py`):**
+  - Added automated contract assertions for `NOTICE` file presence, author attribution, and Level 1 SBOM references.
+  - Added assertions for Section 7 Level 1 SBOM matrix and Section 8 non-elevation certification in `THIRD_PARTY_LICENSES.md`.
+  - Synchronized test counts across all documentation and validated 0 Mermaid lint issues across 15 files.
+
 ### Multi-Language Expansion & Spanische Dokumentation — Policy P-006 Tier-2 (2026-09-20)
 
 - **Tier-2 6-Sprachen-Ausbau (`translator.py`, `locales/translations.json`, `manage_translations.py`):**

@@ -1,14 +1,16 @@
 # ProfiPrompt
 
-Last-checked: 2026-09-20
+Last-checked: 2026-09-22
 
 
 ## Canonical links
 
 - Repository: https://github.com/file-bricks/ProfiPrompt
 - Issues: https://github.com/file-bricks/ProfiPrompt/issues
-- License: MIT
-- Third-Party Licenses: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md
+- License: MIT (https://github.com/file-bricks/ProfiPrompt/blob/master/LICENSE)
+- Canonical Attribution: https://github.com/file-bricks/ProfiPrompt/blob/master/NOTICE
+- Third-Party Licenses & Level 1 SBOM: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md
+- Security Policy & SLA: https://github.com/file-bricks/ProfiPrompt/blob/master/SECURITY.md
 - Marketing Log: https://github.com/file-bricks/ProfiPrompt/blob/master/MARKETING-LOG.txt
 - Documentation: [English](README.md) | [Deutsch](README_de.md) | [Español](README_es.md)
 
@@ -54,13 +56,15 @@ offline pwa prompt companion
 - Default user data lives under the local user profile in `.prompt_manager`.
 - The Web/PWA companion is read-only and imports `profiprompt-library-v1.json` directly in the browser.
 - No telemetry, cloud sync, analytics, or external API access is part of the app.
-- Governed by 10 strict runtime invariants (INV-LOCAL-01 through INV-SLA-10) detailed in `THIRD_PARTY_LICENSES.md`.
+- Governed by 10 strict runtime invariants (INV-LOCAL-01 through INV-SLA-10) with Level 1 SBOM Invariant Cross-Reference Matrix detailed in `THIRD_PARTY_LICENSES.md`.
+- Certified for unprivileged user execution (`RunAsInvoker`) without administrative elevation.
+- Liability governed by German law and limited to intent and gross negligence (§ 521 BGB Gefälligkeitsrecht) with a committed 48h Security Response SLA.
 
 ## Validation
 
-- Python tests: `python -m pytest` (152 passed, 3 skipped)
-- Web/PWA tests: `node --test web_companion/tests/*.test.js web_companion/tests/*.mjs` (40 passed)
-- Total test suite: 187 passing tests (100% green)
+- Python tests: `python -m pytest` (160 passed, 3 skipped)
+- Web/PWA tests: `node --test web_companion/tests/*.test.mjs` (46 passed)
+- Total test suite: 206 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`
 

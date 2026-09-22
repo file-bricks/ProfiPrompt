@@ -2,10 +2,12 @@
 
 This document lists all third-party software components, libraries, and build tools used in **ProfiPrompt** (`file-bricks/ProfiPrompt`) along with their license and SPDX identifiers, usage notices, and governance runtime invariants.
 
-**Project:** `ProfiPrompt` (`file-bricks/ProfiPrompt`)  
-**License:** [MIT License](LICENSE)  
-**Audit Date:** 2026-09-13  
-**Status:** AUDITED & VERIFIED (Pfad B Discoverability & Licensing Governance)  
+**Project:** `ProfiPrompt` (`file-bricks/ProfiPrompt`)<br>
+**License:** [MIT License](LICENSE)<br>
+**Audit Date:** 2026-09-22<br>
+**Status:** AUDITED & VERIFIED (Level 1 SBOM Transparency, Discoverability & Licensing Governance)<br>
+**Attribution Notice:** [NOTICE](NOTICE)<br>
+**Security SLA:** [SECURITY.md](SECURITY.md) (48h Initial Response, 5-Day Triage)
 
 ---
 
@@ -87,3 +89,38 @@ Every release and component of **ProfiPrompt** adheres to 10 strict operational 
 - All runtime and build dependencies are licensed under permissive or weakly reciprocal (LGPLv3) open-source licenses compatible with the project's **MIT License**.
 - Zero strong copyleft (GPL without exception, AGPL) components are bundled in distributed runtimes.
 - No commercial restrictions or non-commercial-only clauses are present in any transitive dependency.
+
+---
+
+## 7. Level 1 SBOM Invariant Cross-Reference Matrix
+
+| Invariant ID | Rule & Principle | Architectural Implementation File | Automated Verification Test File | Compliance Status |
+|:---|:---|:---|:---|:---:|
+| **INV-LOCAL-01** | 100% Local-First & Zero Egress | `src/storage.py`, `src/profiprompt.py` | `tests/test_security_license_contract.py` | **PASS** |
+| **INV-OFFLINE-02** | Full Offline Autonomy | `src/profiprompt.py`, `web_companion/service-worker.js` | `tests/test_security_license_contract.py`, `web_companion/tests/pwa.test.mjs` | **PASS** |
+| **INV-ATOMIC-03** | Atomic File Persistence | `src/storage.py` | `tests/test_storage.py` | **PASS** |
+| **INV-SCHEMA-04** | Open Portable Schema | `src/storage.py`, `web_companion/library.js` | `tests/test_storage.py`, `web_companion/tests/library.test.mjs` | **PASS** |
+| **INV-UNPRIV-05** | Non-Elevation & RunAsInvoker | `pyproject.toml`, `ProfiPrompt.spec` | `tests/test_security_license_contract.py` | **PASS** |
+| **INV-BACKUP-06** | Fail-Safe Backup & Recovery | `src/storage.py` | `tests/test_storage.py` | **PASS** |
+| **INV-COPY-07** | Local Clipboard Safety | `src/clipboard_manager.py` | `tests/test_clipboard.py`, `tests/test_security_license_contract.py` | **PASS** |
+| **INV-PRINT-08** | Deterministic Multi-Format Rendering | `src/pdf_exporter.py` | `tests/test_pdf_exporter.py` | **PASS** |
+| **INV-PWA-09** | Read-Only Companion Isolation | `web_companion/app.js` | `web_companion/tests/pwa.test.mjs`, `web_companion/tests/accessibility.test.mjs` | **PASS** |
+| **INV-SLA-10** | 48h Response / 5d Triage Security SLA | `SECURITY.md`, `README.md` | `tests/test_security_license_contract.py` | **PASS** |
+
+---
+
+## 8. Non-Elevation Certification (RunAsInvoker)
+
+`ProfiPrompt` is engineered and certified to execute entirely within standard unprivileged user space (`RunAsInvoker`).
+- The application never requests, inherits, or requires Windows UAC administrative privileges or elevated root rights on POSIX platforms.
+- File operations are strictly confined to the local user profile directory (`~/.prompt_manager/`) or user-selected export paths.
+- System-wide registry mutations, driver installations, and privileged background services are entirely absent.
+
+---
+
+## 9. Zero-Copyleft Isolation Guarantee
+
+`ProfiPrompt` maintains clean commercial and enterprise licensing compatibility under the permissive [MIT License](LICENSE):
+- **LGPL-3.0 Dynamic Linking:** `PySide6` and `shiboken6` are utilized strictly as dynamically loaded shared libraries without internal modification, satisfying LGPLv3 §4 provisions.
+- **Zero GPL Runtime Bundling:** Build tools utilizing GPL (such as PyInstaller) operate strictly with standard bootloader exceptions and are decoupled from distributed application logic.
+- **No Network Copyleft:** Zero AGPL, SSPL, or restrictive commercial dual-licensed dependencies exist across the direct or transitive dependency tree.

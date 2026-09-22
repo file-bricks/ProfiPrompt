@@ -186,3 +186,30 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
   - Expanded tests/test_security_license_contract.py to enforce reciprocal anchor parity for README_es.md.
   - Python test suite increased to 152 passed tests (100% green); Node companion suite 40 passed.
 
+--------------------------------------------------------------------------------
+10. DISCOVERABILITY, VISUAL ARCHITECTURE, LEVEL 1 SBOM & GOVERNANCE AUDIT (2026-09-22, Pfad B)
+--------------------------------------------------------------------------------
+- Discoverability & Topic Saturation:
+  - Saturated GitHub repository topics to full 20/20 limit via `gh repo edit --add-topic`:
+    ai, desktop-app, llm, prompt-engineering, prompt-manager, pyside6, python,
+    clipboard-manager, json-export, local-first, offline-first, privacy-first,
+    prompt-library, pwa, windows, developer-tools, fail-closed, file-bricks,
+    open-bricks, zero-egress.
+  - Aligned `pyproject.toml` keywords array to 20 keywords matching repository topics.
+- Canonical Root NOTICE & Package Licensing Metadata:
+  - Established canonical root `NOTICE` attribution file referencing Lukas Geiger, file-bricks, open-bricks, MIT License, and Level 1 SBOM.
+  - Updated `pyproject.toml` with `license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]` and `"Notice"` entry under `[project.urls]`.
+- Level 1 SBOM Invariant Cross-Reference Matrix & Non-Elevation:
+  - Added Section 7 to `THIRD_PARTY_LICENSES.md`: Level 1 SBOM Invariant Cross-Reference Matrix mapping all 10 invariants (`INV-LOCAL-01..INV-SLA-10`) to implementation files, automated test files, and PASS status.
+  - Added Section 8: Unprivileged Non-Elevation Certification (`RunAsInvoker`) guaranteeing execution in unprivileged user space without administrative elevation.
+  - Added Section 9: Zero-Copyleft Isolation Guarantee detailing dynamic linking of LGPL-3.0 libraries (`PySide6`, `shiboken6`) and decoupling of build tools.
+- Visual Architecture & Trilingual README Parity:
+  - Implemented reciprocal dual HTML anchors (`<a id="sec-01"></a><a id="overview"></a>...`) across all 17 sections of `README.md`, `README_de.md`, and `README_es.md`.
+  - Added dual Mermaid architecture diagrams: autonumbered `sequenceDiagram` for prompt versioning & clipboard lifecycle alongside existing `flowchart TD` architecture diagram.
+  - Added Shields badges for `attribution: NOTICE` and `verified: 2026-09-22`, updated Pytest badge to `157 passed | 100%`, and added quick document reference navigation bar.
+  - Added statutory liability disclaimer (§ 521 BGB Gefälligkeitsrecht) and 48-Hour Security Response SLA.
+- Machine-Readable AI Context & Test Suite Parity:
+  - Synchronized `llms.txt` with `Last-checked: 2026-09-22`, canonical link for `NOTICE`, 206 automated tests (160 Python Pytest + 46 Node.js Web Companion), Level 1 SBOM invariants, and § 521 BGB statutory disclaimer.
+- Quality Gates & Automated Verification:
+  - Zero Mermaid syntax lint errors across 15 files.
+  - Test suites: 160 passed (Pytest), 46 passed (Node.js companion) = 206 passing tests (100% green).

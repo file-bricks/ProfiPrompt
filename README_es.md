@@ -8,8 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 152 passed](https://img.shields.io/badge/Pytest-152%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
-[![Web Companion: 40 passed](https://img.shields.io/badge/Web%20Companion-40%20passed-brightgreen.svg)](web_companion/)
+[![Pytest: 160 passed](https://img.shields.io/badge/Pytest-160%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
 [![Security: User-Mode](https://img.shields.io/badge/security-User--Mode%20%7C%20Non--Elevation-informational.svg)](SECURITY.md)
@@ -17,9 +17,14 @@
 [![Third-Party Audited](https://img.shields.io/badge/third--party-audited-success.svg)](THIRD_PARTY_LICENSES.md)
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
+[![Verified: 2026-09-22](https://img.shields.io/badge/verified-2026--09--22-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
+
+| Referencias directas de documentos | [🛡️ Política de seguridad](SECURITY.md) • [⚖️ Licencias de terceros](THIRD_PARTY_LICENSES.md) • [📜 Registro de marketing](MARKETING-LOG.txt) • [🤖 Contexto LLM](llms.txt) • [📋 Aviso canónico](NOTICE) |
+|---|---|
 
 > **ProfiPrompt** es una estación de trabajo de escritorio PySide6 de código abierto y Local-First, acompañada de una aplicación Web/PWA sin conexión para diseñar, versionar, organizar y desplegar sistemáticamente prompts de IA generativa sin bloqueo de proveedores en la nube ni fugas de telemetría.
 
@@ -50,6 +55,7 @@
 
 ---
 
+<a id="sec-01"></a><a id="overview"></a><a id="uebersicht"></a><a id="resumen"></a>
 ## 1. Resumen y propuesta de valor
 
 En la era de la inteligencia artificial generativa, desarrolladores, ingenieros de prompts y profesionales del conocimiento invierten cientos de horas diseñando instrucciones de sistema, plantillas y patrones de razonamiento (Chain-of-Thought). Con frecuencia, estos activos se pierden en historiales de chat efímeros, notas desordenadas o plataformas SaaS propietarias que registran prompts corporativos sensibles.
@@ -65,70 +71,73 @@ En la era de la inteligencia artificial generativa, desarrolladores, ingenieros 
 
 ---
 
+<a id="sec-02"></a><a id="personas"></a><a id="target-personas"></a><a id="zielgruppen"></a><a id="publico-objetivo"></a>
 ## 2. Personas objetivo y detectabilidad
 
-ProfiPrompt está concebido y desarrollado para atender a 4 perfiles clave de usuarios en el ecosistema del desarrollo y la inteligencia artificial:
+ProfiPrompt está diseñado específicamente para servir a 4 personas interesadas clave dentro del panorama del desarrollo de software y la IA:
 
-1. **[PERSONA-1] Ingenieros de prompts y profesionales de LLMs:**
-   - *Desafíos:* Gestionar instrucciones de sistema complejas, realizar pruebas A/B entre variantes de prompts y evaluar la eficacia de tokens y respuestas del modelo entre revisiones.
-   - *Solución ProfiPrompt:* Árboles de versiones ramificados, IDs inmutables de prompts, campos específicos para registrar resultados de ejecución y copia multimodal instantánea.
-2. **[PERSONA-2] Usuarios avanzados de escritorio y desarrolladores independientes:**
-   - *Desafíos:* Pérdida de rendimiento y distracciones por aplicaciones Electron pesadas; necesidad de atajos de teclado rápidos, disponibilidad sin conexión y modo oscuro nativo.
-   - *Solución ProfiPrompt:* Interfaz de alto rendimiento en PySide6 (Qt6) con tema Fusion Dark nativo, tiempos de respuesta instantáneos y uso mínimo de memoria RAM.
-3. **[PERSONA-3] Responsables de cumplimiento normativo y privacidad empresarial (RGPD / GDPR / HIPAA):**
-   - *Desafíos:* Carga involuntaria de código propietario, plantillas legales o consultas confidenciales de clientes a herramientas SaaS en la nube con telemetría activa.
-   - *Solución ProfiPrompt:* Arquitectura 100% Zero-Egress, persistencia atómica en JSON en el directorio de usuario (`.prompt_manager/`) y límites de privacidad estrictos (fail-closed).
-4. **[PERSONA-4] Gestores de conocimiento multidispositivo y curadores de prompts:**
-   - *Desafíos:* Necesidad de acceder a colecciones de prompts en portátiles, tabletas y teléfonos móviles sin pagar suscripciones mensuales a servicios en la nube.
-   - *Solución ProfiPrompt:* Exportación portátil en formato estándar `profiprompt-library-v1.json` junto a un compañero PWA capaz de operar sin conexión en cualquier navegador moderno.
+1. **[PERSONA-1] Ingenieros de prompts y profesionales de LLM:**
+   - *Desafíos:* Gestionar instrucciones de sistema complejas, realizar pruebas A/B de variantes de prompts y documentar resultados de modelos en revisiones sucesivas.
+   - *Solución ProfiPrompt:* Árboles de versiones sin límite, identificadores inmutables, campos dedicados para registrar resultados por versión y copia multimodal instantánea.
+2. **[PERSONA-2] Desarrolladores individuales y usuarios avanzados de escritorio:**
+   - *Desafíos:* Sobrecarga por aplicaciones Electron pesadas; necesidad de atajos de teclado rápidos, disponibilidad offline total y modo oscuro nativo.
+   - *Solución ProfiPrompt:* Arquitectura ligera PySide6 (Qt6) con paleta Qt Fusion Dark, tiempos de respuesta inmediatos y mínimo uso de memoria RAM.
+3. **[PERSONA-3] Responsables de cumplimiento normativo y privacidad empresarial (GDPR / DSGVO / HIPAA):**
+   - *Desafíos:* Código confidencial, plantillas legales o consultas sensibles que no pueden ser transmitidas a herramientas en la nube con telemetría.
+   - *Solución ProfiPrompt:* Arquitectura 100% Zero-Egress, almacenamiento atómico JSON en el perfil local (`.prompt_manager/`) y límites de privacidad fail-closed.
+4. **[PERSONA-4] Curadores de prompts y trabajadores del conocimiento multidispositivo:**
+   - *Desafíos:* Acceder a colecciones de prompts en ordenadores de sobremesa, portátiles y teléfonos sin suscripciones recurrentes a la nube.
+   - *Solución ProfiPrompt:* Formato portátil abierto `profiprompt-library-v1.json` combinado con una aplicación Web/PWA offline que se ejecuta directamente en cualquier navegador moderno.
 
-### Términos de búsqueda clave y visibilidad
+### Términos de búsqueda clave y detectabilidad
 
-- `local-first prompt manager desktop`
-- `offline ai prompt versioning tool`
-- `pyside6 qt6 prompt library`
-- `open source prompt manager windows`
-- `zero telemetry prompt organizer`
-- `prompt engineering version control`
-- `export prompt library json pdf txt`
-- `offline pwa prompt companion`
-- `self hosted prompt database`
-- `gdpr compliant prompt repository`
+- `gestor de prompts local escritorio`
+- `control de versiones de prompts de ia offline`
+- `biblioteca de prompts pyside6 qt6`
+- `organizador de prompts de codigo abierto windows`
+- `gestor de prompts sin telemetria`
+- `control de versiones para ingenieria de prompts`
+- `exportar biblioteca de prompts json pdf txt`
+- `companero pwa de prompts sin conexion`
+- `base de datos de prompts autoalojada`
+- `repositorio de prompts conforme a gdpr`
 
 ---
 
+<a id="sec-03"></a><a id="matrix"></a><a id="comparative-matrix"></a><a id="vergleichsmatrix"></a><a id="matriz-comparativa"></a>
 ## 3. Matriz comparativa frente a alternativas
 
-| Dimensión / Capacidad | ProfiPrompt (Escritorio + PWA) | Notas simples / Obsidian / MD | SaaS en la nube (AIPRM, etc.) | Gestores genéricos de snippets |
+| Dimensión / Capacidad | ProfiPrompt (Desktop + PWA) | Notas simples / Obsidian / MD | SaaS en la nube (AIPRM, etc.) | Gestores de fragmentos de texto |
 |:---|:---:|:---:|:---:|:---:|
-| **100% Local-First y Zero Egress** | **SÍ (Auditado)** | SÍ (Archivos locales) | NO (Servidores remotos) | SÍ (Local) |
-| **Árboles nativos de versiones** | **SÍ (Ilimitados)** | NO (Edición manual de texto)| Limitado / De pago | NO (Valores planos) |
-| **Seguimiento de resultados** | **SÍ (Integrado)** | NO (Notas manuales) | Limitado | NO |
-| **Paneles visuales de arrastrar/soltar**| **SÍ (Kanban nativo)** | Requiere complementos | Parcial | NO (Solo lista simple) |
-| **Motor de portapapeles multimodal** | **SÍ (4 modos)** | NO (Copia plana) | NO (Copia única) | Pegado de texto básico |
-| **Exportación multiformato (PDF/TXT/JSON)**| **SÍ (Integrada)** | Requiere complementos | Exportación propietaria | NO |
-| **Compañero PWA sin conexión** | **SÍ (Incluido)** | NO | NO (Solo en línea) | NO |
-| **Escritura atómica y autorrecuperación**| **SÍ (Protección .bak)**| Depende del SO | Gestionado en la nube | Variable |
-| **Sin suscripción / 100% Código Abierto MIT**| **SÍ (100% Libre)** | Gratis / Sync de pago | De pago ($10-30/mes) | Freemium / De pago |
-| **Esquema estándar abierto y portátil** | **SÍ (`v1.json`)** | Solo Markdown | Bloqueo de proveedor | Base de datos propietaria |
+| **100% Local-First y Zero Egress** | **SÍ (Auditado)** | SÍ (Archivos locales) | NO (Servidores en la nube) | SÍ (Local) |
+| **Árboles de versiones nativos** | **SÍ (Ilimitado)** | NO (Edición manual) | Limitado / De pago | NO (Valores planos) |
+| **Seguimiento de resultados de ejecución** | **SÍ (Integrado)** | NO (Notas manuales) | Limitado | NO |
+| **Paneles Kanban visuales** | **SÍ (Nativo arrastrar/soltar)**| Requiere plugins | Parcial | NO (Solo listas planas) |
+| **Motor de portapapeles multimodal** | **SÍ (4 modos configurables)**| NO (Copia básica) | NO (Copia única) | Pegado estándar |
+| **Exportación multiformato (PDF/TXT/JSON)**| **SÍ (Integrada)** | Requiere plugins | Exportación propietaria | NO |
+| **Compañero Web/PWA offline independiente**| **SÍ (Incluido)** | NO | NO (Solo online) | NO |
+| **Escrituras atómicas y auto-recuperación**| **SÍ (Escudo .bak)** | Depende del SO | Base de datos en la nube | Variable |
+| **Sin suscripciones / 100% Código abierto MIT**| **SÍ (100% Libre)**| Libre / Sync de pago | De pago ($10-30/mes) | Freemium / De pago |
+| **Estándar de esquema abierto (`v1.json`)**| **SÍ (Abierto)** | Solo Markdown | Bloqueo de proveedor | Base de datos propietaria |
 
 ---
 
+<a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Arquitectura y flujo de datos
 
 ```mermaid
 flowchart TD
-    subgraph DesktopApp["Estación de trabajo PySide6 (Windows / macOS / Linux)"]
-        UI["Ventana principal / Dashboard"]
-        BM["Gestor de paneles (Tarjetas y arrastrar/soltar)"]
+    subgraph DesktopApp["Estación de escritorio PySide6 (Windows / macOS / Linux)"]
+        UI["Ventana principal / Panel UI"]
+        BM["Gestor de tableros (Tarjetas y arrastrar/soltar)"]
         PM["Editor de prompts y motor de versiones"]
         CM["Gestor de portapapeles (Título / Contenido / Resultado / Doc)"]
-        EX["Exportador vectorial a PDF y TXT"]
+        EX["Exportador vectorial PDF y TXT"]
     end
 
-    subgraph Storage["Persistencia de datos locales (.prompt_manager/)"]
-        JSONStore["Almacenamiento JSON atómico (prompts.json, boards.json)"]
-        BackupStore["Copias de seguridad automáticas (*.bak)"]
+    subgraph Storage["Persistencia local de datos (.prompt_manager/)"]
+        JSONStore["Almacenamiento atómico JSON (prompts.json, boards.json)"]
+        BackupStore["Instantáneas automáticas de respaldo (*.bak)"]
     end
 
     subgraph ExportFormat["Estándar de biblioteca portátil"]
@@ -136,8 +145,8 @@ flowchart TD
     end
 
     subgraph Companion["Compañero móvil Web / PWA"]
-        PWA["Interfaz web de solo lectura (Shell sin conexión)"]
-        LocalCache["Service Worker v4 Cache & LocalStorage"]
+        PWA["UI de navegador de solo lectura (Shell offline)"]
+        LocalCache["Caché de Service Worker v4 y LocalStorage"]
     end
 
     UI --> PM
@@ -154,96 +163,116 @@ flowchart TD
 
 ---
 
+<a id="sec-05"></a><a id="features"></a><a id="funktionen"></a><a id="caracteristicas"></a>
 ## 5. Características y capacidades clave
 
-- **Gestión sistemática de prompts:** Cree, edite y clasifique prompts con etiquetas, descripciones y metadatos de categoría.
-- **Control de versiones ilimitado:** Mantenga un historial completo de cambios para cada prompt, facilitando la experimentación segura sin perder versiones anteriores.
-- **Sistema visual de paneles Kanban:** Organice prompts en paneles temáticos con tarjetas informativas, contadores y arrastrar y soltar.
-- **Motor de portapapeles multimodal:** Copie el texto sin formato del prompt, el título, el resultado de la última ejecución o un documento Markdown completo con un solo clic.
-- **Exportación en múltiples formatos:** Genere documentos PDF vectoriales profesionales mediante el motor de impresión de Qt, archivos TXT estructurados o archivos JSON portátiles.
-- **Persistencia atómica en disco:** Todas las escrituras utilizan reemplazo seguro de archivos temporales, impidiendo la corrupción de datos ante cortes eléctricos inesperados.
-- **Soporte de doble tema visual:** Conmutación fluida entre el tema moderno Fusion Dark y el tema claro Light.
-- **Interfaz multilingüe Tier-2:** Soporte integral de 6 idiomas (Alemán, Inglés, Español, Chino simplificado, Japonés y Ruso) con actualización dinámica de menús y fallbacks de 4 niveles.
-- **Compañero PWA sin conexión:** Aplicación web independiente en `web_companion/` para consultar bibliotecas de prompts en teléfonos inteligentes y tabletas.
-- **Seguridad en entornos aislados:** Cero conexiones de red salientes, cero telemetría y cero actualizaciones forzadas en segundo plano.
+- **Gestión sistemática de prompts:** Cree, edite y organice prompts con etiquetas, descripciones y metadatos de categoría.
+- **Control de versiones ilimitado:** Mantenga un historial completo de revisiones para cada prompt, permitiendo la experimentación sin riesgo de pérdida de datos.
+- **Sistema de paneles visuales Kanban:** Agrupe prompts en paneles temáticos personalizados con tarjetas informativas y contadores de fijación.
+- **Motor de portapapeles multimodal:** Copie el título del prompt, el cuerpo del prompt, el último resultado o un documento Markdown formateado con un solo clic.
+- **Exportadores enriquecidos:** Genere documentos PDF vectoriales profesionales mediante el motor de impresión de Qt, archivos TXT limpios o esquemas JSON portátiles.
+- **Persistencia atómica de archivos:** Todas las escrituras en disco emplean archivos temporales atómicos para prevenir la corrupción de datos ante fallos imprevistos o pérdidas de energía.
+- **Compatibilidad con temas duales:** Alternancia fluida entre el modo oscuro moderno Fusion Dark y el modo claro limpio.
 
 ---
 
+<a id="sec-06"></a><a id="governance"></a><a id="invariants"></a><a id="invarianten"></a><a id="invariantes"></a>
 ## 6. Gobernanza e invariantes de tiempo de ejecución
 
-ProfiPrompt implementa rigurosamente 10 invariantes de gobernanza técnica y ejecución documentadas en [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md):
-
-| ID de Invariante | Título | Ámbito | Verificación y cumplimiento |
-|:---|:---|:---|:---|
-| **INV-LOCAL-01** | 100% Local-First y Zero Egress | Red | CORRECTO: Cero sockets de red, cero telemetría y cero llamadas remotas. |
-| **INV-OFFLINE-02** | Autonomía total sin conexión | Resiliencia | CORRECTO: Operatividad completa preservada en entornos aislados (air-gapped). |
-| **INV-ATOMIC-03** | Persistencia atómica de archivos | Integridad de datos | CORRECTO: Escritura en `prompts.json` y `boards.json` mediante reemplazo atómico. |
-| **INV-SCHEMA-04** | Esquema portátil abierto | Portabilidad | CORRECTO: Estándar documentado exhaustivamente en `EXPORTFORMAT.md`. |
-| **INV-UNPRIV-05** | Ejecución sin privilegios (RunAsInvoker) | Seguridad | CORRECTO: Opera estrictamente dentro del espacio de usuario estándar. |
-| **INV-BACKUP-06** | Copias de respaldo y autorrecuperación | Resiliencia | CORRECTO: Generación y recuperación automática de instantáneas `.bak`. |
-| **INV-COPY-07** | Seguridad del portapapeles local | Integración | CORRECTO: Copia depurada en memoria sin trazas en el disco. |
-| **INV-PRINT-08** | Renderizado determinista multiformato | Calidad | CORRECTO: Generación de PDF vectorial nativo con creación automática de directorios. |
-| **INV-PWA-09** | Aislamiento de solo lectura del compañero | Sandboxing | CORRECTO: El compañero Web/PWA es estrictamente del lado del cliente y de solo lectura. |
-| **INV-SLA-10** | SLA de seguridad: respuesta en 48h / triaje en 5d | Gobernanza | CORRECTO: Política de seguridad bilingüe y contacto vía `security@file-bricks.org`. |
+ProfiPrompt aplica 10 invariantes operativas estrictas documentadas en [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md):
+- **INV-LOCAL-01:** 100% Local-First y Zero Egress (sin sockets de red, sin telemetría).
+- **INV-OFFLINE-02:** Autonomía offline completa (funciona con aislamiento físico sin internet).
+- **INV-ATOMIC-03:** Persistencia atómica de archivos (escrituras mediante tempfile + replace).
+- **INV-SCHEMA-04:** Esquema abierto y portátil (`profiprompt-library-v1.json`).
+- **INV-UNPRIV-05:** Sin elevación de privilegios y RunAsInvoker (espacio de usuario no privilegiado).
+- **INV-BACKUP-06:** Copias de seguridad y recuperación a prueba de fallos (preservación automática `.bak`).
+- **INV-COPY-07:** Seguridad en el portapapeles local (acceso a memoria saneado sin registro externo).
+- **INV-PRINT-08:** Renderizado multiformato determinista (motor vectorial de impresión de Qt).
+- **INV-PWA-09:** Aislamiento del compañero de solo lectura (entorno sandboxed para la PWA).
+- **INV-SLA-10:** SLA de seguridad de 48h de respuesta / 5 días de triaje (`security@file-bricks.org`).
 
 ---
 
+<a id="sec-07"></a><a id="boards"></a><a id="board-system"></a><a id="sistema-de-tableros"></a>
 ## 7. Sistema de paneles y flujo visual
 
-ProfiPrompt incluye un Gestor de Paneles integrado que complementa la estructura jerárquica del panel principal:
-- **Paneles temáticos:** Cree paneles específicos para proyectos, áreas o flujos de trabajo (por ejemplo: *Generación de código*, *Redacción publicitaria*, *Investigación jurídica*).
-- **Flujo de arrastrar y soltar:** Arrastre prompts desde la lista principal hacia la superficie de los paneles para fijarlos.
-- **Vista de tarjetas:** Los prompts se presentan como tarjetas visuales con indicadores de versión, etiquetas y extractos de vista previa.
-- **Acciones contextuales:** Abra, copie, edite o desancore prompts directamente desde el menú contextual de cada tarjeta.
+El gestor de paneles de ProfiPrompt permite ordenar visualmente los prompts para flujos de trabajo específicos:
+- **Navegación de paneles:** Alterne entre paneles mediante botones de barra de herramientas o pestañas laterales.
+- **Flujo de arrastrar y soltar:** Arrastre prompts desde el árbol principal directamente a la superficie del tablero para fijarlos.
+- **Vista en tarjetas:** Los prompts se muestran como tarjetas visuales con indicadores de versión, etiquetas y fragmentos de texto.
+- **Acciones contextuales:** Abra, copie, edite o desancore prompts directamente a través del menú contextual de las tarjetas.
 
 ---
 
+<a id="sec-08"></a><a id="versioning"></a><a id="versionierung"></a><a id="control-de-versiones"></a>
 ## 8. Control de versiones y seguimiento de resultados
 
-La ingeniería de prompts es un proceso empírico que requiere pruebas e iteraciones sucesivas:
-- **Ramificación de versiones:** Cree nuevas versiones (`v1.0`, `v1.1`, `v2.0`) cada vez que ajuste instrucciones de sistema, plantillas o parámetros.
-- **Registro de resultados de ejecución:** Almacene las respuestas de los modelos, métricas o evaluaciones junto a cada versión.
-- **Notas de cambios:** Añada anotaciones sobre el motivo de cada ajuste (por ejemplo: *Reducción de consumo de tokens*, *Adición de ejemplos few-shot*).
-- **Versión activa predeterminada:** Establezca cualquier revisión como versión activa predeterminada para copiarla de inmediato al portapapeles.
+La ingeniería de prompts es una disciplina empírica que requiere iteración continua:
+- **Ramificación de versiones:** Cree nuevas revisiones (`v1.0`, `v1.1`, `v2.0`) cada vez que ajuste instrucciones de sistema o plantillas.
+- **Almacenamiento de resultados:** Guarde las salidas del modelo, pruebas comparativas o respuestas de ejemplo asociadas a cada versión.
+- **Notas de cambio:** Documente los motivos de cada modificación (p. ej. *Reducción de tokens*, *Añadidos ejemplos few-shot*).
+- **Versión activa predeterminada:** Establezca cualquier revisión como predeterminada para el copiado instantáneo al portapapeles.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Engineer as Ingeniero de prompts
+    participant UI as Panel y diálogos
+    participant Engine as Motor de versiones
+    participant Store as Persistencia atómica
+    participant Clip as Motor de portapapeles
+
+    Engineer->>UI: Crear nueva versión de prompt (v1.1)
+    UI->>Engine: Validar parámetros, etiquetas y notas de cambio
+    Engine->>Store: Escritura atómica en prompts.json + .bak
+    Store-->>UI: Persistencia confirmada
+    Engineer->>UI: Seleccionar modo de copia (Markdown / Resultado / Texto)
+    UI->>Clip: Preparar búfer saneado
+    Clip-->>Engineer: Portapapeles del SO preparado (Zero Egress)
+```
 
 ---
 
+<a id="sec-09"></a><a id="clipboard"></a><a id="zwischenablage"></a><a id="portapapeles"></a>
 ## 9. Motor de portapapeles y copia multimodal
 
-ProfiPrompt integra un motor de portapapeles de alta productividad accesible mediante clic derecho o botones de acceso directo:
-- **Solo texto del prompt:** Copia el cuerpo exacto del prompt, listo para pegar en ChatGPT, Claude, Gemini o agentes de entorno IDE.
-- **Solo título:** Copia el encabezado identificativo del prompt.
-- **Solo resultado de ejecución:** Copia la respuesta guardada del último modelo evaluado.
-- **Documento Markdown completo:** Copia un documento formateado con Título, Propósito, Versión, Etiquetas, Prompt y Resultado.
-- **Comportamiento configurable:** Personalice la acción del doble clic en el diálogo de configuración de copia.
+ProfiPrompt cuenta con un motor de portapapeles de alta productividad accesible mediante clic derecho o botones de acción rápida:
+- **Solo texto del prompt:** Copia el cuerpo en bruto del prompt, listo para pegar directamente en ChatGPT, Claude, Gemini o IDEs.
+- **Solo título:** Copia el encabezado del prompt.
+- **Solo resultado de ejecución:** Copia la salida guardada de la última prueba del modelo.
+- **Documento Markdown completo:** Copia un documento formateado con título, propósito, versión, etiquetas, prompt y resultado.
+- **Valores predeterminados configurables:** Personalice la acción del doble clic en el diálogo de configuración de copia.
 
 ---
 
+<a id="sec-10"></a><a id="exports"></a><a id="exportformate"></a><a id="formatos-de-exportacion"></a>
 ## 10. Formatos de exportación portátiles (JSON, PDF, TXT)
 
-Independencia completa respecto a formatos de aplicaciones propietarias:
-- **JSON portátil (`profiprompt-library-v1.json`):** Exportación completa de prompts, versiones, etiquetas y paneles. Especificado en [EXPORTFORMAT.md](EXPORTFORMAT.md).
-- **Exportación a PDF vectorial:** Genere documentos PDF limpios e imprimibles de prompts individuales o de toda la biblioteca utilizando el motor vectorial de Qt.
-- **Lotes en texto plano (`.txt`):** Compile bibliotecas de prompts en archivos de texto delimitados por separadores legibles y estandarizados.
+Sin dependencia de formatos propietarios:
+- **JSON portátil (`profiprompt-library-v1.json`):** Exportación completa de todos los prompts, versiones, etiquetas y paneles. Documentado en [EXPORTFORMAT.md](EXPORTFORMAT.md).
+- **Exportación a PDF vectorial:** Convierta prompts individuales o bibliotecas completas en documentos PDF listos para imprimir mediante el motor de Qt.
+- **Colecciones de texto plano (`.txt`):** Genere compilaciones limpias en texto plano separadas por delimitadores estandarizados.
 
 ---
 
+<a id="sec-11"></a><a id="companion"></a><a id="pwa"></a><a id="pwa-companion"></a><a id="pwa-begleiter"></a><a id="complemento-pwa"></a>
 ## 11. Compañero Web y PWA
 
-El repositorio contiene una aplicación complementaria autónoma para dispositivos móviles y navegadores en `web_companion/`:
-- **Consulta de solo lectura:** Explore y filtre bibliotecas de prompts exportadas en teléfonos móviles, tabletas o pantallas secundarias.
-- **Service Worker v4 sin conexión:** Totalmente operativo sin conexión a internet una vez cargado en el navegador.
-- **Instalación como PWA:** Añada el compañero a la pantalla de inicio en iOS (Safari) y Android (Chrome) como aplicación independiente.
-- **Compatibilidad con áreas seguras (Safe Area):** Interfaz optimizada para pantallas con muescas (notches) e indicadores gestuales modernos.
+El repositorio incluye un compañero móvil y de navegador independiente ubicado en `web_companion/`:
+- **Inspección de solo lectura:** Visualice y busque bibliotecas de prompts exportadas en teléfonos, tabletas o monitores auxiliares.
+- **Service Worker v4 offline:** Totalmente funcional sin conexión a internet tras la carga inicial.
+- **Instalación como PWA:** Añádalo a la pantalla de inicio en iOS (Safari) y Android (Chrome) como aplicación web independiente sin conexión.
+- **Soporte para áreas seguras (Safe Area Insets):** Interfaz adaptada a muescas y barras de gestos modernas.
 
 ```bash
-# Iniciar servidor local para el compañero
+# Iniciar servidor local del compañero
 python -m http.server 4175
 # Abrir en el navegador: http://127.0.0.1:4175/web_companion/
 ```
 
 ---
 
+<a id="sec-12"></a><a id="installation"></a><a id="prerequisites"></a><a id="voraussetzungen"></a><a id="requisitos"></a>
 ## 12. Requisitos previos e instalación
 
 ### Requisitos del sistema
@@ -265,83 +294,86 @@ pip install -r requirements.txt
 python src/profiprompt.py
 ```
 
-En Windows, también puede hacer doble clic en `START.bat` para iniciar la aplicación de inmediato.
+En Windows, haga doble clic en `START.bat` para iniciar la aplicación directamente.
 
-### Empaquetado de ejecutable independiente
+### Creación del ejecutable independiente
 
 ```bash
-# Compilar ejecutable autónomo para Windows mediante PyInstaller
+# Compilar ejecutable para Windows mediante PyInstaller
 pip install pyinstaller
 python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
 ```
 
 ---
 
+<a id="sec-13"></a><a id="structure"></a><a id="project-structure"></a><a id="projektstruktur"></a><a id="estructura-del-proyecto"></a>
 ## 13. Estructura del proyecto
 
 ```
 ProfiPrompt/
-├── assets/                     # Identidad visual, banners e iconos vectoriales
-│   ├── banner.png              # Banner de documentación en alta resolución (1200x340)
-│   ├── banner.svg              # Banner vectorial SVG
-│   └── banner_v2.svg           # Recurso gráfico vectorial extendido
-├── locales/                    # Catálogos de traducción multilingüe
-│   └── translations.json       # Diccionario con 100% de paridad en 6 idiomas (DE, EN, ES, ZH, JA, RU)
+├── assets/                     # Recursos gráficos, pancartas e iconos vectoriales
+│   ├── banner.png              # Pancarta de alta resolución (1200x340)
+│   ├── banner.svg              # Pancarta en formato SVG vectorial
+│   └── banner_v2.svg           # Recurso vectorial ampliado
+├── locales/                    # Catálogos de traducción
+│   └── translations.json       # Cadenas multilingües (6 idiomas)
 ├── screenshots/                # Capturas de pantalla de la interfaz
-│   └── main.png                # Captura del panel de control principal
-├── src/                        # Núcleo de la aplicación de escritorio PySide6
+│   └── main.png                # Captura del panel principal
+├── src/                        # Aplicación de escritorio PySide6
 │   ├── board_manager.py        # Gestor visual de paneles Kanban
 │   ├── clipboard_manager.py    # Motor de portapapeles multimodal
 │   ├── copy_settings_dialog.py # Diálogo de configuración de formatos de copia
-│   ├── dashboard.py            # Árbol de prompts y panel de filtros
-│   ├── event_bus.py            # Bus de eventos desacoplado basado en señales Qt
+│   ├── dashboard.py            # Árbol jerárquico de prompts y filtros
+│   ├── event_bus.py            # Bus de eventos desacoplado de señales Qt
 │   ├── models.py               # Modelos de datos (Prompt, Version, Board, BoardItem)
 │   ├── pdf_exporter.py         # Motor de exportación a PDF vectorial y TXT
-│   ├── platform_smoke.py       # Ejecutor de pruebas de humo multiplataforma sin interfaz
-│   ├── profiprompt.py          # Punto de entrada y ventana principal de la aplicación
-│   ├── prompt_dialog.py        # Diálogos de edición de prompts e historiales de versiones
-│   ├── settings_manager.py     # Gestor de configuración persistente con QSettings
-│   ├── storage.py              # Persistencia atómica en JSON y recuperación mediante .bak
+│   ├── platform_smoke.py       # Prueba de humo multiplataforma sin interfaz
+│   ├── profiprompt.py          # Punto de entrada y ventana principal
+│   ├── prompt_dialog.py        # Diálogos de edición de prompts e historiales
+│   ├── settings_manager.py     # Gestor de configuraciones QSettings
+│   ├── storage.py              # Persistencia atómica JSON y respaldos .bak
 │   ├── theme.py                # Paletas de temas Fusion Dark y Light
-│   └── translator.py           # Motor de internacionalización y traducción en vivo (v2.0)
+│   └── translator.py           # Motor de traducción i18n dinámica
 ├── web_companion/              # Compañero Web/PWA de solo lectura
-│   ├── app.js                  # Lógica de renderizado y búsqueda en cliente PWA
-│   ├── index.html              # Estructura HTML del compañero
-│   ├── library.js              # Validación y normalización del esquema JSON
+│   ├── app.js                  # Lógica de renderizado y búsqueda en la PWA
+│   ├── index.html              # Shell HTML del compañero
+│   ├── library.js              # Validación y normalización de esquemas
 │   ├── manifest.webmanifest    # Manifiesto de instalación PWA
-│   ├── service-worker.js       # Motor de caché sin conexión del Service Worker
-│   └── tests/                  # Suite de pruebas automatizadas en Node.js (40 pruebas)
-├── tests/                      # Suite de pruebas automatizadas Pytest (152+ pruebas)
-├── CHANGELOG.md                # Historial de versiones según Keep a Changelog
-├── EXPORTFORMAT.md             # Especificación técnica del esquema JSON de bibliotecas
+│   ├── service-worker.js       # Motor de caché de service worker sin conexión
+│   └── tests/                  # Suite de pruebas automatizadas en Node.js (46 pruebas)
+├── tests/                      # Suite de pruebas de regresión en Pytest (160+ pruebas)
+├── CHANGELOG.md                # Registro de cambios (Keep a Changelog)
+├── EXPORTFORMAT.md             # Especificación estandarizada de biblioteca JSON
 ├── LICENSE                     # Licencia MIT
-├── llms.txt                    # Contexto estructurado para modelos de lenguaje y agentes
-├── MARKETING-LOG.txt           # Registro de estrategia de posicionamiento, personas y visibilidad
-├── pyproject.toml              # Configuración de paquete PEP 621 y herramientas de prueba
+├── llms.txt                    # Contexto legible para agentes LLM
+├── MARKETING-LOG.txt           # Registro de marketing, personas y detectabilidad
+├── NOTICE                      # Aviso canónico de atribución y derechos
+├── pyproject.toml              # Configuración de paquete y pruebas PEP 621
 ├── README_de.md                # Documentación en alemán
-├── README_es.md                # Documentación en español (Stufe 2 / Policy P-006)
-├── README.md                   # Documentación en inglés (Principal)
-├── SECURITY.md                 # Política de seguridad y compromisos de SLA en 48h
-├── START.bat                   # Script de inicio rápido para Windows
-├── STORE_LISTING.md            # Ficha descriptiva para Microsoft Store
-└── THIRD_PARTY_LICENSES.md     # Auditoría de dependencias y 10 invariantes de ejecución
+├── README_es.md                # Documentación en español
+├── README.md                   # Documentación en inglés
+├── SECURITY.md                 # Política de seguridad y compromisos SLA de 48h
+├── START.bat                   # Script de inicio para Windows
+├── STORE_LISTING.md            # Descripciones para Microsoft Store
+└── THIRD_PARTY_LICENSES.md     # Auditoría de licencias de terceros y 10 invariantes
 ```
 
 ---
 
+<a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Pruebas y control de calidad
 
-ProfiPrompt cuenta con el respaldo de **más de 190 pruebas automatizadas** que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
+ProfiPrompt cuenta con el respaldo de **206 pruebas automatizadas** que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
 
 ```bash
-# Ejecutar suite de pruebas unitarias y de integración de Python (152 superadas, 3 omitidas)
+# Ejecutar suite de pruebas unitarias y de integración de Python (160 superadas, 3 omitidas)
 pytest -v
 
 # Validar paridad del 100% de traducciones en los 6 idiomas (Policy P-006)
 python manage_translations.py --check
 
-# Ejecutar suite de pruebas en Node.js del compañero Web (40 superadas)
-node --test web_companion/tests/library.test.mjs web_companion/tests/accessibility.test.mjs web_companion/tests/pwa.test.mjs
+# Ejecutar suite de pruebas en Node.js del compañero Web (46 superadas)
+node --test web_companion/tests/*.test.mjs
 
 # Ejecutar prueba de humo sin interfaz gráfica
 python src/platform_smoke.py --output-dir build/platform-smoke
@@ -349,16 +381,18 @@ python src/platform_smoke.py --output-dir build/platform-smoke
 
 ---
 
+<a id="sec-15"></a><a id="licenses"></a><a id="third-party"></a><a id="drittanbieter"></a><a id="licencias-de-terceros"></a>
 ## 15. Licencias de terceros y transparencia
 
 ProfiPrompt emplea exclusivamente componentes con licencias de código abierto permisivas o débilmente recíprocas (LGPLv3). Los textos completos de las licencias, avisos e invariantes de tiempo de ejecución están documentados en [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-- **PySide6 / shiboken6:** LGPL-3.0-only (enlace dinámico)
+- **PySide6 / shiboken6:** LGPL-3.0-only (bibliotecas compartidas de enlace dinámico)
 - **PyInstaller / packaging:** GPL-2.0-or-later con excepción Bootloader / Apache-2.0
 - **pytest / ruff:** MIT / Apache-2.0
 
 ---
 
+<a id="sec-16"></a><a id="security"></a><a id="privacy"></a><a id="datenschutz"></a><a id="seguridad"></a>
 ## 16. Política de seguridad y privacidad
 
 - **Compromiso de cero telemetría:** No existe código de telemetría, seguimiento analítico ni conexiones externas en ninguna versión del software.
@@ -366,14 +400,19 @@ ProfiPrompt emplea exclusivamente componentes con licencias de código abierto p
 
 ---
 
+<a id="sec-17"></a><a id="legal"></a><a id="authors"></a><a id="liability"></a><a id="haftung"></a><a id="autores"></a><a id="statutory-notice--security-response-sla"></a><a id="gesetzlicher-haftungsausschluss--security-sla"></a>
 ## 17. Licencia, autores y descargo de responsabilidad
 
 ### Autores y mantenimiento
 - **Lukas Geiger** ([@lukisch](https://github.com/lukisch)) — Creador y mantenedor principal.
 - Forma parte del ecosistema de aplicaciones de escritorio [file-bricks](https://github.com/file-bricks) y la iniciativa general [open-bricks](https://github.com/open-bricks).
+- El aviso canónico de atribución se encuentra en [NOTICE](NOTICE).
 
 ### Licencia
-Este proyecto está publicado bajo los términos de la [Licencia MIT](LICENSE).
+Este proyecto está publicado bajo los términos de la [Licencia MIT](LICENSE). Las licencias de componentes de terceros y las invariantes de gobernanza están documentadas en [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-### Descargo de responsabilidad
-Este software se distribuye de manera gratuita como contribución de código abierto. La responsabilidad legal se rige por la legislación alemana y queda limitada a supuestos de dolo y negligencia grave (§ 521 BGB).
+### Descargo de responsabilidad legal (§ 521 BGB Gefälligkeitsrecht)
+Este software se distribuye de manera gratuita como contribución de código abierto (unentgeltliche Bereitstellung). De conformidad con el artículo 521 del Código Civil Alemán (§ 521 BGB - Schenkungs- und Gefälligkeitsrecht), la responsabilidad legal por defectos materiales y jurídicos queda estrictamente limitada a supuestos de dolo (Vorsatz), negligencia grave (grobe Fahrlässigkeit) o falsedad maliciosa (Arglist).
+
+### SLA de respuesta de seguridad en 48 horas
+Nos comprometemos a emitir una respuesta inicial ante cualquier informe verificado de vulnerabilidad de seguridad en un plazo máximo de **48 horas**, así como a completar la evaluación inicial (triaje) en un plazo de **5 días laborables** a través de `security@file-bricks.org` y `support@lukasgeiger.com` conforme a nuestra [Política de seguridad](SECURITY.md).

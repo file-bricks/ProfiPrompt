@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 152 passed](https://img.shields.io/badge/Pytest-152%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 160 passed](https://img.shields.io/badge/Pytest-160%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -17,9 +17,14 @@
 [![Third-Party Audited](https://img.shields.io/badge/third--party-audited-success.svg)](THIRD_PARTY_LICENSES.md)
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
+[![Verified: 2026-09-22](https://img.shields.io/badge/verified-2026--09--22-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
+
+| Direct Document References | [🛡️ Security Policy](SECURITY.md) • [⚖️ Third-Party Licenses](THIRD_PARTY_LICENSES.md) • [📜 Marketing Log](MARKETING-LOG.txt) • [🤖 LLM Context](llms.txt) • [📋 Canonical Notice](NOTICE) |
+|---|---|
 
 > **ProfiPrompt** is an open-source, local-first PySide6 desktop workstation and offline Web/PWA companion for systematically designing, versioning, organizing, and deploying generative AI prompts without cloud lock-in or telemetry leaks.
 
@@ -50,6 +55,7 @@
 
 ---
 
+<a id="sec-01"></a><a id="overview"></a><a id="uebersicht"></a><a id="resumen"></a>
 ## 1. Overview & Value Proposition
 
 In the generative AI era, developers, prompt engineers, and knowledge workers spend hundreds of hours crafting high-leverage prompts, system instructions, and chain-of-thought patterns. Unfortunately, these valuable assets are often lost in ephemeral chat histories, chaotic markdown files, or proprietary SaaS platforms that log sensitive corporate prompts.
@@ -65,6 +71,7 @@ In the generative AI era, developers, prompt engineers, and knowledge workers sp
 
 ---
 
+<a id="sec-02"></a><a id="personas"></a><a id="target-personas"></a><a id="zielgruppen"></a><a id="publico-objetivo"></a>
 ## 2. Target Personas & Discoverability
 
 ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas across the software engineering and AI landscape:
@@ -97,6 +104,7 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 
 ---
 
+<a id="sec-03"></a><a id="matrix"></a><a id="comparative-matrix"></a><a id="vergleichsmatrix"></a><a id="matriz-comparativa"></a>
 ## 3. Comparative Matrix vs Alternatives
 
 | Dimension / Capability | ProfiPrompt (Desktop + PWA) | Plain Notes / Obsidian / MD | Cloud Prompt SaaS (AIPRM, etc.) | Generic Snippet Managers |
@@ -114,6 +122,7 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 
 ---
 
+<a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Architecture & Data Flow
 
 ```mermaid
@@ -154,6 +163,7 @@ flowchart TD
 
 ---
 
+<a id="sec-05"></a><a id="features"></a><a id="funktionen"></a><a id="caracteristicas"></a>
 ## 5. Key Features & Capabilities
 
 - **Systematic Prompt Management:** Create, edit, and organize prompts with tags, descriptions, and category metadata.
@@ -163,41 +173,38 @@ flowchart TD
 - **Rich Document Exporters:** Generate professional PDF documents via Qt's vector print engine, clean TXT files, or portable JSON schemas.
 - **Atomic File Persistence:** All disk writes utilize atomic temporary file replacement, preventing corrupted state during sudden power loss.
 - **Dual-Theme Support:** Seamless toggle between modern Fusion Dark theme and clean Light theme.
-- **Bilingual Interface:** Instant language switching between English and German with live menu updates.
-- **Offline PWA Companion:** Dedicated mobile-ready browser companion in `web_companion/` for reviewing libraries on phones and tablets.
-- **Air-Gapped Security:** Zero external network calls, zero telemetry, zero background updates.
 
 ---
 
+<a id="sec-06"></a><a id="governance"></a><a id="invariants"></a><a id="invarianten"></a><a id="invariantes"></a>
 ## 6. Governance & Runtime Invariants
 
-ProfiPrompt strictly enforces 10 governance and runtime invariants detailed in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md):
-
-| Invariant ID | Title | Scope | Enforcement & Verification |
-|:---|:---|:---|:---|
-| **INV-LOCAL-01** | 100% Local-First & Zero Egress | Network | PASS: Zero network sockets, zero telemetry, zero cloud calls. |
-| **INV-OFFLINE-02** | Full Offline Autonomy | Resilience | PASS: Complete functionality preserved in air-gapped environments. |
-| **INV-ATOMIC-03** | Atomic File Persistence | Data Integrity | PASS: Writes to `prompts.json` and `boards.json` use atomic replace. |
-| **INV-SCHEMA-04** | Open Portable Schema | Portability | PASS: Fully documented standard in `EXPORTFORMAT.md`. |
-| **INV-UNPRIV-05** | Non-Elevation & RunAsInvoker | Security | PASS: Operates strictly within standard unprivileged user space. |
-| **INV-BACKUP-06** | Fail-Safe Backup & Recovery | Resilience | PASS: Automatic `.bak` snapshot generation and recovery. |
-| **INV-COPY-07** | Local Clipboard Safety | Integration | PASS: In-memory sanitized clipboard copying without disk traces. |
-| **INV-PRINT-08** | Deterministic Multi-Format Rendering | Quality | PASS: Native Qt vector PDF generation with automatic folder creation. |
-| **INV-PWA-09** | Read-Only Companion Isolation | Sandboxing | PASS: Web/PWA companion is strictly client-side and read-only. |
-| **INV-SLA-10** | 48h Response / 5d Triage Security SLA | Governance | PASS: Bilingual security policy and contact via `security@file-bricks.org`. |
+ProfiPrompt enforces 10 strict operational invariants documented in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md):
+- **INV-LOCAL-01:** 100% Local-First & Zero Egress (no network sockets, no telemetry).
+- **INV-OFFLINE-02:** Full Offline Autonomy (works air-gapped without internet).
+- **INV-ATOMIC-03:** Atomic File Persistence (tempfile + replace writes).
+- **INV-SCHEMA-04:** Open Portable Schema (`profiprompt-library-v1.json`).
+- **INV-UNPRIV-05:** Non-Elevation & RunAsInvoker (unprivileged user space).
+- **INV-BACKUP-06:** Fail-Safe Backup & Recovery (automatic `.bak` preservation).
+- **INV-COPY-07:** Local Clipboard Safety (memory-only sanitized clipboard access).
+- **INV-PRINT-08:** Deterministic Multi-Format Rendering (Qt vector print engine).
+- **INV-PWA-09:** Read-Only Companion Isolation (PWA companion runs sandboxed).
+- **INV-SLA-10:** 48h Response / 5d Triage Security SLA (`security@file-bricks.org`).
 
 ---
 
+<a id="sec-07"></a><a id="boards"></a><a id="board-system"></a><a id="sistema-de-tableros"></a>
 ## 7. Board System & Visual Workflow
 
-ProfiPrompt features an integrated Board Manager that complements the hierarchical prompt tree:
-- **Thematic Boards:** Create dedicated boards for specific projects, domains, or client engagements (e.g. *Code Generation*, *Copywriting*, *Legal Research*).
+ProfiPrompt's board manager lets you visually arrange prompts for specific projects:
+- **Board Navigation:** Switch between boards via dedicated toolbar buttons or sidebar tabs.
 - **Drag & Drop Workflow:** Drag prompts from the dashboard tree directly onto board surfaces to pin them.
 - **Tile View:** Prompts appear as rich visual cards displaying version indicators, tag badges, and preview snippets.
 - **Context Actions:** Open, copy, edit, or unpin prompts directly through board card context menus.
 
 ---
 
+<a id="sec-08"></a><a id="versioning"></a><a id="versionierung"></a><a id="control-de-versiones"></a>
 ## 8. Prompt Versioning & Execution Tracking
 
 Prompt engineering is an empirical science requiring iterative testing:
@@ -206,8 +213,27 @@ Prompt engineering is an empirical science requiring iterative testing:
 - **Change Notes:** Annotate revisions with reasons for modification (e.g. *Reduced token count*, *Added few-shot examples*).
 - **Default Active Version:** Set any revision as the active default for immediate clipboard copying.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Engineer as Prompt Engineer
+    participant UI as Dashboard & Dialogs
+    participant Engine as Version Engine
+    participant Store as Atomic Persistence
+    participant Clip as Clipboard Engine
+
+    Engineer->>UI: Create new prompt version (v1.1)
+    UI->>Engine: Validate parameters, tags & change notes
+    Engine->>Store: Atomic commit to prompts.json + .bak
+    Store-->>UI: Persistence confirmed
+    Engineer->>UI: Select copy action (Markdown / Result / Body)
+    UI->>Clip: Prepare sanitized buffer
+    Clip-->>Engineer: OS clipboard populated (Zero egress)
+```
+
 ---
 
+<a id="sec-09"></a><a id="clipboard"></a><a id="zwischenablage"></a><a id="portapapeles"></a>
 ## 9. Clipboard Engine & Multi-Mode Copy
 
 ProfiPrompt features a high-productivity clipboard engine accessible via right-click or quick action buttons:
@@ -219,6 +245,7 @@ ProfiPrompt features a high-productivity clipboard engine accessible via right-c
 
 ---
 
+<a id="sec-10"></a><a id="exports"></a><a id="exportformate"></a><a id="formatos-de-exportacion"></a>
 ## 10. Portable Export Formats (JSON, PDF, TXT)
 
 Never get locked into a proprietary application format:
@@ -228,6 +255,7 @@ Never get locked into a proprietary application format:
 
 ---
 
+<a id="sec-11"></a><a id="companion"></a><a id="pwa"></a><a id="pwa-companion"></a><a id="pwa-begleiter"></a><a id="complemento-pwa"></a>
 ## 11. Web & PWA Companion
 
 The repository includes a complete, standalone mobile and browser companion located in `web_companion/`:
@@ -244,6 +272,7 @@ python -m http.server 4175
 
 ---
 
+<a id="sec-12"></a><a id="installation"></a><a id="prerequisites"></a><a id="voraussetzungen"></a><a id="requisitos"></a>
 ## 12. Prerequisites & Installation
 
 ### System Requirements
@@ -277,6 +306,7 @@ python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
 
 ---
 
+<a id="sec-13"></a><a id="structure"></a><a id="project-structure"></a><a id="projektstruktur"></a><a id="estructura-del-proyecto"></a>
 ## 13. Project Structure
 
 ```
@@ -311,14 +341,16 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # PWA install manifest
 │   ├── service-worker.js       # Offline service worker cache engine
 │   └── tests/                  # Node.js automated test suite (46 tests)
-├── tests/                      # Automated Pytest regression test suite (141+ tests)
+├── tests/                      # Automated Pytest regression test suite (160+ tests)
 ├── CHANGELOG.md                # Keep a Changelog revision history
 ├── EXPORTFORMAT.md             # Standardized specification for library JSON
 ├── LICENSE                     # MIT License
 ├── llms.txt                    # Machine-readable LLM context
 ├── MARKETING-LOG.txt           # Dedicated marketing, personas, and discoverability log
+├── NOTICE                      # Canonical attribution and license notice
 ├── pyproject.toml              # PEP 621 package and test configuration
 ├── README_de.md                # German documentation
+├── README_es.md                # Spanish documentation
 ├── README.md                   # English documentation
 ├── SECURITY.md                 # Security policy and 48h SLA commitments
 ├── START.bat                   # Windows desktop launcher script
@@ -328,16 +360,17 @@ ProfiPrompt/
 
 ---
 
+<a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Testing & Quality Assurance
 
-ProfiPrompt is backed by **185+ automated tests** verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
+ProfiPrompt is backed by **206 automated tests** verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
 
 ```bash
-# Run Python Pytest test suite (141 passed, 3 skipped)
+# Run Python Pytest test suite (160 passed, 3 skipped)
 pytest -v
 
 # Run Web Companion Node.js test suite (46 passed)
-node --test web_companion/tests/*.test.js web_companion/tests/*.mjs
+node --test web_companion/tests/*.test.mjs
 
 # Run Headless Platform Smoke Test
 python src/platform_smoke.py --output-dir build/platform-smoke
@@ -345,16 +378,18 @@ python src/platform_smoke.py --output-dir build/platform-smoke
 
 ---
 
+<a id="sec-15"></a><a id="licenses"></a><a id="third-party"></a><a id="drittanbieter"></a><a id="licencias-de-terceros"></a>
 ## 15. Third-Party Licenses & Transparency
 
 ProfiPrompt strictly utilizes dependencies with permissive or weakly reciprocal (LGPLv3) open-source licenses. Full license texts, notices, and runtime invariants are documented in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-- **PySide6 / shiboken6:** LGPL-3.0-only (dynamically loaded)
+- **PySide6 / shiboken6:** LGPL-3.0-only (dynamically loaded shared libraries)
 - **PyInstaller / packaging:** GPL-2.0-or-later with Bootloader Exception / Apache-2.0
 - **pytest / ruff:** MIT / Apache-2.0
 
 ---
 
+<a id="sec-16"></a><a id="security"></a><a id="privacy"></a><a id="datenschutz"></a><a id="seguridad"></a>
 ## 16. Security & Privacy Policy
 
 - **Zero Telemetry Commitment:** No telemetry, tracking, or network calls are present in any release.
@@ -362,14 +397,19 @@ ProfiPrompt strictly utilizes dependencies with permissive or weakly reciprocal 
 
 ---
 
+<a id="sec-17"></a><a id="legal"></a><a id="authors"></a><a id="liability"></a><a id="haftung"></a><a id="autores"></a><a id="statutory-notice--security-response-sla"></a><a id="gesetzlicher-haftungsausschluss--security-sla"></a>
 ## 17. License, Authors & Liability
 
 ### Authors & Maintainers
 - **Lukas Geiger** ([@lukisch](https://github.com/lukisch)) — Creator and lead maintainer.
 - Part of the [file-bricks](https://github.com/file-bricks) desktop software ecosystem and the [open-bricks](https://github.com/open-bricks) umbrella.
+- Canonical attribution is recorded in [NOTICE](NOTICE).
 
 ### License
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). Third-party dependencies and runtime governance invariants are documented in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
 
-### Disclaimer & Liability
-This software is provided as an open-source contribution free of charge. Liability is governed by German law and limited to intent and gross negligence (§ 521 BGB).
+### Statutory Notice & Liability Disclaimer (§ 521 BGB)
+This software is provided as an open-source contribution free of charge (unentgeltliche Bereitstellung). Under German statutory law (§ 521 BGB - Schenkungs-/Gefälligkeitsrecht), liability for defects in quality and title is strictly limited to cases where the author has fraudulently concealed a defect (Arglist) or acted with intent or gross negligence (Vorsatz und grobe Fahrlässigkeit).
+
+### 48-Hour Security Response SLA
+We commit to an initial response to all verified security vulnerability reports within **48 hours** and full triage within **5 business days**. Reports should be addressed to `security@file-bricks.org` and `support@lukasgeiger.com` in accordance with our [Security Policy](SECURITY.md).

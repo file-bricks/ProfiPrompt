@@ -261,15 +261,48 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20)", llms_text), "llms.txt must have recent Last-checked date"
+    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20|22)", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
+    assert "NOTICE" in llms_text
 
     pyproject_file = ROOT / "pyproject.toml"
     assert pyproject_file.is_file()
     pyproject_text = pyproject_file.read_text(encoding="utf-8")
     assert "THIRD_PARTY_LICENSES.md" in pyproject_text
     assert "MARKETING-LOG.txt" in pyproject_text
+    assert "NOTICE" in pyproject_text
+    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]' in pyproject_text
+
+
+def test_canonical_root_notice_attribution() -> None:
+    """Verify canonical root NOTICE file exists and attributes maintainers and umbrella ecosystem."""
+    notice_file = ROOT / "NOTICE"
+    assert notice_file.is_file(), "Root NOTICE file must exist"
+    content = notice_file.read_text(encoding="utf-8")
+    assert "ProfiPrompt" in content
+    assert "Lukas Geiger" in content
+    assert "file-bricks" in content
+    assert "open-bricks" in content
+    assert "MIT License" in content
+    assert "THIRD_PARTY_LICENSES.md" in content
+
+
+def test_third_party_licenses_sbom_matrix_and_elevation() -> None:
+    """Verify Level 1 SBOM Invariant Cross-Reference Matrix and non-elevation in THIRD_PARTY_LICENSES.md."""
+    licenses_file = ROOT / "THIRD_PARTY_LICENSES.md"
+    assert licenses_file.is_file()
+    content = licenses_file.read_text(encoding="utf-8")
+
+    assert "## 7. Level 1 SBOM Invariant Cross-Reference Matrix" in content
+    assert "## 8. Non-Elevation Certification (RunAsInvoker)" in content
+    assert "## 9. Zero-Copyleft Isolation Guarantee" in content
+    assert "RunAsInvoker" in content
+
+    for inv in [f"INV-LOCAL-01", f"INV-OFFLINE-02", f"INV-ATOMIC-03", f"INV-SCHEMA-04", f"INV-UNPRIV-05",
+                f"INV-BACKUP-06", f"INV-COPY-07", f"INV-PRINT-08", f"INV-PWA-09", f"INV-SLA-10"]:
+        assert inv in content, f"{inv} must be documented in Level 1 SBOM matrix"
+
 
 
 def test_ci_workflow_guardrails() -> None:
@@ -318,3 +351,14 @@ def test_marketing_log_hygiene_audit_recency() -> None:
     assert "8. REPOSITORY HYGIENE & CI CONTRACT AUDIT" in mkt_text
     assert "2026-09-16" in mkt_text
     assert "Pfad A" in mkt_text
+
+
+def test_marketing_log_discoverability_recency() -> None:
+    """Verify MARKETING-LOG.txt includes Section 10 documenting the Pfad B discoverability audit."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file()
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "10. DISCOVERABILITY, VISUAL ARCHITECTURE, LEVEL 1 SBOM & GOVERNANCE AUDIT" in mkt_text
+    assert "2026-09-22" in mkt_text
+    assert "Pfad B" in mkt_text

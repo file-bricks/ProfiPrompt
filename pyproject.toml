@@ -9,7 +9,29 @@ description = "Local-first PySide6 desktop application for AI prompt management,
 readme = "README.md"
 authors = [{ name = "Lukas Geiger", email = "support@lukasgeiger.com" }]
 license = { text = "MIT" }
-keywords = ["pyside6", "qt6", "prompt-manager", "prompt-engineering", "local-first", "llm", "pwa", "versioning"]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
+keywords = [
+    "pyside6",
+    "qt6",
+    "prompt-manager",
+    "prompt-engineering",
+    "local-first",
+    "llm",
+    "pwa",
+    "versioning",
+    "ai",
+    "desktop-app",
+    "python",
+    "clipboard-manager",
+    "json-export",
+    "offline-first",
+    "privacy-first",
+    "prompt-library",
+    "windows",
+    "developer-tools",
+    "fail-closed",
+    "zero-egress",
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: End Users/Desktop",
@@ -41,6 +63,7 @@ Repository = "https://github.com/file-bricks/ProfiPrompt.git"
 Issues = "https://github.com/file-bricks/ProfiPrompt/issues"
 Changelog = "https://github.com/file-bricks/ProfiPrompt/blob/master/CHANGELOG.md"
 Security = "https://github.com/file-bricks/ProfiPrompt/blob/master/SECURITY.md"
+Notice = "https://github.com/file-bricks/ProfiPrompt/blob/master/NOTICE"
 "Parent Organization" = "https://github.com/file-bricks"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
 "LLM Ready" = "https://github.com/file-bricks/ProfiPrompt/blob/master/llms.txt"
