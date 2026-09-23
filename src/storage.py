@@ -133,7 +133,12 @@ class Storage:
         p = self.get_prompt(prompt_id)
         if not p or not p.versions:
             return 1
-        return max(v.version_number for v in p.versions) + 1
+        nums = [
+            v.version_number
+            for v in p.versions
+            if v is not None and getattr(v, "version_number", None) is not None
+        ]
+        return (max(nums) + 1) if nums else 1
 
     # --- Boards ---
     def load_boards(self) -> List[Board]:

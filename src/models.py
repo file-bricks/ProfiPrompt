@@ -101,13 +101,13 @@ def version_from_dict(v: Dict[str, Any]) -> Version:
     return Version(
         id=v["id"],
         prompt_id=v["prompt_id"],
-        version_number=v.get("version_number", 0),
-        title=v.get("title", ""),
-        text=v.get("text", ""),
-        result=v.get("result", ""),
+        version_number=v.get("version_number") or 0,
+        title=v.get("title") or "",
+        text=v.get("text") or "",
+        result=v.get("result") or "",
         tags=v.get("tags") or [],
-        created_at=v.get("created_at", now_iso()),
-        updated_at=v.get("updated_at", now_iso()),
+        created_at=v.get("created_at") or now_iso(),
+        updated_at=v.get("updated_at") or now_iso(),
     )
 
 

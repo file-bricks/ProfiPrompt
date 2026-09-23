@@ -222,9 +222,10 @@ class BoardManager(QtWidgets.QWidget):
             self.settings.qs.setValue("tiles/font_family", font.family())
             self.reload_items()
 
-    def reload(self):
+    def reload(self, select_board_id: Optional[str] = None):
         boards = self.storage.load_boards()
-        cur_id = self.board_combo.currentData()
+        cur_id = select_board_id or getattr(self, "_pending_select_board_id", None) or self.board_combo.currentData()
+        self._pending_select_board_id = None
         
         self.board_combo.blockSignals(True)
         self.board_combo.clear()
@@ -237,6 +238,9 @@ class BoardManager(QtWidgets.QWidget):
             if idx >= 0:
                 self.board_combo.setCurrentIndex(idx)
         
+        if hasattr(self, "btn_del_board"):
+            self.btn_del_board.setEnabled(len(boards) > 0)
+
         self.reload_items()
 
     def current_board(self) -> Optional[Board]:
@@ -273,6 +277,10 @@ class BoardManager(QtWidgets.QWidget):
             v = None
             if item.version_id:
                 v = next((x for x in p.versions if x.id == item.version_id), None)
+                if v is None:
+                    # BUG-BM01: Verwaiste Version-Items duerfen nicht faelschlich als
+                    # Hauptprompt gerendert werden (fuehrt zu irrefuehrender UI & unloeschbaren Kacheln)
+                    continue
 
             tile = PromptTile(p, v, font_family, version_pal if v else main_pal, self)
             tile.clicked.connect(self._on_tile_clicked)
@@ -295,6 +303,7 @@ class BoardManager(QtWidgets.QWidget):
         if ok and title.strip():
             b = Board(id=gen_id(), title=title.strip(), items=[])
             self.storage.upsert_board(b)
+            self._pending_select_board_id = b.id
             bus.boardsChanged.emit()
 
     def delete_current_board(self):
@@ -350,6 +359,7 @@ class BoardManager(QtWidgets.QWidget):
         board.items = new_items
         self.storage.upsert_board(board)
         self.reload_items()
+        bus.boardsChanged.emit()
 
     # --- Drag & Drop ---
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
@@ -363,7 +373,9 @@ class BoardManager(QtWidgets.QWidget):
     def dropEvent(self, event: QtGui.QDropEvent):
         md = event.mimeData()
         board = self.current_board()
-        if not board: return
+        if not board:
+            event.ignore()
+            return
 
         pid, vid = None, None
 
@@ -388,9 +400,14 @@ class BoardManager(QtWidgets.QWidget):
                 vid = parts[1].strip()
 
         if pid and self.storage.get_prompt(pid):
-            if vid and not self.storage.get_version(pid, vid):
-                vid = None
+            if vid:
+                if not self.storage.get_version(pid, vid):
+                    # BUG-BM04: Ungueltigen/geloeschten Versions-Drop abweisen statt faelschlich Hauptprompt anzuhaengen
+                    event.ignore()
+                    return
             ok, _ = self.storage.add_item_to_board(board.id, pid, vid)
-            if ok: self.reload_items()
+            if ok:
+                self.reload_items()
+                bus.boardsChanged.emit()
             
         event.acceptProposedAction()
