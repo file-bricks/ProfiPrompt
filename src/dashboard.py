@@ -1,7 +1,8 @@
-# dashboard.py
-
 from __future__ import annotations
 import json
+import os as _os
+import re
+from pathlib import Path
 from typing import List, Optional
 
 from PySide6 import QtWidgets, QtCore, QtGui
@@ -17,8 +18,15 @@ from pdf_exporter import (
     export_single_prompt_with_versions,
 )
 
-import os as _os
 _ICON_DIR = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "icons")
+
+
+def sanitize_export_filename(name: Optional[str], default: str = "prompt") -> str:
+    """Bereinigt Dateinamen für den Export von verbotenen Zeichen unter Windows."""
+    if not name:
+        return default
+    clean = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '_', str(name)).strip(' ._')
+    return clean or default
 
 
 
@@ -157,20 +165,39 @@ class DashboardWidget(QtWidgets.QWidget):
         # Apply text filter
         search_text = self.search_edit.text().strip().lower()
         if search_text:
-            prompts = [
-                p for p in prompts
-                if search_text in (p.title or "").lower()
-                or search_text in (p.text or "").lower()
-                or any(search_text in t.lower() for t in (p.tags or []) if isinstance(t, str))
-            ]
+            def matches_prompt(p: Prompt) -> bool:
+                if search_text in (p.title or "").lower():
+                    return True
+                if search_text in (p.purpose or "").lower():
+                    return True
+                if search_text in (p.text or "").lower():
+                    return True
+                if any(search_text in str(t).strip().lower() for t in (p.tags or []) if t is not None):
+                    return True
+                for v in (p.versions or []):
+                    if v is None:
+                        continue
+                    if search_text in (v.title or "").lower():
+                        return True
+                    if search_text in (v.text or "").lower():
+                        return True
+                    if any(search_text in str(t).strip().lower() for t in (v.tags or []) if t is not None):
+                        return True
+                return False
+
+            prompts = [p for p in prompts if matches_prompt(p)]
 
         # Apply tag filter
         selected_tag = self.tag_combo.currentData()
         if selected_tag:
+            sel_norm = str(selected_tag).strip().lower()
             prompts = [
                 p for p in prompts
-                if (p.tags and selected_tag in p.tags)
-                or any(v.tags and selected_tag in v.tags for v in (p.versions or []))
+                if any(str(t).strip().lower() == sel_norm for t in (p.tags or []) if t is not None)
+                or any(
+                    v is not None and any(str(t).strip().lower() == sel_norm for t in (v.tags or []) if t is not None)
+                    for v in (p.versions or [])
+                )
             ]
 
 
@@ -353,22 +380,25 @@ class DashboardWidget(QtWidgets.QWidget):
         elif chosen.text().startswith("Prompt exportieren") and "TXT" in chosen.text():
             self._export_prompt_txt(p)
         elif chosen.text().startswith("Prompt exportieren") and "PDF" in chosen.text():
+            default_pdf = f"{sanitize_export_filename(p.title)}.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", f"{p.title}.pdf", "PDF-Datei (*.pdf)")
+                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
                 export_single_prompt(p, self.settings, path, self)
         elif chosen.text().startswith("Prompt+Versionen exportieren") and "TXT" in chosen.text():
             self._export_bundle_txt(p)
         elif chosen.text().startswith("Prompt+Versionen exportieren") and "PDF" in chosen.text():
+            default_pdf = f"{sanitize_export_filename(p.title)}_all.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", f"{p.title}_all.pdf", "PDF-Datei (*.pdf)")
+                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
                 export_single_prompt_with_versions(p, self.settings, path, self)
         elif kind == "version" and chosen.text().startswith("Version exportieren") and "TXT" in chosen.text():
             self._export_version_txt(v)
         elif kind == "version" and chosen.text().startswith("Version exportieren") and "PDF" in chosen.text():
+            default_pdf = f"{sanitize_export_filename(v.title, 'version')}.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", f"{v.title}.pdf", "PDF-Datei (*.pdf)")
+                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
                 export_single_version(v, path, parent=self, settings=self.settings)
         elif chosen == act_delete:
@@ -417,7 +447,11 @@ class DashboardWidget(QtWidgets.QWidget):
         if not it:
             return None
         data = it.data(0, QtCore.Qt.ItemDataRole.UserRole)
-        if data and data[0] == "prompt":
+        if not data:
+            return None
+        if data[0] == "prompt":
+            return self.storage.get_prompt(data[1])
+        elif data[0] == "version" and len(data) > 1:
             return self.storage.get_prompt(data[1])
         return None
 
@@ -479,41 +513,59 @@ class DashboardWidget(QtWidgets.QWidget):
             
     # --- Export‐Helpers ---
     def _export_prompt_txt(self, p: Prompt):
+        default_name = f"{sanitize_export_filename(p.title)}.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", f"{p.title}.txt", "Textdatei (*.txt)"
+            self, "TXT speichern", default_name, "Textdatei (*.txt)"
         )
         if not path:
             return
-        text = self.clip.build_copy_text(p)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(text)
-        QtWidgets.QMessageBox.information(self, "Export", "Prompt erfolgreich exportiert.")
+        try:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            text = self.clip.build_copy_text(p)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(text)
+            QtWidgets.QMessageBox.information(self, "Export", "Prompt erfolgreich exportiert.")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
 
     def _export_version_txt(self, v):
+        default_name = f"{sanitize_export_filename(v.title, 'version')}.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", f"{v.title}.txt", "Textdatei (*.txt)"
+            self, "TXT speichern", default_name, "Textdatei (*.txt)"
         )
         if not path:
             return
-        p = self.storage.get_prompt(v.prompt_id)
-        text = self.clip.build_copy_text(p, v)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(text)
-        QtWidgets.QMessageBox.information(self, "Export", "Version erfolgreich exportiert.")
+        p = self.storage.get_prompt(v.prompt_id) if hasattr(v, "prompt_id") else None
+        if not p:
+            QtWidgets.QMessageBox.critical(self, "Fehler", "Zugehöriger Prompt nicht gefunden.")
+            return
+        try:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            text = self.clip.build_copy_text(p, v)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(text)
+            QtWidgets.QMessageBox.information(self, "Export", "Version erfolgreich exportiert.")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
 
     def _export_bundle_txt(self, p: Prompt):
+        default_name = f"{sanitize_export_filename(p.title)}_all.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", f"{p.title}_all.txt", "Textdatei (*.txt)"
+            self, "TXT speichern", default_name, "Textdatei (*.txt)"
         )
         if not path:
             return
-        parts = [self.clip.build_copy_text(p)]
-        versions = [ver for ver in (p.versions or []) if ver is not None]
-        for ver in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
-            parts.append(self.clip.build_copy_text(p, ver))
-        with open(path, "w", encoding="utf-8") as f:
-            f.write("\n\n".join(parts))
-        QtWidgets.QMessageBox.information(self, "Export", "Bundle erfolgreich exportiert.")
+        try:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            parts = [self.clip.build_copy_text(p)]
+            versions = [ver for ver in (p.versions or []) if ver is not None]
+            for ver in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
+                parts.append(self.clip.build_copy_text(p, ver))
+            with open(path, "w", encoding="utf-8") as f:
+                f.write("\n\n".join(parts))
+            QtWidgets.QMessageBox.information(self, "Export", "Bundle erfolgreich exportiert.")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Fehler", f"Bundle-Export fehlgeschlagen:\n{e}")
 
 
     # --- Create Prompt helper ---

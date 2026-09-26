@@ -12,7 +12,7 @@ from PySide6.QtCore import Qt
 from settings_manager import SettingsManager
 from storage import Storage
 from event_bus import bus
-from dashboard import DashboardWidget
+from dashboard import DashboardWidget, sanitize_export_filename
 from board_manager import BoardManager
 from copy_settings_dialog import CopySettingsDialog
 from clipboard_manager import ClipboardManager
@@ -271,7 +271,8 @@ class MainWindow(QMainWindow):
     def export_current_prompt_txt(self):
         p = self.dashboard.get_current_prompt()
         if not p: return
-        path, _ = QFileDialog.getSaveFileName(self, "Export Prompt TXT", f"{p.title}.txt", "Text (*.txt)")
+        default_name = f"{sanitize_export_filename(p.title)}.txt"
+        path, _ = QFileDialog.getSaveFileName(self, "Export Prompt TXT", default_name, "Text (*.txt)")
         if not path:
             return
         text = ClipboardManager(self.settings).build_copy_text(p)
@@ -280,13 +281,15 @@ class MainWindow(QMainWindow):
     def export_current_prompt_pdf(self):
         p = self.dashboard.get_current_prompt()
         if not p: return
-        path, _ = QFileDialog.getSaveFileName(self, "Export Prompt PDF", f"{p.title}.pdf", "PDF (*.pdf)")
+        default_name = f"{sanitize_export_filename(p.title)}.pdf"
+        path, _ = QFileDialog.getSaveFileName(self, "Export Prompt PDF", default_name, "PDF (*.pdf)")
         if path: export_single_prompt(p, self.settings, path, parent=self)
 
     def export_current_version_txt(self):
         v = self.dashboard.get_current_version()
         if not v: return
-        path, _ = QFileDialog.getSaveFileName(self, "Export Version TXT", f"{v.title}.txt", "Text (*.txt)")
+        default_name = f"{sanitize_export_filename(v.title, 'version')}.txt"
+        path, _ = QFileDialog.getSaveFileName(self, "Export Version TXT", default_name, "Text (*.txt)")
         if not path:
             return
         p = self.storage.get_prompt(v.prompt_id)
@@ -299,11 +302,13 @@ class MainWindow(QMainWindow):
     def export_current_version_pdf(self):
         v = self.dashboard.get_current_version()
         if not v: return
-        path, _ = QFileDialog.getSaveFileName(self, "Export Version PDF", f"{v.title}.pdf", "PDF (*.pdf)")
+        default_name = f"{sanitize_export_filename(v.title, 'version')}.pdf"
+        path, _ = QFileDialog.getSaveFileName(self, "Export Version PDF", default_name, "PDF (*.pdf)")
         if path: export_single_version(v, path, parent=self, settings=self.settings)
 
     def _write_txt_export(self, path: str, text: str, success_message: str):
         try:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(text)
             QMessageBox.information(self, "Export", success_message)

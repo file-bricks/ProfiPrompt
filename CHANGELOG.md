@@ -5,7 +5,19 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
-### Discoverability, Visual Architecture, Level 1 SBOM & Governance Audit — Pfad B (2026-09-22)
+### Dashboard Filterung, Volltextsuche, Versions-Hierarchie & Export-Resilienz — Bugsweep (2026-09-26)
+
+- **Dashboard Tag-Filter & Volltextsuche (`src/dashboard.py`):**
+  - **Tag-Filter Robustheit:** `DashboardWidget._apply_filters()` gegen `None`-Elemente in `p.versions` abgesichert (`AttributeError`-Guard); Normalisierung auf getrimmte Kleinbuchstaben für Quell- und Dropdown-Tags stellt sicher, dass auch ungetrimmte Tags (z.B. `' AI '`) oder numerische Tags (z.B. `2026`) zuverlässig gefiltert werden.
+  - **Umfassende Volltextsuche:** Suchfeld `search_edit` durchsucht nun zusätzlich das Zweck-Feld `p.purpose` (Spalte 2 im Prompt-Baum) sowie sämtliche Versionen eines Prompts (`v.title`, `v.text`, `v.tags`), sodass Prompts auch über ihre Versionsinhalte und Zweckangaben im Prompt-Baum aufgefunden werden.
+- **Hierarchische Prompt-Auflösung (`src/dashboard.py`):**
+  - `DashboardWidget.get_current_prompt()` löst bei Auswahl eines Versions-Kindelements im Prompt-Baum nun den übergeordneten `Prompt` über `data[1]` auf, anstatt `None` zurückzugeben. Dadurch funktionieren Hauptmenü-Aktionen wie „Aktueller Prompt (TXT/PDF)“ auch dann, wenn der Nutzer im Baum eine Version markiert hat.
+- **Dateinamen-Sanitisierung & I/O-Resilienz (`src/dashboard.py`, `src/profiprompt.py`):**
+  - **`sanitize_export_filename()`:** Filtert Windows-Verbotszeichen (`:`, `/`, `\`, `<`, `>`, `*`, `?`, `"`, `|`, ASCII-Steuerzeichen) und trimmt Punkte/Leerzeichen aus vorgeschlagenen Export-Dateinamen in `dashboard.py` und `profiprompt.py` (Fallback auf `'prompt'` bzw. `'version'`).
+  - **Defensive Verzeichnisanlage & Fehlerbehandlung:** `_export_prompt_txt()`, `_export_version_txt()`, `_export_bundle_txt()` und `MainWindow._write_txt_export()` legen übergeordnete Ordner via `Path(path).parent.mkdir(parents=True, exist_ok=True)` vor dem Schreiben automatisch an; I/O- und Zugriffsfehler werden abgefangen und per `QMessageBox.critical` benutzerfreundlich gemeldet, statt die Anwendung ungefangen abstürzen zu lassen; fehlende Prompts in `_export_version_txt()` werden defensiv abgefangen.
+- **Automatisierte Regressionstests (`tests/test_bugsweep_dashboard_and_export_resilience_20260926.py`):**
+  - 5 neue hermetische Regressionstests für Tag-Filterung mit `None`-Versionen, Zweck- und Versionssuche, Prompt-Auflösung bei Version-Selektion, Dateinamen-Sanitisierung und Verzeichnisanlage/Fehlerbehandlung.
+  - Gesamtsuite wächst auf 174 Tests (171 passed, 3 skipped; 100% grün).
 
 - **GitHub Topics & Discoverability Saturation:**
   - Expanded GitHub repository topics to full saturation (20/20 topics) via `gh repo edit`: added `developer-tools`, `fail-closed`, `file-bricks`, `open-bricks`, `zero-egress` alongside prompt engineering, local-first, PySide6, PWA, and desktop keywords.
