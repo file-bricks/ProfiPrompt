@@ -9,7 +9,7 @@ description = "Local-first PySide6 desktop application for AI prompt management,
 readme = "README.md"
 authors = [{ name = "Lukas Geiger", email = "support@lukasgeiger.com" }]
 license = { text = "MIT" }
-license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]
 keywords = [
     "pyside6",
     "qt6",
@@ -68,13 +68,30 @@ Notice = "https://github.com/file-bricks/ProfiPrompt/blob/master/NOTICE"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
 "LLM Ready" = "https://github.com/file-bricks/ProfiPrompt/blob/master/llms.txt"
 "Third-Party Licenses" = "https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md"
+"Plain-Text Licenses" = "https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.txt"
 "Marketing Log" = "https://github.com/file-bricks/ProfiPrompt/blob/master/MARKETING-LOG.txt"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-ra -v"
+addopts = "-ra -v --basetemp=.pytest_temp"
 pythonpath = ["."]
 testpaths = ["tests"]
+norecursedirs = [
+    ".git",
+    ".pytest_cache",
+    ".pytest_temp",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "venv",
+    ".ruff_cache",
+    "node_modules",
+    "web_companion",
+    ".hypothesis",
+    ".turbo",
+    ".tox",
+]
 
 [tool.ruff]
 line-length = 120

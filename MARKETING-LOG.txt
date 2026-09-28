@@ -213,3 +213,30 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
 - Quality Gates & Automated Verification:
   - Zero Mermaid syntax lint errors across 15 files.
   - Test suites: 160 passed (Pytest), 46 passed (Node.js companion) = 206 passing tests (100% green).
+
+--------------------------------------------------------------------------------
+11. REPOSITORY HYGIENE, CI LIFECYCLE HARDENING, MULTI-HOST DEFENSE & CONTRACT TESTS (2026-09-28, Pfad A)
+--------------------------------------------------------------------------------
+- CI/CD Lifecycle Automation & Hardening:
+  - Deployed .github/workflows/auto-assign.yml (actions/github-script@v7, timeout-minutes: 5, least-privilege permissions issues/pull-requests: write, Concurrency cancel-in-progress: true).
+  - Deployed .github/workflows/label-sync.yml (EndBug/label-sync@v2, timeout-minutes: 5, permissions issues: write, Concurrency cancel-in-progress: true).
+  - Established canonical .github/labels.yml with 11 standard governance labels according to GOVERNANCE.md §4.2.
+  - Upgraded .github/workflows/tests.yml python-version matrix to include Python 3.13 (['3.10', '3.11', '3.12', '3.13']).
+- Multi-Host Cloud-Sync-, Lock- and Cache-Defense (.gitignore):
+  - Hardened against multi-host conflict tokens (*-MacBook*, *-IDEAPAD*, *_WORKSTATION*, *_WORKSTATION-LG*, *-WORKSTATION.*, *-WORKSTATION-LG.*).
+  - Hardened against canonical lock files (LOCK.user.*, LOCK.until.*, LOCK.condition.*, .automation-lock).
+  - Protected against test caches (.pytest_temp/, .pytest_tmp*/, .tox/) and OS artifacts (Desktop.ini).
+- PEP 621 Standardisation & Pytest Tooling (pyproject.toml):
+  - Added THIRD_PARTY_LICENSES.txt to license-files whitelist alongside LICENSE, NOTICE, and THIRD_PARTY_LICENSES.md.
+  - Registered "Plain-Text Licenses" in [project.urls].
+  - Configured addopts = "-ra -v --basetemp=.pytest_temp" and comprehensive norecursedirs in [tool.pytest.ini_options].
+  - Preserved version = "1.0.2" strictly unchanged per version-freeze policy T-20260920-167562623.
+- Level 1 SBOM & License Audit:
+  - Re-audited THIRD_PARTY_LICENSES.md and THIRD_PARTY_LICENSES.txt to 2026-09-28.
+  - Confirmed 10 runtime and governance invariants INV-LOCAL-01..INV-SLA-10, unprivileged RunAsInvoker user execution, and zero-copyleft LGPL dynamic linking isolation.
+- Context & Badge Parity:
+  - Updated llms.txt Last-checked to 2026-09-28 with Plain-Text Licenses link and synchronized test metrics.
+  - Synchronized badges in README.md, README_de.md, and README_es.md (verified-2026--09--28-blue.svg, Pytest passed count, Plain-Text License direct document reference).
+- Contract Test Suite Expansion:
+  - Added test_ci_lifecycle_workflows_and_labels_manifest, test_changelog_pfad_a_entry, and test_marketing_log_pfad_a_entry_20260928 in tests/test_security_license_contract.py.
+  - Verification: 174 Pytest tests passing (3 skipped), 46 Node.js companion tests passing = 220 automated tests 100% green.

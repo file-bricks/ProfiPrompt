@@ -31,7 +31,11 @@ LOCK.txt
 LOCK.*.txt
 LOCK*.txt
 LOCK.*
+LOCK.user.*
+LOCK.until.*
+LOCK.condition.*
 LOCK.permissions.json
+.automation-lock
 *.lock
 uv.lock
 !package-lock.json
@@ -83,12 +87,15 @@ store_package/
 
 # ---- Betriebssystem ----
 desktop.ini
+Desktop.ini
 Thumbs.db
 .DS_Store
 ehthumbs.db
 
 # ---- Pytest ----
 .pytest_cache/
+.pytest_temp/
+.pytest_tmp*/
 
 # ---- Projektspezifisch ----
 .prompt_manager/
@@ -112,11 +119,17 @@ docs/superpowers/
 * (Kopie)*
 *conflicted copy*
 *-WORKSTATION*
+*_WORKSTATION*
 *-WORKSTATION-LG*
+*_WORKSTATION-LG*
+*-WORKSTATION.*
+*-WORKSTATION-LG.*
 *-ASUS*
 *-ASUS-GEI*
 *-LAPTOP*
 *-Mac Studio*
+*-MacBook*
+*-IDEAPAD*
 *.sync-temp-*
 *.sync-conflict-*
 *.conflict
@@ -134,5 +147,6 @@ htmlcov/
 .hypothesis/
 .turbo/
 .nyc_output/
+.tox/
 wheelhouse/
 .wheel-smoke/

@@ -5,6 +5,31 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Pfad A Technische Hygiene, CI Lifecycle Workflows & Lock-Defense (2026-09-28)
+
+- **CI/CD Lifecycle Automation & Workflows (`.github/workflows/`):**
+  - **Auto-Assign PRs (`.github/workflows/auto-assign.yml`):** Bereitstellung des standardisierten Auto-Assign-Workflows (`actions/github-script@v7`, `timeout-minutes: 5`, Concurrency `cancel-in-progress: true`, least-privilege `issues: write`, `pull-requests: write`) zur automatischen Zuweisung neu geöffneter PRs an den Repository-Owner.
+  - **Label-Sync Automation (`.github/workflows/label-sync.yml`):** Bereitstellung des automatisierten Label-Sync-Workflows (`EndBug/label-sync@v2`, `timeout-minutes: 5`, least-privilege `issues: write`, Concurrency `cancel-in-progress: true`).
+  - **Kanonische Labels-Konfiguration (`.github/labels.yml`):** Hinterlegung der 11 Standard-Governance-Labels nach `GOVERNANCE.md` §4.2 (`bug`, `enhancement`, `good first issue`, `help wanted`, `documentation`, `duplicate`, `wontfix`, `priority: high`, `priority: low`, `needs-triage`, `stale`).
+  - **Python Testmatrix Modernisierung (`.github/workflows/tests.yml`):** Erweiterung der Python-Matrix um Python `3.13` (`python-version: ['3.10', '3.11', '3.12', '3.13']`).
+- **Multi-Host Cloud-Sync-, Lock- und Cache-Schutz (`.gitignore`):**
+  - Erweiterung der Multi-Host Ausschlussmuster um Host-Tokens (`*-MacBook*`, `*-IDEAPAD*`, `*_WORKSTATION*`, `*_WORKSTATION-LG*`, `*-WORKSTATION.*`, `*-WORKSTATION-LG.*`).
+  - Härtung gegen kanonische Lock-Dateien (`LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `.automation-lock`).
+  - Absicherung gegen temporäre Test- und Tooling-Verzeichnisse (`.pytest_temp/`, `.pytest_tmp*/`, `.tox/`) sowie OS-Artefakte (`Desktop.ini`).
+- **PEP 621 & Packaging Standardisierung (`pyproject.toml`):**
+  - Ergänzung von `THIRD_PARTY_LICENSES.txt` in `license-files`: `["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]`.
+  - Ergänzung von `"Plain-Text Licenses"` unter `[project.urls]`.
+  - Härtung von `[tool.pytest.ini_options]` mit `addopts = "-ra -v --basetemp=.pytest_temp"` und standardisiertem `norecursedirs`-Array.
+  - Strikte Version-Freeze-Disziplin per `T-20260920-167562623`: Version `1.0.2` strikt unverändert beibehalten.
+- **Level 1 SBOM & Lizenz-Audit (`THIRD_PARTY_LICENSES.md`, `THIRD_PARTY_LICENSES.txt`):**
+  - Re-Audit Stand 2026-09-28 durchgeführt; Bestätigung aller 10 Governance- und Laufzeit-Invarianten (`INV-LOCAL-01` bis `INV-SLA-10`), Unprivileged `RunAsInvoker` User Mode und Zero-Copyleft Isolation.
+- **Dokumentation, Badges & Kontext-Parität:**
+  - `llms.txt`: Last-checked auf Stand `2026-09-28` aktualisiert; Plain-Text Lizenz-URL verlinkt; Test-Metriken auf 174 Pytest-Tests + 46 Node.js Web Companion Tests (100% grün) synchronisiert.
+  - `README.md`, `README_de.md`, `README_es.md`: Verified-Shields auf `verified-2026--09--28-blue.svg` synchronisiert; Plain-Text-Lizenz-Link auf `THIRD_PARTY_LICENSES.txt` ergänzt.
+  - `MARKETING-LOG.txt`: Section 11 mit Pfad A Repository Hygiene, CI Lifecycle Hardening, Multi-Host Sync Defense & Contract Tests (2026-09-28) dokumentiert.
+- **Automatisierte Vertragstestsuite (`tests/test_security_license_contract.py`):**
+  - Neue und erweiterte Contract-Tests für CI-Lifecycle-Workflows (`auto-assign.yml`, `label-sync.yml`, `labels.yml`, `tests.yml`), erweiterte `.gitignore` Multi-Host/Lock-Guards, PEP 621 `license-files` & `norecursedirs`, SBOM Recency 2026-09-28 und `CHANGELOG.md` Pfad A Eintrag.
+
 ### Dashboard Filterung, Volltextsuche, Versions-Hierarchie & Export-Resilienz — Bugsweep (2026-09-26)
 
 - **Dashboard Tag-Filter & Volltextsuche (`src/dashboard.py`):**

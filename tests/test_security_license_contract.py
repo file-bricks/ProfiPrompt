@@ -78,16 +78,24 @@ def test_gitignore_security_and_multi_host_hardening() -> None:
     # Multi-host sync hardening
     for host_pat in [
         "*-WORKSTATION-LG*", "*-ASUS-GEI*", "*.sync-conflict-*", "*.conflict",
-        "* (copy)*", "*-WORKSTATION*", "*-ASUS*", "*-LAPTOP*", "*-Mac Studio*", "*.sync-temp-*"
+        "* (copy)*", "*-WORKSTATION*", "*-ASUS*", "*-LAPTOP*", "*-Mac Studio*",
+        "*-MacBook*", "*-IDEAPAD*", "*_WORKSTATION*", "*_WORKSTATION-LG*",
+        "*.sync-temp-*"
     ]:
         assert host_pat in content, f"Sync conflict pattern {host_pat} missing in .gitignore"
 
     # Multi-agent lock system fail-closed patterns
-    for lock_pat in ["LOCK\n", "LOCK.*", "*.lock", "LOCK*.txt", "uv.lock", "!package-lock.json"]:
+    for lock_pat in [
+        "LOCK\n", "LOCK.*", "*.lock", "LOCK*.txt", "LOCK.user.*", "LOCK.until.*",
+        "LOCK.condition.*", ".automation-lock", "uv.lock", "!package-lock.json"
+    ]:
         assert lock_pat in content, f"Lock pattern {lock_pat} missing in .gitignore"
 
     # Web companion test & coverage cache patterns
-    for cache_pat in [".coverage.*", ".hypothesis/", ".turbo/", "wheelhouse/", ".wheel-smoke/", "node_modules/"]:
+    for cache_pat in [
+        ".coverage.*", ".hypothesis/", ".turbo/", ".tox/", ".pytest_temp/",
+        "wheelhouse/", ".wheel-smoke/", "node_modules/"
+    ]:
         assert cache_pat in content, f"Cache pattern {cache_pat} missing in .gitignore"
 
 
@@ -261,8 +269,9 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20|22)", llms_text), "llms.txt must have recent Last-checked date"
+    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20|22|28)", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
+    assert "THIRD_PARTY_LICENSES.txt" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
     assert "NOTICE" in llms_text
 
@@ -270,9 +279,10 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     assert pyproject_file.is_file()
     pyproject_text = pyproject_file.read_text(encoding="utf-8")
     assert "THIRD_PARTY_LICENSES.md" in pyproject_text
+    assert "Plain-Text Licenses" in pyproject_text
     assert "MARKETING-LOG.txt" in pyproject_text
     assert "NOTICE" in pyproject_text
-    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]' in pyproject_text
+    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]' in pyproject_text
 
 
 def test_canonical_root_notice_attribution() -> None:
@@ -316,6 +326,7 @@ def test_ci_workflow_guardrails() -> None:
     assert "timeout-minutes: 15" in tests_yml, "tests.yml python job must set timeout-minutes: 15"
     assert "timeout-minutes: 10" in tests_yml, "tests.yml web-companion job must set timeout-minutes: 10"
     assert "pytest -ra -v" in tests_yml, "tests.yml must invoke pytest with -ra -v flags"
+    assert "'3.13'" in tests_yml or '"3.13"' in tests_yml, "tests.yml must include Python 3.13 in matrix"
 
     stale_yml = (workflows_dir / "stale.yml").read_text(encoding="utf-8")
     assert "concurrency:" in stale_yml, "stale.yml must define concurrency"
@@ -327,6 +338,32 @@ def test_ci_workflow_guardrails() -> None:
     assert "cancel-in-progress: true" in welcome_yml, "welcome.yml must set cancel-in-progress"
     assert "timeout-minutes: 5" in welcome_yml, "welcome.yml must set timeout-minutes: 5"
 
+    auto_assign_yml = (workflows_dir / "auto-assign.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in auto_assign_yml, "auto-assign.yml must define concurrency"
+    assert "cancel-in-progress: true" in auto_assign_yml, "auto-assign.yml must set cancel-in-progress"
+    assert "timeout-minutes: 5" in auto_assign_yml, "auto-assign.yml must set timeout-minutes: 5"
+    assert "actions/github-script@v7" in auto_assign_yml
+
+    label_sync_yml = (workflows_dir / "label-sync.yml").read_text(encoding="utf-8")
+    assert "concurrency:" in label_sync_yml, "label-sync.yml must define concurrency"
+    assert "cancel-in-progress: true" in label_sync_yml, "label-sync.yml must set cancel-in-progress"
+    assert "timeout-minutes: 5" in label_sync_yml, "label-sync.yml must set timeout-minutes: 5"
+    assert "EndBug/label-sync@v2" in label_sync_yml
+
+
+def test_ci_lifecycle_workflows_and_labels_manifest() -> None:
+    """Verify .github/labels.yml defines all 11 canonical labels per GOVERNANCE.md §4.2."""
+    labels_file = ROOT / ".github" / "labels.yml"
+    assert labels_file.is_file(), ".github/labels.yml must exist"
+    content = labels_file.read_text(encoding="utf-8")
+
+    expected_labels = [
+        "bug", "enhancement", "good first issue", "help wanted", "documentation",
+        "duplicate", "wontfix", "priority: high", "priority: low", "needs-triage", "stale"
+    ]
+    for lbl in expected_labels:
+        assert f"name: {lbl}" in content or f"name: '{lbl}'" in content, f"Label {lbl} missing in labels.yml"
+
 
 def test_pep621_and_tool_configuration() -> None:
     """Verify pyproject.toml includes parent ecosystem URLs, pytest addopts, and ruff settings."""
@@ -337,7 +374,9 @@ def test_pep621_and_tool_configuration() -> None:
     assert '"Parent Organization" = "https://github.com/file-bricks"' in text
     assert '"Umbrella Ecosystem" = "https://github.com/open-bricks"' in text
     assert '"LLM Ready" = "https://github.com/file-bricks/ProfiPrompt/blob/master/llms.txt"' in text
-    assert 'addopts = "-ra -v"' in text
+    assert 'addopts = "-ra -v --basetemp=.pytest_temp"' in text
+    assert "norecursedirs = [" in text
+    assert '".pytest_temp"' in text
     assert "[tool.ruff]" in text
     assert "[tool.ruff.lint]" in text
 
@@ -362,3 +401,30 @@ def test_marketing_log_discoverability_recency() -> None:
     assert "10. DISCOVERABILITY, VISUAL ARCHITECTURE, LEVEL 1 SBOM & GOVERNANCE AUDIT" in mkt_text
     assert "2026-09-22" in mkt_text
     assert "Pfad B" in mkt_text
+
+
+def test_changelog_pfad_a_entry() -> None:
+    """Verify CHANGELOG.md documents Pfad A technical hygiene under [Unreleased]."""
+    changelog_file = ROOT / "CHANGELOG.md"
+    assert changelog_file.is_file(), "CHANGELOG.md must exist"
+    text = changelog_file.read_text(encoding="utf-8")
+
+    unreleased_idx = text.find("## [Unreleased]")
+    assert unreleased_idx != -1, "CHANGELOG.md must contain ## [Unreleased]"
+    unreleased_section = text[unreleased_idx:unreleased_idx + 3500]
+
+    assert "Pfad A" in unreleased_section, "Pfad A must be documented in [Unreleased]"
+    assert "2026-09-28" in unreleased_section, "Audit date 2026-09-28 must be documented in [Unreleased]"
+    assert "auto-assign.yml" in unreleased_section
+    assert "label-sync.yml" in unreleased_section
+
+
+def test_marketing_log_pfad_a_entry_20260928() -> None:
+    """Verify MARKETING-LOG.txt documents Section 11 for the 2026-09-28 Pfad A run."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file()
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "11. REPOSITORY HYGIENE, CI LIFECYCLE HARDENING, MULTI-HOST DEFENSE & CONTRACT TESTS" in mkt_text
+    assert "2026-09-28" in mkt_text
+    assert "Pfad A" in mkt_text

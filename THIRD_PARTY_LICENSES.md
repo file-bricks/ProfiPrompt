@@ -4,9 +4,10 @@ This document lists all third-party software components, libraries, and build to
 
 **Project:** `ProfiPrompt` (`file-bricks/ProfiPrompt`)<br>
 **License:** [MIT License](LICENSE)<br>
-**Audit Date:** 2026-09-22<br>
+**Audit Date:** 2026-09-28<br>
 **Status:** AUDITED & VERIFIED (Level 1 SBOM Transparency, Discoverability & Licensing Governance)<br>
 **Attribution Notice:** [NOTICE](NOTICE)<br>
+**Plain-Text Inventory:** [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt)<br>
 **Security SLA:** [SECURITY.md](SECURITY.md) (48h Initial Response, 5-Day Triage)
 
 ---

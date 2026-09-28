@@ -1,8 +1,15 @@
 THIRD-PARTY SOFTWARE LICENSES
 =============================
 
+Project: ProfiPrompt (file-bricks/ProfiPrompt)
+Audit Date: 2026-09-28
+Status: AUDITED & VERIFIED (Level 1 SBOM Invariants INV-LOCAL-01..INV-SLA-10)
+Attribution Notice: NOTICE
+Full Inventory & Governance: THIRD_PARTY_LICENSES.md
+
 This document lists the third-party dependencies, libraries, and build tools
 used by ProfiPrompt along with their respective license and SPDX identifiers.
+
 
 PySide6
 License: LGPL-3.0-only
