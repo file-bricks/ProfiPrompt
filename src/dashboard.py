@@ -47,8 +47,10 @@ class PromptTree(QtWidgets.QTreeWidget):
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setAlternatingRowColors(True)
         self.setUniformRowHeights(True)
-        
-        
+        self.setAccessibleName("Prompt-Übersicht")
+        self.setAccessibleDescription("Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung")
+
+
     def mimeTypes(self) -> List[str]:
         return [self.MIME_TYPE]
 
@@ -65,6 +67,48 @@ class PromptTree(QtWidgets.QTreeWidget):
 
     def supportedDragActions(self) -> QtCore.Qt.DropAction:
         return QtCore.Qt.DropAction.CopyAction
+
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        if event.key() in (QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Enter):
+            item = self.currentItem()
+            if item:
+                parent_w = self.parent()
+                if hasattr(parent_w, "edit_current_item"):
+                    parent_w.edit_current_item(item)
+                    event.accept()
+                    return
+        elif event.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
+            item = self.currentItem()
+            if item:
+                parent_w = self.parent()
+                if hasattr(parent_w, "delete_current_item"):
+                    parent_w.delete_current_item(item)
+                    event.accept()
+                    return
+        elif event.key() == QtCore.Qt.Key.Key_F2:
+            item = self.currentItem()
+            if item:
+                parent_w = self.parent()
+                if hasattr(parent_w, "edit_current_item"):
+                    parent_w.edit_current_item(item)
+                    event.accept()
+                    return
+        elif event.key() == QtCore.Qt.Key.Key_C and (event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier):
+            item = self.currentItem()
+            if item:
+                parent_w = self.parent()
+                if hasattr(parent_w, "copy_current_item_to_clipboard"):
+                    parent_w.copy_current_item_to_clipboard(item)
+                    event.accept()
+                    return
+        elif event.key() == QtCore.Qt.Key.Key_F5:
+            parent_w = self.parent()
+            if hasattr(parent_w, "reload"):
+                parent_w.reload()
+                event.accept()
+                return
+        super().keyPressEvent(event)
 
 class DashboardWidget(QtWidgets.QWidget):
     def __init__(
@@ -105,21 +149,45 @@ class DashboardWidget(QtWidgets.QWidget):
         self.date_from.dateChanged.connect(self._apply_filters)
         self.date_to.dateChanged.connect(self._apply_filters)
         self.btn_clear.clicked.connect(self._clear_filters)
-        
+
         # --- Prompt Tree ---
         self.tree = PromptTree(self)
         self.tree.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.tree.customContextMenuRequested.connect(self.open_context_menu)
         self.customContextMenuRequested.connect(self.open_context_menu)
         # --- Layout ---
+        self.search_edit.setAccessibleName("Suchbegriff")
+        self.search_edit.setAccessibleDescription("Suchfeld für Volltextsuche in Titeln, Texten und Tags")
+
+        self.tag_combo.setAccessibleName("Tag-Filter")
+        self.tag_combo.setAccessibleDescription("Filtert Prompts nach ausgewählten Tags")
+
+        self.date_from.setAccessibleName("Startdatum")
+        self.date_from.setAccessibleDescription("Filtert Prompts ab dem angegebenen Erstellungsdatum")
+
+        self.date_to.setAccessibleName("Enddatum")
+        self.date_to.setAccessibleDescription("Filtert Prompts bis zum angegebenen Erstellungsdatum")
+
+        self.btn_clear.setAccessibleName("Filter zurücksetzen")
+        self.btn_clear.setAccessibleDescription("Setzt alle Such-, Tag- und Datumsfilter zurück")
+
+        lbl_search = QtWidgets.QLabel("Suche:")
+        lbl_search.setBuddy(self.search_edit)
+        lbl_tag = QtWidgets.QLabel("Tag:")
+        lbl_tag.setBuddy(self.tag_combo)
+        lbl_from = QtWidgets.QLabel("Von:")
+        lbl_from.setBuddy(self.date_from)
+        lbl_to = QtWidgets.QLabel("Bis:")
+        lbl_to.setBuddy(self.date_to)
+
         filter_layout = QtWidgets.QGridLayout()
-        filter_layout.addWidget(QtWidgets.QLabel("Suche:"), 0, 0)
+        filter_layout.addWidget(lbl_search, 0, 0)
         filter_layout.addWidget(self.search_edit, 0, 1)
-        filter_layout.addWidget(QtWidgets.QLabel("Tag:"), 0, 2)
+        filter_layout.addWidget(lbl_tag, 0, 2)
         filter_layout.addWidget(self.tag_combo, 0, 3)
-        filter_layout.addWidget(QtWidgets.QLabel("Von:"), 0, 4)
+        filter_layout.addWidget(lbl_from, 0, 4)
         filter_layout.addWidget(self.date_from, 0, 5)
-        filter_layout.addWidget(QtWidgets.QLabel("Bis:"), 0, 6)
+        filter_layout.addWidget(lbl_to, 0, 6)
         filter_layout.addWidget(self.date_to, 0, 7)
         filter_layout.addWidget(self.btn_clear, 0, 8)
 
@@ -440,8 +508,60 @@ class DashboardWidget(QtWidgets.QWidget):
     # -- Export‐Helper & create_prompt, _export_prompt_txt, _export_version_txt, _export_bundle_txt,
     #    create_prompt remain unchanged, ebenso get_current_prompt/get_current_version --
 
-  
-       # --- Helpers for MainWindow ---
+
+
+    # --- Accessible Keyboard & Action Helpers ---
+    def edit_current_item(self, item: Optional[QtWidgets.QTreeWidgetItem] = None):
+        target = item or self.tree.currentItem()
+        if target:
+            self._on_item_double_clicked(target, 0)
+
+    def delete_current_item(self, item: Optional[QtWidgets.QTreeWidgetItem] = None):
+        target = item or self.tree.currentItem()
+        if not target:
+            return
+        data = target.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        if not data:
+            return
+        kind, pid, *rest = data
+        p = self.storage.get_prompt(pid)
+        if not p:
+            return
+        if kind == "prompt":
+            if QtWidgets.QMessageBox.question(
+                self, "Löschen", f"Prompt „{p.title}“ wirklich löschen?"
+            ) == QtWidgets.QMessageBox.StandardButton.Yes:
+                self.storage.delete_prompt(p.id)
+                bus.promptsChanged.emit()
+        else:
+            vid = rest[0] if rest else None
+            v = self.storage.get_version(pid, vid) if vid else None
+            if not v:
+                return
+            if QtWidgets.QMessageBox.question(
+                self, "Löschen", f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
+            ) == QtWidgets.QMessageBox.StandardButton.Yes:
+                self.storage.delete_version(p.id, v.id)
+                p.versions = [x for x in (p.versions or []) if x.id != v.id]
+                p.updated_at = now_iso()
+                bus.promptsChanged.emit()
+
+    def copy_current_item_to_clipboard(self, item: Optional[QtWidgets.QTreeWidgetItem] = None):
+        target = item or self.tree.currentItem()
+        if not target:
+            return
+        data = target.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        if not data:
+            return
+        kind, pid, *rest = data
+        if kind == "prompt":
+            self._copy_prompt(pid)
+        else:
+            vid = rest[0] if rest else None
+            if vid:
+                self._copy_version(pid, vid)
+
+    # --- Helpers for MainWindow ---
     def get_current_prompt(self) -> Optional[Prompt]:
         it = self.tree.currentItem()
         if not it:
@@ -510,7 +630,7 @@ class DashboardWidget(QtWidgets.QWidget):
 
         if dlg.exec() == QtWidgets.QDialog.Accepted:
             bus.promptsChanged.emit()
-            
+
     # --- Export‐Helpers ---
     def _export_prompt_txt(self, p: Prompt):
         default_name = f"{sanitize_export_filename(p.title)}.txt"
@@ -573,6 +693,6 @@ class DashboardWidget(QtWidgets.QWidget):
         dlg = PromptDialog(self.storage, None, self)
         if dlg.exec() == QtWidgets.QDialog.Accepted:
             bus.promptsChanged.emit()
-            
+
 
 

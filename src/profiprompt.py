@@ -1,3 +1,4 @@
+from typing import Optional
 import sys
 from PySide6.QtWidgets import (
     QApplication,
@@ -60,6 +61,7 @@ def make_translator(lang: str):
 
 from theme import apply_theme
 from appearance_dialog import AppearanceDialog
+from shortcuts_dialog import ShortcutsDialog
 try:
     from app_icon_loader import load_app_icon, get_app_icon
 except ImportError:
@@ -120,40 +122,48 @@ class MainWindow(QMainWindow):
         menubar = self.menuBar()
         _t = self._t
 
-        # Datei
-        m_file = menubar.addMenu(_t("Datei"))
-        m_file.addAction(self._action(_t("Alle Prompts (TXT)"), self.export_all_txt))
-        m_file.addAction(self._action(_t("Alle Prompts (PDF)"), self.export_all_pdf))
-        m_file.addAction(self._action(_t("Bibliothek (JSON)"), self.export_library_json))
+        # Datei (Alt+D)
+        m_file = menubar.addMenu(_t("&Datei"))
+        m_file.addAction(self._action(_t("Alle Prompts (TXT)"), self.export_all_txt, status_tip=_t("Alle Prompts als TXT-Datei exportieren")))
+        m_file.addAction(self._action(_t("Alle Prompts (PDF)"), self.export_all_pdf, status_tip=_t("Alle Prompts als PDF-Datei exportieren")))
+        m_file.addAction(self._action(_t("Bibliothek (JSON)"), self.export_library_json, status_tip=_t("Gesamte Bibliothek im JSON-Format sichern")))
         m_file.addSeparator()
-        m_file.addAction(self._action(_t("Aktueller Prompt (TXT)"), self.export_current_prompt_txt))
-        m_file.addAction(self._action(_t("Aktueller Prompt (PDF)"), self.export_current_prompt_pdf))
+        m_file.addAction(self._action(_t("Aktueller Prompt (TXT)"), self.export_current_prompt_txt, status_tip=_t("Ausgewählten Prompt als TXT exportieren")))
+        m_file.addAction(self._action(_t("Aktueller Prompt (PDF)"), self.export_current_prompt_pdf, status_tip=_t("Ausgewählten Prompt als PDF exportieren")))
         m_file.addSeparator()
-        m_file.addAction(self._action(_t("Aktuelle Version (TXT)"), self.export_current_version_txt))
-        m_file.addAction(self._action(_t("Aktuelle Version (PDF)"), self.export_current_version_pdf))
+        m_file.addAction(self._action(_t("Aktuelle Version (TXT)"), self.export_current_version_txt, status_tip=_t("Ausgewählte Version als TXT exportieren")))
+        m_file.addAction(self._action(_t("Aktuelle Version (PDF)"), self.export_current_version_pdf, status_tip=_t("Ausgewählte Version als PDF exportieren")))
         m_file.addSeparator()
-        m_file.addAction(self._action(_t("Beenden"), QApplication.instance().quit))
+        m_file.addAction(self._action(_t("Beenden"), QApplication.instance().quit, shortcut="Ctrl+Q", status_tip=_t("Anwendung beenden")))
 
-        # Bearbeiten
-        m_edit = menubar.addMenu(_t("Bearbeiten"))
-        m_edit.addAction(self._action(_t("Neuen Prompt erstellen"), self.dashboard.create_prompt))
-        m_edit.addAction(self._action(_t("Kopier-Einstellungen …"), self.open_copy_settings))
-        m_edit.addAction(self._action(_t("Darstellung …"), self.open_appearance_settings))
+        # Bearbeiten (Alt+B)
+        m_edit = menubar.addMenu(_t("&Bearbeiten"))
+        m_edit.addAction(self._action(_t("Neuen Prompt erstellen"), self.dashboard.create_prompt, shortcut="Ctrl+N", status_tip=_t("Neuen Prompt erstellen")))
+        m_edit.addAction(self._action(_t("Kopier-Einstellungen …"), self.open_copy_settings, shortcut="Ctrl+Shift+C", status_tip=_t("Kopier-Einstellungen öffnen")))
+        m_edit.addAction(self._action(_t("Darstellung …"), self.open_appearance_settings, shortcut="Ctrl+,", status_tip=_t("Darstellungseinstellungen öffnen")))
 
-        # Ansicht
-        m_view = menubar.addMenu(_t("Ansicht"))
+        # Ansicht (Alt+A)
+        m_view = menubar.addMenu(_t("&Ansicht"))
         toggle_boards = QAction(_t("Boards anzeigen/ausblenden"), self, checkable=True)
         toggle_boards.setChecked(self.boardDock.isVisible())
+        toggle_boards.setShortcut("Ctrl+B")
+        toggle_boards.setStatusTip(_t("Boards anzeigen/ausblenden"))
         toggle_boards.toggled.connect(self.boardDock.setVisible)
         m_view.addAction(toggle_boards)
+        m_view.addAction(self._action(_t("Suche fokussieren"), self.focus_search, shortcut="Ctrl+F", status_tip=_t("Suche fokussieren")))
+        m_view.addAction(self._action(_t("Prompt-Liste fokussieren"), self.focus_prompt_list, shortcut="Ctrl+1", status_tip=_t("Prompt-Liste fokussieren")))
+        m_view.addAction(self._action(_t("Board-Bereich fokussieren"), self.focus_board, shortcut="Ctrl+2", status_tip=_t("Board-Bereich fokussieren")))
+        m_view.addSeparator()
+        m_view.addAction(self._action(_t("Aktualisieren"), self.refresh_all, shortcut="F5", status_tip=_t("Ansicht & Daten aktualisieren")))
 
-        # Hilfe
-        m_help = menubar.addMenu(_t("Hilfe"))
-        m_help.addAction(self._action(_t("Anleitung"), self._show_help))
-        m_help.addAction(self._action(_t("Über Prompt Manager"), self._show_about))
+        # Hilfe (Alt+H)
+        m_help = menubar.addMenu(_t("&Hilfe"))
+        m_help.addAction(self._action(_t("Tastaturkürzel & Hilfe"), self.open_shortcuts_dialog, shortcut="F1", status_tip=_t("Tastaturkürzel & Hilfe anzeigen")))
+        m_help.addAction(self._action(_t("Anleitung"), self._show_help, status_tip=_t("Anleitung anzeigen")))
+        m_help.addAction(self._action(_t("Über Prompt Manager"), self._show_about, status_tip=_t("Informationen über Prompt Manager")))
 
-        # Sprache / Language (Policy P-006: Tier-2 6-Sprachen-Standard)
-        m_lang = menubar.addMenu("Sprache / Language")
+        # Sprache / Language (Alt+S)
+        m_lang = menubar.addMenu(_t("&Sprache / Language"))
         cur = self.translator.get_language() if self.translator is not None else self.settings.get_language()
         lang_group = QActionGroup(self)
         lang_group.setExclusive(True)
@@ -194,10 +204,36 @@ class MainWindow(QMainWindow):
         self.menuBar().clear()
         self._build_menu()
 
-    def _action(self, text: str, slot):
+    def _action(self, text: str, slot, shortcut: Optional[str] = None, status_tip: Optional[str] = None):
         act = QAction(text, self)
         act.triggered.connect(slot)
+        if shortcut:
+            act.setShortcut(shortcut)
+        if status_tip:
+            act.setStatusTip(status_tip)
+            act.setToolTip(f"{text} ({shortcut})" if shortcut else text)
         return act
+
+    def focus_search(self):
+        self.dashboard.search_edit.setFocus()
+        self.dashboard.search_edit.selectAll()
+
+    def focus_prompt_list(self):
+        self.dashboard.tree.setFocus()
+
+    def focus_board(self):
+        if not self.boardDock.isVisible():
+            self.boardDock.setVisible(True)
+        self.boardManager.board_combo.setFocus()
+
+    def refresh_all(self):
+        self.dashboard.reload()
+        self.boardManager.reload()
+
+    def open_shortcuts_dialog(self) -> ShortcutsDialog:
+        dlg = ShortcutsDialog(self, translator=self.translator)
+        dlg.exec()
+        return dlg
 
     def _show_help(self):
         QMessageBox.information(

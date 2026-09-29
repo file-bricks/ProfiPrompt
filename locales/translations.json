@@ -590,5 +590,413 @@
     "zh": "复制到剪贴板",
     "ja": "クリップボードにコピー",
     "ru": "Копировать в буфер обмена"
+  },
+  "&Datei": {
+    "de": "&Datei",
+    "en": "&File",
+    "es": "&Archivo",
+    "zh": "&文件",
+    "ja": "&ファイル",
+    "ru": "&Файл"
+  },
+  "&Bearbeiten": {
+    "de": "&Bearbeiten",
+    "en": "&Edit",
+    "es": "&Editar",
+    "zh": "&编辑",
+    "ja": "&編集",
+    "ru": "&Правка"
+  },
+  "&Ansicht": {
+    "de": "&Ansicht",
+    "en": "&View",
+    "es": "&Ver",
+    "zh": "&视图",
+    "ja": "&表示",
+    "ru": "&Вид"
+  },
+  "&Sprache / Language": {
+    "de": "&Sprache / Language",
+    "en": "&Language",
+    "es": "&Idioma",
+    "zh": "&语言",
+    "ja": "&言語",
+    "ru": "&Язык"
+  },
+  "&Hilfe": {
+    "de": "&Hilfe",
+    "en": "&Help",
+    "es": "&Ayuda",
+    "zh": "&帮助",
+    "ja": "&ヘルプ",
+    "ru": "&Справка"
+  },
+  "Tastaturkürzel & Hilfe": {
+    "de": "Tastaturkürzel & Hilfe",
+    "en": "Keyboard Shortcuts & Help",
+    "es": "Atajos de teclado y ayuda",
+    "zh": "键盘快捷键与帮助",
+    "ja": "キーボードショートカットとヘルプ",
+    "ru": "Сочетания клавиш и справка"
+  },
+  "Tastaturkürzel & Barrierefreiheit": {
+    "de": "Tastaturkürzel & Barrierefreiheit",
+    "en": "Keyboard Shortcuts & Accessibility",
+    "es": "Atajos de teclado y accesibilidad",
+    "zh": "键盘快捷键与无障碍",
+    "ja": "キーボードショートカットとアクセシビリティ",
+    "ru": "Сочетания клавиш и доступность"
+  },
+  "Tastaturkürzel": {
+    "de": "Tastaturkürzel",
+    "en": "Keyboard Shortcuts",
+    "es": "Atajos de teclado",
+    "zh": "键盘快捷键",
+    "ja": "キーボードショートカット",
+    "ru": "Сочетания клавиш"
+  },
+  "Tastenkombination": {
+    "de": "Tastenkombination",
+    "en": "Shortcut",
+    "es": "Atajo",
+    "zh": "快捷键",
+    "ja": "ショートカット",
+    "ru": "Сочетание клавиш"
+  },
+  "Funktion / Aktion": {
+    "de": "Funktion / Aktion",
+    "en": "Action",
+    "es": "Acción",
+    "zh": "操作",
+    "ja": "アクション",
+    "ru": "Действие"
+  },
+  "Bereich": {
+    "de": "Bereich",
+    "en": "Scope",
+    "es": "Ámbito",
+    "zh": "范围",
+    "ja": "スコープ",
+    "ru": "Область"
+  },
+  "Global": {
+    "de": "Global",
+    "en": "Global",
+    "es": "Global",
+    "zh": "全局",
+    "ja": "グローバル",
+    "ru": "Глобально"
+  },
+  "Prompt-Liste": {
+    "de": "Prompt-Liste",
+    "en": "Prompt List",
+    "es": "Lista de prompts",
+    "zh": "提示词列表",
+    "ja": "プロンプトリスト",
+    "ru": "Список промптов"
+  },
+  "Board": {
+    "de": "Board",
+    "en": "Board",
+    "es": "Panel",
+    "zh": "面板",
+    "ja": "ボード",
+    "ru": "Доска"
+  },
+  "Navigation": {
+    "de": "Navigation",
+    "en": "Navigation",
+    "es": "Navegación",
+    "zh": "导航",
+    "ja": "ナビゲーション",
+    "ru": "Навигация"
+  },
+  "Schließen": {
+    "de": "Schließen",
+    "en": "Close",
+    "es": "Cerrar",
+    "zh": "关闭",
+    "ja": "閉じる",
+    "ru": "Закрыть"
+  },
+  "Tastaturkürzel & Hilfe anzeigen": {
+    "de": "Tastaturkürzel & Hilfe anzeigen",
+    "en": "Show Keyboard Shortcuts & Help",
+    "es": "Mostrar atajos de teclado y ayuda",
+    "zh": "显示键盘快捷键与帮助",
+    "ja": "キーボードショートカットとヘルプを表示",
+    "ru": "Показать сочетания клавиш и справку"
+  },
+  "Suche fokussieren": {
+    "de": "Suche fokussieren",
+    "en": "Focus Search",
+    "es": "Enfocar búsqueda",
+    "zh": "聚焦搜索",
+    "ja": "検索にフォーカス",
+    "ru": "Фокус на поиске"
+  },
+  "Prompt-Liste fokussieren": {
+    "de": "Prompt-Liste fokussieren",
+    "en": "Focus Prompt List",
+    "es": "Enfocar lista de prompts",
+    "zh": "聚焦提示词列表",
+    "ja": "プロンプトリストにフォーカス",
+    "ru": "Фокус на списке промптов"
+  },
+  "Board-Bereich fokussieren": {
+    "de": "Board-Bereich fokussieren",
+    "en": "Focus Board Area",
+    "es": "Enfocar área del panel",
+    "zh": "聚焦面板区域",
+    "ja": "ボードエリアにフォーカス",
+    "ru": "Фокус на области доски"
+  },
+  "Aktualisieren": {
+    "de": "Aktualisieren",
+    "en": "Refresh",
+    "es": "Actualizar",
+    "zh": "刷新",
+    "ja": "更新",
+    "ru": "Обновить"
+  },
+  "Ansicht & Daten aktualisieren": {
+    "de": "Ansicht & Daten aktualisieren",
+    "en": "Refresh View & Data",
+    "es": "Actualizar vista y datos",
+    "zh": "刷新视图与数据",
+    "ja": "表示とデータを更新",
+    "ru": "Обновить вид и данные"
+  },
+  "Anwendung beenden": {
+    "de": "Anwendung beenden",
+    "en": "Exit Application",
+    "es": "Salir de la aplicación",
+    "zh": "退出应用程序",
+    "ja": "アプリケーションを終了",
+    "ru": "Завершить работу приложения"
+  },
+  "Kopier-Einstellungen öffnen": {
+    "de": "Kopier-Einstellungen öffnen",
+    "en": "Open Copy Settings",
+    "es": "Abrir configuración de copia",
+    "zh": "打开复制设置",
+    "ja": "コピー設定を開く",
+    "ru": "Открыть настройки копирования"
+  },
+  "Darstellungseinstellungen öffnen": {
+    "de": "Darstellungseinstellungen öffnen",
+    "en": "Open Appearance Settings",
+    "es": "Abrir configuración de apariencia",
+    "zh": "打开外观设置",
+    "ja": "外観設定を開く",
+    "ru": "Открыть настройки внешнего вида"
+  },
+  "Menü Datei öffnen": {
+    "de": "Menü Datei öffnen",
+    "en": "Open File Menu",
+    "es": "Abrir menú Archivo",
+    "zh": "打开文件菜单",
+    "ja": "ファイルメニューを開く",
+    "ru": "Открыть меню Файл"
+  },
+  "Menü Bearbeiten öffnen": {
+    "de": "Menü Bearbeiten öffnen",
+    "en": "Open Edit Menu",
+    "es": "Abrir menú Editar",
+    "zh": "打开编辑菜单",
+    "ja": "編集メニューを開く",
+    "ru": "Открыть меню Правка"
+  },
+  "Menü Ansicht öffnen": {
+    "de": "Menü Ansicht öffnen",
+    "en": "Open View Menu",
+    "es": "Abrir menú Ver",
+    "zh": "打开视图菜单",
+    "ja": "表示メニューを開く",
+    "ru": "Открыть меню Вид"
+  },
+  "Menü Sprache öffnen": {
+    "de": "Menü Sprache öffnen",
+    "en": "Open Language Menu",
+    "es": "Abrir menú Idioma",
+    "zh": "打开语言菜单",
+    "ja": "言語メニューを開く",
+    "ru": "Открыть меню Язык"
+  },
+  "Menü Hilfe öffnen": {
+    "de": "Menü Hilfe öffnen",
+    "en": "Open Help Menu",
+    "es": "Abrir menú Ayuda",
+    "zh": "打开帮助菜单",
+    "ja": "ヘルプメニューを開く",
+    "ru": "Открыть меню Справка"
+  },
+  "Ausgewählten Prompt / Version bearbeiten": {
+    "de": "Ausgewählten Prompt / Version bearbeiten",
+    "en": "Edit Selected Prompt / Version",
+    "es": "Editar prompt o versión seleccionada",
+    "zh": "编辑选中的提示词或版本",
+    "ja": "選択したプロンプト/バージョンを編集",
+    "ru": "Редактировать выбранный промпт или версию"
+  },
+  "Ausgewählten Prompt / Version löschen": {
+    "de": "Ausgewählten Prompt / Version löschen",
+    "en": "Delete Selected Prompt / Version",
+    "es": "Eliminar prompt o versión seleccionada",
+    "zh": "删除选中的提示词或版本",
+    "ja": "選択したプロンプト/バージョンを削除",
+    "ru": "Удалить выбранный промпт или версию"
+  },
+  "Ausgewählten Prompt bearbeiten": {
+    "de": "Ausgewählten Prompt bearbeiten",
+    "en": "Edit Selected Prompt",
+    "es": "Editar prompt seleccionado",
+    "zh": "编辑选中的提示词",
+    "ja": "選択したプロンプトを編集",
+    "ru": "Редактировать выбранный промпт"
+  },
+  "Prompt-Text in Zwischenablage kopieren": {
+    "de": "Prompt-Text in Zwischenablage kopieren",
+    "en": "Copy Prompt Text to Clipboard",
+    "es": "Copiar texto del prompt al portapapeles",
+    "zh": "复制提示词文本到剪贴板",
+    "ja": "プロンプトテキストをクリップボードにコピー",
+    "ru": "Копировать текст промпта в буфер обмена"
+  },
+  "Kachel bearbeiten / Details öffnen": {
+    "de": "Kachel bearbeiten / Details öffnen",
+    "en": "Edit Tile / Open Details",
+    "es": "Editar mosaico / Abrir detalles",
+    "zh": "编辑卡片 / 打开详情",
+    "ja": "タイルを編集 / 詳細を開く",
+    "ru": "Редактировать плитку / Открыть детали"
+  },
+  "Kachel aktivieren / auswählen": {
+    "de": "Kachel aktivieren / auswählen",
+    "en": "Activate / Select Tile",
+    "es": "Activar / Seleccionar mosaico",
+    "zh": "激活 / 选择卡片",
+    "ja": "タイルを有効化 / 選択",
+    "ru": "Активировать / Выбрать плитку"
+  },
+  "Kachel-Text in Zwischenablage kopieren": {
+    "de": "Kachel-Text in Zwischenablage kopieren",
+    "en": "Copy Tile Text to Clipboard",
+    "es": "Copiar texto del mosaico al portapapeles",
+    "zh": "复制卡片文本到剪贴板",
+    "ja": "タイルテキストをクリップボードにコピー",
+    "ru": "Копировать текст плитки в буфер обмена"
+  },
+  "Kachel vom Board entfernen": {
+    "de": "Kachel vom Board entfernen",
+    "en": "Remove Tile from Board",
+    "es": "Quitar mosaico del panel",
+    "zh": "从面板移除卡片",
+    "ja": "タイルをボードから削除",
+    "ru": "Удалить плитку с доски"
+  },
+  "Kontextmenü öffnen": {
+    "de": "Kontextmenü öffnen",
+    "en": "Open Context Menu",
+    "es": "Abrir menú contextual",
+    "zh": "打开上下文菜单",
+    "ja": "コンテキストメニューを開く",
+    "ru": "Открыть контекстное меню"
+  },
+  "Prompt-Übersicht": {
+    "de": "Prompt-Übersicht",
+    "en": "Prompt Overview",
+    "es": "Resumen de prompts",
+    "zh": "提示词概览",
+    "ja": "プロンプト一覧",
+    "ru": "Обзор промптов"
+  },
+  "Kachelschriftart wählen": {
+    "de": "Kachelschriftart wählen",
+    "en": "Choose Tile Font",
+    "es": "Elegir fuente de mosaico",
+    "zh": "选择卡片字体",
+    "ja": "タイルフォントの選択",
+    "ru": "Выбрать шрифт плиток"
+  },
+  "Diese Anwendung unterstützt barrierefreie Tastaturbedienung nach BITV 2.0 und WCAG 2.1 AA. Alle Funktionen sind ohne Maus über standardisierte Tastaturbefehle erreichbar.": {
+    "de": "Diese Anwendung unterstützt barrierefreie Tastaturbedienung nach BITV 2.0 und WCAG 2.1 AA. Alle Funktionen sind ohne Maus über standardisierte Tastaturbefehle erreichbar.",
+    "en": "This application supports accessible keyboard operation compliant with BITV 2.0 and WCAG 2.1 AA. All functions are accessible without a mouse using standardized shortcuts.",
+    "es": "Esta aplicación admite el manejo accesible por teclado según BITV 2.0 y WCAG 2.1 AA. Todas las funciones son accesibles sin ratón mediante atajos estandarizados.",
+    "zh": "本应用程序支持符合 BITV 2.0 和 WCAG 2.1 AA 标准的无障碍键盘操作。所有功能均可通过标准快捷键免鼠标使用。",
+    "ja": "本アプリケーションは BITV 2.0 および WCAG 2.1 AA に準拠したアクセシブルなキーボード操作に対応しています。すべての機能はマウスなしで標準ショートカットから利用可能です。",
+    "ru": "Приложение поддерживает доступное управление с клавиатуры в соответствии с BITV 2.0 и WCAG 2.1 AA. Все функции доступны без мыши с помощью стандартных сочетаний клавиш."
+  },
+  "Alle Prompts als TXT-Datei exportieren": {
+    "de": "Alle Prompts als TXT-Datei exportieren",
+    "en": "Export all prompts as TXT file",
+    "es": "Exportar todos los prompts como archivo TXT",
+    "zh": "将所有提示词导出为 TXT 文件",
+    "ja": "すべてのプロンプトを TXT ファイルとしてエクスポート",
+    "ru": "Экспортировать все промпты в TXT-файл"
+  },
+  "Alle Prompts als PDF-Datei exportieren": {
+    "de": "Alle Prompts als PDF-Datei exportieren",
+    "en": "Export all prompts as PDF file",
+    "es": "Exportar todos los prompts como archivo PDF",
+    "zh": "将所有提示词导出为 PDF 文件",
+    "ja": "すべてのプロンプトを PDF ファイルとしてエクスポート",
+    "ru": "Экспортировать все промпты в PDF-файл"
+  },
+  "Ausgewählten Prompt als TXT exportieren": {
+    "de": "Ausgewählten Prompt als TXT exportieren",
+    "en": "Export selected prompt as TXT",
+    "es": "Exportar prompt seleccionado como TXT",
+    "zh": "将选中的提示词导出为 TXT",
+    "ja": "選択したプロンプトを TXT としてエクスポート",
+    "ru": "Экспортировать выбранный промпт в TXT"
+  },
+  "Ausgewählten Prompt als PDF exportieren": {
+    "de": "Ausgewählten Prompt als PDF exportieren",
+    "en": "Export selected prompt as PDF",
+    "es": "Exportar prompt seleccionado como PDF",
+    "zh": "将选中的提示词导出为 PDF",
+    "ja": "選択したプロンプトを PDF としてエクスポート",
+    "ru": "Экспортировать выбранный промпт в PDF"
+  },
+  "Ausgewählte Version als TXT exportieren": {
+    "de": "Ausgewählte Version als TXT exportieren",
+    "en": "Export selected version as TXT",
+    "es": "Exportar versión seleccionada como TXT",
+    "zh": "将选中的版本导出为 TXT",
+    "ja": "選択したバージョンを TXT としてエクスポート",
+    "ru": "Экспортировать выбранную версию в TXT"
+  },
+  "Ausgewählte Version als PDF exportieren": {
+    "de": "Ausgewählte Version als PDF exportieren",
+    "en": "Export selected version as PDF",
+    "es": "Exportar versión seleccionada como PDF",
+    "zh": "将选中的版本导出为 PDF",
+    "ja": "選択したバージョンを PDF としてエクスポート",
+    "ru": "Экспортировать выбранную версию в PDF"
+  },
+  "Anleitung anzeigen": {
+    "de": "Anleitung anzeigen",
+    "en": "Show user guide",
+    "es": "Mostrar guía del usuario",
+    "zh": "显示使用指南",
+    "ja": "ユーザーガイドを表示",
+    "ru": "Показать руководство пользователя"
+  },
+  "Informationen über Prompt Manager": {
+    "de": "Informationen über Prompt Manager",
+    "en": "Information about Prompt Manager",
+    "es": "Información sobre Prompt Manager",
+    "zh": "关于 Prompt Manager 的信息",
+    "ja": "Prompt Manager に関する情報",
+    "ru": "Информация о Prompt Manager"
+  },
+  "Gesamte Bibliothek im JSON-Format sichern": {
+    "de": "Gesamte Bibliothek im JSON-Format sichern",
+    "en": "Backup entire library in JSON format",
+    "es": "Guardar toda la biblioteca en formato JSON",
+    "zh": "将整个提示词库备份为 JSON 格式",
+    "ja": "ライブラリ全体を JSON 形式で保存",
+    "ru": "Сохранить всю библиотеку в формате JSON"
   }
 }

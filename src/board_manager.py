@@ -32,7 +32,9 @@ class PromptTile(QtWidgets.QFrame):
         self.setObjectName("PromptTile")
         self.setFixedSize(260, 190)
         self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+        self.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.setStyleSheet(self._tile_styles(font_family, tile_palette))
+        self.setAccessibleName(f"Prompt-Kachel: {prompt.title}")
         
         # Etwas dezenterer Schatten für Dark Mode
         shadow = QtWidgets.QGraphicsDropShadowEffect(self)
@@ -88,6 +90,7 @@ class PromptTile(QtWidgets.QFrame):
 
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self._on_custom_menu)
+        self.setAccessibleDescription(f"{badge_txt}: {sub_txt}. {prev_txt}")
 
     def _tile_styles(self, font_family: Optional[str], palette: Optional[Dict] = None) -> str:
         # Kachelfarben sind konfigurierbar (U3): der Aufrufer liefert eine aus der
@@ -141,6 +144,34 @@ class PromptTile(QtWidgets.QFrame):
     def _on_custom_menu(self, pos: QtCore.QPoint):
         self.contextRequested.emit(self, self.mapToGlobal(pos))
 
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        if event.key() in (QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Enter):
+            self.doubleClicked.emit(self.prompt.id, self.version.id if self.version else None)
+            event.accept()
+            return
+        elif event.key() == QtCore.Qt.Key.Key_Space:
+            self.clicked.emit(self.prompt.id, self.version.id if self.version else None)
+            event.accept()
+            return
+        elif event.key() == QtCore.Qt.Key.Key_C and (event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier):
+            bus.copyRequested.emit("version" if self.version else "prompt", self.version.id if self.version else self.prompt.id, self)
+            event.accept()
+            return
+        elif event.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
+            p = self.parent()
+            while p and not hasattr(p, "remove_tile_item"):
+                p = p.parent()
+            if p and hasattr(p, "remove_tile_item"):
+                p.remove_tile_item(self.prompt.id, self.version.id if self.version else None)
+                event.accept()
+                return
+        elif event.key() in (QtCore.Qt.Key.Key_Menu, QtCore.Qt.Key.Key_F10):
+            self.contextRequested.emit(self, self.mapToGlobal(QtCore.QPoint(10, 10)))
+            event.accept()
+            return
+        super().keyPressEvent(event)
+
 class BoardManager(QtWidgets.QWidget):
     MIME = "application/x-prompt-item"
 
@@ -159,8 +190,23 @@ class BoardManager(QtWidgets.QWidget):
         # Icons (optional, hier textbasiert um Ressource-Fehler zu vermeiden)
         # self.btn_new_board.setIcon(...) 
 
+        lbl_board = QtWidgets.QLabel("Board:")
+        lbl_board.setBuddy(self.board_combo)
+
+        self.board_combo.setAccessibleName("Aktives Board")
+        self.board_combo.setAccessibleDescription("Wählt das aktive Prompt-Board aus")
+
+        self.btn_new_board.setAccessibleName("Neues Board")
+        self.btn_new_board.setAccessibleDescription("Erstellt ein neues leeres Prompt-Board")
+
+        self.btn_del_board.setAccessibleName("Board löschen")
+        self.btn_del_board.setAccessibleDescription("Löscht das aktuell ausgewählte Prompt-Board")
+
+        self.btn_font.setAccessibleName("Kachelschriftart wählen")
+        self.btn_font.setAccessibleDescription("Öffnet die Schriftartenauswahl für Board-Kacheln")
+
         header = QtWidgets.QHBoxLayout()
-        header.addWidget(QtWidgets.QLabel("Board:"))
+        header.addWidget(lbl_board)
         header.addWidget(self.board_combo, stretch=1)
         header.addWidget(self.btn_new_board)
         header.addWidget(self.btn_del_board)
@@ -172,6 +218,9 @@ class BoardManager(QtWidgets.QWidget):
 
         self.container = QtWidgets.QWidget()
         self.container.setObjectName("BoardContainer")
+        self.scroll.setAccessibleName("Board-Arbeitsfläche")
+        self.scroll.setAccessibleDescription("Bereich mit angehefteten Prompt-Kacheln")
+        self.container.setAccessibleName("Kachel-Raster")
 
         # Board-Flaechen-Hintergrund folgt dem Theme (U2)
         self._apply_surface_styles()
@@ -242,6 +291,20 @@ class BoardManager(QtWidgets.QWidget):
             self.btn_del_board.setEnabled(len(boards) > 0)
 
         self.reload_items()
+
+
+    def remove_tile_item(self, prompt_id: str, version_id: Optional[str] = None):
+        board = self.current_board()
+        if not board:
+            return
+        msg = "Möchten Sie diese Kachel wirklich vom Board entfernen?"
+        if QtWidgets.QMessageBox.question(
+            self, "Kachel entfernen", msg
+        ) == QtWidgets.QMessageBox.StandardButton.Yes:
+            success = self.storage.remove_item_from_board(board.id, prompt_id, version_id)
+            if success:
+                self.reload_items()
+                bus.boardsChanged.emit()
 
     def current_board(self) -> Optional[Board]:
         bid = self.board_combo.currentData()

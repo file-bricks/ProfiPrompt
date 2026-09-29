@@ -30,6 +30,34 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 - **Automatisierte Vertragstestsuite (`tests/test_security_license_contract.py`):**
   - Neue und erweiterte Contract-Tests für CI-Lifecycle-Workflows (`auto-assign.yml`, `label-sync.yml`, `labels.yml`, `tests.yml`), erweiterte `.gitignore` Multi-Host/Lock-Guards, PEP 621 `license-files` & `norecursedirs`, SBOM Recency 2026-09-28 und `CHANGELOG.md` Pfad A Eintrag.
 
+### WCAG 2.1 AA / BITV 2.0 Barrierefreiheit, Tastatur-Ergonomie & Menü-Mnemonics (2026-09-29)
+
+- **Barrierefreier Tastaturkürzel- und Hilfedialog (`src/shortcuts_dialog.py`):**
+  - Neuer modaler Dialog `ShortcutsDialog` nach WCAG 2.1 AA und BITV 2.0 mit strukturierter 3-Spalten-Tabelle (`Tastenkombination`, `Funktion / Aktion`, `Bereich`) für alle 24 Tastaturbefehle.
+  - Offizieller Konformitätshinweis nach BITV 2.0 / WCAG 2.1 AA für Screenreader und sehbehinderte Nutzer.
+  - Initialer Tastaturfokus auf der Schließen-Schaltfläche (`isDefault()`) und vollständige Tastaturbedienbarkeit via Escape, Return und Tab-Navigation.
+  - Headless-sichere Testbarkeit via `get_shortcuts_list()`.
+- **Tastatur-Ergonomie & Navigation in der Prompt-Übersicht (`src/dashboard.py`):**
+  - Tastaturbedienung in `PromptTree`: `Eingabe`/`Return` und `F2` zum Öffnen und Bearbeiten ausgewählter Prompts/Versionen, `Entf`/`Backspace` zum Löschen mit Bestätigungsdialog, `Ctrl+C` zum Kopieren des Inhalts in die Zwischenablage mit Benachrichtigung, `F5` zum Neuladen der Daten.
+  - Semantische Barrierefreiheits-Attribute: `accessibleName="Prompt-Übersicht"` und detaillierte `accessibleDescription`.
+  - Formular-Buddies: `QLabel.setBuddy()` für alle Filter-Labels (`Suche:`, `Tag:`, `Von:`, `Bis:`) an die entsprechenden Eingabeelemente gebunden.
+  - Semantische `accessibleName`- und `accessibleDescription`-Attribute für alle Filter-Widgets (`search_edit`, `tag_combo`, `date_from`, `date_to`, `btn_clear`).
+- **Board- und Kachel-Barrierefreiheit (`src/board_manager.py`, `src/theme.py`):**
+  - `PromptTile`: Tastaturfokusierung (`StrongFocus`), sichtbarer Tastatur-Fokusring (`#PromptTile:focus` mit 2px blauem Kontrastrand) im QSS-Theme, `Return` zum Bearbeiten/Öffnen, `Leertaste` zum Aktivieren, `Ctrl+C` zum Kopieren des Kacheltexts in die Zwischenablage, `Entf` zum Entfernen der Kachel vom Board.
+  - Semantische Accessible Names und Descriptions für Kacheln (`Prompt-Kachel: {title}`, Badges, Untertitel und Vorschautext).
+  - `BoardManager`: Label-Buddy für `Board:` an `board_combo`, Accessible Names und Descriptions für alle Header-Buttons (`Neues Board`, `Board löschen`, `Kachelschriftart wählen`), Scroll-Arbeitsfläche und Kachel-Raster; sichere Kachellöschung via `remove_tile_item()`.
+- **Menüleiste mit Mnemonics & Globale Shortcuts (`src/profiprompt.py`):**
+  - Tastatur-Zugriffstasten (Mnemonics) für alle Hauptmenüs: `&Datei` (`Alt+D`), `&Bearbeiten` (`Alt+B`), `&Ansicht` (`Alt+A`), `&Sprache / Language` (`Alt+S`), `&Hilfe` (`Alt+H`).
+  - Standard-Shortcuts verankert: `F1` (Tastaturkürzel & Hilfe), `Ctrl+F` (Suche fokussieren), `Ctrl+N` (Neuen Prompt erstellen), `Ctrl+B` (Boards anzeigen/ausblenden), `Ctrl+1` (Prompt-Liste fokussieren), `Ctrl+2` (Board-Bereich fokussieren), `Ctrl+,` (Darstellungseinstellungen), `Ctrl+Shift+C` (Kopier-Einstellungen), `Ctrl+Q` (Beenden), `F5` (Aktualisieren).
+  - StatusTips und erweiterte Tooltips für alle Menüaktionen.
+- **Mehrsprachigkeit & Tier-2 6-Sprachen-Parität (`locales/translations.json`):**
+  - 51 neue Lokalisierungsschlüssel für alle Barrierefreiheits-Elemente, Menü-Mnemonics, Tastaturkürzel und StatusTips mit 100% Parität über Deutsch (`de`), Englisch (`en`), Spanisch (`es`), Chinesisch (`zh`), Japanisch (`ja`) und Russisch (`ru`).
+  - Echte deutsche Umlaute (ä, ö, ü, ß) standardisiert; `manage_translations.py --check` validiert 125/125 Keys (100% Parität).
+- **Automatisierte Vertragstestsuite (`tests/test_ui_accessibility.py`):**
+  - 8 neue automatisierte Vertragstests für ShortcutsDialog Struktur/BITV-Hinweis/Initialfokus, 6-Sprachen-Parität, Dashboard A11y & Buddies, PromptTree Tastaturbedienung, BoardManager & Kachel-A11y/Tastatur, Menüleisten-Mnemonics/Shortcuts, Navigation & Dialogauslösung, Theme-Fokusring.
+  - Pytest Gesamtsuite wächst auf 182 Tests (100% bestanden in 3.36s).
+
+
 ### Dashboard Filterung, Volltextsuche, Versions-Hierarchie & Export-Resilienz — Bugsweep (2026-09-26)
 
 - **Dashboard Tag-Filter & Volltextsuche (`src/dashboard.py`):**

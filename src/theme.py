@@ -122,6 +122,10 @@ def tile_stylesheet(palette: dict, font_family: str | None) -> str:
     QFrame#PromptTile:hover {{
         border: 1px solid {palette['badge_bg']};
     }}
+    QFrame#PromptTile:focus {{
+        border: 2px solid #3b82f6;
+        outline: none;
+    }}
     QLabel#PromptTitle {{
         font-size: 15px;
         font-weight: bold;
