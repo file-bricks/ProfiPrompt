@@ -5,6 +5,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Atomare Exporte, Fsync-Durability, Storage-Schutz & PDF-Validierung (2026-10-01)
+
+- **Atomare Datei-Operationen & Fsync-Durability (`src/atomic_io.py`):**
+  - Neues Modul `atomic_io.py` mit `atomic_write_text`, `atomic_write_json`, `atomic_publish_file` und `is_protected_path`.
+  - Atomare Schreibvorgänge via kollisionsfreie temporäre Dateien (`.{target}.tmp.{pid}_{uuid8}`), `flush()` und `os.fsync()`.
+  - Windows-Rechtebehebung (`stat.S_IWRITE`) vor atomarem `os.replace` verhindert Windows `AccessDenied`.
+  - Fail-safe `finally`-Bereinigung garantiert, dass niemals temporäre Zwischendateien bei Fehlern verbleiben.
+- **Speichersicherheit & Schutz interner Datenbankdateien (`src/storage.py`, `src/library_export.py`):**
+  - `Storage._atomic_write` und `_ensure_files` auf `atomic_write_json` umgestellt; verhindert Korruption bei Prozessabbruch.
+  - Schutzprüfung (`is_protected_path`) in allen Exportpfaden: Überschreiben interner Bibliotheksdateien (`prompts.json`, `boards.json`) wird strikt mit `PermissionError` blockiert.
+- **Fail-Safe PDF-Export & Header-Validierung (`src/pdf_exporter.py`):**
+  - Isolierte Generierung in temporärer Zieldatei mit Validierung des binären PDF-Headers (`%PDF-`) und Mindestgröße.
+  - Verhindert das Abschneiden bestehender Zieldateien bei fehlerhaftem Druck.
+- **UI & Export-Integration (`src/dashboard.py`, `src/profiprompt.py`):**
+  - Alle TXT- und PDF-Exportfunktionen in Hauptfenster und Dashboard auf atomare I/O-Routinen und Bibliotheksschutz umgestellt.
+- **Automatisierte Testsuite (`tests/test_atomic_exports_and_storage_resilience.py`):**
+  - 11 neue Regressionstests für atomare Schreibvorgänge, Fehlerabfang ohne Dateibeschädigung, Schutz interner Datenbankdateien, PDF-Validierung und Windows-Rechte-Handling (Testsuite wächst auf 193 Tests).
+
 ### Pfad A Technische Hygiene, CI Lifecycle Workflows & Lock-Defense (2026-09-28)
 
 - **CI/CD Lifecycle Automation & Workflows (`.github/workflows/`):**

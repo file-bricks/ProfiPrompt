@@ -12,6 +12,7 @@ from settings_manager import SettingsManager
 from event_bus import bus
 from prompt_dialog import PromptDialog, VersionDialog
 from clipboard_manager import ClipboardManager
+from atomic_io import atomic_write_text
 from pdf_exporter import (
     export_single_prompt,
     export_single_version,
@@ -452,7 +453,7 @@ class DashboardWidget(QtWidgets.QWidget):
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
                 self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
-                export_single_prompt(p, self.settings, path, self)
+                export_single_prompt(p, self.settings, path, self, protected_paths=self._protected_paths())
         elif chosen.text().startswith("Prompt+Versionen exportieren") and "TXT" in chosen.text():
             self._export_bundle_txt(p)
         elif chosen.text().startswith("Prompt+Versionen exportieren") and "PDF" in chosen.text():
@@ -460,7 +461,7 @@ class DashboardWidget(QtWidgets.QWidget):
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
                 self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
-                export_single_prompt_with_versions(p, self.settings, path, self)
+                export_single_prompt_with_versions(p, self.settings, path, self, protected_paths=self._protected_paths())
         elif kind == "version" and chosen.text().startswith("Version exportieren") and "TXT" in chosen.text():
             self._export_version_txt(v)
         elif kind == "version" and chosen.text().startswith("Version exportieren") and "PDF" in chosen.text():
@@ -468,7 +469,7 @@ class DashboardWidget(QtWidgets.QWidget):
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
                 self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
             if path:
-                export_single_version(v, path, parent=self, settings=self.settings)
+                export_single_version(v, path, parent=self, settings=self.settings, protected_paths=self._protected_paths())
         elif chosen == act_delete:
             if kind == "prompt":
                 if QtWidgets.QMessageBox.question(
@@ -631,6 +632,15 @@ class DashboardWidget(QtWidgets.QWidget):
         if dlg.exec() == QtWidgets.QDialog.Accepted:
             bus.promptsChanged.emit()
 
+    def _protected_paths(self) -> List[Path]:
+        protected: List[Path] = []
+        if hasattr(self, "storage") and self.storage:
+            if hasattr(self.storage, "prompts_file") and self.storage.prompts_file:
+                protected.append(Path(self.storage.prompts_file))
+            if hasattr(self.storage, "boards_file") and self.storage.boards_file:
+                protected.append(Path(self.storage.boards_file))
+        return protected
+
     # --- Export‐Helpers ---
     def _export_prompt_txt(self, p: Prompt):
         default_name = f"{sanitize_export_filename(p.title)}.txt"
@@ -640,10 +650,8 @@ class DashboardWidget(QtWidgets.QWidget):
         if not path:
             return
         try:
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
             text = self.clip.build_copy_text(p)
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(text)
+            atomic_write_text(path, text, protected_paths=self._protected_paths())
             QtWidgets.QMessageBox.information(self, "Export", "Prompt erfolgreich exportiert.")
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
@@ -660,10 +668,8 @@ class DashboardWidget(QtWidgets.QWidget):
             QtWidgets.QMessageBox.critical(self, "Fehler", "Zugehöriger Prompt nicht gefunden.")
             return
         try:
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
             text = self.clip.build_copy_text(p, v)
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(text)
+            atomic_write_text(path, text, protected_paths=self._protected_paths())
             QtWidgets.QMessageBox.information(self, "Export", "Version erfolgreich exportiert.")
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
@@ -676,13 +682,12 @@ class DashboardWidget(QtWidgets.QWidget):
         if not path:
             return
         try:
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
             parts = [self.clip.build_copy_text(p)]
             versions = [ver for ver in (p.versions or []) if ver is not None]
             for ver in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
                 parts.append(self.clip.build_copy_text(p, ver))
-            with open(path, "w", encoding="utf-8") as f:
-                f.write("\n\n".join(parts))
+            bundle_content = "\n\n".join(parts)
+            atomic_write_text(path, bundle_content, protected_paths=self._protected_paths())
             QtWidgets.QMessageBox.information(self, "Export", "Bundle erfolgreich exportiert.")
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Fehler", f"Bundle-Export fehlgeschlagen:\n{e}")

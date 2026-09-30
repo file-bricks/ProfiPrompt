@@ -18,6 +18,7 @@ from board_manager import BoardManager
 from copy_settings_dialog import CopySettingsDialog
 from clipboard_manager import ClipboardManager
 from library_export import write_library_export
+from atomic_io import atomic_write_text
 from pdf_exporter import (
     export_all_prompts,
     export_single_prompt,
@@ -272,17 +273,30 @@ class MainWindow(QMainWindow):
                 lines += ["", f"--- v{v_num}: {v.title or ''} ---", v.text or ""]
             parts.append("\n".join(lines))
         try:
-            with open(path, "w", encoding="utf-8") as f:
-                f.write("\n\n".join(parts))
+            atomic_write_text(path, "\n\n".join(parts), protected_paths=self._protected_paths())
             from PySide6.QtWidgets import QMessageBox
             QMessageBox.information(self, "Export", "TXT erfolgreich gespeichert.")
         except Exception as e:
             from PySide6.QtWidgets import QMessageBox
             QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
 
+    def _protected_paths(self):
+        protected = []
+        storage = getattr(self, "storage", None)
+        if storage:
+            if hasattr(storage, "prompts_file") and storage.prompts_file:
+                protected.append(storage.prompts_file)
+            if hasattr(storage, "boards_file") and storage.boards_file:
+                protected.append(storage.boards_file)
+        return protected
+
     def export_all_pdf(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export PDF", "alle_prompts.pdf", "PDF (*.pdf)")
-        if path: export_all_prompts(self.storage, self.settings, path, parent=self)
+        if path:
+            try:
+                export_all_prompts(self.storage, self.settings, path, parent=self, protected_paths=self._protected_paths())
+            except TypeError:
+                export_all_prompts(self.storage, self.settings, path, parent=self)
 
     def export_library_json(self):
         path, _ = QFileDialog.getSaveFileName(
@@ -319,7 +333,11 @@ class MainWindow(QMainWindow):
         if not p: return
         default_name = f"{sanitize_export_filename(p.title)}.pdf"
         path, _ = QFileDialog.getSaveFileName(self, "Export Prompt PDF", default_name, "PDF (*.pdf)")
-        if path: export_single_prompt(p, self.settings, path, parent=self)
+        if path:
+            try:
+                export_single_prompt(p, self.settings, path, parent=self, protected_paths=self._protected_paths())
+            except TypeError:
+                export_single_prompt(p, self.settings, path, parent=self)
 
     def export_current_version_txt(self):
         v = self.dashboard.get_current_version()
@@ -340,13 +358,15 @@ class MainWindow(QMainWindow):
         if not v: return
         default_name = f"{sanitize_export_filename(v.title, 'version')}.pdf"
         path, _ = QFileDialog.getSaveFileName(self, "Export Version PDF", default_name, "PDF (*.pdf)")
-        if path: export_single_version(v, path, parent=self, settings=self.settings)
+        if path:
+            try:
+                export_single_version(v, path, parent=self, settings=self.settings, protected_paths=self._protected_paths())
+            except TypeError:
+                export_single_version(v, path, parent=self, settings=self.settings)
 
     def _write_txt_export(self, path: str, text: str, success_message: str):
         try:
-            Path(path).parent.mkdir(parents=True, exist_ok=True)
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(text)
+            atomic_write_text(path, text, protected_paths=self._protected_paths())
             QMessageBox.information(self, "Export", success_message)
         except Exception as e:
             QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")

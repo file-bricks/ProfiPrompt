@@ -4,6 +4,7 @@ import os
 import threading
 from pathlib import Path
 from typing import List, Optional, Tuple
+from atomic_io import atomic_write_json
 from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, board_to_dict, gen_id, now_iso
 
 class Storage:
@@ -17,9 +18,9 @@ class Storage:
 
     def _ensure_files(self):
         if not self.prompts_file.exists():
-            self.prompts_file.write_text(json.dumps({"prompts": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+            self._atomic_write(self.prompts_file, {"prompts": []})
         if not self.boards_file.exists():
-            self.boards_file.write_text(json.dumps({"boards": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+            self._atomic_write(self.boards_file, {"boards": []})
 
     # --- Prompts ---
     def load_prompts(self) -> List[Prompt]:
@@ -41,11 +42,8 @@ class Storage:
 
 
     def _atomic_write(self, target: Path, data: dict):
-        """Schreibt Daten atomar: erst in .tmp, dann rename. Thread-safe durch Lock."""
-        tmp = target.with_suffix(".tmp")
-        text = json.dumps(data, ensure_ascii=False, indent=2)
-        tmp.write_text(text, encoding="utf-8")
-        os.replace(tmp, target)
+        """Schreibt Daten atomar: erst in eindeutiges .tmp, dann fsync & replace. Thread-safe durch Lock."""
+        atomic_write_json(target, data, indent=2)
 
     def save_prompts(self, prompts: List[Prompt]):
         data = {"prompts": [prompt_to_dict(p) for p in prompts]}

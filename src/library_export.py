@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from atomic_io import atomic_write_json
 from models import Board, Prompt, board_to_dict, prompt_to_dict
 
 SCHEMA_VERSION = "profiprompt-library-v1"
@@ -37,12 +38,12 @@ def build_library_export(storage, exported_at: str | None = None) -> dict[str, A
 def write_library_export(storage, path: str | Path) -> dict[str, Any]:
     """Write the portable library export as UTF-8 JSON and return the payload."""
     payload = build_library_export(storage)
-    target = Path(path)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    protected = []
+    if hasattr(storage, "prompts_file"):
+        protected.append(storage.prompts_file)
+    if hasattr(storage, "boards_file"):
+        protected.append(storage.boards_file)
+    atomic_write_json(path, payload, indent=2, protected_paths=protected)
     return payload
 
 

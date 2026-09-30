@@ -1,9 +1,14 @@
 import html
+import os
+import stat
+import uuid
 from pathlib import Path
-from typing import List, Optional
+from typing import Iterable, List, Optional
 from PySide6.QtCore import QMarginsF
-from PySide6.QtGui import QTextDocument, QFont, QPageLayout, QPageSize, QPdfWriter
+from PySide6.QtGui import QFont, QPageLayout, QPageSize, QPdfWriter, QTextDocument
 from PySide6.QtWidgets import QMessageBox
+
+from atomic_io import atomic_publish_file, is_protected_path
 
 def _format_tags(tags) -> str:
     """Formatiert Tags robust als kommagetrennte Liste (filtert None/Leereintraege)."""
@@ -58,15 +63,29 @@ def _render_html_for_version(version, settings) -> str:
         parts.append("<hr><pre>" + html.escape(res) + "</pre>")
     return "".join(parts)
 
-def export_single_prompt(prompt, settings, path: str, parent=None):
+def _safe_export_html_to_pdf(html: str, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None) -> bool:
+    try:
+        return _export_html_to_pdf(html, path, parent=parent, protected_paths=protected_paths)
+    except TypeError:
+        return _export_html_to_pdf(html, path, parent=parent)
+
+def export_single_prompt(prompt, settings, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None):
     html = "<html><body>" + _render_html_for_prompt(prompt, settings) + "</body></html>"
-    return _export_html_to_pdf(html, path, parent)
+    return _safe_export_html_to_pdf(html, path, parent, protected_paths=protected_paths)
 
-def export_single_version(version, path: str, parent=None, settings=None):
+def export_single_version(version, path: str, parent=None, settings=None, protected_paths: Optional[Iterable[str | Path]] = None):
     html = "<html><body>" + _render_html_for_version(version, settings) + "</body></html>"
-    return _export_html_to_pdf(html, path, parent)
+    return _safe_export_html_to_pdf(html, path, parent, protected_paths=protected_paths)
 
-def export_all_prompts(storage, settings, path: str, parent=None):
+def export_all_prompts(storage, settings, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None):
+    if protected_paths is None:
+        protected = []
+        if hasattr(storage, "prompts_file"):
+            protected.append(storage.prompts_file)
+        if hasattr(storage, "boards_file"):
+            protected.append(storage.boards_file)
+        protected_paths = protected
+
     prompts = storage.load_prompts()
     html = ["<html><body>"]
     for p in prompts or []:
@@ -75,9 +94,9 @@ def export_all_prompts(storage, settings, path: str, parent=None):
         html.append(_render_html_for_prompt(p, settings))
         html.append("<hr>")
     html.append("</body></html>")
-    return _export_html_to_pdf("".join(html), path, parent)
+    return _safe_export_html_to_pdf("".join(html), path, parent, protected_paths=protected_paths)
 
-def export_single_prompt_with_versions(prompt, settings, path: str, parent=None):
+def export_single_prompt_with_versions(prompt, settings, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None):
     """
     Exportiert einen Prompt + alle Versionen als PDF.
     """
@@ -89,14 +108,38 @@ def export_single_prompt_with_versions(prompt, settings, path: str, parent=None)
         parts.append(_render_html_for_version(v, settings))
         parts.append("<hr>")
     html = "<html><body>" + "".join(parts) + "</body></html>"
-    return _export_html_to_pdf(html, path, parent)
+    return _safe_export_html_to_pdf(html, path, parent, protected_paths=protected_paths)
 
-def _export_html_to_pdf(html: str, path: str, parent=None) -> bool:
+def _export_html_to_pdf(html: str, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None) -> bool:
+    target_path = Path(path)
+    if is_protected_path(target_path, protected_paths):
+        msg = f"Zielpfad '{target_path}' darf keine geschützte Bibliotheksdatei überschreiben."
+        if parent:
+            QMessageBox.critical(parent, "Fehler", f"PDF-Export fehlgeschlagen:\n{msg}")
+        return False
+
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = target_path.with_name(f".{target_path.name}.tmp.{os.getpid()}_{uuid.uuid4().hex[:8]}.pdf")
     doc = QTextDocument()
     doc.setHtml(html)
     doc.setDefaultFont(QFont("Arial", 10))
+    printer = None
     try:
-        doc.print_(_init_printer(path))
+        printer = _init_printer(str(tmp_path))
+        doc.print_(printer)
+        del printer
+
+        if not tmp_path.exists():
+            raise FileNotFoundError(f"PDF-Datei wurde nicht erzeugt: {tmp_path}")
+        size = tmp_path.stat().st_size
+        if size == 0:
+            raise ValueError("Erzeugte PDF-Datei ist leer (0 Bytes).")
+        with open(tmp_path, "rb") as f:
+            header = f.read(5)
+            if header != b"%PDF-":
+                raise ValueError(f"Ungültiges PDF-Format (Header: {header!r})")
+
+        atomic_publish_file(tmp_path, target_path, protected_paths=protected_paths)
         if parent:
             QMessageBox.information(parent, "Export", "PDF erfolgreich gespeichert.")
         return True
@@ -104,3 +147,10 @@ def _export_html_to_pdf(html: str, path: str, parent=None) -> bool:
         if parent:
             QMessageBox.critical(parent, "Fehler", f"PDF-Export fehlgeschlagen:\n{e}")
         return False
+    finally:
+        if tmp_path.exists():
+            try:
+                os.chmod(tmp_path, stat.S_IWRITE | stat.S_IREAD)
+                tmp_path.unlink(missing_ok=True)
+            except OSError:
+                pass
