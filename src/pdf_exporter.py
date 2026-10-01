@@ -86,7 +86,10 @@ def export_all_prompts(storage, settings, path: str, parent=None, protected_path
             protected.append(storage.boards_file)
         protected_paths = protected
 
-    prompts = storage.load_prompts()
+    if callable(getattr(storage, "load_library", None)):
+        prompts, _ = storage.load_library()
+    else:
+        prompts = storage.load_prompts()
     html = ["<html><body>"]
     for p in prompts or []:
         if not p:

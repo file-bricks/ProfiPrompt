@@ -5,6 +5,15 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bibliotheksdaten nach Ladefehlern erhalten (2026-10-02)
+
+- Änderungen und direkte Speicher-APIs brechen bei unlesbaren oder beschädigten Bibliotheksdateien ab, statt vorhandene Daten als leere Bibliothek zu überschreiben.
+- Prompt-/Versionslöschungen lesen Prompt- und Board-Datei vor dem ersten Schreiben. Änderungen desselben Storage-Objekts halten einen gemeinsamen Lock.
+- JSON- und PDF-Gesamtexporte verwenden vollständig gelesene Bibliotheken; vorhandene Sicherungen bleiben bei Ladefehlern erhalten.
+- Speicherdialoge bleiben bei Fehlern offen und verändern geteilte Modelle erst nach erfolgreichem Speichern. Entfernte Prompts führen nicht zu einer falschen Erfolgsmeldung für Versionen.
+- Der fehlende Speicherpfad zum Entfernen einer Board-Kachel ist ergänzt; beide Bedienwege verwenden ihn.
+- Grenzen und manuelle Wiederherstellung sind in `LIBRARY_SAFETY.md` beschrieben. Zwei JSON-Dateien bilden keine gemeinsame Transaktion; keine neue EXE oder Store-Abnahme.
+
 ### Atomare Exporte, Fsync-Durability, Storage-Schutz & PDF-Validierung (2026-10-01)
 
 - **Atomare Datei-Operationen & Fsync-Durability (`src/atomic_io.py`):**

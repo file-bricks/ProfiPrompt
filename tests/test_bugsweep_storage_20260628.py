@@ -161,7 +161,8 @@ def test_ps02_load_boards_survives_deleted_file(tmp_path):
 
 
 def test_ps02_load_prompts_recovers_after_corrupt_file(tmp_path):
-    """Nach Reparatur (upsert) einer korrupten Datei werden Prompts korrekt geladen."""
+    """Eine Änderung darf beschädigte Daten nicht als leere Bibliothek ersetzen."""
+    import pytest
     importlib.reload(_models_mod)
     importlib.reload(_storage_mod)
     s = _storage_mod.Storage(tmp_path)
@@ -169,7 +170,7 @@ def test_ps02_load_prompts_recovers_after_corrupt_file(tmp_path):
     s.prompts_file.write_bytes(b"\xff\xfe invalid utf-8")
     empty = s.load_prompts()
     assert empty == []
-    # 2. Reparatur über upsert → Datei wird korrekt (neu) geschrieben
+    # 2. Automatisches Überschreiben wäre Datenverlust. Erst explizit reparieren.
     p = _models_mod.Prompt(
         id=_models_mod.gen_id(),
         title="Wiederhergestellt",
@@ -177,6 +178,10 @@ def test_ps02_load_prompts_recovers_after_corrupt_file(tmp_path):
         text="",
         tags=[],
     )
+    with pytest.raises(OSError):
+        s.upsert_prompt(p)
+    assert s.prompts_file.read_bytes() == b"\xff\xfe invalid utf-8"
+    s.prompts_file.write_text(json.dumps({"prompts": []}), encoding="utf-8")
     s.upsert_prompt(p)
     result = s.load_prompts()
     assert len(result) == 1

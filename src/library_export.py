@@ -17,8 +17,13 @@ APP_VERSION = "1.0.1"
 
 def build_library_export(storage, exported_at: str | None = None) -> dict[str, Any]:
     """Build a portable export payload from the current Storage state."""
-    prompts = storage.load_prompts()
-    boards = storage.load_boards()
+    # Production Storage must not replace a backup with an empty/partial export
+    # after a failed read. Small in-memory providers retain the existing protocol.
+    if callable(getattr(storage, "load_library", None)):
+        prompts, boards = storage.load_library()
+    else:
+        prompts = storage.load_prompts()
+        boards = storage.load_boards()
     exported_at = exported_at or datetime.now(timezone.utc).isoformat()
 
     return {

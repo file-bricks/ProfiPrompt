@@ -8,6 +8,7 @@ from typing import List, Optional
 from PySide6 import QtWidgets, QtCore, QtGui
 from models import Prompt, Version, now_iso
 from storage import Storage
+from storage_actions import report_storage_errors
 from settings_manager import SettingsManager
 from event_bus import bus
 from prompt_dialog import PromptDialog, VersionDialog
@@ -357,6 +358,7 @@ class DashboardWidget(QtWidgets.QWidget):
         for col in range(self.tree.columnCount()):
             self.tree.resizeColumnToContents(col)
 
+    @report_storage_errors
     def open_context_menu(self, pos: QtCore.QPoint):
         """
         Zeigt Kontextmenü:
@@ -517,6 +519,7 @@ class DashboardWidget(QtWidgets.QWidget):
         if target:
             self._on_item_double_clicked(target, 0)
 
+    @report_storage_errors
     def delete_current_item(self, item: Optional[QtWidgets.QTreeWidgetItem] = None):
         target = item or self.tree.currentItem()
         if not target:
@@ -698,6 +701,5 @@ class DashboardWidget(QtWidgets.QWidget):
         dlg = PromptDialog(self.storage, None, self)
         if dlg.exec() == QtWidgets.QDialog.Accepted:
             bus.promptsChanged.emit()
-
 
 

@@ -3,6 +3,8 @@ from PySide6 import QtWidgets, QtCore
 from typing import Optional, List
 from models import Prompt, Version, gen_id, now_iso
 from storage import Storage
+from storage_actions import report_storage_errors
+from dataclasses import replace
 
 class PromptDialog(QtWidgets.QDialog):
     def __init__(self, storage: Storage, prompt: Optional[Prompt] = None, parent=None):
@@ -68,6 +70,7 @@ class PromptDialog(QtWidgets.QDialog):
             item.setToolTip(v.text or "")
             self.versions_list.addItem(item)
 
+    @report_storage_errors
     def on_save(self):
         title = self.title_edit.text().strip()
         text = self.text_edit.toPlainText().strip()
@@ -79,13 +82,10 @@ class PromptDialog(QtWidgets.QDialog):
         result = self.result_edit.toPlainText().strip()
 
         if self.prompt:
-            self.prompt.title = title
-            self.prompt.purpose = purpose
-            self.prompt.tags = tags
-            self.prompt.text = text
-            self.prompt.last_result = result
-            self.prompt.updated_at = now_iso()
-            self.storage.upsert_prompt(self.prompt)
+            edited = replace(self.prompt, title=title, purpose=purpose, tags=tags,
+                             text=text, last_result=result, updated_at=now_iso())
+            self.storage.upsert_prompt(edited)
+            self.prompt = edited
         else:
             from models import Prompt as P
             p = P(
@@ -179,18 +179,21 @@ class VersionDialog(QtWidgets.QDialog):
         result = self.result_edit.toPlainText().strip()
         return title, tags, text, result
 
+    @report_storage_errors
     def _on_save_update(self):
         data = self._validate()
         if not data:
             return
         title, tags, text, result = data
-        # In-place bearbeiten
-        v = self.version
-        v.title = title
-        v.tags = tags
-        v.text = text
-        v.result = result
-        v.updated_at = now_iso()
+        # Erst nach erfolgreichem Speichern geteilte Modelle aktualisieren.
+        v = replace(self.version, title=title, tags=tags, text=text,
+                    result=result, updated_at=now_iso())
+
+        pid = self.prompt.id if self.prompt else v.prompt_id
+        if not self.storage.upsert_version(pid, v):
+            QtWidgets.QMessageBox.warning(self, "Speichern fehlgeschlagen", "Der zugehörige Prompt wurde nicht gefunden.")
+            return
+        self.version = v
 
         # Bugsweep 2026-09-18 BUG-VD01: self.prompt.versions synchronisieren, falls
         # self.version als separates Objekt geladen wurde (z.B. get_prompt vs get_version)
@@ -202,10 +205,9 @@ class VersionDialog(QtWidgets.QDialog):
                 self.prompt.versions.append(v)
             self.prompt.updated_at = now_iso()
 
-        pid = self.prompt.id if self.prompt else v.prompt_id
-        self.storage.upsert_version(pid, v)
         self.accept()
 
+    @report_storage_errors
     def _on_save_create(self):
         data = self._validate()
         if not data:
@@ -224,7 +226,9 @@ class VersionDialog(QtWidgets.QDialog):
             created_at=now_iso(),
             updated_at=now_iso(),
         )
-        self.storage.add_version(self.prompt.id, new_v)
+        if not self.storage.add_version(self.prompt.id, new_v):
+            QtWidgets.QMessageBox.warning(self, "Speichern fehlgeschlagen", "Der zugehörige Prompt wurde nicht gefunden.")
+            return
         if self.prompt:
             self.prompt.versions.append(new_v)
             self.prompt.updated_at = now_iso()
