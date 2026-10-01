@@ -12,6 +12,7 @@ from PySide6.QtCore import Qt
 
 from settings_manager import SettingsManager
 from storage import Storage
+from storage_actions import report_storage_errors
 from event_bus import bus
 from dashboard import DashboardWidget, sanitize_export_filename
 from board_manager import BoardManager
@@ -248,11 +249,15 @@ class MainWindow(QMainWindow):
         QMessageBox.information(self, "Über", "Prompt Manager v1.0.1\nModern Dark Edition")
 
     # --- Exports ---
+    @report_storage_errors
     def export_all_txt(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export TXT", "alle_prompts.txt", "Text (*.txt)")
         if not path:
             return
-        prompts = self.storage.load_prompts()
+        if callable(getattr(self.storage, "load_library", None)):
+            prompts, _ = self.storage.load_library()
+        else:
+            prompts = self.storage.load_prompts()
         parts = []
         for p in prompts or []:
             if not p:
@@ -290,6 +295,7 @@ class MainWindow(QMainWindow):
                 protected.append(storage.boards_file)
         return protected
 
+    @report_storage_errors
     def export_all_pdf(self):
         path, _ = QFileDialog.getSaveFileName(self, "Export PDF", "alle_prompts.pdf", "PDF (*.pdf)")
         if path:
@@ -412,6 +418,7 @@ class MainWindow(QMainWindow):
                 from PySide6.QtCore import QTimer
                 QTimer.singleShot(1500, lambda: parent.setToolTip(""))
 
+    @report_storage_errors
     def handle_drag_request(self, kind, ids):
         # ids ist tuple (prompt_id, version_id)
         pid, vid = ids

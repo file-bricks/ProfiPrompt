@@ -8,6 +8,7 @@ from PySide6 import QtWidgets, QtCore, QtGui
 
 from models import Board, Prompt, Version, BoardItem, gen_id
 from storage import Storage
+from storage_actions import report_storage_errors
 from settings_manager import SettingsManager
 from event_bus import bus
 from clipboard_manager import ClipboardManager
@@ -293,6 +294,7 @@ class BoardManager(QtWidgets.QWidget):
         self.reload_items()
 
 
+    @report_storage_errors
     def remove_tile_item(self, prompt_id: str, version_id: Optional[str] = None):
         board = self.current_board()
         if not board:
@@ -361,6 +363,7 @@ class BoardManager(QtWidgets.QWidget):
         self.grid.addItem(spacer, row + 1, 0)
 
     # --- Actions ---
+    @report_storage_errors
     def create_board(self):
         title, ok = QtWidgets.QInputDialog.getText(self, "Neues Board", "Name:")
         if ok and title.strip():
@@ -369,6 +372,7 @@ class BoardManager(QtWidgets.QWidget):
             self._pending_select_board_id = b.id
             bus.boardsChanged.emit()
 
+    @report_storage_errors
     def delete_current_board(self):
         b = self.current_board()
         if not b: return
@@ -403,6 +407,7 @@ class BoardManager(QtWidgets.QWidget):
         menu.addAction("Vom Board entfernen", lambda: self._remove_item_from_board(tile))
         menu.exec(gpos)
 
+    @report_storage_errors
     def _remove_item_from_board(self, tile):
         board = self.current_board()
         if not board: return
@@ -410,19 +415,9 @@ class BoardManager(QtWidgets.QWidget):
         pid = tile.prompt.id
         vid = tile.version.id if tile.version else None
 
-        # Nur das ERSTE passende Item entfernen (pop by index), Duplikate bleiben erhalten
-        removed_one = False
-        new_items = []
-        for i in board.items:
-            if not removed_one and i.prompt_id == pid and i.version_id == vid:
-                removed_one = True
-                continue
-            new_items.append(i)
-
-        board.items = new_items
-        self.storage.upsert_board(board)
-        self.reload_items()
-        bus.boardsChanged.emit()
+        if self.storage.remove_item_from_board(board.id, pid, vid):
+            self.reload_items()
+            bus.boardsChanged.emit()
 
     # --- Drag & Drop ---
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
@@ -433,7 +428,9 @@ class BoardManager(QtWidgets.QWidget):
         if event.mimeData().hasFormat(self.MIME) or event.mimeData().hasText():
             event.acceptProposedAction()
 
+    @report_storage_errors
     def dropEvent(self, event: QtGui.QDropEvent):
+        event.ignore()
         md = event.mimeData()
         board = self.current_board()
         if not board:
