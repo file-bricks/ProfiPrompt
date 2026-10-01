@@ -221,3 +221,26 @@ def test_save_buttons_commit_and_accept_on_healthy_library(store,qapp,mode):
     else:
         assert any(v.text=='Gespeicherter Text' for v in store.get_prompt('p').versions)
     dialog.close()
+
+
+@pytest.mark.parametrize('kind',['txt','pdf','json'])
+@pytest.mark.parametrize('source',['prompts','boards'])
+def test_mainwindow_exports_preserve_backups_and_report_read_errors(store,qapp,monkeypatch,tmp_path,kind,source):
+    import profiprompt
+    from profiprompt import MainWindow
+    target=store.prompts_file if source=='prompts' else store.boards_file
+    target.write_bytes(b'{damaged library')
+    backup=tmp_path/f'backup.{kind}'
+    backup.write_bytes(b'previous complete backup')
+    errors=[]
+    successes=[]
+    monkeypatch.setattr(profiprompt.QFileDialog,'getSaveFileName',lambda *args,**kwargs:(str(backup),''))
+    monkeypatch.setattr(profiprompt.QMessageBox,'critical',lambda *args,**kwargs:errors.append(args))
+    monkeypatch.setattr(profiprompt.QMessageBox,'information',lambda *args,**kwargs:successes.append(args))
+    window=MainWindow.__new__(MainWindow)
+    window.storage=store
+    window.settings=None
+    action={'txt':MainWindow.export_all_txt,'pdf':MainWindow.export_all_pdf,'json':MainWindow.export_library_json}[kind]
+    action(window)
+    assert backup.read_bytes()==b'previous complete backup'
+    assert len(errors)==1 and successes==[]
