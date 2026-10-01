@@ -411,7 +411,8 @@ def test_changelog_pfad_a_entry() -> None:
 
     unreleased_idx = text.find("## [Unreleased]")
     assert unreleased_idx != -1, "CHANGELOG.md must contain ## [Unreleased]"
-    unreleased_section = text[unreleased_idx:unreleased_idx + 3500]
+    next_release_idx = text.find("\n## [", unreleased_idx + 1)
+    unreleased_section = text[unreleased_idx:next_release_idx] if next_release_idx != -1 else text[unreleased_idx:unreleased_idx + 15000]
 
     assert "Pfad A" in unreleased_section, "Pfad A must be documented in [Unreleased]"
     assert "2026-09-28" in unreleased_section, "Audit date 2026-09-28 must be documented in [Unreleased]"

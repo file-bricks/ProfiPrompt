@@ -6,10 +6,13 @@ class CopySettingsDialog(QtWidgets.QDialog):
     def __init__(self, settings: SettingsManager, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Kopier-Einstellungen")
+        self.setModal(True)
         self.settings = settings
 
         # ComboBox mit Label und zugehörigem Enum-Wert
         self.mode_combo = QtWidgets.QComboBox()
+        self.mode_combo.setAccessibleName("Kopiermodus")
+        self.mode_combo.setAccessibleDescription("Auswahl, welche Inhalte beim Kopieren in die Zwischenablage übernommen werden")
         for label, mode in [
             ("Nur Titel",       CopyMode.TITLE.value),
             ("Nur Prompt-Text", CopyMode.TEXT.value),
@@ -26,15 +29,29 @@ class CopySettingsDialog(QtWidgets.QDialog):
 
         # Checkbox für Metadaten
         self.chk_meta = QtWidgets.QCheckBox("Metadaten (Tags) hinzufügen")
+        self.chk_meta.setAccessibleName("Metadaten hinzufügen")
+        self.chk_meta.setAccessibleDescription("Schlagwörter und Metadaten an den kopierten Text anfügen")
         self.chk_meta.setChecked(self.settings.get_include_metadata())
+
+        lbl_mode = QtWidgets.QLabel("Kopiermodus:")
+        lbl_mode.setBuddy(self.mode_combo)
 
         # Layout
         form = QtWidgets.QFormLayout()
-        form.addRow("Kopiermodus:", self.mode_combo)
-        form.addRow("",             self.chk_meta)
+        form.addRow(lbl_mode, self.mode_combo)
+        form.addRow("",       self.chk_meta)
 
         btn_ok     = QtWidgets.QPushButton("OK")
+        btn_ok.setDefault(True)
+        btn_ok.setAccessibleName("OK")
+        btn_ok.setAccessibleDescription("Kopier-Einstellungen speichern und Dialog schließen")
+        btn_ok.setToolTip("Einstellungen speichern (Enter)")
+
         btn_cancel = QtWidgets.QPushButton("Abbrechen")
+        btn_cancel.setAccessibleName("Abbrechen")
+        btn_cancel.setAccessibleDescription("Änderungen verwerfen und Dialog schließen")
+        btn_cancel.setToolTip("Abbrechen (Esc)")
+
         btn_ok.clicked.connect(self.accept)
         btn_cancel.clicked.connect(self.reject)
 

@@ -326,6 +326,10 @@ class DashboardWidget(QtWidgets.QWidget):
             btn_copy = QtWidgets.QToolButton()
             btn_copy.setIcon(QtGui.QIcon(CLIPBOARD_ICON))
             btn_copy.setAutoRaise(True)
+            p_title_str = p.title or "Ohne Titel"
+            btn_copy.setToolTip(f"Prompt kopieren: {p_title_str}")
+            btn_copy.setAccessibleName(f"Prompt kopieren: {p_title_str}")
+            btn_copy.setAccessibleDescription("Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage")
             btn_copy.clicked.connect(lambda _, pid=p.id: self._copy_prompt(pid))
             self.tree.setItemWidget(parent, 6, btn_copy)
 
@@ -334,7 +338,8 @@ class DashboardWidget(QtWidgets.QWidget):
             for v in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
                 child = QtWidgets.QTreeWidgetItem(parent)
                 v_num = getattr(v, "version_number", None) or "?"
-                child.setText(0, f"v{v_num} — {v.title or ''}")
+                v_title_str = f"v{v_num} — {v.title or ''}".strip()
+                child.setText(0, v_title_str)
                 child.setText(1, "")
                 v_tags_str = ", ".join(
                     str(t).strip() for t in (v.tags or []) if t is not None and str(t).strip()
@@ -348,6 +353,9 @@ class DashboardWidget(QtWidgets.QWidget):
                 btn_ver_copy = QtWidgets.QToolButton()
                 btn_ver_copy.setIcon(QtGui.QIcon(CLIPBOARD_ICON))
                 btn_ver_copy.setAutoRaise(True)
+                btn_ver_copy.setToolTip(f"Version kopieren: {v_title_str}")
+                btn_ver_copy.setAccessibleName(f"Version kopieren: {v_title_str}")
+                btn_ver_copy.setAccessibleDescription("Kopiert diese Version in die Zwischenablage")
                 btn_ver_copy.clicked.connect(
                     lambda _, pid=p.id, vid=v.id: self._copy_version(pid, vid)
                 )

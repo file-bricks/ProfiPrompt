@@ -99,11 +99,19 @@ class MainWindow(QMainWindow):
         # Dock: Boards
         self.boardDock = QDockWidget("Boards", self)
         self.boardDock.setObjectName("BoardsDock")
+        self.boardDock.setAccessibleName("Boards-Bereich")
+        self.boardDock.setAccessibleDescription("Bereich für Kachel-Boards und Arbeitsflächen")
         self.boardDock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
 
         self.boardManager = BoardManager(self.storage, self.settings)
         self.boardDock.setWidget(self.boardManager)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.boardDock)
+
+        # Statusleiste (WCAG 2.1 AA / Screenreader-Unterstützung für Statusmeldungen & Action-Tips)
+        status_bar = self.statusBar()
+        status_bar.setObjectName("MainWindowStatusBar")
+        status_bar.setAccessibleName("Statusleiste")
+        status_bar.setAccessibleDescription("Zeigt Statusmeldungen und Tastenkürzelhinweise an")
 
         # Menü & Aktionen
         self._build_menu()

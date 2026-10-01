@@ -5,6 +5,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Pfad A / WCAG 2.1 AA / BITV 2.0 Dialog-Barrierefreiheit, Label-Buddies, Button-Accessibility & Statusleiste (2026-10-02)
+
+- **Dialog-Barrierefreiheit & Modalität (`src/prompt_dialog.py`, `src/copy_settings_dialog.py`, `src/appearance_dialog.py`):**
+  - Alle Dialoge (`PromptDialog`, `VersionDialog`, `CopySettingsDialog`, `AppearanceDialog`) explizit als modal (`setModal(True)`) konfiguriert; garantiert verlässliches Fokus-Trapping für Screenreader und Tastaturnutzer.
+  - Vollständige semantische Barrierefreiheitsattribute (`accessibleName`, `accessibleDescription`) für alle Eingabefelder, Textbereiche, Checkboxen, Buttons und Listen.
+  - Formular-Ergonomie nach WCAG 2.1 AA (Kriterium 1.3.1 Info und Beziehungen, 3.3.2 Beschriftungen/Anweisungen): Explizite `QLabel.setBuddy(...)`-Zuordnungen für alle Eingabeelemente („Titel*", „Zweck", „Tags", „Prompt-Text*", „Ergebnis", „Kopiermodus", „Theme", Farbwähler).
+  - Standard-Aktionsbuttons: `isDefault()` (`setDefault(True)`) für alle Bestätigungs- und Speicheraktionen aktiviert, sodass Eingaben per Enter direkt ausgeführt werden.
+  - Tooltips und Tastaturhinweise (`Enter`, `Esc`) auf allen Dialog-Schaltflächen integriert.
+  - Farbwähler-Buttons in `AppearanceDialog` aktualisieren nun dynamisch Tooltip und `accessibleDescription` mit aktuellem Hex-Farbcode und Zielkacheltyp.
+- **Inline-Aktionsbuttons im Prompt-Tree (`src/dashboard.py`):**
+  - Kopier-Toolbuttons (`QToolButton`) in der Baumansicht mit barrierefreien Namen (`accessibleName`), Beschreibungen und Tooltips versehen („Prompt kopieren: [Titel]", „Version kopieren: v[Nr] — [Titel]"), um blinden und sehbehinderten Nutzern sofortiges Kontextfeedback zu geben.
+- **Statusleiste & Dock-Accessibility (`src/profiprompt.py`):**
+  - `MainWindow.statusBar()` explizit mit `accessibleName="Statusleiste"` und `accessibleDescription` initialisiert; sichert Screenreader-Readback von Aktions-Statustips und Feedback.
+  - `boardDock` mit `accessibleName="Boards-Bereich"` und semantischer Beschreibung ausgestattet.
+- **Automatisierte Vertragstests (`tests/test_ui_accessibility.py`):**
+  - 6 neue hermetische Vertragstests implementiert (`test_prompt_dialog_accessibility_and_buddies`, `test_version_dialog_accessibility_and_buddies`, `test_copy_settings_dialog_accessibility_and_buddies`, `test_appearance_dialog_accessibility_and_buddies`, `test_dashboard_tree_item_copy_buttons_accessibility`, `test_mainwindow_statusbar_and_dock_accessibility`); Testsuite von 8 auf 14 Tests ausgebaut (Gesamtsuite 199 Tests, 100% bestanden).
+
 ### Bibliotheksdaten nach Ladefehlern erhalten (2026-10-02)
 
 - Änderungen und direkte Speicher-APIs brechen bei unlesbaren oder beschädigten Bibliotheksdateien ab, statt vorhandene Daten als leere Bibliothek zu überschreiben.

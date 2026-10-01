@@ -27,6 +27,9 @@ from dashboard import DashboardWidget
 from board_manager import BoardManager, PromptTile
 from profiprompt import MainWindow, make_translator
 from shortcuts_dialog import ShortcutsDialog
+from prompt_dialog import PromptDialog, VersionDialog
+from copy_settings_dialog import CopySettingsDialog
+from appearance_dialog import AppearanceDialog
 from theme import tile_stylesheet, derive_tile_palette, DEFAULT_TILE_MAIN
 
 
@@ -315,3 +318,188 @@ def test_theme_focus_ring_styling():
     qss = tile_stylesheet(palette, "Segoe UI")
     assert "QFrame#PromptTile:focus" in qss
     assert "border: 2px solid" in qss
+
+
+def test_prompt_dialog_accessibility_and_buddies(qapp, mock_storage):
+    """Prüft Barrierefreiheit, Modalität, Accessible Names und Label-Buddies im PromptDialog."""
+    dlg = PromptDialog(mock_storage)
+    dlg.show()
+    try:
+        assert dlg.isModal() is True
+        assert dlg.windowTitle() == "Prompt erstellen"
+
+        # Accessible Names
+        assert dlg.title_edit.accessibleName() == "Titel"
+        assert "Pflichtfeld" in dlg.title_edit.accessibleDescription()
+        assert dlg.purpose_edit.accessibleName() == "Zweck"
+        assert dlg.tags_edit.accessibleName() == "Tags"
+        assert dlg.text_edit.accessibleName() == "Prompt-Text"
+        assert "Pflichtfeld" in dlg.text_edit.accessibleDescription()
+        assert dlg.result_edit.accessibleName() == "Ergebnis"
+        assert dlg.versions_list.accessibleName() == "Versionen-Liste"
+
+        # Label-Buddies
+        labels = dlg.findChildren(QtWidgets.QLabel)
+        buddy_map = {lbl.text(): lbl.buddy() for lbl in labels if lbl.buddy()}
+        assert "Titel*" in buddy_map
+        assert buddy_map["Titel*"] == dlg.title_edit
+        assert "Zweck" in buddy_map
+        assert buddy_map["Zweck"] == dlg.purpose_edit
+        assert "Tags (Komma)" in buddy_map
+        assert buddy_map["Tags (Komma)"] == dlg.tags_edit
+        assert "Prompt-Text*" in buddy_map
+        assert buddy_map["Prompt-Text*"] == dlg.text_edit
+        assert "Ergebnis" in buddy_map
+        assert buddy_map["Ergebnis"] == dlg.result_edit
+
+        # Save Button Default & Accessible Attributes
+        save_btn = None
+        for btn in dlg.findChildren(QtWidgets.QPushButton):
+            if btn.text() == "Speichern":
+                save_btn = btn
+                break
+        assert save_btn is not None
+        assert save_btn.isDefault() is True
+        assert save_btn.accessibleName() == "Speichern"
+        assert "Enter" in save_btn.toolTip()
+    finally:
+        dlg.close()
+
+
+def test_version_dialog_accessibility_and_buddies(qapp, mock_storage):
+    """Prüft Barrierefreiheit, Modalität, Accessible Names und Buddies im VersionDialog."""
+    prompt = mock_storage.load_prompts()[0]
+    dlg = VersionDialog(mock_storage, prompt=prompt)
+    dlg.show()
+    try:
+        assert dlg.isModal() is True
+        assert dlg.windowTitle() == "Neue Version anlegen"
+
+        # Accessible Names
+        assert dlg.title_edit.accessibleName() == "Versionstitel"
+        assert dlg.tags_edit.accessibleName() == "Tags"
+        assert dlg.text_edit.accessibleName() == "Prompt-Text"
+        assert dlg.result_edit.accessibleName() == "Ergebnis"
+
+        # Label-Buddies
+        labels = dlg.findChildren(QtWidgets.QLabel)
+        buddy_map = {lbl.text(): lbl.buddy() for lbl in labels if lbl.buddy()}
+        assert "Titel*" in buddy_map
+        assert buddy_map["Titel*"] == dlg.title_edit
+        assert "Tags (Komma)" in buddy_map
+        assert buddy_map["Tags (Komma)"] == dlg.tags_edit
+        assert "Prompt-Text*" in buddy_map
+        assert buddy_map["Prompt-Text*"] == dlg.text_edit
+        assert "Ergebnis" in buddy_map
+        assert buddy_map["Ergebnis"] == dlg.result_edit
+
+        # Create Button Default
+        create_btn = None
+        for btn in dlg.findChildren(QtWidgets.QPushButton):
+            if btn.text() == "Version erstellen":
+                create_btn = btn
+                break
+        assert create_btn is not None
+        assert create_btn.isDefault() is True
+        assert create_btn.accessibleName() == "Version erstellen"
+    finally:
+        dlg.close()
+
+
+def test_copy_settings_dialog_accessibility_and_buddies(qapp, mock_settings):
+    """Prüft Barrierefreiheit, Modalität, Accessible Names und Buddies in CopySettingsDialog."""
+    dlg = CopySettingsDialog(mock_settings)
+    dlg.show()
+    try:
+        assert dlg.isModal() is True
+        assert dlg.windowTitle() == "Kopier-Einstellungen"
+
+        assert dlg.mode_combo.accessibleName() == "Kopiermodus"
+        assert "Zwischenablage" in dlg.mode_combo.accessibleDescription()
+
+        assert dlg.chk_meta.accessibleName() == "Metadaten hinzufügen"
+        assert "Schlagwörter" in dlg.chk_meta.accessibleDescription()
+
+        labels = dlg.findChildren(QtWidgets.QLabel)
+        buddy_map = {lbl.text(): lbl.buddy() for lbl in labels if lbl.buddy()}
+        assert "Kopiermodus:" in buddy_map
+        assert buddy_map["Kopiermodus:"] == dlg.mode_combo
+
+        # OK-Button default
+        ok_btn = None
+        for btn in dlg.findChildren(QtWidgets.QPushButton):
+            if btn.text() == "OK":
+                ok_btn = btn
+                break
+        assert ok_btn is not None
+        assert ok_btn.isDefault() is True
+        assert ok_btn.accessibleName() == "OK"
+    finally:
+        dlg.close()
+
+
+def test_appearance_dialog_accessibility_and_buddies(qapp, mock_settings):
+    """Prüft Barrierefreiheit, Modalität, Accessible Names und Buddies in AppearanceDialog."""
+    dlg = AppearanceDialog(mock_settings)
+    dlg.show()
+    try:
+        assert dlg.isModal() is True
+        assert dlg.windowTitle() == "Darstellung"
+
+        assert dlg.theme_combo.accessibleName() == "Theme-Auswahl"
+        assert "Farbschema" in dlg.theme_combo.accessibleDescription()
+
+        assert dlg.btn_main.accessibleName() == "Farbe Hauptprompt-Kacheln"
+        assert dlg.btn_version.accessibleName() == "Farbe Versionsprompt-Kacheln"
+        assert dlg.btn_reset.accessibleName() == "Kachelfarben zurücksetzen"
+
+        labels = dlg.findChildren(QtWidgets.QLabel)
+        buddy_map = {lbl.text(): lbl.buddy() for lbl in labels if lbl.buddy()}
+        assert "Theme:" in buddy_map
+        assert buddy_map["Theme:"] == dlg.theme_combo
+        assert "Farbe Hauptprompt-Kacheln:" in buddy_map
+        assert buddy_map["Farbe Hauptprompt-Kacheln:"] == dlg.btn_main
+        assert "Farbe Versionsprompt-Kacheln:" in buddy_map
+        assert buddy_map["Farbe Versionsprompt-Kacheln:"] == dlg.btn_version
+
+        # OK-Button default
+        ok_btn = None
+        for btn in dlg.findChildren(QtWidgets.QPushButton):
+            if btn.text() == "OK":
+                ok_btn = btn
+                break
+        assert ok_btn is not None
+        assert ok_btn.isDefault() is True
+    finally:
+        dlg.close()
+
+
+def test_dashboard_tree_item_copy_buttons_accessibility(qapp, mock_storage, mock_settings):
+    """Prüft Tooltips und Accessible Names der Inline-Kopierbuttons im Prompt-Tree."""
+    dashboard = DashboardWidget(mock_storage, mock_settings)
+    try:
+        tree = dashboard.tree
+        assert tree.topLevelItemCount() > 0
+        parent_item = tree.topLevelItem(0)
+        btn_copy = tree.itemWidget(parent_item, 6)
+        assert isinstance(btn_copy, QtWidgets.QToolButton)
+        assert "Prompt kopieren" in btn_copy.accessibleName()
+        assert "Zwischenablage" in btn_copy.accessibleDescription()
+        assert "Prompt kopieren" in btn_copy.toolTip()
+    finally:
+        dashboard.close()
+
+
+def test_mainwindow_statusbar_and_dock_accessibility(qapp, mock_storage, mock_settings):
+    """Prüft Accessible Names für Statusleiste und Boards-Dock in MainWindow."""
+    win = MainWindow(mock_storage, mock_settings)
+    try:
+        sb = win.statusBar()
+        assert sb is not None
+        assert sb.accessibleName() == "Statusleiste"
+        assert "Statusmeldungen" in sb.accessibleDescription()
+
+        assert win.boardDock.accessibleName() == "Boards-Bereich"
+        assert "Kachel-Boards" in win.boardDock.accessibleDescription()
+    finally:
+        win.close()
