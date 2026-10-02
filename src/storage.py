@@ -31,7 +31,7 @@ def _validate_records(data, key, nested_key):
         nested = record.get(nested_key, [])
         # Existing models support null placeholders as empty entries. Reject
         # informative malformed entries rather than silently dropping them.
-        if nested is None and nested_key == "versions":
+        if nested is None and nested_key in ("versions", "items"):
             nested = []
         if not isinstance(nested, list) or any(item is not None and not isinstance(item, dict) for item in nested):
             raise ValueError(f"Ungültige Bibliotheksstruktur: {nested_key}")
@@ -107,7 +107,7 @@ class Storage:
         changed = False
         for b in boards:
             orig_len = len(b.items)
-            b.items = [it for it in b.items if it.prompt_id != prompt_id]
+            b.items = [it for it in b.items if it and it.prompt_id != prompt_id]
             if len(b.items) != orig_len:
                 changed = True
         if changed:
@@ -130,7 +130,7 @@ class Storage:
         prompts = self.load_prompts(strict=True)
         for p in prompts:
             if p.id == prompt_id:
-                idx = next((i for i, v in enumerate(p.versions) if v.id == version.id), -1)
+                idx = next((i for i, v in enumerate(p.versions) if v and v.id == version.id), -1)
                 if idx >= 0:
                     p.versions[idx] = version
                 else:
@@ -147,7 +147,7 @@ class Storage:
         found = False
         for p in prompts:
             if p.id == prompt_id:
-                p.versions = [v for v in p.versions if v.id != version_id]
+                p.versions = [v for v in p.versions if v and v.id != version_id]
                 p.updated_at = now_iso()
                 found = True
                 break
@@ -158,7 +158,7 @@ class Storage:
         changed = False
         for b in boards:
             orig_len = len(b.items)
-            b.items = [it for it in b.items if not (it.prompt_id == prompt_id and it.version_id == version_id)]
+            b.items = [it for it in b.items if not (it and it.prompt_id == prompt_id and it.version_id == version_id)]
             if len(b.items) != orig_len:
                 changed = True
         if changed:
@@ -232,7 +232,7 @@ class Storage:
             p = next((p for p in self.load_prompts(strict=True) if p.id == prompt_id), None)
             if not p:
                 return False, None
-            if version_id and not any(v.id == version_id for v in p.versions):
+            if version_id and not any(v and v.id == version_id for v in p.versions):
                 return False, None
 
         boards = self.load_boards(strict=True)
@@ -240,7 +240,7 @@ class Storage:
             if b.id == board_id:
                 # Verhindere Duplikate
                 for it in b.items:
-                    if it.prompt_id == prompt_id and it.version_id == version_id:
+                    if it and it.prompt_id == prompt_id and it.version_id == version_id:
                         return False, None
                 item = BoardItem(id=gen_id(), board_id=board_id, prompt_id=prompt_id, version_id=version_id)
                 b.items.append(item)
@@ -254,7 +254,7 @@ class Storage:
         for board in boards:
             if board.id == board_id:
                 for index, item in enumerate(board.items):
-                    if item.prompt_id == prompt_id and item.version_id == version_id:
+                    if item and item.prompt_id == prompt_id and item.version_id == version_id:
                         board.items.pop(index)
                         self._write_boards(boards)
                         return True

@@ -128,8 +128,8 @@ def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
         text=d.get("text") or "",
         tags=d.get("tags") or [],
         last_result=d.get("last_result") or "",
-        created_at=d.get("created_at", now_iso()),
-        updated_at=d.get("updated_at", now_iso()),
+        created_at=d.get("created_at") or now_iso(),
+        updated_at=d.get("updated_at") or now_iso(),
         versions=versions
     )
 
@@ -138,11 +138,11 @@ def boarditem_from_dict(d: Dict[str, Any]) -> BoardItem:
     """Reconstruct a BoardItem from a dict (feldweise, schema-drift-robust)."""
     # Bugsweep 19/28 BUG-BM01: .get()-Defaults für id, board_id, prompt_id verhindern KeyError bei schema-drift
     return BoardItem(
-        id=d.get("id", gen_id()),
-        board_id=d.get("board_id", ""),
-        prompt_id=d.get("prompt_id", ""),
+        id=d.get("id") or gen_id(),
+        board_id=d.get("board_id") or "",
+        prompt_id=d.get("prompt_id") or "",
         version_id=d.get("version_id"),
-        created_at=d.get("created_at", now_iso()),
+        created_at=d.get("created_at") or now_iso(),
     )
 
 
@@ -151,14 +151,16 @@ def board_from_dict(d: Dict[str, Any]) -> Board:
 
     Bugsweep 28 BUG-BM02: title=d["title"] und id=d["id"] warfen KeyError bei alten/fremden
     Board-JSONs ohne 'title'/'id' und rissen den gesamten load_boards() mit.
+    Bugsweep 2026-10-03 BUG-BM05: items=None in JSON führte zu TypeError in List-Comprehension;
+    jetzt über .get('items') or [] defensiv abgefangen und None-Felder mit sauberen Defaults belegt.
     """
-    items_data = d.get("items", [])
+    items_data = d.get("items") or []
     items = [boarditem_from_dict(i) for i in items_data if isinstance(i, dict)]
     return Board(
-        id=d.get("id", gen_id()),
-        title=d.get("title", ""),
-        description=d.get("description", ""),
+        id=d.get("id") or gen_id(),
+        title=d.get("title") or "",
+        description=d.get("description") or "",
         items=items,
-        created_at=d.get("created_at", now_iso())
+        created_at=d.get("created_at") or now_iso()
     )
 

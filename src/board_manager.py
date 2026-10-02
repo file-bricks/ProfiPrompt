@@ -114,10 +114,15 @@ class PromptTile(QtWidgets.QFrame):
         dist = (event.pos() - self._drag_start_pos).manhattanLength()
         if dist < QtWidgets.QApplication.startDragDistance(): return
 
+        # Klick bei Drag-Release unterdrücken (BUG-BM05)
+        self._suppress_click = True
+
         drag = QtGui.QDrag(self)
         mime = QtCore.QMimeData()
         payload = f"{self.prompt.id}|{self.version.id if self.version else ''}"
         mime.setText(payload)
+        arr_payload = json.dumps(["version" if self.version else "prompt", self.prompt.id, self.version.id if self.version else None])
+        mime.setData(BoardManager.MIME, arr_payload.encode("utf-8"))
         drag.setMimeData(mime)
         
         # Pixmap für Drag erstellen (visuelles Feedback)
@@ -336,12 +341,16 @@ class BoardManager(QtWidgets.QWidget):
         row, col = 0, 0
 
         for item in board.items:
+            if not item:
+                continue
             p = prompts_map.get(item.prompt_id)
-            if not p: continue
+            if not p:
+                continue
 
             v = None
             if item.version_id:
-                v = next((x for x in p.versions if x.id == item.version_id), None)
+                versions = [x for x in (getattr(p, "versions", []) or []) if x is not None]
+                v = next((x for x in versions if x.id == item.version_id), None)
                 if v is None:
                     # BUG-BM01: Verwaiste Version-Items duerfen nicht faelschlich als
                     # Hauptprompt gerendert werden (fuehrt zu irrefuehrender UI & unloeschbaren Kacheln)
@@ -463,11 +472,12 @@ class BoardManager(QtWidgets.QWidget):
             if vid:
                 if not self.storage.get_version(pid, vid):
                     # BUG-BM04: Ungueltigen/geloeschten Versions-Drop abweisen statt faelschlich Hauptprompt anzuhaengen
-                    event.ignore()
                     return
             ok, _ = self.storage.add_item_to_board(board.id, pid, vid)
             if ok:
                 self.reload_items()
                 bus.boardsChanged.emit()
-            
-        event.acceptProposedAction()
+                event.acceptProposedAction()
+                return
+
+        event.ignore()

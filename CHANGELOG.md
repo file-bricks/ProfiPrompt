@@ -5,6 +5,19 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bugsweep: Board-Kachel Drag&Drop Klickunterdrückung, Drop-Validierung & Schema-Drift-Resilienz (2026-10-03)
+
+- **Drag&Drop Klickunterdrückung & MIME-Format (`src/board_manager.py`):**
+  - `PromptTile.mouseMoveEvent` setzt `self._suppress_click = True` vor Ausführung von `drag.exec(Qt.MoveAction)`. Verhindert, dass das Loslassen der Maustaste nach einem Drag-Vorgang irrtümlich als Klick gewertet wird (ungewolltes Kopieren in die Zwischenablage und Tooltip-Anzeige).
+  - Drag-MIME-Payload um strukturierten Datentyp `application/x-prompt-item` erweitert.
+  - `BoardManager.dropEvent` validiert Drop-Erfolg strikt: Nur bei erfolgreichem Einfügen wird `acceptProposedAction()` aufgerufen; ungültige oder bereits vorhandene Kacheln werden via `event.ignore()` abgewiesen.
+- **Resilienz gegen Schema-Drift und Null-Werte (`src/models.py`, `src/storage.py`, `src/board_manager.py`):**
+  - Deserialisierer `board_from_dict`, `boarditem_from_dict` und `prompt_from_dict` fangen explizite `null`/`None`-Werte in JSON-Dateien robust mit Fallbacks auf leere Listen und Standardwerte ab (`TypeError: 'NoneType' object is not iterable` behoben).
+  - `Storage._validate_records` akzeptiert `None`-Platzhalter nicht nur für `"versions"`, sondern auch für `"items"`.
+  - Mutationen und Lese-Iterationen in `Storage` (`delete_prompt`, `delete_version`, `add_item_to_board`, `remove_item_from_board`) und `BoardManager.reload_items` prüfen defensiv auf `None`-Elemente in Board-Listen.
+- **Automatisierte Regressionstests (`tests/test_bugsweep_board_and_schema_drift_20261003.py`):**
+  - 9 neue Unit- und Integrationstests decken Klickunterdrückung bei Drag, Drop-Event-Validierung, MIME-Typen, `null`-Resilienz in Models und Storage sowie defensive Iteration hermetisch ab.
+
 ### Pfad A / WCAG 2.1 AA / BITV 2.0 Dialog-Barrierefreiheit, Label-Buddies, Button-Accessibility & Statusleiste (2026-10-02)
 
 - **Dialog-Barrierefreiheit & Modalität (`src/prompt_dialog.py`, `src/copy_settings_dialog.py`, `src/appearance_dialog.py`):**
