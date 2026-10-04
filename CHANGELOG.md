@@ -5,6 +5,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Barrierefreiheit: Kachel-Tastatursteuerung, Version-AccessibleNames & Schema-Drift-Härtung (2026-10-04)
+
+- **Kachel-Tastaturbedienung & Signale (`src/board_manager.py`):**
+  - `PromptTile` um `removeRequested = QtCore.Signal(QtWidgets.QFrame)` erweitert; `BoardManager.reload_items` verbindet dieses Signal direkt mit `_remove_item_from_board`.
+  - Tastenkürzel-Parität mit `ShortcutsDialog`: Fokus auf Kachel + `Ctrl+C` emittiert `bus.copyRequested` (Kopieren); `Entf` / `Backspace` emittiert `removeRequested` und öffnet den Bestätigungsdialog zum Entfernen der Kachel vom Board.
+  - Modernisierung auf PySide6 / Qt 6 `QMouseEvent.position().toPoint()` in `mousePressEvent` und `mouseMoveEvent` (behebt DeprecationWarnings zu `QMouseEvent.pos()`).
+- **Screenreader-Barrierefreiheit für Kacheln (`src/board_manager.py`):**
+  - Dynamischer `accessibleName` für Version-Kacheln (`Prompt-Kachel: [Titel] (v[Nr] — [Versionstitel])`) unterscheidet Versionen klar vom Hauptprompt.
+  - Semantische `accessibleName`-Attribute für untergeordnete Kachel-Labels (`Badge`, `Subtitle`, `Preview`).
+- **Defensive Härtung & Schema-Drift-Resilienz (`src/profiprompt.py`, `src/dashboard.py`, `src/storage.py`):**
+  - `MainWindow.handle_copy_request`: Defensive Handhabung von `None`-Prompts und `None`-Versionen verhindert `TypeError`/`AttributeError` bei korrupten Datensätzen.
+  - `DashboardWidget._apply_filters`: Schutz vor `None`-Prompts bei der Aktualitäts-Sortierung; Vermeidung von Phantom-Büroklammer-Icons in Spalte 5, wenn nur ungültige `[None]`-Versionseinträge vorliegen.
+  - `DashboardWidget.delete_current_item` & Kontextmenü: Löschen einer Version filtert `p.versions` defensiv mit `x is not None and getattr(x, 'id', None) != v.id`.
+  - `DashboardWidget.get_current_version`: Längenprüfung (`len(data) >= 3`) schützt vor Entpack-Fehlern bei verkürzten UserRole-Tupeln.
+  - `Storage`: `get_version`, `next_version_number`, `add_version`, `upsert_version` und `add_item_to_board` defensiv gegen `None`-Versionen und `None`-Items gehärtet.
+- **Automatisierte Vertragstests (`tests/test_bugsweep_a11y_keyboard_and_drift_resilience_20261004.py`):**
+  - 5 neue hermetische Unit- und Integrationstests decken Kachel-Shortcuts (`Ctrl+C`, `Entf`, `Backspace`), Accessible Names, Drift-Resilienz in Copy-Requests, Storage-Methoden und Dashboard-Tree-Rendering ab (Gesamtsuite 293 passed, 3 skipped, 0 warnings).
+
 ### Bugsweep: Board-Kachel Drag&Drop Klickunterdrückung, Drop-Validierung & Schema-Drift-Resilienz (2026-10-03)
 
 - **Drag&Drop Klickunterdrückung & MIME-Format (`src/board_manager.py`):**

@@ -305,7 +305,7 @@ class DashboardWidget(QtWidgets.QWidget):
         PAPERCLIP_ICON = _os.path.join(_ICON_DIR, f"paperclip-{_variant}.png")
         CLIPBOARD_ICON = _os.path.join(_ICON_DIR, f"clipboard-{_variant}.png")
 
-        for p in sorted(prompts, key=lambda x: x.updated_at or "", reverse=True):
+        for p in sorted([p for p in prompts if p is not None], key=lambda x: x.updated_at or "", reverse=True):
             # Top‐Level‐Item für Prompt
             parent = QtWidgets.QTreeWidgetItem(self.tree)
             parent.setText(0, p.title or "")
@@ -318,8 +318,8 @@ class DashboardWidget(QtWidgets.QWidget):
             parent.setText(4, safe_date(p.updated_at))
             parent.setData(0, QtCore.Qt.ItemDataRole.UserRole, ("prompt", p.id))
 
-            # Büroklammer‐Icon in Spalte 5, wenn Versionen existieren
-            if p.versions:
+            # Büroklammer‐Icon in Spalte 5, wenn echte Versionen existieren
+            if any(v is not None for v in (p.versions or [])):
                 parent.setIcon(5, QtGui.QIcon(PAPERCLIP_ICON))
 
             # Clipboard‐Button in Spalte 6
@@ -493,7 +493,7 @@ class DashboardWidget(QtWidgets.QWidget):
                     f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
                 ) == QtWidgets.QMessageBox.StandardButton.Yes:
                     self.storage.delete_version(p.id, v.id)
-                    p.versions = [x for x in (p.versions or []) if x.id != v.id]
+                    p.versions = [x for x in (p.versions or []) if x is not None and getattr(x, "id", None) != v.id]
                     p.updated_at = now_iso()
                     bus.promptsChanged.emit()
 
@@ -554,7 +554,7 @@ class DashboardWidget(QtWidgets.QWidget):
                 self, "Löschen", f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
             ) == QtWidgets.QMessageBox.StandardButton.Yes:
                 self.storage.delete_version(p.id, v.id)
-                p.versions = [x for x in (p.versions or []) if x.id != v.id]
+                p.versions = [x for x in (p.versions or []) if x is not None and getattr(x, "id", None) != v.id]
                 p.updated_at = now_iso()
                 bus.promptsChanged.emit()
 
@@ -592,20 +592,21 @@ class DashboardWidget(QtWidgets.QWidget):
         if not it:
             return None
         data = it.data(0, QtCore.Qt.ItemDataRole.UserRole)
-        if data and data[0] == "version":
-            _, pid, vid = data
-            return self.storage.get_version(pid, vid)
+        if data and data[0] == "version" and len(data) >= 3:
+            _, pid, vid = data[:3]
+            if vid:
+                return self.storage.get_version(pid, vid)
         return None
 
 
     def _collect_tags(self, prompts: List[Prompt]) -> List[str]:
         tags = set()
         for p in prompts or []:
-            if p and p.tags:
+            if p and getattr(p, "tags", None):
                 tags.update(str(t).strip() for t in p.tags if t is not None and str(t).strip())
-            if p and p.versions:
+            if p and getattr(p, "versions", None):
                 for v in p.versions:
-                    if v and v.tags:
+                    if v and getattr(v, "tags", None):
                         tags.update(str(t).strip() for t in v.tags if t is not None and str(t).strip())
         return sorted(tags, key=str.casefold)
 

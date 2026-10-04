@@ -117,7 +117,9 @@ class Storage:
     def add_version(self, prompt_id: str, version: Version) -> bool:
         prompts = self.load_prompts(strict=True)
         for p in prompts:
-            if p.id == prompt_id:
+            if p and getattr(p, "id", None) == prompt_id:
+                if getattr(p, "versions", None) is None:
+                    p.versions = []
                 p.versions.append(version)
                 p.updated_at = now_iso()
                 self._write_prompts(prompts)
@@ -129,8 +131,10 @@ class Storage:
         """Aktualisiert eine existierende Version oder fügt sie hinzu (BUG-VD02)."""
         prompts = self.load_prompts(strict=True)
         for p in prompts:
-            if p.id == prompt_id:
-                idx = next((i for i, v in enumerate(p.versions) if v and v.id == version.id), -1)
+            if p and getattr(p, "id", None) == prompt_id:
+                if getattr(p, "versions", None) is None:
+                    p.versions = []
+                idx = next((i for i, v in enumerate(p.versions) if v and getattr(v, "id", None) == version.id), -1)
                 if idx >= 0:
                     p.versions[idx] = version
                 else:
@@ -146,8 +150,8 @@ class Storage:
         prompts = self.load_prompts(strict=True)
         found = False
         for p in prompts:
-            if p.id == prompt_id:
-                p.versions = [v for v in p.versions if v and v.id != version_id]
+            if p and getattr(p, "id", None) == prompt_id:
+                p.versions = [v for v in (getattr(p, "versions", []) or []) if v and getattr(v, "id", None) != version_id]
                 p.updated_at = now_iso()
                 found = True
                 break
@@ -158,7 +162,7 @@ class Storage:
         changed = False
         for b in boards:
             orig_len = len(b.items)
-            b.items = [it for it in b.items if not (it and it.prompt_id == prompt_id and it.version_id == version_id)]
+            b.items = [it for it in (getattr(b, "items", []) or []) if not (it and getattr(it, "prompt_id", None) == prompt_id and getattr(it, "version_id", None) == version_id)]
             if len(b.items) != orig_len:
                 changed = True
         if changed:
@@ -169,15 +173,15 @@ class Storage:
         p = self.get_prompt(prompt_id)
         if not p:
             return None
-        return next((v for v in p.versions if v.id == version_id), None)
+        return next((v for v in (getattr(p, "versions", []) or []) if v is not None and getattr(v, "id", None) == version_id), None)
 
     def next_version_number(self, prompt_id: str) -> int:
-        p = next((p for p in self.load_prompts(strict=True) if p.id == prompt_id), None)
-        if not p or not p.versions:
+        p = next((p for p in (self.load_prompts(strict=True) or []) if p and getattr(p, "id", None) == prompt_id), None)
+        if not p or not getattr(p, "versions", None):
             return 1
         nums = [
             v.version_number
-            for v in p.versions
+            for v in (p.versions or [])
             if v is not None and getattr(v, "version_number", None) is not None
         ]
         return (max(nums) + 1) if nums else 1
@@ -229,18 +233,20 @@ class Storage:
         if not prompt_id or not str(prompt_id).strip():
             return False, None
         if validate_prompt:
-            p = next((p for p in self.load_prompts(strict=True) if p.id == prompt_id), None)
+            p = next((p for p in (self.load_prompts(strict=True) or []) if p and getattr(p, "id", None) == prompt_id), None)
             if not p:
                 return False, None
-            if version_id and not any(v and v.id == version_id for v in p.versions):
+            if version_id and not any(v and getattr(v, "id", None) == version_id for v in (getattr(p, "versions", []) or [])):
                 return False, None
 
         boards = self.load_boards(strict=True)
         for b in boards:
-            if b.id == board_id:
+            if b and getattr(b, "id", None) == board_id:
+                if getattr(b, "items", None) is None:
+                    b.items = []
                 # Verhindere Duplikate
                 for it in b.items:
-                    if it and it.prompt_id == prompt_id and it.version_id == version_id:
+                    if it and getattr(it, "prompt_id", None) == prompt_id and getattr(it, "version_id", None) == version_id:
                         return False, None
                 item = BoardItem(id=gen_id(), board_id=board_id, prompt_id=prompt_id, version_id=version_id)
                 b.items.append(item)

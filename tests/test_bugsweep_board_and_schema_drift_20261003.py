@@ -162,10 +162,11 @@ def test_prompt_tile_drag_suppresses_click_event(qapp, tmp_path):
     clicked = []
     tile.clicked.connect(lambda pid, vid: clicked.append((pid, vid)))
 
-    # Normaler Klick ohne Drag emittiert clicked
+    pt = QtCore.QPointF(10, 10)
     press_ev = QtGui.QMouseEvent(
         QtCore.QEvent.Type.MouseButtonPress,
-        QtCore.QPointF(10, 10),
+        pt,
+        pt,
         QtCore.Qt.MouseButton.LeftButton,
         QtCore.Qt.MouseButton.LeftButton,
         QtCore.Qt.KeyboardModifier.NoModifier,
@@ -173,7 +174,8 @@ def test_prompt_tile_drag_suppresses_click_event(qapp, tmp_path):
     tile.mousePressEvent(press_ev)
     release_ev = QtGui.QMouseEvent(
         QtCore.QEvent.Type.MouseButtonRelease,
-        QtCore.QPointF(10, 10),
+        pt,
+        pt,
         QtCore.Qt.MouseButton.LeftButton,
         QtCore.Qt.MouseButton.NoButton,
         QtCore.Qt.KeyboardModifier.NoModifier,

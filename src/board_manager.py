@@ -21,6 +21,7 @@ class PromptTile(QtWidgets.QFrame):
     doubleClicked    = QtCore.Signal(str, object)
     contextRequested = QtCore.Signal(QtWidgets.QFrame, QtCore.QPoint)
     dragStart        = QtCore.Signal(str, object)
+    removeRequested  = QtCore.Signal(QtWidgets.QFrame)
 
     def __init__(self, prompt: Prompt, version: Optional[Version], font_family: Optional[str],
                  tile_palette: Optional[Dict] = None, parent=None):
@@ -35,7 +36,11 @@ class PromptTile(QtWidgets.QFrame):
         self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
         self.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
         self.setStyleSheet(self._tile_styles(font_family, tile_palette))
-        self.setAccessibleName(f"Prompt-Kachel: {prompt.title}")
+        if version:
+            v_title = version.title or ""
+            self.setAccessibleName(f"Prompt-Kachel: {prompt.title} (v{version.version_number} — {v_title})".strip())
+        else:
+            self.setAccessibleName(f"Prompt-Kachel: {prompt.title}")
         
         # Etwas dezenterer Schatten für Dark Mode
         shadow = QtWidgets.QGraphicsDropShadowEffect(self)
@@ -73,16 +78,19 @@ class PromptTile(QtWidgets.QFrame):
         top_row = QtWidgets.QHBoxLayout()
         badge = QtWidgets.QLabel(badge_txt)
         badge.setObjectName("Badge")
+        badge.setAccessibleName(f"Kachel-Typ: {badge_txt}")
         
         subtitle = QtWidgets.QLabel(sub_txt)
         subtitle.setObjectName("Subtitle")
         subtitle.setWordWrap(True)
+        subtitle.setAccessibleName(f"Kachel-Untertitel: {sub_txt}")
 
         # Preview Text
         preview = QtWidgets.QLabel(prev_txt)
         preview.setObjectName("Preview")
         preview.setWordWrap(True)
         preview.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        preview.setAccessibleName(f"Kachel-Vorschau: {prev_txt}")
 
         vbox.addWidget(badge)
         vbox.addWidget(subtitle)
@@ -106,12 +114,13 @@ class PromptTile(QtWidgets.QFrame):
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         super().mousePressEvent(event)
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            self._drag_start_pos = event.pos()
+            self._drag_start_pos = event.position().toPoint() if hasattr(event, "position") else event.pos()
 
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
         super().mouseMoveEvent(event)
         if not self._drag_start_pos: return
-        dist = (event.pos() - self._drag_start_pos).manhattanLength()
+        pos = event.position().toPoint() if hasattr(event, "position") else event.pos()
+        dist = (pos - self._drag_start_pos).manhattanLength()
         if dist < QtWidgets.QApplication.startDragDistance(): return
 
         # Klick bei Drag-Release unterdrücken (BUG-BM05)
@@ -165,13 +174,14 @@ class PromptTile(QtWidgets.QFrame):
             event.accept()
             return
         elif event.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
+            self.removeRequested.emit(self)
             p = self.parent()
             while p and not hasattr(p, "remove_tile_item"):
                 p = p.parent()
             if p and hasattr(p, "remove_tile_item"):
                 p.remove_tile_item(self.prompt.id, self.version.id if self.version else None)
-                event.accept()
-                return
+            event.accept()
+            return
         elif event.key() in (QtCore.Qt.Key.Key_Menu, QtCore.Qt.Key.Key_F10):
             self.contextRequested.emit(self, self.mapToGlobal(QtCore.QPoint(10, 10)))
             event.accept()
@@ -360,6 +370,7 @@ class BoardManager(QtWidgets.QWidget):
             tile.clicked.connect(self._on_tile_clicked)
             tile.doubleClicked.connect(self._on_tile_double_clicked)
             tile.contextRequested.connect(self._on_tile_context_menu)
+            tile.removeRequested.connect(self._remove_item_from_board)
 
             self.grid.addWidget(tile, row, col)
             col += 1

@@ -410,10 +410,12 @@ class MainWindow(QMainWindow):
         target_p, target_v = None, None
         
         if kind == "prompt":
-            target_p = next((p for p in prompts if p.id == item_id), None)
+            target_p = next((p for p in (prompts or []) if p is not None and getattr(p, "id", None) == item_id), None)
         elif kind == "version":
-            for p in prompts:
-                v = next((x for x in p.versions if x.id == item_id), None)
+            for p in (prompts or []):
+                if not p:
+                    continue
+                v = next((x for x in (getattr(p, "versions", []) or []) if x is not None and getattr(x, "id", None) == item_id), None)
                 if v:
                     target_p, target_v = p, v
                     break
