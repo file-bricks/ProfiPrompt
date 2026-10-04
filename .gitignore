@@ -150,3 +150,6 @@ htmlcov/
 .tox/
 wheelhouse/
 .wheel-smoke/
+
+# Interne Planung (nur lokal / OneDrive)
+_planung/
