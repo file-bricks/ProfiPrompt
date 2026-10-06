@@ -15,6 +15,7 @@ from clipboard_manager import ClipboardManager
 from prompt_dialog import PromptDialog, VersionDialog
 from pdf_exporter import export_single_prompt, export_single_version
 import theme as theme_mod
+from i18n import tr
 
 class PromptTile(QtWidgets.QFrame):
     clicked          = QtCore.Signal(str, object)
@@ -24,10 +25,11 @@ class PromptTile(QtWidgets.QFrame):
     removeRequested  = QtCore.Signal(QtWidgets.QFrame)
 
     def __init__(self, prompt: Prompt, version: Optional[Version], font_family: Optional[str],
-                 tile_palette: Optional[Dict] = None, parent=None):
+                 tile_palette: Optional[Dict] = None, parent=None, color: Optional[str] = None):
         super().__init__(parent)
         self.prompt = prompt
         self.version = version
+        self.color = color  # individuelle Kachelfarbe (None => Standardfarbe der Kachelart)
         self._drag_start_pos: Optional[QtCore.QPoint] = None
         self._suppress_click = False
 
@@ -38,9 +40,9 @@ class PromptTile(QtWidgets.QFrame):
         self.setStyleSheet(self._tile_styles(font_family, tile_palette))
         if version:
             v_title = version.title or ""
-            self.setAccessibleName(f"Prompt-Kachel: {prompt.title} (v{version.version_number} — {v_title})".strip())
+            self.setAccessibleName(tr("Prompt-Kachel: {title}", title=f"{prompt.title} (v{version.version_number} — {v_title})").strip())
         else:
-            self.setAccessibleName(f"Prompt-Kachel: {prompt.title}")
+            self.setAccessibleName(tr("Prompt-Kachel: {title}", title=prompt.title))
         
         # Etwas dezenterer Schatten für Dark Mode
         shadow = QtWidgets.QGraphicsDropShadowEffect(self)
@@ -78,19 +80,19 @@ class PromptTile(QtWidgets.QFrame):
         top_row = QtWidgets.QHBoxLayout()
         badge = QtWidgets.QLabel(badge_txt)
         badge.setObjectName("Badge")
-        badge.setAccessibleName(f"Kachel-Typ: {badge_txt}")
+        badge.setAccessibleName(tr("Kachel-Typ: {badge}", badge=badge_txt))
         
         subtitle = QtWidgets.QLabel(sub_txt)
         subtitle.setObjectName("Subtitle")
         subtitle.setWordWrap(True)
-        subtitle.setAccessibleName(f"Kachel-Untertitel: {sub_txt}")
+        subtitle.setAccessibleName(tr("Kachel-Untertitel: {text}", text=sub_txt))
 
         # Preview Text
         preview = QtWidgets.QLabel(prev_txt)
         preview.setObjectName("Preview")
         preview.setWordWrap(True)
         preview.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
-        preview.setAccessibleName(f"Kachel-Vorschau: {prev_txt}")
+        preview.setAccessibleName(tr("Kachel-Vorschau: {text}", text=prev_txt))
 
         vbox.addWidget(badge)
         vbox.addWidget(subtitle)
@@ -191,6 +193,19 @@ class PromptTile(QtWidgets.QFrame):
 class BoardManager(QtWidgets.QWidget):
     MIME = "application/x-prompt-item"
 
+    # Vordefinierte Kachelfarben fuer das Kontextmenue (Name = Uebersetzungs-Key).
+    TILE_COLOR_PRESETS = (
+        ("Rot", "#B23A48"),
+        ("Orange", "#C8682C"),
+        ("Gelb", "#C9A227"),
+        ("Grün", "#3E7D4F"),
+        ("Türkis", "#1F7A7A"),
+        ("Blau", "#2F5D9E"),
+        ("Violett", "#6A4C93"),
+        ("Rosa", "#B0577E"),
+        ("Grau", "#5F6B73"),
+    )
+
     def __init__(self, storage: Storage, settings: SettingsManager, parent=None):
         super().__init__(parent)
         self.storage = storage
@@ -199,32 +214,19 @@ class BoardManager(QtWidgets.QWidget):
 
         # Header
         self.board_combo   = QtWidgets.QComboBox()
-        self.btn_new_board = QtWidgets.QPushButton("Neu")
-        self.btn_del_board = QtWidgets.QPushButton("Löschen")
-        self.btn_font      = QtWidgets.QPushButton("Font")
-        
-        # Icons (optional, hier textbasiert um Ressource-Fehler zu vermeiden)
-        # self.btn_new_board.setIcon(...) 
+        self.btn_new_board = QtWidgets.QPushButton()
+        self.btn_ren_board = QtWidgets.QPushButton()
+        self.btn_del_board = QtWidgets.QPushButton()
+        self.btn_font      = QtWidgets.QPushButton()
 
-        lbl_board = QtWidgets.QLabel("Board:")
-        lbl_board.setBuddy(self.board_combo)
-
-        self.board_combo.setAccessibleName("Aktives Board")
-        self.board_combo.setAccessibleDescription("Wählt das aktive Prompt-Board aus")
-
-        self.btn_new_board.setAccessibleName("Neues Board")
-        self.btn_new_board.setAccessibleDescription("Erstellt ein neues leeres Prompt-Board")
-
-        self.btn_del_board.setAccessibleName("Board löschen")
-        self.btn_del_board.setAccessibleDescription("Löscht das aktuell ausgewählte Prompt-Board")
-
-        self.btn_font.setAccessibleName("Kachelschriftart wählen")
-        self.btn_font.setAccessibleDescription("Öffnet die Schriftartenauswahl für Board-Kacheln")
+        self.lbl_board = QtWidgets.QLabel()
+        self.lbl_board.setBuddy(self.board_combo)
 
         header = QtWidgets.QHBoxLayout()
-        header.addWidget(lbl_board)
+        header.addWidget(self.lbl_board)
         header.addWidget(self.board_combo, stretch=1)
         header.addWidget(self.btn_new_board)
+        header.addWidget(self.btn_ren_board)
         header.addWidget(self.btn_del_board)
         header.addWidget(self.btn_font)
 
@@ -234,9 +236,6 @@ class BoardManager(QtWidgets.QWidget):
 
         self.container = QtWidgets.QWidget()
         self.container.setObjectName("BoardContainer")
-        self.scroll.setAccessibleName("Board-Arbeitsfläche")
-        self.scroll.setAccessibleDescription("Bereich mit angehefteten Prompt-Kacheln")
-        self.container.setAccessibleName("Kachel-Raster")
 
         # Board-Flaechen-Hintergrund folgt dem Theme (U2)
         self._apply_surface_styles()
@@ -245,24 +244,58 @@ class BoardManager(QtWidgets.QWidget):
         self.grid.setContentsMargins(20, 20, 20, 20)
         self.grid.setHorizontalSpacing(20)
         self.grid.setVerticalSpacing(20)
+        self.grid.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.scroll.setWidget(self.container)
+        self.scroll.viewport().installEventFilter(self)
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addLayout(header)
         layout.addWidget(self.scroll)
 
+        self.retranslate_ui()
+
         # Connects
         self.board_combo.currentIndexChanged.connect(self.reload_items)
         self.btn_new_board.clicked.connect(self.create_board)
+        self.btn_ren_board.clicked.connect(self.rename_current_board)
         self.btn_del_board.clicked.connect(self.delete_current_board)
         self.btn_font.clicked.connect(self.choose_tile_font)
-        
+
         bus.boardsChanged.connect(self.reload)
         bus.promptsChanged.connect(self.reload_items)
+        bus.languageChanged.connect(self._on_language_changed)
 
         self.setAcceptDrops(True)
         self.reload()
+
+    def retranslate_ui(self):
+        """Setzt alle statischen Texte der Board-Leiste in der aktiven Sprache."""
+        self.lbl_board.setText(tr("Board:"))
+        self.btn_new_board.setText(tr("Neu"))
+        self.btn_ren_board.setText(tr("Umbenennen"))
+        self.btn_del_board.setText(tr("Löschen"))
+        self.btn_font.setText(tr("Schriftart"))
+
+        self.board_combo.setAccessibleName(tr("Aktives Board"))
+        self.board_combo.setAccessibleDescription(tr("Wählt das aktive Prompt-Board aus"))
+        self.btn_new_board.setAccessibleName(tr("Neues Board"))
+        self.btn_new_board.setAccessibleDescription(tr("Erstellt ein neues leeres Prompt-Board"))
+        self.btn_ren_board.setAccessibleName(tr("Board umbenennen"))
+        self.btn_ren_board.setAccessibleDescription(tr("Benennt das aktuell ausgewählte Prompt-Board um"))
+        self.btn_del_board.setAccessibleName(tr("Board löschen"))
+        self.btn_del_board.setAccessibleDescription(tr("Löscht das aktuell ausgewählte Prompt-Board"))
+        self.btn_font.setAccessibleName(tr("Kachelschriftart wählen"))
+        self.btn_font.setAccessibleDescription(tr("Öffnet die Schriftartenauswahl für Board-Kacheln"))
+
+        self.scroll.setAccessibleName(tr("Board-Arbeitsfläche"))
+        self.scroll.setAccessibleDescription(tr("Bereich mit angehefteten Prompt-Kacheln"))
+        self.container.setAccessibleName(tr("Kachel-Raster"))
+
+    def _on_language_changed(self, _lang: str = ""):
+        self.retranslate_ui()
+        # Kacheln tragen uebersetzte Accessible-Names -> neu aufbauen
+        self.reload_items()
 
     def _get_tile_font_family(self) -> Optional[str]:
         fam = self.settings.qs.value("tiles/font_family", "", type=str)
@@ -282,7 +315,7 @@ class BoardManager(QtWidgets.QWidget):
     def choose_tile_font(self):
         cur_fam = self._get_tile_font_family()
         cur_font = QtGui.QFont(cur_fam) if cur_fam else QtGui.QFont()
-        ok, font = QtWidgets.QFontDialog.getFont(cur_font, self, "Schriftart wählen")
+        ok, font = QtWidgets.QFontDialog.getFont(cur_font, self, tr("Schriftart wählen"))
         if ok:
             self.settings.qs.setValue("tiles/font_family", font.family())
             self.reload_items()
@@ -305,6 +338,8 @@ class BoardManager(QtWidgets.QWidget):
         
         if hasattr(self, "btn_del_board"):
             self.btn_del_board.setEnabled(len(boards) > 0)
+        if hasattr(self, "btn_ren_board"):
+            self.btn_ren_board.setEnabled(len(boards) > 0)
 
         self.reload_items()
 
@@ -314,9 +349,9 @@ class BoardManager(QtWidgets.QWidget):
         board = self.current_board()
         if not board:
             return
-        msg = "Möchten Sie diese Kachel wirklich vom Board entfernen?"
+        msg = tr("Möchten Sie diese Kachel wirklich vom Board entfernen?")
         if QtWidgets.QMessageBox.question(
-            self, "Kachel entfernen", msg
+            self, tr("Kachel entfernen"), msg
         ) == QtWidgets.QMessageBox.StandardButton.Yes:
             success = self.storage.remove_item_from_board(board.id, prompt_id, version_id)
             if success:
@@ -328,12 +363,50 @@ class BoardManager(QtWidgets.QWidget):
         if not bid: return None
         return next((b for b in self.storage.load_boards() if b.id == bid), None)
 
-    def reload_items(self):
-        # Clear Grid
+    TILE_WIDTH = 260
+
+    def _column_count(self) -> int:
+        """Spaltenzahl passend zur sichtbaren Breite (mind. 1, max. 6)."""
+        m = self.grid.contentsMargins()
+        avail = self.scroll.viewport().width() - m.left() - m.right()
+        step = self.TILE_WIDTH + self.grid.horizontalSpacing()
+        return max(1, min(6, (avail + self.grid.horizontalSpacing()) // step))
+
+    def _clear_grid(self):
         while self.grid.count():
             item = self.grid.takeAt(0)
             w = item.widget()
-            if w: w.deleteLater()
+            if w:
+                # Sofort verstecken: deleteLater greift erst im Event-Loop, bis dahin
+                # blieben alte Kacheln sichtbar und ueberlappten die neuen.
+                w.hide()
+                w.deleteLater()
+
+    def _layout_tiles(self, tiles):
+        """Ordnet Kacheln im Raster an; Spaltenzahl folgt der Dock-Breite."""
+        cols = self._column_count()
+        self._layout_cols = cols
+        for i, tile in enumerate(tiles):
+            self.grid.addWidget(tile, i // cols, i % cols)
+        # Spacer damit alles oben links bleibt
+        rows = (len(tiles) + cols - 1) // cols
+        spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.grid.addItem(spacer, rows, 0)
+
+    def eventFilter(self, obj, event):
+        # Viewport-Breite geaendert (Dock gezogen, Scrollbar ein/aus) -> Spalten anpassen
+        if obj is self.scroll.viewport() and event.type() == QtCore.QEvent.Type.Resize:
+            tiles = getattr(self, "_tiles", [])
+            if tiles and self._column_count() != getattr(self, "_layout_cols", None):
+                # Nur neu anordnen (kein Disk-Zugriff, Kacheln bleiben erhalten)
+                while self.grid.count():
+                    self.grid.takeAt(0)
+                self._layout_tiles(tiles)
+        return super().eventFilter(obj, event)
+
+    def reload_items(self):
+        self._clear_grid()
+        self._tiles = []
 
         board = self.current_board()
         if not board: return
@@ -345,11 +418,10 @@ class BoardManager(QtWidgets.QWidget):
         # Haupt-Prompt- und Versions-Kacheln, einmal pro Reload berechnet.
         main_pal = theme_mod.derive_tile_palette(self.settings.get_tile_color("main"))
         version_pal = theme_mod.derive_tile_palette(self.settings.get_tile_color("version"))
+        # Individuelle Kachelfarben: Palette je Farbe nur einmal ableiten
+        custom_pals: Dict[str, Dict] = {}
 
-        # Responsive Grid Logic (fixe Spaltenanzahl ist oft unflexibel, hier 3)
-        cols = 3
-        row, col = 0, 0
-
+        tiles = []
         for item in board.items:
             if not item:
                 continue
@@ -366,29 +438,49 @@ class BoardManager(QtWidgets.QWidget):
                     # Hauptprompt gerendert werden (fuehrt zu irrefuehrender UI & unloeschbaren Kacheln)
                     continue
 
-            tile = PromptTile(p, v, font_family, version_pal if v else main_pal, self)
+            item_color = getattr(item, "color", None)
+            if item_color:
+                pal = custom_pals.get(item_color)
+                if pal is None:
+                    pal = custom_pals[item_color] = theme_mod.derive_tile_palette(item_color)
+            else:
+                pal = version_pal if v else main_pal
+
+            tile = PromptTile(p, v, font_family, pal, self, color=item_color)
             tile.clicked.connect(self._on_tile_clicked)
             tile.doubleClicked.connect(self._on_tile_double_clicked)
             tile.contextRequested.connect(self._on_tile_context_menu)
             tile.removeRequested.connect(self._remove_item_from_board)
+            tiles.append(tile)
 
-            self.grid.addWidget(tile, row, col)
-            col += 1
-            if col >= cols:
-                col = 0
-                row += 1
-        
-        # Spacer damit alles oben links bleibt
-        spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.grid.addItem(spacer, row + 1, 0)
+        self._tiles = tiles
+        self._layout_tiles(tiles)
 
     # --- Actions ---
+    def _ask_board_title(self, title: str, default: str = "") -> Optional[str]:
+        text, ok = QtWidgets.QInputDialog.getText(self, title, tr("Name:"), text=default)
+        if ok and text.strip():
+            return text.strip()
+        return None
+
     @report_storage_errors
-    def create_board(self):
-        title, ok = QtWidgets.QInputDialog.getText(self, "Neues Board", "Name:")
-        if ok and title.strip():
-            b = Board(id=gen_id(), title=title.strip(), items=[])
+    def create_board(self) -> Optional[Board]:
+        title = self._ask_board_title(tr("Neues Board"))
+        if title:
+            b = Board(id=gen_id(), title=title, items=[])
             self.storage.upsert_board(b)
+            self._pending_select_board_id = b.id
+            bus.boardsChanged.emit()
+            return b
+        return None
+
+    @report_storage_errors
+    def rename_current_board(self):
+        b = self.current_board()
+        if not b:
+            return
+        title = self._ask_board_title(tr("Board umbenennen"), b.title)
+        if title and title != b.title and self.storage.rename_board(b.id, title):
             self._pending_select_board_id = b.id
             bus.boardsChanged.emit()
 
@@ -396,7 +488,9 @@ class BoardManager(QtWidgets.QWidget):
     def delete_current_board(self):
         b = self.current_board()
         if not b: return
-        if QtWidgets.QMessageBox.question(self, "Löschen", f"Board '{b.title}' wirklich löschen?") == QtWidgets.QMessageBox.StandardButton.Yes:
+        if QtWidgets.QMessageBox.question(
+            self, tr("Löschen"), tr("Board „{title}“ wirklich löschen?", title=b.title)
+        ) == QtWidgets.QMessageBox.StandardButton.Yes:
             self.storage.delete_board(b.id)
             bus.boardsChanged.emit()
 
@@ -419,13 +513,117 @@ class BoardManager(QtWidgets.QWidget):
             if PromptDialog(self.storage, p, self).exec():
                 bus.promptsChanged.emit()
 
-    def _on_tile_context_menu(self, tile, gpos):
+    @staticmethod
+    def _color_icon(hexcolor: str) -> QtGui.QIcon:
+        pm = QtGui.QPixmap(16, 16)
+        pm.fill(QtGui.QColor(hexcolor))
+        return QtGui.QIcon(pm)
+
+    def build_tile_context_menu(self, tile) -> QtWidgets.QMenu:
+        """Baut das Kachel-Kontextmenue (separat testbar, ohne exec())."""
+        pid = tile.prompt.id
+        vid = tile.version.id if tile.version else None
         menu = QtWidgets.QMenu(self)
-        menu.addAction("Kopieren", lambda: self._on_tile_clicked(tile.prompt.id, tile.version.id if tile.version else None))
-        menu.addAction("Bearbeiten", lambda: self._on_tile_double_clicked(tile.prompt.id, tile.version.id if tile.version else None))
+        menu.addAction(tr("Kopieren"), lambda: self._on_tile_clicked(pid, vid))
+        menu.addAction(tr("Bearbeiten"), lambda: self._on_tile_double_clicked(pid, vid))
         menu.addSeparator()
-        menu.addAction("Vom Board entfernen", lambda: self._remove_item_from_board(tile))
-        menu.exec(gpos)
+
+        # Auf anderes Board senden (verschieben) / duplizieren (kopieren)
+        board = self.current_board()
+        others = [b for b in self.storage.load_boards() if board is None or b.id != board.id]
+        m_move = menu.addMenu(tr("Auf Board verschieben"))
+        m_copy = menu.addMenu(tr("Auf Board duplizieren"))
+        for sub, move in ((m_move, True), (m_copy, False)):
+            for b in others:
+                sub.addAction(b.title or tr("(ohne Titel)"),
+                              lambda bid=b.id, mv=move: self.transfer_tile(tile, bid, move=mv))
+            if others:
+                sub.addSeparator()
+            sub.addAction(tr("Neues Board …"),
+                          lambda mv=move: self.transfer_tile_to_new_board(tile, move=mv))
+        m_move.setEnabled(board is not None)
+        m_copy.setEnabled(board is not None)
+
+        # Kachelfarbe
+        m_color = menu.addMenu(tr("Kachelfarbe"))
+        act_default = m_color.addAction(tr("Standardfarbe"), lambda: self.set_tile_color(tile, None))
+        act_default.setCheckable(True)
+        act_default.setChecked(not tile.color)
+        m_color.addSeparator()
+        for name, hexcolor in self.TILE_COLOR_PRESETS:
+            act = m_color.addAction(self._color_icon(hexcolor), tr(name),
+                                    lambda c=hexcolor: self.set_tile_color(tile, c))
+            act.setCheckable(True)
+            act.setChecked((tile.color or "").upper() == hexcolor)
+        m_color.addSeparator()
+        m_color.addAction(tr("Eigene Farbe …"), lambda: self.choose_custom_tile_color(tile))
+
+        menu.addSeparator()
+        menu.addAction(tr("Vom Board entfernen"), lambda: self._remove_item_from_board(tile))
+        return menu
+
+    def _on_tile_context_menu(self, tile, gpos):
+        self.build_tile_context_menu(tile).exec(gpos)
+
+    @report_storage_errors
+    def transfer_tile(self, tile, target_board_id: str, move: bool = False) -> bool:
+        """Sendet (move=True) oder dupliziert (move=False) eine Kachel auf ein anderes Board."""
+        board = self.current_board()
+        if not board or not target_board_id:
+            return False
+        pid = tile.prompt.id
+        vid = tile.version.id if tile.version else None
+        ok, reason = self.storage.transfer_item(board.id, target_board_id, pid, vid, move=move)
+        target = next((b for b in self.storage.load_boards() if b.id == target_board_id), None)
+        target_title = target.title if target else ""
+        if ok:
+            if move:
+                self.reload_items()
+            bus.boardsChanged.emit()
+            msg = (tr("Kachel auf Board „{title}“ verschoben.", title=target_title) if move
+                   else tr("Kachel auf Board „{title}“ dupliziert.", title=target_title))
+            self._show_status(msg)
+            return True
+        if reason == "duplicate":
+            QtWidgets.QMessageBox.information(
+                self, tr("Hinweis"),
+                tr("Diese Kachel ist auf Board „{title}“ bereits vorhanden.", title=target_title))
+        return False
+
+    @report_storage_errors
+    def transfer_tile_to_new_board(self, tile, move: bool = False) -> bool:
+        title = self._ask_board_title(tr("Neues Board"))
+        if not title:
+            return False
+        b = Board(id=gen_id(), title=title, items=[])
+        self.storage.upsert_board(b)
+        return self.transfer_tile(tile, b.id, move=move)
+
+    @report_storage_errors
+    def set_tile_color(self, tile, hexcolor: Optional[str]) -> bool:
+        board = self.current_board()
+        if not board:
+            return False
+        vid = tile.version.id if tile.version else None
+        if self.storage.set_item_color(board.id, tile.prompt.id, vid, hexcolor):
+            self.reload_items()
+            return True
+        return False
+
+    def choose_custom_tile_color(self, tile):
+        if tile.color:
+            initial = QtGui.QColor(tile.color)
+        else:
+            initial = QtGui.QColor(self.settings.get_tile_color("version" if tile.version else "main"))
+        chosen = QtWidgets.QColorDialog.getColor(initial, self, tr("Kachelfarbe wählen"))
+        if chosen.isValid():
+            self.set_tile_color(tile, chosen.name().upper())
+
+    def _show_status(self, message: str):
+        win = self.window()
+        status = win.statusBar() if isinstance(win, QtWidgets.QMainWindow) else None
+        if status is not None:
+            status.showMessage(message, 4000)
 
     @report_storage_errors
     def _remove_item_from_board(self, tile):

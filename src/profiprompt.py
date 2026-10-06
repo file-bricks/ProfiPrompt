@@ -26,39 +26,18 @@ from pdf_exporter import (
     export_single_version,
 )
 
-# --- Uebersetzung / i18n (Welle-1 U1: sichtbarer DE/EN-Sprachschalter) -------
-import os
-from pathlib import Path
-
-
-def _app_base_dir() -> Path:
-    """Basisverzeichnis fuer gebuendelte Daten (locales/translator).
-
-    Frozen (PyInstaller): sys._MEIPASS; sonst der Repo-Root (Parent von src/).
-    """
-    if getattr(sys, "frozen", False):
-        return Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
-    return Path(__file__).resolve().parent.parent
-
+# --- Uebersetzung / i18n ------------------------------------------------------
+# Ein gemeinsamer Translator (i18n.py) fuer ALLE Widgets; ein Sprachwechsel wird
+# per bus.languageChanged live an Dashboard, Boards und Dialoge verteilt.
+import i18n
+from i18n import tr, app_base_dir as _app_base_dir, TranslationSystem  # noqa: F401
 
 _BASE_DIR = _app_base_dir()
-if str(_BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(_BASE_DIR))
-
-try:
-    from translator import TranslationSystem
-except Exception:  # pragma: no cover - Uebersetzung ist optional
-    TranslationSystem = None
 
 
 def make_translator(lang: str):
-    """Erzeugt ein TranslationSystem mit robuster locales-Aufloesung (oder None)."""
-    if TranslationSystem is None:
-        return None
-    try:
-        return TranslationSystem(lang, app_dir=_BASE_DIR)
-    except Exception:
-        return None
+    """Erzeugt ein eigenstaendiges TranslationSystem (Kompat-API, oder None)."""
+    return i18n.make_translator(lang)
 
 
 from theme import apply_theme
@@ -86,7 +65,8 @@ class MainWindow(QMainWindow):
         self.storage = storage
         self.settings = settings
         self.app = QApplication.instance()
-        self.translator = make_translator(self.settings.get_language())
+        # Gemeinsamer App-Translator: Startsprache setzen, BEVOR Widgets entstehen
+        self.translator = i18n.init(self.settings.get_language())
 
         self.setWindowTitle("Prompt Manager")
         self.setWindowIcon(load_app_icon())
@@ -97,10 +77,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.dashboard)
 
         # Dock: Boards
-        self.boardDock = QDockWidget("Boards", self)
+        self.boardDock = QDockWidget(tr("Boards"), self)
         self.boardDock.setObjectName("BoardsDock")
-        self.boardDock.setAccessibleName("Boards-Bereich")
-        self.boardDock.setAccessibleDescription("Bereich für Kachel-Boards und Arbeitsflächen")
         self.boardDock.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea)
 
         self.boardManager = BoardManager(self.storage, self.settings)
@@ -110,8 +88,7 @@ class MainWindow(QMainWindow):
         # Statusleiste (WCAG 2.1 AA / Screenreader-Unterstützung für Statusmeldungen & Action-Tips)
         status_bar = self.statusBar()
         status_bar.setObjectName("MainWindowStatusBar")
-        status_bar.setAccessibleName("Statusleiste")
-        status_bar.setAccessibleDescription("Zeigt Statusmeldungen und Tastenkürzelhinweise an")
+        self._retranslate_chrome()
 
         # Menü & Aktionen
         self._build_menu()
@@ -124,9 +101,18 @@ class MainWindow(QMainWindow):
         bus.copyRequested.connect(self.handle_copy_request)
         bus.dragRequested.connect(self.handle_drag_request)
 
-    def _t(self, key: str) -> str:
+    def _t(self, key: str, **kwargs) -> str:
         """Uebersetzt key in die aktuelle Sprache (Fallback: key selbst)."""
-        return self.translator.t(key) if self.translator is not None else key
+        return tr(key, **kwargs)
+
+    def _retranslate_chrome(self):
+        """Dock-Titel, Statusleiste & Accessible-Names des Hauptfensters."""
+        self.boardDock.setWindowTitle(tr("Boards"))
+        self.boardDock.setAccessibleName(tr("Boards-Bereich"))
+        self.boardDock.setAccessibleDescription(tr("Bereich für Kachel-Boards und Arbeitsflächen"))
+        status_bar = self.statusBar()
+        status_bar.setAccessibleName(tr("Statusleiste"))
+        status_bar.setAccessibleDescription(tr("Zeigt Statusmeldungen und Tastenkürzelhinweise an"))
 
     def _build_menu(self):
         menubar = self.menuBar()
@@ -174,7 +160,7 @@ class MainWindow(QMainWindow):
 
         # Sprache / Language (Alt+S)
         m_lang = menubar.addMenu(_t("&Sprache / Language"))
-        cur = self.translator.get_language() if self.translator is not None else self.settings.get_language()
+        cur = i18n.get_language() if self.translator is not None else self.settings.get_language()
         lang_group = QActionGroup(self)
         lang_group.setExclusive(True)
         lang_names = {
@@ -193,26 +179,30 @@ class MainWindow(QMainWindow):
             m_lang.addAction(act)
 
     def change_language(self, lang: str):
-        """Setzt die Sprache, persistiert sie und stellt die Menueleiste live um."""
+        """Setzt die Sprache, persistiert sie und uebersetzt ALLE Bereiche live.
+
+        Frueher wurde nur die Menueleiste neu aufgebaut; Tabellenkoepfe, Filter,
+        Board-Leiste und Kacheln blieben bis zum Neustart deutsch. Jetzt verteilt
+        i18n.set_language() das Signal bus.languageChanged an alle Widgets.
+        """
         self.settings.set_language(lang)
-        if self.translator is not None:
-            self.translator.set_language(lang)
+        i18n.set_language(lang)
         self.retranslate()
         messages = {
-            "de": "Sprache auf Deutsch umgestellt. Einige Texte werden erst nach einem Neustart übersetzt.",
-            "en": "Language switched to English. Some texts update after a restart.",
-            "es": "Idioma cambiado a español. Algunos textos se actualizarán tras reiniciar.",
-            "zh": "语言已切换为中文。部分文本将在重启后生效。",
-            "ja": "言語を日本語に切り替えました。一部のテキストは再起動後に反映されます。",
-            "ru": "Язык переключен на русский. Некоторые тексты обновятся после перезапуска.",
+            "de": "Sprache auf Deutsch umgestellt.",
+            "en": "Language switched to English.",
+            "es": "Idioma cambiado a español.",
+            "zh": "语言已切换为中文。",
+            "ja": "言語を日本語に切り替えました。",
+            "ru": "Язык переключен на русский.",
         }
-        msg = messages.get(lang, messages["en"])
-        QMessageBox.information(self, "Sprache / Language", msg)
+        self.statusBar().showMessage(messages.get(lang, messages["en"]), 5000)
 
     def retranslate(self):
-        """Baut die Menueleiste in der aktuellen Sprache neu auf."""
+        """Baut Menueleiste und Fenster-Chrome in der aktuellen Sprache neu auf."""
         self.menuBar().clear()
         self._build_menu()
+        self._retranslate_chrome()
 
     def _action(self, text: str, slot, shortcut: Optional[str] = None, status_tip: Optional[str] = None):
         act = QAction(text, self)
@@ -247,14 +237,15 @@ class MainWindow(QMainWindow):
 
     def _show_help(self):
         QMessageBox.information(
-            self, "Anleitung",
-            "• Doppelklick auf Liste: Bearbeiten\n"
-            "• Drag & Drop auf Board rechts: Prompt anheften\n"
-            "• Rechtsklick: Kontextmenü für Export/Löschen"
+            self, tr("Anleitung"),
+            tr("• Doppelklick auf Liste: Bearbeiten\n"
+               "• Drag & Drop auf Board rechts: Prompt anheften\n"
+               "• Rechtsklick: Kontextmenü für Export/Löschen\n"
+               "• Rechtsklick auf Kachel: auf anderes Board verschieben/duplizieren, Kachelfarbe")
         )
 
     def _show_about(self):
-        QMessageBox.information(self, "Über", "Prompt Manager v1.0.1\nModern Dark Edition")
+        QMessageBox.information(self, tr("Über"), "Prompt Manager v1.0.1\nModern Dark Edition")
 
     # --- Exports ---
     @report_storage_errors
@@ -288,10 +279,10 @@ class MainWindow(QMainWindow):
         try:
             atomic_write_text(path, "\n\n".join(parts), protected_paths=self._protected_paths())
             from PySide6.QtWidgets import QMessageBox
-            QMessageBox.information(self, "Export", "TXT erfolgreich gespeichert.")
+            QMessageBox.information(self, tr("Export"), tr("TXT erfolgreich gespeichert."))
         except Exception as e:
             from PySide6.QtWidgets import QMessageBox
-            QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
+            QMessageBox.critical(self, tr("Fehler"), tr("TXT-Export fehlgeschlagen:\n{error}", error=e))
 
     def _protected_paths(self):
         protected = []
@@ -315,7 +306,7 @@ class MainWindow(QMainWindow):
     def export_library_json(self):
         path, _ = QFileDialog.getSaveFileName(
             self,
-            "Bibliothek exportieren",
+            tr("Bibliothek exportieren"),
             "profiprompt-library-v1.json",
             "JSON (*.json)",
         )
@@ -326,11 +317,11 @@ class MainWindow(QMainWindow):
             count = payload["stats"]["prompt_count"]
             QMessageBox.information(
                 self,
-                "Export",
-                f"JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).",
+                tr("Export"),
+                tr("JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).", count=count),
             )
         except Exception as e:
-            QMessageBox.critical(self, "Fehler", f"JSON-Export fehlgeschlagen:\n{e}")
+            QMessageBox.critical(self, tr("Fehler"), tr("JSON-Export fehlgeschlagen:\n{error}", error=e))
 
     def export_current_prompt_txt(self):
         p = self.dashboard.get_current_prompt()
@@ -340,7 +331,7 @@ class MainWindow(QMainWindow):
         if not path:
             return
         text = ClipboardManager(self.settings).build_copy_text(p)
-        self._write_txt_export(path, text, "TXT erfolgreich gespeichert.")
+        self._write_txt_export(path, text, tr("TXT erfolgreich gespeichert."))
 
     def export_current_prompt_pdf(self):
         p = self.dashboard.get_current_prompt()
@@ -362,10 +353,10 @@ class MainWindow(QMainWindow):
             return
         p = self.storage.get_prompt(v.prompt_id)
         if not p:
-            QMessageBox.critical(self, "Fehler", "Zugehöriger Prompt nicht gefunden.")
+            QMessageBox.critical(self, tr("Fehler"), tr("Zugehöriger Prompt nicht gefunden."))
             return
         text = ClipboardManager(self.settings).build_copy_text(p, v)
-        self._write_txt_export(path, text, "TXT erfolgreich gespeichert.")
+        self._write_txt_export(path, text, tr("TXT erfolgreich gespeichert."))
 
     def export_current_version_pdf(self):
         v = self.dashboard.get_current_version()
@@ -381,9 +372,9 @@ class MainWindow(QMainWindow):
     def _write_txt_export(self, path: str, text: str, success_message: str):
         try:
             atomic_write_text(path, text, protected_paths=self._protected_paths())
-            QMessageBox.information(self, "Export", success_message)
+            QMessageBox.information(self, tr("Export"), success_message)
         except Exception as e:
-            QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
+            QMessageBox.critical(self, tr("Fehler"), tr("TXT-Export fehlgeschlagen:\n{error}", error=e))
 
     # --- Handlers ---
     def open_copy_settings(self):
@@ -424,7 +415,7 @@ class MainWindow(QMainWindow):
             text = clip_mgr.build_copy_text(target_p, target_v)
             clipboard.setText(text)
             if parent:
-                parent.setToolTip("Kopiert! 📋")
+                parent.setToolTip(tr("Kopiert! 📋"))
                 from PySide6.QtCore import QTimer
                 QTimer.singleShot(1500, lambda: parent.setToolTip(""))
 

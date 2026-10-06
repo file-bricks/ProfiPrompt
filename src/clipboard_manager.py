@@ -2,6 +2,7 @@ from typing import Optional
 from PySide6 import QtWidgets
 from models import CopyMode, Prompt, Version
 from settings_manager import SettingsManager
+from i18n import tr
 
 class ClipboardManager:
     def __init__(self, settings: SettingsManager):
@@ -58,5 +59,5 @@ class ClipboardManager:
         if widget is not None:
             QtWidgets.QToolTip.showText(
                 widget.mapToGlobal(widget.rect().center()),
-                "Kopiert 📋"
+                tr("Kopiert 📋")
             )

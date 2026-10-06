@@ -32,3 +32,12 @@ def qapp():
     """Eine einzige QApplication-Instanz fuer alle GUI-nahen Tests."""
     app = QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
     return app
+
+
+@pytest.fixture(autouse=True)
+def _reset_ui_language():
+    """Der App-Translator (i18n) ist global: nach jedem Test auf 'de' zuruecksetzen,
+    damit ein Sprachwechsel-Test nachfolgende Tests (deutsche Labels) nicht beeinflusst."""
+    yield
+    import i18n
+    i18n.init("de")

@@ -998,5 +998,1397 @@
     "zh": "将整个提示词库备份为 JSON 格式",
     "ja": "ライブラリ全体を JSON 形式で保存",
     "ru": "Сохранить всю библиотеку в формате JSON"
+  },
+  "Theme-Auswahl": {
+    "de": "Theme-Auswahl",
+    "en": "Theme selection",
+    "es": "Selección de tema",
+    "zh": "主题选择",
+    "ja": "テーマの選択",
+    "ru": "Выбор темы"
+  },
+  "Auswahl zwischen dunklem und hellem Farbschema": {
+    "de": "Auswahl zwischen dunklem und hellem Farbschema",
+    "en": "Choose between dark and light color scheme",
+    "es": "Elegir entre esquema de colores oscuro y claro",
+    "zh": "在深色和浅色配色方案之间选择",
+    "ja": "ダークとライトの配色を選択",
+    "ru": "Выбор между тёмной и светлой цветовой схемой"
+  },
+  "Farbe Hauptprompt-Kacheln": {
+    "de": "Farbe Hauptprompt-Kacheln",
+    "en": "Main prompt tile color",
+    "es": "Color de mosaicos de prompt principal",
+    "zh": "主提示磁贴颜色",
+    "ja": "メインプロンプトタイルの色",
+    "ru": "Цвет плиток основных промптов"
+  },
+  "Farbe Versionsprompt-Kacheln": {
+    "de": "Farbe Versionsprompt-Kacheln",
+    "en": "Version prompt tile color",
+    "es": "Color de mosaicos de versión",
+    "zh": "版本提示磁贴颜色",
+    "ja": "バージョンタイルの色",
+    "ru": "Цвет плиток версий"
+  },
+  "Farbe Hauptprompt-Kacheln:": {
+    "de": "Farbe Hauptprompt-Kacheln:",
+    "en": "Main prompt tile color:",
+    "es": "Color de mosaicos de prompt principal:",
+    "zh": "主提示磁贴颜色：",
+    "ja": "メインプロンプトタイルの色:",
+    "ru": "Цвет плиток основных промптов:"
+  },
+  "Farbe Versionsprompt-Kacheln:": {
+    "de": "Farbe Versionsprompt-Kacheln:",
+    "en": "Version prompt tile color:",
+    "es": "Color de mosaicos de versión:",
+    "zh": "版本提示磁贴颜色：",
+    "ja": "バージョンタイルの色:",
+    "ru": "Цвет плиток версий:"
+  },
+  "Kachelfarben zurücksetzen": {
+    "de": "Kachelfarben zurücksetzen",
+    "en": "Reset tile colors",
+    "es": "Restablecer colores de mosaicos",
+    "zh": "重置磁贴颜色",
+    "ja": "タイルの色をリセット",
+    "ru": "Сбросить цвета плиток"
+  },
+  "Setzt die Kachelfarben auf die Standardwerte zurück": {
+    "de": "Setzt die Kachelfarben auf die Standardwerte zurück",
+    "en": "Resets the tile colors to their defaults",
+    "es": "Restablece los colores de los mosaicos a los valores predeterminados",
+    "zh": "将磁贴颜色恢复为默认值",
+    "ja": "タイルの色を既定値に戻します",
+    "ru": "Сбрасывает цвета плиток на значения по умолчанию"
+  },
+  "Standardfarben wiederherstellen": {
+    "de": "Standardfarben wiederherstellen",
+    "en": "Restore default colors",
+    "es": "Restaurar colores predeterminados",
+    "zh": "恢复默认颜色",
+    "ja": "既定の色に戻す",
+    "ru": "Восстановить цвета по умолчанию"
+  },
+  "Darstellungs-Einstellungen speichern und anwenden": {
+    "de": "Darstellungs-Einstellungen speichern und anwenden",
+    "en": "Save and apply appearance settings",
+    "es": "Guardar y aplicar la configuración de apariencia",
+    "zh": "保存并应用外观设置",
+    "ja": "表示設定を保存して適用",
+    "ru": "Сохранить и применить настройки оформления"
+  },
+  "Einstellungen speichern (Enter)": {
+    "de": "Einstellungen speichern (Enter)",
+    "en": "Save settings (Enter)",
+    "es": "Guardar configuración (Intro)",
+    "zh": "保存设置（Enter）",
+    "ja": "設定を保存 (Enter)",
+    "ru": "Сохранить настройки (Enter)"
+  },
+  "Änderungen verwerfen und Dialog schließen": {
+    "de": "Änderungen verwerfen und Dialog schließen",
+    "en": "Discard changes and close dialog",
+    "es": "Descartar cambios y cerrar el diálogo",
+    "zh": "放弃更改并关闭对话框",
+    "ja": "変更を破棄してダイアログを閉じる",
+    "ru": "Отменить изменения и закрыть диалог"
+  },
+  "Abbrechen (Esc)": {
+    "de": "Abbrechen (Esc)",
+    "en": "Cancel (Esc)",
+    "es": "Cancelar (Esc)",
+    "zh": "取消（Esc）",
+    "ja": "キャンセル (Esc)",
+    "ru": "Отмена (Esc)"
+  },
+  "Hauptprompts": {
+    "de": "Hauptprompts",
+    "en": "main prompts",
+    "es": "prompts principales",
+    "zh": "主提示",
+    "ja": "メインプロンプト",
+    "ru": "основных промптов"
+  },
+  "Versionsprompts": {
+    "de": "Versionsprompts",
+    "en": "version prompts",
+    "es": "versiones",
+    "zh": "版本提示",
+    "ja": "バージョン",
+    "ru": "версий"
+  },
+  "Kachelfarbe für {kind} ändern (Aktuell: {color})": {
+    "de": "Kachelfarbe für {kind} ändern (Aktuell: {color})",
+    "en": "Change tile color for {kind} (current: {color})",
+    "es": "Cambiar color de mosaico para {kind} (actual: {color})",
+    "zh": "更改{kind}的磁贴颜色（当前：{color}）",
+    "ja": "{kind}のタイル色を変更 (現在: {color})",
+    "ru": "Изменить цвет плиток для {kind} (текущий: {color})"
+  },
+  "Aktuelle Hex-Farbe für {kind}: {color}": {
+    "de": "Aktuelle Hex-Farbe für {kind}: {color}",
+    "en": "Current hex color for {kind}: {color}",
+    "es": "Color hex actual para {kind}: {color}",
+    "zh": "{kind}的当前十六进制颜色：{color}",
+    "ja": "{kind}の現在の16進カラー: {color}",
+    "ru": "Текущий hex-цвет для {kind}: {color}"
+  },
+  "Kachelfarbe wählen": {
+    "de": "Kachelfarbe wählen",
+    "en": "Choose tile color",
+    "es": "Elegir color de mosaico",
+    "zh": "选择磁贴颜色",
+    "ja": "タイルの色を選択",
+    "ru": "Выбрать цвет плитки"
+  },
+  "Möchten Sie diese Kachel wirklich vom Board entfernen?": {
+    "de": "Möchten Sie diese Kachel wirklich vom Board entfernen?",
+    "en": "Do you really want to remove this tile from the board?",
+    "es": "¿Desea realmente quitar este mosaico del tablero?",
+    "zh": "确定要从看板中移除此磁贴吗？",
+    "ja": "このタイルをボードから削除しますか？",
+    "ru": "Действительно удалить эту плитку с доски?"
+  },
+  "Kachel entfernen": {
+    "de": "Kachel entfernen",
+    "en": "Remove Tile",
+    "es": "Quitar mosaico",
+    "zh": "移除磁贴",
+    "ja": "タイルを削除",
+    "ru": "Удалить плитку"
+  },
+  "Kachel-Typ: {badge}": {
+    "de": "Kachel-Typ: {badge}",
+    "en": "Tile type: {badge}",
+    "es": "Tipo de mosaico: {badge}",
+    "zh": "磁贴类型：{badge}",
+    "ja": "タイルの種類: {badge}",
+    "ru": "Тип плитки: {badge}"
+  },
+  "Kachel-Untertitel: {text}": {
+    "de": "Kachel-Untertitel: {text}",
+    "en": "Tile subtitle: {text}",
+    "es": "Subtítulo del mosaico: {text}",
+    "zh": "磁贴副标题：{text}",
+    "ja": "タイルのサブタイトル: {text}",
+    "ru": "Подзаголовок плитки: {text}"
+  },
+  "Kachel-Vorschau: {text}": {
+    "de": "Kachel-Vorschau: {text}",
+    "en": "Tile preview: {text}",
+    "es": "Vista previa del mosaico: {text}",
+    "zh": "磁贴预览：{text}",
+    "ja": "タイルのプレビュー: {text}",
+    "ru": "Предпросмотр плитки: {text}"
+  },
+  "Prompt-Kachel: {title}": {
+    "de": "Prompt-Kachel: {title}",
+    "en": "Prompt tile: {title}",
+    "es": "Mosaico de prompt: {title}",
+    "zh": "提示磁贴：{title}",
+    "ja": "プロンプトタイル: {title}",
+    "ru": "Плитка промпта: {title}"
+  },
+  "Umbenennen": {
+    "de": "Umbenennen",
+    "en": "Rename",
+    "es": "Renombrar",
+    "zh": "重命名",
+    "ja": "名前を変更",
+    "ru": "Переименовать"
+  },
+  "Schriftart": {
+    "de": "Schriftart",
+    "en": "Font",
+    "es": "Fuente",
+    "zh": "字体",
+    "ja": "フォント",
+    "ru": "Шрифт"
+  },
+  "Aktives Board": {
+    "de": "Aktives Board",
+    "en": "Active board",
+    "es": "Tablero activo",
+    "zh": "当前看板",
+    "ja": "アクティブなボード",
+    "ru": "Активная доска"
+  },
+  "Wählt das aktive Prompt-Board aus": {
+    "de": "Wählt das aktive Prompt-Board aus",
+    "en": "Selects the active prompt board",
+    "es": "Selecciona el tablero de prompts activo",
+    "zh": "选择当前提示看板",
+    "ja": "アクティブなプロンプトボードを選択します",
+    "ru": "Выбирает активную доску промптов"
+  },
+  "Erstellt ein neues leeres Prompt-Board": {
+    "de": "Erstellt ein neues leeres Prompt-Board",
+    "en": "Creates a new empty prompt board",
+    "es": "Crea un nuevo tablero de prompts vacío",
+    "zh": "创建一个新的空提示看板",
+    "ja": "新しい空のプロンプトボードを作成します",
+    "ru": "Создаёт новую пустую доску промптов"
+  },
+  "Benennt das aktuell ausgewählte Prompt-Board um": {
+    "de": "Benennt das aktuell ausgewählte Prompt-Board um",
+    "en": "Renames the currently selected prompt board",
+    "es": "Renombra el tablero de prompts seleccionado",
+    "zh": "重命名当前选中的提示看板",
+    "ja": "選択中のプロンプトボードの名前を変更します",
+    "ru": "Переименовывает выбранную доску промптов"
+  },
+  "Löscht das aktuell ausgewählte Prompt-Board": {
+    "de": "Löscht das aktuell ausgewählte Prompt-Board",
+    "en": "Deletes the currently selected prompt board",
+    "es": "Elimina el tablero de prompts seleccionado",
+    "zh": "删除当前选中的提示看板",
+    "ja": "選択中のプロンプトボードを削除します",
+    "ru": "Удаляет выбранную доску промптов"
+  },
+  "Öffnet die Schriftartenauswahl für Board-Kacheln": {
+    "de": "Öffnet die Schriftartenauswahl für Board-Kacheln",
+    "en": "Opens the font selection for board tiles",
+    "es": "Abre la selección de fuente para los mosaicos",
+    "zh": "打开看板磁贴的字体选择",
+    "ja": "ボードタイルのフォント選択を開きます",
+    "ru": "Открывает выбор шрифта для плиток доски"
+  },
+  "Board-Arbeitsfläche": {
+    "de": "Board-Arbeitsfläche",
+    "en": "Board workspace",
+    "es": "Área de trabajo del tablero",
+    "zh": "看板工作区",
+    "ja": "ボードのワークスペース",
+    "ru": "Рабочая область доски"
+  },
+  "Bereich mit angehefteten Prompt-Kacheln": {
+    "de": "Bereich mit angehefteten Prompt-Kacheln",
+    "en": "Area with pinned prompt tiles",
+    "es": "Área con mosaicos de prompts fijados",
+    "zh": "包含已固定提示磁贴的区域",
+    "ja": "ピン留めされたプロンプトタイルの領域",
+    "ru": "Область с закреплёнными плитками промптов"
+  },
+  "Kachel-Raster": {
+    "de": "Kachel-Raster",
+    "en": "Tile grid",
+    "es": "Cuadrícula de mosaicos",
+    "zh": "磁贴网格",
+    "ja": "タイルグリッド",
+    "ru": "Сетка плиток"
+  },
+  "Schriftart wählen": {
+    "de": "Schriftart wählen",
+    "en": "Choose font",
+    "es": "Elegir fuente",
+    "zh": "选择字体",
+    "ja": "フォントを選択",
+    "ru": "Выбрать шрифт"
+  },
+  "Name:": {
+    "de": "Name:",
+    "en": "Name:",
+    "es": "Nombre:",
+    "zh": "名称：",
+    "ja": "名前:",
+    "ru": "Название:"
+  },
+  "Kopieren": {
+    "de": "Kopieren",
+    "en": "Copy",
+    "es": "Copiar",
+    "zh": "复制",
+    "ja": "コピー",
+    "ru": "Копировать"
+  },
+  "Auf Board verschieben": {
+    "de": "Auf Board verschieben",
+    "en": "Move to board",
+    "es": "Mover al tablero",
+    "zh": "移动到看板",
+    "ja": "ボードへ移動",
+    "ru": "Переместить на доску"
+  },
+  "Auf Board duplizieren": {
+    "de": "Auf Board duplizieren",
+    "en": "Duplicate to board",
+    "es": "Duplicar en tablero",
+    "zh": "复制到看板",
+    "ja": "ボードへ複製",
+    "ru": "Дублировать на доску"
+  },
+  "Neues Board …": {
+    "de": "Neues Board …",
+    "en": "New board …",
+    "es": "Nuevo tablero …",
+    "zh": "新建看板 …",
+    "ja": "新しいボード …",
+    "ru": "Новая доска …"
+  },
+  "(ohne Titel)": {
+    "de": "(ohne Titel)",
+    "en": "(untitled)",
+    "es": "(sin título)",
+    "zh": "（无标题）",
+    "ja": "(無題)",
+    "ru": "(без названия)"
+  },
+  "Kachelfarbe": {
+    "de": "Kachelfarbe",
+    "en": "Tile color",
+    "es": "Color del mosaico",
+    "zh": "磁贴颜色",
+    "ja": "タイルの色",
+    "ru": "Цвет плитки"
+  },
+  "Standardfarbe": {
+    "de": "Standardfarbe",
+    "en": "Default color",
+    "es": "Color predeterminado",
+    "zh": "默认颜色",
+    "ja": "既定の色",
+    "ru": "Цвет по умолчанию"
+  },
+  "Eigene Farbe …": {
+    "de": "Eigene Farbe …",
+    "en": "Custom color …",
+    "es": "Color personalizado …",
+    "zh": "自定义颜色 …",
+    "ja": "カスタムカラー …",
+    "ru": "Свой цвет …"
+  },
+  "Vom Board entfernen": {
+    "de": "Vom Board entfernen",
+    "en": "Remove from board",
+    "es": "Quitar del tablero",
+    "zh": "从看板移除",
+    "ja": "ボードから削除",
+    "ru": "Убрать с доски"
+  },
+  "Board „{title}“ wirklich löschen?": {
+    "de": "Board „{title}“ wirklich löschen?",
+    "en": "Really delete board “{title}”?",
+    "es": "¿Eliminar realmente el tablero «{title}»?",
+    "zh": "确定删除看板“{title}”吗？",
+    "ja": "ボード「{title}」を削除しますか？",
+    "ru": "Действительно удалить доску «{title}»?"
+  },
+  "Kachel auf Board „{title}“ verschoben.": {
+    "de": "Kachel auf Board „{title}“ verschoben.",
+    "en": "Tile moved to board “{title}”.",
+    "es": "Mosaico movido al tablero «{title}».",
+    "zh": "磁贴已移动到看板“{title}”。",
+    "ja": "タイルをボード「{title}」へ移動しました。",
+    "ru": "Плитка перемещена на доску «{title}»."
+  },
+  "Kachel auf Board „{title}“ dupliziert.": {
+    "de": "Kachel auf Board „{title}“ dupliziert.",
+    "en": "Tile duplicated to board “{title}”.",
+    "es": "Mosaico duplicado en el tablero «{title}».",
+    "zh": "磁贴已复制到看板“{title}”。",
+    "ja": "タイルをボード「{title}」へ複製しました。",
+    "ru": "Плитка продублирована на доску «{title}»."
+  },
+  "Diese Kachel ist auf Board „{title}“ bereits vorhanden.": {
+    "de": "Diese Kachel ist auf Board „{title}“ bereits vorhanden.",
+    "en": "This tile already exists on board “{title}”.",
+    "es": "Este mosaico ya existe en el tablero «{title}».",
+    "zh": "此磁贴已存在于看板“{title}”上。",
+    "ja": "このタイルはボード「{title}」に既にあります。",
+    "ru": "Эта плитка уже есть на доске «{title}»."
+  },
+  "Rot": {
+    "de": "Rot",
+    "en": "Red",
+    "es": "Rojo",
+    "zh": "红色",
+    "ja": "赤",
+    "ru": "Красный"
+  },
+  "Orange": {
+    "de": "Orange",
+    "en": "Orange",
+    "es": "Naranja",
+    "zh": "橙色",
+    "ja": "オレンジ",
+    "ru": "Оранжевый"
+  },
+  "Gelb": {
+    "de": "Gelb",
+    "en": "Yellow",
+    "es": "Amarillo",
+    "zh": "黄色",
+    "ja": "黄",
+    "ru": "Жёлтый"
+  },
+  "Grün": {
+    "de": "Grün",
+    "en": "Green",
+    "es": "Verde",
+    "zh": "绿色",
+    "ja": "緑",
+    "ru": "Зелёный"
+  },
+  "Türkis": {
+    "de": "Türkis",
+    "en": "Teal",
+    "es": "Turquesa",
+    "zh": "青绿色",
+    "ja": "ターコイズ",
+    "ru": "Бирюзовый"
+  },
+  "Blau": {
+    "de": "Blau",
+    "en": "Blue",
+    "es": "Azul",
+    "zh": "蓝色",
+    "ja": "青",
+    "ru": "Синий"
+  },
+  "Violett": {
+    "de": "Violett",
+    "en": "Purple",
+    "es": "Violeta",
+    "zh": "紫色",
+    "ja": "紫",
+    "ru": "Фиолетовый"
+  },
+  "Rosa": {
+    "de": "Rosa",
+    "en": "Pink",
+    "es": "Rosa",
+    "zh": "粉色",
+    "ja": "ピンク",
+    "ru": "Розовый"
+  },
+  "Grau": {
+    "de": "Grau",
+    "en": "Gray",
+    "es": "Gris",
+    "zh": "灰色",
+    "ja": "グレー",
+    "ru": "Серый"
+  },
+  "Kopiert 📋": {
+    "de": "Kopiert 📋",
+    "en": "Copied 📋",
+    "es": "Copiado 📋",
+    "zh": "已复制 📋",
+    "ja": "コピーしました 📋",
+    "ru": "Скопировано 📋"
+  },
+  "Kopiermodus": {
+    "de": "Kopiermodus",
+    "en": "Copy mode",
+    "es": "Modo de copia",
+    "zh": "复制模式",
+    "ja": "コピーモード",
+    "ru": "Режим копирования"
+  },
+  "Kopiermodus:": {
+    "de": "Kopiermodus:",
+    "en": "Copy mode:",
+    "es": "Modo de copia:",
+    "zh": "复制模式：",
+    "ja": "コピーモード:",
+    "ru": "Режим копирования:"
+  },
+  "Auswahl, welche Inhalte beim Kopieren in die Zwischenablage übernommen werden": {
+    "de": "Auswahl, welche Inhalte beim Kopieren in die Zwischenablage übernommen werden",
+    "en": "Selects which content is copied to the clipboard",
+    "es": "Selecciona qué contenido se copia al portapapeles",
+    "zh": "选择复制到剪贴板的内容",
+    "ja": "クリップボードにコピーする内容を選択します",
+    "ru": "Выбор содержимого, копируемого в буфер обмена"
+  },
+  "Metadaten (Tags) hinzufügen": {
+    "de": "Metadaten (Tags) hinzufügen",
+    "en": "Add metadata (tags)",
+    "es": "Añadir metadatos (etiquetas)",
+    "zh": "添加元数据（标签）",
+    "ja": "メタデータ（タグ）を追加",
+    "ru": "Добавить метаданные (теги)"
+  },
+  "Metadaten hinzufügen": {
+    "de": "Metadaten hinzufügen",
+    "en": "Add metadata",
+    "es": "Añadir metadatos",
+    "zh": "添加元数据",
+    "ja": "メタデータを追加",
+    "ru": "Добавить метаданные"
+  },
+  "Schlagwörter und Metadaten an den kopierten Text anfügen": {
+    "de": "Schlagwörter und Metadaten an den kopierten Text anfügen",
+    "en": "Append tags and metadata to the copied text",
+    "es": "Añadir etiquetas y metadatos al texto copiado",
+    "zh": "在复制的文本后附加标签和元数据",
+    "ja": "コピーしたテキストにタグとメタデータを付加",
+    "ru": "Добавлять теги и метаданные к скопированному тексту"
+  },
+  "Kopier-Einstellungen speichern und Dialog schließen": {
+    "de": "Kopier-Einstellungen speichern und Dialog schließen",
+    "en": "Save copy settings and close dialog",
+    "es": "Guardar configuración de copia y cerrar el diálogo",
+    "zh": "保存复制设置并关闭对话框",
+    "ja": "コピー設定を保存してダイアログを閉じる",
+    "ru": "Сохранить настройки копирования и закрыть диалог"
+  },
+  "Nur Titel": {
+    "de": "Nur Titel",
+    "en": "Title only",
+    "es": "Solo título",
+    "zh": "仅标题",
+    "ja": "タイトルのみ",
+    "ru": "Только заголовок"
+  },
+  "Nur Ergebnis": {
+    "de": "Nur Ergebnis",
+    "en": "Result only",
+    "es": "Solo resultado",
+    "zh": "仅结果",
+    "ja": "結果のみ",
+    "ru": "Только результат"
+  },
+  "Alles": {
+    "de": "Alles",
+    "en": "Everything",
+    "es": "Todo",
+    "zh": "全部",
+    "ja": "すべて",
+    "ru": "Всё"
+  },
+  "Titel": {
+    "de": "Titel",
+    "en": "Title",
+    "es": "Título",
+    "zh": "标题",
+    "ja": "タイトル",
+    "ru": "Заголовок"
+  },
+  "Zweck": {
+    "de": "Zweck",
+    "en": "Purpose",
+    "es": "Propósito",
+    "zh": "用途",
+    "ja": "目的",
+    "ru": "Назначение"
+  },
+  "Tags": {
+    "de": "Tags",
+    "en": "Tags",
+    "es": "Etiquetas",
+    "zh": "标签",
+    "ja": "タグ",
+    "ru": "Теги"
+  },
+  "Erstellt": {
+    "de": "Erstellt",
+    "en": "Created",
+    "es": "Creado",
+    "zh": "创建时间",
+    "ja": "作成日",
+    "ru": "Создано"
+  },
+  "Aktualisiert": {
+    "de": "Aktualisiert",
+    "en": "Updated",
+    "es": "Actualizado",
+    "zh": "更新时间",
+    "ja": "更新日",
+    "ru": "Обновлено"
+  },
+  "Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung": {
+    "de": "Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung",
+    "en": "Hierarchical overview of all prompts and versions with keyboard support",
+    "es": "Vista jerárquica de todos los prompts y versiones con soporte de teclado",
+    "zh": "所有提示和版本的层级概览，支持键盘操作",
+    "ja": "全プロンプトとバージョンの階層表示（キーボード操作対応）",
+    "ru": "Иерархический обзор всех промптов и версий с управлением с клавиатуры"
+  },
+  "Alle Tags": {
+    "de": "Alle Tags",
+    "en": "All tags",
+    "es": "Todas las etiquetas",
+    "zh": "所有标签",
+    "ja": "すべてのタグ",
+    "ru": "Все теги"
+  },
+  "Suchbegriff": {
+    "de": "Suchbegriff",
+    "en": "Search term",
+    "es": "Término de búsqueda",
+    "zh": "搜索词",
+    "ja": "検索語",
+    "ru": "Поисковый запрос"
+  },
+  "Suchfeld für Volltextsuche in Titeln, Texten und Tags": {
+    "de": "Suchfeld für Volltextsuche in Titeln, Texten und Tags",
+    "en": "Full-text search in titles, texts and tags",
+    "es": "Búsqueda de texto completo en títulos, textos y etiquetas",
+    "zh": "在标题、文本和标签中进行全文搜索",
+    "ja": "タイトル・本文・タグの全文検索",
+    "ru": "Полнотекстовый поиск по заголовкам, текстам и тегам"
+  },
+  "Tag-Filter": {
+    "de": "Tag-Filter",
+    "en": "Tag filter",
+    "es": "Filtro de etiquetas",
+    "zh": "标签筛选",
+    "ja": "タグフィルター",
+    "ru": "Фильтр по тегам"
+  },
+  "Filtert Prompts nach ausgewählten Tags": {
+    "de": "Filtert Prompts nach ausgewählten Tags",
+    "en": "Filters prompts by the selected tag",
+    "es": "Filtra los prompts por la etiqueta seleccionada",
+    "zh": "按所选标签筛选提示",
+    "ja": "選択したタグでプロンプトを絞り込みます",
+    "ru": "Фильтрует промпты по выбранному тегу"
+  },
+  "Startdatum": {
+    "de": "Startdatum",
+    "en": "Start date",
+    "es": "Fecha de inicio",
+    "zh": "开始日期",
+    "ja": "開始日",
+    "ru": "Дата начала"
+  },
+  "Filtert Prompts ab dem angegebenen Erstellungsdatum": {
+    "de": "Filtert Prompts ab dem angegebenen Erstellungsdatum",
+    "en": "Filters prompts from the given date",
+    "es": "Filtra los prompts desde la fecha indicada",
+    "zh": "筛选指定日期之后的提示",
+    "ja": "指定日以降のプロンプトを絞り込みます",
+    "ru": "Фильтрует промпты начиная с указанной даты"
+  },
+  "Enddatum": {
+    "de": "Enddatum",
+    "en": "End date",
+    "es": "Fecha de fin",
+    "zh": "结束日期",
+    "ja": "終了日",
+    "ru": "Дата окончания"
+  },
+  "Filtert Prompts bis zum angegebenen Erstellungsdatum": {
+    "de": "Filtert Prompts bis zum angegebenen Erstellungsdatum",
+    "en": "Filters prompts up to the given date",
+    "es": "Filtra los prompts hasta la fecha indicada",
+    "zh": "筛选指定日期之前的提示",
+    "ja": "指定日までのプロンプトを絞り込みます",
+    "ru": "Фильтрует промпты до указанной даты"
+  },
+  "Setzt alle Such-, Tag- und Datumsfilter zurück": {
+    "de": "Setzt alle Such-, Tag- und Datumsfilter zurück",
+    "en": "Resets all search, tag and date filters",
+    "es": "Restablece todos los filtros de búsqueda, etiqueta y fecha",
+    "zh": "重置所有搜索、标签和日期筛选",
+    "ja": "検索・タグ・日付のフィルターをすべてリセットします",
+    "ru": "Сбрасывает все фильтры поиска, тегов и дат"
+  },
+  "Ohne Titel": {
+    "de": "Ohne Titel",
+    "en": "Untitled",
+    "es": "Sin título",
+    "zh": "无标题",
+    "ja": "無題",
+    "ru": "Без названия"
+  },
+  "Prompt kopieren: {title}": {
+    "de": "Prompt kopieren: {title}",
+    "en": "Copy prompt: {title}",
+    "es": "Copiar prompt: {title}",
+    "zh": "复制提示：{title}",
+    "ja": "プロンプトをコピー: {title}",
+    "ru": "Копировать промпт: {title}"
+  },
+  "Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage": {
+    "de": "Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage",
+    "en": "Copies the prompt text to the clipboard according to the copy mode",
+    "es": "Copia el texto del prompt al portapapeles según el modo de copia",
+    "zh": "按复制模式将提示文本复制到剪贴板",
+    "ja": "コピーモードに従ってプロンプトをクリップボードにコピーします",
+    "ru": "Копирует текст промпта в буфер обмена согласно режиму копирования"
+  },
+  "Version kopieren: {title}": {
+    "de": "Version kopieren: {title}",
+    "en": "Copy version: {title}",
+    "es": "Copiar versión: {title}",
+    "zh": "复制版本：{title}",
+    "ja": "バージョンをコピー: {title}",
+    "ru": "Копировать версию: {title}"
+  },
+  "Kopiert diese Version in die Zwischenablage": {
+    "de": "Kopiert diese Version in die Zwischenablage",
+    "en": "Copies this version to the clipboard",
+    "es": "Copia esta versión al portapapeles",
+    "zh": "将此版本复制到剪贴板",
+    "ja": "このバージョンをクリップボードにコピーします",
+    "ru": "Копирует эту версию в буфер обмена"
+  },
+  "Neuen Prompt hinzufügen": {
+    "de": "Neuen Prompt hinzufügen",
+    "en": "Add new prompt",
+    "es": "Añadir nuevo prompt",
+    "zh": "添加新提示",
+    "ja": "新しいプロンプトを追加",
+    "ru": "Добавить новый промпт"
+  },
+  "Prompt kopieren": {
+    "de": "Prompt kopieren",
+    "en": "Copy prompt",
+    "es": "Copiar prompt",
+    "zh": "复制提示",
+    "ja": "プロンプトをコピー",
+    "ru": "Копировать промпт"
+  },
+  "Prompt inkl. Versionen kopieren": {
+    "de": "Prompt inkl. Versionen kopieren",
+    "en": "Copy prompt incl. versions",
+    "es": "Copiar prompt con versiones",
+    "zh": "复制提示（含版本）",
+    "ja": "プロンプトをバージョンごとコピー",
+    "ru": "Копировать промпт с версиями"
+  },
+  "Version kopieren": {
+    "de": "Version kopieren",
+    "en": "Copy version",
+    "es": "Copiar versión",
+    "zh": "复制版本",
+    "ja": "バージョンをコピー",
+    "ru": "Копировать версию"
+  },
+  "Neue Version anlegen": {
+    "de": "Neue Version anlegen",
+    "en": "Create new version",
+    "es": "Crear nueva versión",
+    "zh": "新建版本",
+    "ja": "新しいバージョンを作成",
+    "ru": "Создать новую версию"
+  },
+  "Auf Board heften": {
+    "de": "Auf Board heften",
+    "en": "Pin to board",
+    "es": "Fijar en tablero",
+    "zh": "固定到看板",
+    "ja": "ボードにピン留め",
+    "ru": "Закрепить на доске"
+  },
+  "Dieses Element ist auf dem Board bereits vorhanden.": {
+    "de": "Dieses Element ist auf dem Board bereits vorhanden.",
+    "en": "This item is already on the board.",
+    "es": "Este elemento ya está en el tablero.",
+    "zh": "此项目已在看板上。",
+    "ja": "この項目は既にボードにあります。",
+    "ru": "Этот элемент уже есть на доске."
+  },
+  "Prompt exportieren (TXT)": {
+    "de": "Prompt exportieren (TXT)",
+    "en": "Export prompt (TXT)",
+    "es": "Exportar prompt (TXT)",
+    "zh": "导出提示（TXT）",
+    "ja": "プロンプトをエクスポート (TXT)",
+    "ru": "Экспорт промпта (TXT)"
+  },
+  "Prompt exportieren (PDF)": {
+    "de": "Prompt exportieren (PDF)",
+    "en": "Export prompt (PDF)",
+    "es": "Exportar prompt (PDF)",
+    "zh": "导出提示（PDF）",
+    "ja": "プロンプトをエクスポート (PDF)",
+    "ru": "Экспорт промпта (PDF)"
+  },
+  "Prompt+Versionen exportieren (TXT)": {
+    "de": "Prompt+Versionen exportieren (TXT)",
+    "en": "Export prompt + versions (TXT)",
+    "es": "Exportar prompt + versiones (TXT)",
+    "zh": "导出提示及版本（TXT）",
+    "ja": "プロンプト＋バージョンをエクスポート (TXT)",
+    "ru": "Экспорт промпта с версиями (TXT)"
+  },
+  "Prompt+Versionen exportieren (PDF)": {
+    "de": "Prompt+Versionen exportieren (PDF)",
+    "en": "Export prompt + versions (PDF)",
+    "es": "Exportar prompt + versiones (PDF)",
+    "zh": "导出提示及版本（PDF）",
+    "ja": "プロンプト＋バージョンをエクスポート (PDF)",
+    "ru": "Экспорт промпта с версиями (PDF)"
+  },
+  "Version exportieren (TXT)": {
+    "de": "Version exportieren (TXT)",
+    "en": "Export version (TXT)",
+    "es": "Exportar versión (TXT)",
+    "zh": "导出版本（TXT）",
+    "ja": "バージョンをエクスポート (TXT)",
+    "ru": "Экспорт версии (TXT)"
+  },
+  "Version exportieren (PDF)": {
+    "de": "Version exportieren (PDF)",
+    "en": "Export version (PDF)",
+    "es": "Exportar versión (PDF)",
+    "zh": "导出版本（PDF）",
+    "ja": "バージョンをエクスポート (PDF)",
+    "ru": "Экспорт версии (PDF)"
+  },
+  "Export": {
+    "de": "Export",
+    "en": "Export",
+    "es": "Exportar",
+    "zh": "导出",
+    "ja": "エクスポート",
+    "ru": "Экспорт"
+  },
+  "TXT speichern": {
+    "de": "TXT speichern",
+    "en": "Save TXT",
+    "es": "Guardar TXT",
+    "zh": "保存 TXT",
+    "ja": "TXT を保存",
+    "ru": "Сохранить TXT"
+  },
+  "Textdatei (*.txt)": {
+    "de": "Textdatei (*.txt)",
+    "en": "Text file (*.txt)",
+    "es": "Archivo de texto (*.txt)",
+    "zh": "文本文件 (*.txt)",
+    "ja": "テキストファイル (*.txt)",
+    "ru": "Текстовый файл (*.txt)"
+  },
+  "PDF speichern": {
+    "de": "PDF speichern",
+    "en": "Save PDF",
+    "es": "Guardar PDF",
+    "zh": "保存 PDF",
+    "ja": "PDF を保存",
+    "ru": "Сохранить PDF"
+  },
+  "PDF-Datei (*.pdf)": {
+    "de": "PDF-Datei (*.pdf)",
+    "en": "PDF file (*.pdf)",
+    "es": "Archivo PDF (*.pdf)",
+    "zh": "PDF 文件 (*.pdf)",
+    "ja": "PDF ファイル (*.pdf)",
+    "ru": "PDF-файл (*.pdf)"
+  },
+  "Prompt „{title}“ wirklich löschen?": {
+    "de": "Prompt „{title}“ wirklich löschen?",
+    "en": "Really delete prompt “{title}”?",
+    "es": "¿Eliminar realmente el prompt «{title}»?",
+    "zh": "确定删除提示“{title}”吗？",
+    "ja": "プロンプト「{title}」を削除しますか？",
+    "ru": "Действительно удалить промпт «{title}»?"
+  },
+  "Version „v{num} – {title}“ wirklich löschen?": {
+    "de": "Version „v{num} – {title}“ wirklich löschen?",
+    "en": "Really delete version “v{num} – {title}”?",
+    "es": "¿Eliminar realmente la versión «v{num} – {title}»?",
+    "zh": "确定删除版本“v{num} – {title}”吗？",
+    "ja": "バージョン「v{num} – {title}」を削除しますか？",
+    "ru": "Действительно удалить версию «v{num} – {title}»?"
+  },
+  "TXT-Export fehlgeschlagen:\n{error}": {
+    "de": "TXT-Export fehlgeschlagen:\n{error}",
+    "en": "TXT export failed:\n{error}",
+    "es": "Error al exportar TXT:\n{error}",
+    "zh": "TXT 导出失败：\n{error}",
+    "ja": "TXT のエクスポートに失敗しました:\n{error}",
+    "ru": "Ошибка экспорта TXT:\n{error}"
+  },
+  "Bundle-Export fehlgeschlagen:\n{error}": {
+    "de": "Bundle-Export fehlgeschlagen:\n{error}",
+    "en": "Bundle export failed:\n{error}",
+    "es": "Error al exportar el paquete:\n{error}",
+    "zh": "合集导出失败：\n{error}",
+    "ja": "バンドルのエクスポートに失敗しました:\n{error}",
+    "ru": "Ошибка экспорта пакета:\n{error}"
+  },
+  "PDF-Export fehlgeschlagen:\n{error}": {
+    "de": "PDF-Export fehlgeschlagen:\n{error}",
+    "en": "PDF export failed:\n{error}",
+    "es": "Error al exportar PDF:\n{error}",
+    "zh": "PDF 导出失败：\n{error}",
+    "ja": "PDF のエクスポートに失敗しました:\n{error}",
+    "ru": "Ошибка экспорта PDF:\n{error}"
+  },
+  "JSON-Export fehlgeschlagen:\n{error}": {
+    "de": "JSON-Export fehlgeschlagen:\n{error}",
+    "en": "JSON export failed:\n{error}",
+    "es": "Error al exportar JSON:\n{error}",
+    "zh": "JSON 导出失败：\n{error}",
+    "ja": "JSON のエクスポートに失敗しました:\n{error}",
+    "ru": "Ошибка экспорта JSON:\n{error}"
+  },
+  "Boards-Bereich": {
+    "de": "Boards-Bereich",
+    "en": "Boards area",
+    "es": "Área de tableros",
+    "zh": "看板区域",
+    "ja": "ボード領域",
+    "ru": "Область досок"
+  },
+  "Bereich für Kachel-Boards und Arbeitsflächen": {
+    "de": "Bereich für Kachel-Boards und Arbeitsflächen",
+    "en": "Area for tile boards and workspaces",
+    "es": "Área para tableros de mosaicos y espacios de trabajo",
+    "zh": "磁贴看板和工作区区域",
+    "ja": "タイルボードとワークスペースの領域",
+    "ru": "Область для досок с плитками и рабочих пространств"
+  },
+  "Statusleiste": {
+    "de": "Statusleiste",
+    "en": "Status bar",
+    "es": "Barra de estado",
+    "zh": "状态栏",
+    "ja": "ステータスバー",
+    "ru": "Строка состояния"
+  },
+  "Zeigt Statusmeldungen und Tastenkürzelhinweise an": {
+    "de": "Zeigt Statusmeldungen und Tastenkürzelhinweise an",
+    "en": "Shows status messages and shortcut hints",
+    "es": "Muestra mensajes de estado y atajos de teclado",
+    "zh": "显示状态消息和快捷键提示",
+    "ja": "ステータスメッセージとショートカットのヒントを表示します",
+    "ru": "Показывает сообщения о состоянии и подсказки по сочетаниям клавиш"
+  },
+  "• Doppelklick auf Liste: Bearbeiten\n• Drag & Drop auf Board rechts: Prompt anheften\n• Rechtsklick: Kontextmenü für Export/Löschen\n• Rechtsklick auf Kachel: auf anderes Board verschieben/duplizieren, Kachelfarbe": {
+    "de": "• Doppelklick auf Liste: Bearbeiten\n• Drag & Drop auf Board rechts: Prompt anheften\n• Rechtsklick: Kontextmenü für Export/Löschen\n• Rechtsklick auf Kachel: auf anderes Board verschieben/duplizieren, Kachelfarbe",
+    "en": "• Double-click in list: edit\n• Drag & drop onto the board on the right: pin prompt\n• Right-click: context menu for export/delete\n• Right-click on tile: move/duplicate to another board, tile color",
+    "es": "• Doble clic en la lista: editar\n• Arrastrar y soltar en el tablero de la derecha: fijar prompt\n• Clic derecho: menú contextual para exportar/eliminar\n• Clic derecho en un mosaico: mover/duplicar a otro tablero, color del mosaico",
+    "zh": "• 在列表中双击：编辑\n• 拖放到右侧看板：固定提示\n• 右键：导出/删除的上下文菜单\n• 右键单击磁贴：移动/复制到其他看板、磁贴颜色",
+    "ja": "• リストをダブルクリック: 編集\n• 右側のボードへドラッグ＆ドロップ: プロンプトをピン留め\n• 右クリック: エクスポート／削除のコンテキストメニュー\n• タイルを右クリック: 別のボードへ移動／複製、タイルの色",
+    "ru": "• Двойной щелчок в списке: редактировать\n• Перетащить на доску справа: закрепить промпт\n• Правый щелчок: контекстное меню экспорта/удаления\n• Правый щелчок по плитке: переместить/дублировать на другую доску, цвет плитки"
+  },
+  "Bibliothek exportieren": {
+    "de": "Bibliothek exportieren",
+    "en": "Export library",
+    "es": "Exportar biblioteca",
+    "zh": "导出库",
+    "ja": "ライブラリをエクスポート",
+    "ru": "Экспорт библиотеки"
+  },
+  "JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).": {
+    "de": "JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).",
+    "en": "JSON library saved successfully ({count} prompts).",
+    "es": "Biblioteca JSON guardada correctamente ({count} prompts).",
+    "zh": "JSON 库已成功保存（{count} 个提示）。",
+    "ja": "JSON ライブラリを保存しました（{count} 件のプロンプト）。",
+    "ru": "JSON-библиотека успешно сохранена ({count} промптов)."
+  },
+  "Prompt erstellen": {
+    "de": "Prompt erstellen",
+    "en": "Create Prompt",
+    "es": "Crear prompt",
+    "zh": "创建提示",
+    "ja": "プロンプトを作成",
+    "ru": "Создать промпт"
+  },
+  "Titel des Prompts (Pflichtfeld)": {
+    "de": "Titel des Prompts (Pflichtfeld)",
+    "en": "Prompt title (required)",
+    "es": "Título del prompt (obligatorio)",
+    "zh": "提示标题（必填）",
+    "ja": "プロンプトのタイトル（必須）",
+    "ru": "Заголовок промпта (обязательно)"
+  },
+  "Titel des Prompts eingeben …": {
+    "de": "Titel des Prompts eingeben …",
+    "en": "Enter prompt title …",
+    "es": "Introduzca el título del prompt …",
+    "zh": "输入提示标题 …",
+    "ja": "プロンプトのタイトルを入力 …",
+    "ru": "Введите заголовок промпта …"
+  },
+  "Zweck und Verwendungsziel des Prompts": {
+    "de": "Zweck und Verwendungsziel des Prompts",
+    "en": "Purpose and intended use of the prompt",
+    "es": "Propósito y uso previsto del prompt",
+    "zh": "提示的用途与目标",
+    "ja": "プロンプトの目的と用途",
+    "ru": "Назначение и цель использования промпта"
+  },
+  "Verwendungszweck beschreiben …": {
+    "de": "Verwendungszweck beschreiben …",
+    "en": "Describe the purpose …",
+    "es": "Describa el propósito …",
+    "zh": "描述用途 …",
+    "ja": "目的を記述 …",
+    "ru": "Опишите назначение …"
+  },
+  "Kommagetrennte Liste von Schlagwörtern": {
+    "de": "Kommagetrennte Liste von Schlagwörtern",
+    "en": "Comma-separated list of tags",
+    "es": "Lista de etiquetas separadas por comas",
+    "zh": "以逗号分隔的标签列表",
+    "ja": "カンマ区切りのタグ一覧",
+    "ru": "Список тегов через запятую"
+  },
+  "z. B. Coding, Refactoring, Python": {
+    "de": "z. B. Coding, Refactoring, Python",
+    "en": "e.g. coding, refactoring, Python",
+    "es": "p. ej. programación, refactorización, Python",
+    "zh": "例如：编程, 重构, Python",
+    "ja": "例: コーディング, リファクタリング, Python",
+    "ru": "напр. код, рефакторинг, Python"
+  },
+  "Prompt-Text": {
+    "de": "Prompt-Text",
+    "en": "Prompt text",
+    "es": "Texto del prompt",
+    "zh": "提示文本",
+    "ja": "プロンプト本文",
+    "ru": "Текст промпта"
+  },
+  "Vollständiger Prompt-Text (Pflichtfeld)": {
+    "de": "Vollständiger Prompt-Text (Pflichtfeld)",
+    "en": "Full prompt text (required)",
+    "es": "Texto completo del prompt (obligatorio)",
+    "zh": "完整提示文本（必填）",
+    "ja": "プロンプト全文（必須）",
+    "ru": "Полный текст промпта (обязательно)"
+  },
+  "Hier den Prompt-Text formulieren …": {
+    "de": "Hier den Prompt-Text formulieren …",
+    "en": "Write the prompt text here …",
+    "es": "Redacte aquí el texto del prompt …",
+    "zh": "在此编写提示文本 …",
+    "ja": "ここにプロンプト本文を入力 …",
+    "ru": "Сформулируйте текст промпта здесь …"
+  },
+  "Ergebnis": {
+    "de": "Ergebnis",
+    "en": "Result",
+    "es": "Resultado",
+    "zh": "结果",
+    "ja": "結果",
+    "ru": "Результат"
+  },
+  "Zuletzt erzieltes Testergebnis oder Modellausgabe": {
+    "de": "Zuletzt erzieltes Testergebnis oder Modellausgabe",
+    "en": "Most recent test result or model output",
+    "es": "Último resultado de prueba o salida del modelo",
+    "zh": "最近的测试结果或模型输出",
+    "ja": "最新のテスト結果またはモデル出力",
+    "ru": "Последний результат теста или ответ модели"
+  },
+  "Optionale Modellausgabe oder Notizen …": {
+    "de": "Optionale Modellausgabe oder Notizen …",
+    "en": "Optional model output or notes …",
+    "es": "Salida del modelo o notas opcionales …",
+    "zh": "可选的模型输出或备注 …",
+    "ja": "モデル出力やメモ（任意） …",
+    "ru": "Необязательный ответ модели или заметки …"
+  },
+  "Titel*": {
+    "de": "Titel*",
+    "en": "Title*",
+    "es": "Título*",
+    "zh": "标题*",
+    "ja": "タイトル*",
+    "ru": "Заголовок*"
+  },
+  "Tags (Komma)": {
+    "de": "Tags (Komma)",
+    "en": "Tags (comma)",
+    "es": "Etiquetas (coma)",
+    "zh": "标签（逗号分隔）",
+    "ja": "タグ（カンマ区切り）",
+    "ru": "Теги (через запятую)"
+  },
+  "Prompt-Text*": {
+    "de": "Prompt-Text*",
+    "en": "Prompt text*",
+    "es": "Texto del prompt*",
+    "zh": "提示文本*",
+    "ja": "プロンプト本文*",
+    "ru": "Текст промпта*"
+  },
+  "Versionen-Liste": {
+    "de": "Versionen-Liste",
+    "en": "Version list",
+    "es": "Lista de versiones",
+    "zh": "版本列表",
+    "ja": "バージョン一覧",
+    "ru": "Список версий"
+  },
+  "Übersicht aller Versionen dieses Prompts": {
+    "de": "Übersicht aller Versionen dieses Prompts",
+    "en": "Overview of all versions of this prompt",
+    "es": "Resumen de todas las versiones de este prompt",
+    "zh": "此提示所有版本的概览",
+    "ja": "このプロンプトの全バージョンの一覧",
+    "ru": "Обзор всех версий этого промпта"
+  },
+  "Versionen": {
+    "de": "Versionen",
+    "en": "Versions",
+    "es": "Versiones",
+    "zh": "版本",
+    "ja": "バージョン",
+    "ru": "Версии"
+  },
+  "Versionen-Gruppe": {
+    "de": "Versionen-Gruppe",
+    "en": "Versions group",
+    "es": "Grupo de versiones",
+    "zh": "版本分组",
+    "ja": "バージョングループ",
+    "ru": "Группа версий"
+  },
+  "Speichert die Änderungen und schließt den Dialog": {
+    "de": "Speichert die Änderungen und schließt den Dialog",
+    "en": "Saves the changes and closes the dialog",
+    "es": "Guarda los cambios y cierra el diálogo",
+    "zh": "保存更改并关闭对话框",
+    "ja": "変更を保存してダイアログを閉じます",
+    "ru": "Сохраняет изменения и закрывает диалог"
+  },
+  "Prompt speichern (Enter)": {
+    "de": "Prompt speichern (Enter)",
+    "en": "Save prompt (Enter)",
+    "es": "Guardar prompt (Intro)",
+    "zh": "保存提示（Enter）",
+    "ja": "プロンプトを保存 (Enter)",
+    "ru": "Сохранить промпт (Enter)"
+  },
+  "Verwirft Änderungen und schließt den Dialog": {
+    "de": "Verwirft Änderungen und schließt den Dialog",
+    "en": "Discards changes and closes the dialog",
+    "es": "Descarta los cambios y cierra el diálogo",
+    "zh": "放弃更改并关闭对话框",
+    "ja": "変更を破棄してダイアログを閉じます",
+    "ru": "Отменяет изменения и закрывает диалог"
+  },
+  "Versions-Kontext": {
+    "de": "Versions-Kontext",
+    "en": "Version context",
+    "es": "Contexto de la versión",
+    "zh": "版本上下文",
+    "ja": "バージョンの情報",
+    "ru": "Контекст версии"
+  },
+  "Prompt: {title}": {
+    "de": "Prompt: {title}",
+    "en": "Prompt: {title}",
+    "es": "Prompt: {title}",
+    "zh": "提示：{title}",
+    "ja": "プロンプト: {title}",
+    "ru": "Промпт: {title}"
+  },
+  "Bearbeite: v{num} — {title}": {
+    "de": "Bearbeite: v{num} — {title}",
+    "en": "Editing: v{num} — {title}",
+    "es": "Editando: v{num} — {title}",
+    "zh": "正在编辑：v{num} — {title}",
+    "ja": "編集中: v{num} — {title}",
+    "ru": "Редактирование: v{num} — {title}"
+  },
+  "Zugeordneter Prompt: {title}": {
+    "de": "Zugeordneter Prompt: {title}",
+    "en": "Associated prompt: {title}",
+    "es": "Prompt asociado: {title}",
+    "zh": "所属提示：{title}",
+    "ja": "関連するプロンプト: {title}",
+    "ru": "Связанный промпт: {title}"
+  },
+  "Versionstitel": {
+    "de": "Versionstitel",
+    "en": "Version title",
+    "es": "Título de la versión",
+    "zh": "版本标题",
+    "ja": "バージョンのタイトル",
+    "ru": "Заголовок версии"
+  },
+  "Titel dieser Prompt-Version (Pflichtfeld)": {
+    "de": "Titel dieser Prompt-Version (Pflichtfeld)",
+    "en": "Title of this prompt version (required)",
+    "es": "Título de esta versión (obligatorio)",
+    "zh": "此提示版本的标题（必填）",
+    "ja": "このバージョンのタイトル（必須）",
+    "ru": "Заголовок этой версии (обязательно)"
+  },
+  "Titel der Version …": {
+    "de": "Titel der Version …",
+    "en": "Version title …",
+    "es": "Título de la versión …",
+    "zh": "版本标题 …",
+    "ja": "バージョンのタイトル …",
+    "ru": "Заголовок версии …"
+  },
+  "z. B. v2, überarbeitet, kurz": {
+    "de": "z. B. v2, überarbeitet, kurz",
+    "en": "e.g. v2, revised, short",
+    "es": "p. ej. v2, revisado, corto",
+    "zh": "例如：v2, 修订, 简短",
+    "ja": "例: v2, 改訂, 短縮",
+    "ru": "напр. v2, исправлено, кратко"
+  },
+  "Vollständiger Prompt-Text dieser Version (Pflichtfeld)": {
+    "de": "Vollständiger Prompt-Text dieser Version (Pflichtfeld)",
+    "en": "Full prompt text of this version (required)",
+    "es": "Texto completo de esta versión (obligatorio)",
+    "zh": "此版本的完整提示文本（必填）",
+    "ja": "このバージョンのプロンプト全文（必須）",
+    "ru": "Полный текст этой версии (обязательно)"
+  },
+  "Prompt-Text für diese Version formulieren …": {
+    "de": "Prompt-Text für diese Version formulieren …",
+    "en": "Write the prompt text for this version …",
+    "es": "Redacte el texto de esta versión …",
+    "zh": "编写此版本的提示文本 …",
+    "ja": "このバージョンの本文を入力 …",
+    "ru": "Сформулируйте текст для этой версии …"
+  },
+  "Testergebnis oder Notizen dieser Version": {
+    "de": "Testergebnis oder Notizen dieser Version",
+    "en": "Test result or notes of this version",
+    "es": "Resultado de prueba o notas de esta versión",
+    "zh": "此版本的测试结果或备注",
+    "ja": "このバージョンのテスト結果またはメモ",
+    "ru": "Результат теста или заметки этой версии"
+  },
+  "Optionale Modellausgabe für diese Version …": {
+    "de": "Optionale Modellausgabe für diese Version …",
+    "en": "Optional model output for this version …",
+    "es": "Salida del modelo opcional para esta versión …",
+    "zh": "此版本的可选模型输出 …",
+    "ja": "このバージョンのモデル出力（任意） …",
+    "ru": "Необязательный ответ модели для этой версии …"
+  },
+  "Verwirft Eingaben und schließt den Dialog": {
+    "de": "Verwirft Eingaben und schließt den Dialog",
+    "en": "Discards input and closes the dialog",
+    "es": "Descarta la entrada y cierra el diálogo",
+    "zh": "放弃输入并关闭对话框",
+    "ja": "入力を破棄してダイアログを閉じます",
+    "ru": "Отменяет ввод и закрывает диалог"
+  },
+  "Speichert die Änderungen an dieser Version": {
+    "de": "Speichert die Änderungen an dieser Version",
+    "en": "Saves the changes to this version",
+    "es": "Guarda los cambios de esta versión",
+    "zh": "保存对此版本的更改",
+    "ja": "このバージョンへの変更を保存します",
+    "ru": "Сохраняет изменения этой версии"
+  },
+  "Version aktualisieren (Enter)": {
+    "de": "Version aktualisieren (Enter)",
+    "en": "Update version (Enter)",
+    "es": "Actualizar versión (Intro)",
+    "zh": "更新版本（Enter）",
+    "ja": "バージョンを更新 (Enter)",
+    "ru": "Обновить версию (Enter)"
+  },
+  "Erstellt eine neue Version mit fortlaufender Nummer": {
+    "de": "Erstellt eine neue Version mit fortlaufender Nummer",
+    "en": "Creates a new version with the next number",
+    "es": "Crea una nueva versión con el siguiente número",
+    "zh": "以下一个编号创建新版本",
+    "ja": "連番で新しいバージョンを作成します",
+    "ru": "Создаёт новую версию со следующим номером"
+  },
+  "Als neue Version anlegen": {
+    "de": "Als neue Version anlegen",
+    "en": "Create as new version",
+    "es": "Crear como nueva versión",
+    "zh": "另存为新版本",
+    "ja": "新しいバージョンとして作成",
+    "ru": "Создать как новую версию"
+  },
+  "Erstellt eine neue Version dieses Prompts": {
+    "de": "Erstellt eine neue Version dieses Prompts",
+    "en": "Creates a new version of this prompt",
+    "es": "Crea una nueva versión de este prompt",
+    "zh": "创建此提示的新版本",
+    "ja": "このプロンプトの新しいバージョンを作成します",
+    "ru": "Создаёт новую версию этого промпта"
+  },
+  "Version anlegen (Enter)": {
+    "de": "Version anlegen (Enter)",
+    "en": "Create version (Enter)",
+    "es": "Crear versión (Intro)",
+    "zh": "创建版本（Enter）",
+    "ja": "バージョンを作成 (Enter)",
+    "ru": "Создать версию (Enter)"
+  },
+  "Speichern fehlgeschlagen": {
+    "de": "Speichern fehlgeschlagen",
+    "en": "Save failed",
+    "es": "Error al guardar",
+    "zh": "保存失败",
+    "ja": "保存に失敗しました",
+    "ru": "Ошибка сохранения"
+  },
+  "Der zugehörige Prompt wurde nicht gefunden.": {
+    "de": "Der zugehörige Prompt wurde nicht gefunden.",
+    "en": "The associated prompt was not found.",
+    "es": "No se encontró el prompt asociado.",
+    "zh": "未找到对应的提示。",
+    "ja": "関連するプロンプトが見つかりません。",
+    "ru": "Связанный промпт не найден."
+  },
+  "Bibliothek nicht verfügbar": {
+    "de": "Bibliothek nicht verfügbar",
+    "en": "Library unavailable",
+    "es": "Biblioteca no disponible",
+    "zh": "库不可用",
+    "ja": "ライブラリを利用できません",
+    "ru": "Библиотека недоступна"
+  },
+  "Die Bibliothek konnte nicht gelesen oder gespeichert werden.\nPrüfen Sie die Datei und ihre Zugriffsrechte und versuchen Sie es erneut.": {
+    "de": "Die Bibliothek konnte nicht gelesen oder gespeichert werden.\nPrüfen Sie die Datei und ihre Zugriffsrechte und versuchen Sie es erneut.",
+    "en": "The library could not be read or saved.\nCheck the file and its access permissions and try again.",
+    "es": "No se pudo leer ni guardar la biblioteca.\nCompruebe el archivo y sus permisos de acceso e inténtelo de nuevo.",
+    "zh": "无法读取或保存库。\n请检查文件及其访问权限后重试。",
+    "ja": "ライブラリを読み込めないか保存できませんでした。\nファイルとアクセス権を確認して再試行してください。",
+    "ru": "Не удалось прочитать или сохранить библиотеку.\nПроверьте файл и права доступа и повторите попытку."
+  },
+  "Eingabe / Return": {
+    "de": "Eingabe / Return",
+    "en": "Enter / Return",
+    "es": "Intro / Retorno",
+    "zh": "Enter / 回车",
+    "ja": "Enter / Return",
+    "ru": "Enter / Return"
+  },
+  "Entf / Backspace": {
+    "de": "Entf / Backspace",
+    "en": "Del / Backspace",
+    "es": "Supr / Retroceso",
+    "zh": "Delete / 退格",
+    "ja": "Delete / Backspace",
+    "ru": "Delete / Backspace"
+  },
+  "Leertaste": {
+    "de": "Leertaste",
+    "en": "Space",
+    "es": "Barra espaciadora",
+    "zh": "空格键",
+    "ja": "スペース",
+    "ru": "Пробел"
+  },
+  "Kontextmenü / Shift+F10": {
+    "de": "Kontextmenü / Shift+F10",
+    "en": "Menu key / Shift+F10",
+    "es": "Tecla de menú / Mayús+F10",
+    "zh": "菜单键 / Shift+F10",
+    "ja": "メニューキー / Shift+F10",
+    "ru": "Клавиша меню / Shift+F10"
+  },
+  "Kachel auf anderes Board verschieben / duplizieren": {
+    "de": "Kachel auf anderes Board verschieben / duplizieren",
+    "en": "Move / duplicate tile to another board",
+    "es": "Mover / duplicar mosaico a otro tablero",
+    "zh": "将磁贴移动/复制到其他看板",
+    "ja": "タイルを別のボードへ移動／複製",
+    "ru": "Переместить / дублировать плитку на другую доску"
+  },
+  "Kachelfarbe ändern": {
+    "de": "Kachelfarbe ändern",
+    "en": "Change tile color",
+    "es": "Cambiar color del mosaico",
+    "zh": "更改磁贴颜色",
+    "ja": "タイルの色を変更",
+    "ru": "Изменить цвет плитки"
   }
 }

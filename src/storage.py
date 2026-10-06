@@ -5,7 +5,7 @@ from functools import wraps
 from pathlib import Path
 from typing import List, Optional, Tuple
 from atomic_io import atomic_write_json
-from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, board_to_dict, gen_id, now_iso
+from models import Prompt, Version, Board, BoardItem, prompt_from_dict, prompt_to_dict, board_from_dict, board_to_dict, gen_id, now_iso, normalize_item_color
 
 class StorageReadError(OSError):
     """A library could not be read completely; a mutation must not replace it."""
@@ -229,7 +229,8 @@ class Storage:
         self._write_boards(boards)
 
     @_locked
-    def add_item_to_board(self, board_id: str, prompt_id: str, version_id: Optional[str] = None, validate_prompt: bool = False) -> Tuple[bool, Optional[str]]:
+    def add_item_to_board(self, board_id: str, prompt_id: str, version_id: Optional[str] = None, validate_prompt: bool = False,
+                          color: Optional[str] = None) -> Tuple[bool, Optional[str]]:
         if not prompt_id or not str(prompt_id).strip():
             return False, None
         if validate_prompt:
@@ -248,7 +249,8 @@ class Storage:
                 for it in b.items:
                     if it and getattr(it, "prompt_id", None) == prompt_id and getattr(it, "version_id", None) == version_id:
                         return False, None
-                item = BoardItem(id=gen_id(), board_id=board_id, prompt_id=prompt_id, version_id=version_id)
+                item = BoardItem(id=gen_id(), board_id=board_id, prompt_id=prompt_id, version_id=version_id,
+                                 color=normalize_item_color(color))
                 b.items.append(item)
                 self._write_boards(boards)
                 return True, item.id
@@ -264,4 +266,85 @@ class Storage:
                         board.items.pop(index)
                         self._write_boards(boards)
                         return True
+        return False
+
+    # --- Kachel zwischen Boards senden / duplizieren, Kachelfarbe ---
+    @staticmethod
+    def _find_item(board: Board, prompt_id: str, version_id: Optional[str]) -> int:
+        return next((i for i, it in enumerate(getattr(board, "items", None) or [])
+                     if it and it.prompt_id == prompt_id and it.version_id == version_id), -1)
+
+    @_locked
+    def transfer_item(self, source_board_id: str, target_board_id: str, prompt_id: str,
+                      version_id: Optional[str] = None, *, move: bool = False) -> Tuple[bool, str]:
+        """Kopiert (move=False) oder verschiebt (move=True) eine Kachel auf ein anderes Board.
+
+        Die individuelle Kachelfarbe wird mitgenommen. Beide Boards werden in EINEM
+        atomaren Schreibvorgang aktualisiert, damit ein Verschieben nie zu einer
+        verlorenen oder doppelten Kachel fuehrt.
+
+        Rueckgabe: (Erfolg, Grund) mit Grund in
+        'ok' | 'same_board' | 'source_missing' | 'target_missing' | 'duplicate'.
+        """
+        if source_board_id == target_board_id:
+            return False, "same_board"
+        boards = self.load_boards(strict=True)
+        src = next((b for b in boards if b and b.id == source_board_id), None)
+        dst = next((b for b in boards if b and b.id == target_board_id), None)
+        if src is None:
+            return False, "source_missing"
+        if dst is None:
+            return False, "target_missing"
+        idx = self._find_item(src, prompt_id, version_id)
+        if idx < 0:
+            return False, "source_missing"
+        if dst.items is None:
+            dst.items = []
+        if self._find_item(dst, prompt_id, version_id) >= 0:
+            return False, "duplicate"
+        original = src.items[idx]
+        dst.items.append(BoardItem(id=gen_id(), board_id=dst.id, prompt_id=prompt_id,
+                                   version_id=version_id, color=original.color))
+        if move:
+            src.items.pop(idx)
+        self._write_boards(boards)
+        return True, "ok"
+
+    def copy_item_to_board(self, source_board_id: str, target_board_id: str, prompt_id: str,
+                           version_id: Optional[str] = None) -> Tuple[bool, str]:
+        return self.transfer_item(source_board_id, target_board_id, prompt_id, version_id, move=False)
+
+    def move_item_to_board(self, source_board_id: str, target_board_id: str, prompt_id: str,
+                           version_id: Optional[str] = None) -> Tuple[bool, str]:
+        return self.transfer_item(source_board_id, target_board_id, prompt_id, version_id, move=True)
+
+    @_locked
+    def set_item_color(self, board_id: str, prompt_id: str, version_id: Optional[str] = None,
+                       color: Optional[str] = None) -> bool:
+        """Setzt (oder entfernt mit color=None) die individuelle Farbe einer Kachel."""
+        new_color = normalize_item_color(color)
+        if color is not None and new_color is None:
+            return False
+        boards = self.load_boards(strict=True)
+        for board in boards:
+            if board and board.id == board_id:
+                idx = self._find_item(board, prompt_id, version_id)
+                if idx < 0:
+                    return False
+                board.items[idx].color = new_color
+                self._write_boards(boards)
+                return True
+        return False
+
+    @_locked
+    def rename_board(self, board_id: str, title: str) -> bool:
+        title = (title or "").strip()
+        if not title:
+            return False
+        boards = self.load_boards(strict=True)
+        for board in boards:
+            if board and board.id == board_id:
+                board.title = title
+                self._write_boards(boards)
+                return True
         return False

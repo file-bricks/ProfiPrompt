@@ -9,6 +9,7 @@ from PySide6.QtGui import QFont, QPageLayout, QPageSize, QPdfWriter, QTextDocume
 from PySide6.QtWidgets import QMessageBox
 
 from atomic_io import atomic_publish_file, is_protected_path
+from i18n import tr
 
 def _format_tags(tags) -> str:
     """Formatiert Tags robust als kommagetrennte Liste (filtert None/Leereintraege)."""
@@ -118,7 +119,7 @@ def _export_html_to_pdf(html: str, path: str, parent=None, protected_paths: Opti
     if is_protected_path(target_path, protected_paths):
         msg = f"Zielpfad '{target_path}' darf keine geschützte Bibliotheksdatei überschreiben."
         if parent:
-            QMessageBox.critical(parent, "Fehler", f"PDF-Export fehlgeschlagen:\n{msg}")
+            QMessageBox.critical(parent, tr("Fehler"), tr("PDF-Export fehlgeschlagen:\n{error}", error=msg))
         return False
 
     target_path.parent.mkdir(parents=True, exist_ok=True)
@@ -144,11 +145,11 @@ def _export_html_to_pdf(html: str, path: str, parent=None, protected_paths: Opti
 
         atomic_publish_file(tmp_path, target_path, protected_paths=protected_paths)
         if parent:
-            QMessageBox.information(parent, "Export", "PDF erfolgreich gespeichert.")
+            QMessageBox.information(parent, tr("Export"), tr("PDF erfolgreich gespeichert."))
         return True
     except Exception as e:
         if parent:
-            QMessageBox.critical(parent, "Fehler", f"PDF-Export fehlgeschlagen:\n{e}")
+            QMessageBox.critical(parent, tr("Fehler"), tr("PDF-Export fehlgeschlagen:\n{error}", error=e))
         return False
     finally:
         if tmp_path.exists():

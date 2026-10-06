@@ -15,22 +15,23 @@ from PySide6 import QtWidgets, QtGui, QtCore
 
 from settings_manager import SettingsManager
 import theme as theme_mod
+from i18n import tr
 
 
 class AppearanceDialog(QtWidgets.QDialog):
     def __init__(self, settings: SettingsManager, parent=None):
         super().__init__(parent)
         self.settings = settings
-        self.setWindowTitle("Darstellung")
+        self.setWindowTitle(tr("Darstellung"))
         self.setModal(True)
         self.setMinimumWidth(360)
 
         # --- Theme (U2) ---
         self.theme_combo = QtWidgets.QComboBox()
-        self.theme_combo.setAccessibleName("Theme-Auswahl")
-        self.theme_combo.setAccessibleDescription("Auswahl zwischen dunklem und hellem Farbschema")
-        self.theme_combo.addItem("Dunkel", "dark")
-        self.theme_combo.addItem("Hell", "light")
+        self.theme_combo.setAccessibleName(tr("Theme-Auswahl"))
+        self.theme_combo.setAccessibleDescription(tr("Auswahl zwischen dunklem und hellem Farbschema"))
+        self.theme_combo.addItem(tr("Dunkel"), "dark")
+        self.theme_combo.addItem(tr("Hell"), "light")
         cur_theme = self.settings.get_theme()
         idx = self.theme_combo.findData(cur_theme)
         self.theme_combo.setCurrentIndex(idx if idx >= 0 else 0)
@@ -40,25 +41,25 @@ class AppearanceDialog(QtWidgets.QDialog):
         self._version_color = self.settings.get_tile_color("version")
 
         self.btn_main = QtWidgets.QPushButton()
-        self.btn_main.setAccessibleName("Farbe Hauptprompt-Kacheln")
+        self.btn_main.setAccessibleName(tr("Farbe Hauptprompt-Kacheln"))
         self.btn_main.clicked.connect(lambda: self._pick_color("main"))
         self.btn_version = QtWidgets.QPushButton()
-        self.btn_version.setAccessibleName("Farbe Versionsprompt-Kacheln")
+        self.btn_version.setAccessibleName(tr("Farbe Versionsprompt-Kacheln"))
         self.btn_version.clicked.connect(lambda: self._pick_color("version"))
         self._refresh_swatch("main")
         self._refresh_swatch("version")
 
-        self.btn_reset = QtWidgets.QPushButton("Zurücksetzen")
-        self.btn_reset.setAccessibleName("Kachelfarben zurücksetzen")
-        self.btn_reset.setAccessibleDescription("Setzt die Kachelfarben auf die Standardwerte zurück")
-        self.btn_reset.setToolTip("Standardfarben wiederherstellen")
+        self.btn_reset = QtWidgets.QPushButton(tr("Zurücksetzen"))
+        self.btn_reset.setAccessibleName(tr("Kachelfarben zurücksetzen"))
+        self.btn_reset.setAccessibleDescription(tr("Setzt die Kachelfarben auf die Standardwerte zurück"))
+        self.btn_reset.setToolTip(tr("Standardfarben wiederherstellen"))
         self.btn_reset.clicked.connect(self._reset_colors)
 
-        lbl_theme = QtWidgets.QLabel("Theme:")
+        lbl_theme = QtWidgets.QLabel(tr("Theme:"))
         lbl_theme.setBuddy(self.theme_combo)
-        lbl_main = QtWidgets.QLabel("Farbe Hauptprompt-Kacheln:")
+        lbl_main = QtWidgets.QLabel(tr("Farbe Hauptprompt-Kacheln:"))
         lbl_main.setBuddy(self.btn_main)
-        lbl_version = QtWidgets.QLabel("Farbe Versionsprompt-Kacheln:")
+        lbl_version = QtWidgets.QLabel(tr("Farbe Versionsprompt-Kacheln:"))
         lbl_version.setBuddy(self.btn_version)
 
         # --- Layout ---
@@ -68,16 +69,16 @@ class AppearanceDialog(QtWidgets.QDialog):
         form.addRow(lbl_version, self.btn_version)
         form.addRow("", self.btn_reset)
 
-        btn_ok = QtWidgets.QPushButton("OK")
+        btn_ok = QtWidgets.QPushButton(tr("OK"))
         btn_ok.setDefault(True)
-        btn_ok.setAccessibleName("OK")
-        btn_ok.setAccessibleDescription("Darstellungs-Einstellungen speichern und anwenden")
-        btn_ok.setToolTip("Einstellungen speichern (Enter)")
+        btn_ok.setAccessibleName(tr("OK"))
+        btn_ok.setAccessibleDescription(tr("Darstellungs-Einstellungen speichern und anwenden"))
+        btn_ok.setToolTip(tr("Einstellungen speichern (Enter)"))
 
-        btn_cancel = QtWidgets.QPushButton("Abbrechen")
-        btn_cancel.setAccessibleName("Abbrechen")
-        btn_cancel.setAccessibleDescription("Änderungen verwerfen und Dialog schließen")
-        btn_cancel.setToolTip("Abbrechen (Esc)")
+        btn_cancel = QtWidgets.QPushButton(tr("Abbrechen"))
+        btn_cancel.setAccessibleName(tr("Abbrechen"))
+        btn_cancel.setAccessibleDescription(tr("Änderungen verwerfen und Dialog schließen"))
+        btn_cancel.setToolTip(tr("Abbrechen (Esc)"))
 
         btn_ok.clicked.connect(self.accept)
         btn_cancel.clicked.connect(self.reject)
@@ -107,9 +108,9 @@ class AppearanceDialog(QtWidgets.QDialog):
         hexcolor = self._current_color(kind)
         text_col = theme_mod.contrast_text(hexcolor)
         btn.setText(hexcolor)
-        label_kind = "Hauptprompts" if kind == "main" else "Versionsprompts"
-        btn.setToolTip(f"Kachelfarbe für {label_kind} ändern (Aktuell: {hexcolor})")
-        btn.setAccessibleDescription(f"Aktuelle Hex-Farbe für {label_kind}: {hexcolor}")
+        label_kind = tr("Hauptprompts") if kind == "main" else tr("Versionsprompts")
+        btn.setToolTip(tr("Kachelfarbe für {kind} ändern (Aktuell: {color})", kind=label_kind, color=hexcolor))
+        btn.setAccessibleDescription(tr("Aktuelle Hex-Farbe für {kind}: {color}", kind=label_kind, color=hexcolor))
         btn.setStyleSheet(
             f"background-color: {hexcolor}; color: {text_col}; "
             f"border: 1px solid #888; border-radius: 4px; padding: 6px 12px;"
@@ -118,7 +119,7 @@ class AppearanceDialog(QtWidgets.QDialog):
     def _pick_color(self, kind: str):
         initial = QtGui.QColor(self._current_color(kind))
         chosen = QtWidgets.QColorDialog.getColor(
-            initial, self, "Kachelfarbe wählen"
+            initial, self, tr("Kachelfarbe wählen")
         )
         if chosen.isValid():
             self._set_current_color(kind, chosen.name().upper())
