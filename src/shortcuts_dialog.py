@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import List, Tuple, Optional
 from PySide6.QtCore import Qt
+from i18n import translate_with
 from PySide6.QtWidgets import (
     QDialog,
     QHBoxLayout,
@@ -49,6 +50,8 @@ class ShortcutsDialog(QDialog):
         ("Leertaste", "Kachel aktivieren / auswählen", "Board"),
         ("Ctrl+C", "Kachel-Text in Zwischenablage kopieren", "Board"),
         ("Entf / Backspace", "Kachel vom Board entfernen", "Board"),
+        ("Kontextmenü / Shift+F10", "Kachel auf anderes Board verschieben / duplizieren", "Board"),
+        ("Kontextmenü / Shift+F10", "Kachelfarbe ändern", "Board"),
         ("Kontextmenü / Shift+F10", "Kontextmenü öffnen", "Global"),
     ]
 
@@ -64,9 +67,8 @@ class ShortcutsDialog(QDialog):
         self.retranslate_ui()
 
     def _t(self, key: str) -> str:
-        if self.translator is not None:
-            return self.translator.t(key)
-        return key
+        # Ohne injizierten Translator: gemeinsamer App-Translator (aktive Sprache)
+        return translate_with(self.translator, key)
 
     def _setup_ui(self) -> None:
         layout = QVBoxLayout(self)
@@ -137,7 +139,8 @@ class ShortcutsDialog(QDialog):
 
         self._table.setRowCount(len(self.SHORTCUTS))
         for row_idx, (keys, action, scope) in enumerate(self.SHORTCUTS):
-            item_keys = QTableWidgetItem(keys)
+            # Tastennamen wie "Entf", "Leertaste" sind sprachabhaengig
+            item_keys = QTableWidgetItem(self._t(keys))
             item_keys.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             font = item_keys.font()
             font.setBold(True)

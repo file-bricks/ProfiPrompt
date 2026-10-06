@@ -54,14 +54,19 @@ class TranslationSystem:
         "ru": "Русский (ru)",
     }
 
-    def __init__(self, default_lang: str = "de", app_dir: Optional[Path] = None):
+    def __init__(self, default_lang: str = "de", app_dir: Optional[Path] = None,
+                 auto_register: bool = True):
         """
         Initialisiert Translation-System.
 
         Args:
             default_lang: Standard-Sprache ('de', 'en', 'es', 'zh', 'ja', 'ru')
             app_dir: Verzeichnis der Anwendung (default: Verzeichnis von translator.py)
+            auto_register: Fehlende deutsche Keys bei t() in translations.json
+                anlegen (Entwickler-Werkzeug). Die laufende App schaltet das ab,
+                damit die gebuendelte Datei nie leere Eintraege erhaelt.
         """
+        self.auto_register = auto_register
         self.current_lang = default_lang if default_lang in self.SUPPORTED_LANGUAGES else "de"
 
         if app_dir is None:
@@ -150,7 +155,7 @@ class TranslationSystem:
                             return value
                     return value
 
-        if self._is_german(key) and key not in self.translations:
+        if self.auto_register and self._is_german(key) and key not in self.translations:
             self.translations[key] = self._new_translation_entry(key, "")
             self._save_translations()
 

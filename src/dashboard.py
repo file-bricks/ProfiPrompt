@@ -14,6 +14,7 @@ from event_bus import bus
 from prompt_dialog import PromptDialog, VersionDialog
 from clipboard_manager import ClipboardManager
 from atomic_io import atomic_write_text
+from i18n import tr
 from pdf_exporter import (
     export_single_prompt,
     export_single_version,
@@ -37,11 +38,9 @@ class PromptTree(QtWidgets.QTreeWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setHeaderLabels(
-            ["Titel", "Zweck", "Tags", "Erstellt", "Aktualisiert", "", ""]
-        )
         # Letzte beiden Spalten für Icons freihalten
         self.setColumnCount(7)
+        self.retranslate_ui()
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.setDragEnabled(True)
         self.setAcceptDrops(False)
@@ -49,8 +48,14 @@ class PromptTree(QtWidgets.QTreeWidget):
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setAlternatingRowColors(True)
         self.setUniformRowHeights(True)
-        self.setAccessibleName("Prompt-Übersicht")
-        self.setAccessibleDescription("Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung")
+
+    HEADER_KEYS = ("Titel", "Zweck", "Tags", "Erstellt", "Aktualisiert")
+
+    def retranslate_ui(self):
+        """Spaltenkoepfe + Accessible-Names in der aktiven Sprache."""
+        self.setHeaderLabels([tr(k) for k in self.HEADER_KEYS] + ["", ""])
+        self.setAccessibleName(tr("Prompt-Übersicht"))
+        self.setAccessibleDescription(tr("Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung"))
 
 
     def mimeTypes(self) -> List[str]:
@@ -128,10 +133,9 @@ class DashboardWidget(QtWidgets.QWidget):
 
         # --- Filter Controls ---
         self.search_edit = QtWidgets.QLineEdit()
-        self.search_edit.setPlaceholderText("Suche in Titel/Text/Tags …")
 
         self.tag_combo = QtWidgets.QComboBox()
-        self.tag_combo.addItem("Alle Tags", "")
+        self.tag_combo.addItem(tr("Alle Tags"), "")
 
         self.date_from = QtWidgets.QDateEdit(calendarPopup=True, displayFormat="yyyy-MM-dd")
         self.date_to = QtWidgets.QDateEdit(calendarPopup=True, displayFormat="yyyy-MM-dd")
@@ -143,7 +147,7 @@ class DashboardWidget(QtWidgets.QWidget):
             d.setDate(sentinel)
         self._date_sentinel = sentinel
 
-        self.btn_clear = QtWidgets.QPushButton("Filter zurücksetzen")
+        self.btn_clear = QtWidgets.QPushButton()
 
         # Filter-Aenderungen: nur Cache neu filtern (kein Disk-Zugriff)
         self.search_edit.textChanged.connect(self._apply_filters)
@@ -158,29 +162,15 @@ class DashboardWidget(QtWidgets.QWidget):
         self.tree.customContextMenuRequested.connect(self.open_context_menu)
         self.customContextMenuRequested.connect(self.open_context_menu)
         # --- Layout ---
-        self.search_edit.setAccessibleName("Suchbegriff")
-        self.search_edit.setAccessibleDescription("Suchfeld für Volltextsuche in Titeln, Texten und Tags")
-
-        self.tag_combo.setAccessibleName("Tag-Filter")
-        self.tag_combo.setAccessibleDescription("Filtert Prompts nach ausgewählten Tags")
-
-        self.date_from.setAccessibleName("Startdatum")
-        self.date_from.setAccessibleDescription("Filtert Prompts ab dem angegebenen Erstellungsdatum")
-
-        self.date_to.setAccessibleName("Enddatum")
-        self.date_to.setAccessibleDescription("Filtert Prompts bis zum angegebenen Erstellungsdatum")
-
-        self.btn_clear.setAccessibleName("Filter zurücksetzen")
-        self.btn_clear.setAccessibleDescription("Setzt alle Such-, Tag- und Datumsfilter zurück")
-
-        lbl_search = QtWidgets.QLabel("Suche:")
+        self.lbl_search = lbl_search = QtWidgets.QLabel()
         lbl_search.setBuddy(self.search_edit)
-        lbl_tag = QtWidgets.QLabel("Tag:")
+        self.lbl_tag = lbl_tag = QtWidgets.QLabel()
         lbl_tag.setBuddy(self.tag_combo)
-        lbl_from = QtWidgets.QLabel("Von:")
+        self.lbl_from = lbl_from = QtWidgets.QLabel()
         lbl_from.setBuddy(self.date_from)
-        lbl_to = QtWidgets.QLabel("Bis:")
+        self.lbl_to = lbl_to = QtWidgets.QLabel()
         lbl_to.setBuddy(self.date_to)
+        self._retranslate_controls()
 
         filter_layout = QtWidgets.QGridLayout()
         filter_layout.addWidget(lbl_search, 0, 0)
@@ -199,9 +189,36 @@ class DashboardWidget(QtWidgets.QWidget):
 
         # Externe Datenänderungen: vollen Reload (Disk + Filter)
         bus.promptsChanged.connect(self.reload)
+        bus.languageChanged.connect(self.retranslate_ui)
 
         # Initial load
         self.reload()
+
+    def _retranslate_controls(self):
+        self.search_edit.setPlaceholderText(tr("Suche in Titel/Text/Tags …"))
+        self.btn_clear.setText(tr("Filter zurücksetzen"))
+        self.lbl_search.setText(tr("Suche:"))
+        self.lbl_tag.setText(tr("Tag:"))
+        self.lbl_from.setText(tr("Von:"))
+        self.lbl_to.setText(tr("Bis:"))
+
+        self.search_edit.setAccessibleName(tr("Suchbegriff"))
+        self.search_edit.setAccessibleDescription(tr("Suchfeld für Volltextsuche in Titeln, Texten und Tags"))
+        self.tag_combo.setAccessibleName(tr("Tag-Filter"))
+        self.tag_combo.setAccessibleDescription(tr("Filtert Prompts nach ausgewählten Tags"))
+        self.date_from.setAccessibleName(tr("Startdatum"))
+        self.date_from.setAccessibleDescription(tr("Filtert Prompts ab dem angegebenen Erstellungsdatum"))
+        self.date_to.setAccessibleName(tr("Enddatum"))
+        self.date_to.setAccessibleDescription(tr("Filtert Prompts bis zum angegebenen Erstellungsdatum"))
+        self.btn_clear.setAccessibleName(tr("Filter zurücksetzen"))
+        self.btn_clear.setAccessibleDescription(tr("Setzt alle Such-, Tag- und Datumsfilter zurück"))
+
+    def retranslate_ui(self, _lang: str = ""):
+        """Live-Sprachwechsel: Filterleiste, Tabellenkoepfe und Zeilen neu beschriften."""
+        self._retranslate_controls()
+        self.tree.retranslate_ui()
+        # Baum neu aufbauen (Tooltips/Accessible-Names der Kopier-Buttons, "Alle Tags")
+        self._apply_filters()
 
     def _clear_filters(self):
         self.search_edit.clear()
@@ -225,7 +242,7 @@ class DashboardWidget(QtWidgets.QWidget):
         current_tag = self.tag_combo.currentData()
         self.tag_combo.blockSignals(True)
         self.tag_combo.clear()
-        self.tag_combo.addItem("Alle Tags", "")
+        self.tag_combo.addItem(tr("Alle Tags"), "")
         for tag in self._collect_tags(prompts):
             self.tag_combo.addItem(tag, tag)
         idx = self.tag_combo.findData(current_tag)
@@ -326,10 +343,10 @@ class DashboardWidget(QtWidgets.QWidget):
             btn_copy = QtWidgets.QToolButton()
             btn_copy.setIcon(QtGui.QIcon(CLIPBOARD_ICON))
             btn_copy.setAutoRaise(True)
-            p_title_str = p.title or "Ohne Titel"
-            btn_copy.setToolTip(f"Prompt kopieren: {p_title_str}")
-            btn_copy.setAccessibleName(f"Prompt kopieren: {p_title_str}")
-            btn_copy.setAccessibleDescription("Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage")
+            p_title_str = p.title or tr("Ohne Titel")
+            btn_copy.setToolTip(tr("Prompt kopieren: {title}", title=p_title_str))
+            btn_copy.setAccessibleName(tr("Prompt kopieren: {title}", title=p_title_str))
+            btn_copy.setAccessibleDescription(tr("Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage"))
             btn_copy.clicked.connect(lambda _, pid=p.id: self._copy_prompt(pid))
             self.tree.setItemWidget(parent, 6, btn_copy)
 
@@ -353,9 +370,9 @@ class DashboardWidget(QtWidgets.QWidget):
                 btn_ver_copy = QtWidgets.QToolButton()
                 btn_ver_copy.setIcon(QtGui.QIcon(CLIPBOARD_ICON))
                 btn_ver_copy.setAutoRaise(True)
-                btn_ver_copy.setToolTip(f"Version kopieren: {v_title_str}")
-                btn_ver_copy.setAccessibleName(f"Version kopieren: {v_title_str}")
-                btn_ver_copy.setAccessibleDescription("Kopiert diese Version in die Zwischenablage")
+                btn_ver_copy.setToolTip(tr("Version kopieren: {title}", title=v_title_str))
+                btn_ver_copy.setAccessibleName(tr("Version kopieren: {title}", title=v_title_str))
+                btn_ver_copy.setAccessibleDescription(tr("Kopiert diese Version in die Zwischenablage"))
                 btn_ver_copy.clicked.connect(
                     lambda _, pid=p.id, vid=v.id: self._copy_version(pid, vid)
                 )
@@ -378,7 +395,7 @@ class DashboardWidget(QtWidgets.QWidget):
 
         if not item:
             # Leerer Bereich
-            menu.addAction("Neuen Prompt hinzufügen", self.create_prompt)
+            menu.addAction(tr("Neuen Prompt hinzufügen"), self.create_prompt)
             menu.exec(self.tree.viewport().mapToGlobal(pos))
             return
 
@@ -398,36 +415,48 @@ class DashboardWidget(QtWidgets.QWidget):
             return
 
         # Copy Aktionen
+        act_copy_full = act_new_ver = None
+        act_exp_txt = act_exp_pdf = act_bundle_txt = act_bundle_pdf = None
         if kind == "prompt":
-            act_copy       = menu.addAction("Prompt kopieren")
-            act_copy_full  = menu.addAction("Prompt inkl. Versionen kopieren")
+            act_copy       = menu.addAction(tr("Prompt kopieren"))
+            act_copy_full  = menu.addAction(tr("Prompt inkl. Versionen kopieren"))
         else:
-            act_copy       = menu.addAction("Version kopieren")
+            act_copy       = menu.addAction(tr("Version kopieren"))
         menu.addSeparator()
 
         # Neue Version / Prompt
         if kind == "prompt":
-            act_new_ver = menu.addAction("Neue Version anlegen")
-        act_new_p = menu.addAction("Neuer Prompt")
+            act_new_ver = menu.addAction(tr("Neue Version anlegen"))
+        act_new_p = menu.addAction(tr("Neuer Prompt"))
         menu.addSeparator()
 
         # Editieren
-        act_edit = menu.addAction("Bearbeiten")
+        act_edit = menu.addAction(tr("Bearbeiten"))
         menu.addSeparator()
 
-        # Export
+        # Board: Prompt/Version direkt auf ein Board heften
+        m_board = menu.addMenu(tr("Auf Board heften"))
+        boards = self.storage.load_boards()
+        board_actions = {}
+        for b in boards:
+            board_actions[m_board.addAction(b.title or tr("(ohne Titel)"))] = b.id
+        m_board.setEnabled(bool(boards))
+        menu.addSeparator()
+
+        # Export (Aktionen werden per Objekt verglichen, NICHT per Text:
+        # Textvergleiche brachen nach einem Sprachwechsel alle Exporte)
         if kind == "prompt":
-            menu.addAction("Prompt exportieren (TXT)")
-            menu.addAction("Prompt exportieren (PDF)")
-            menu.addAction("Prompt+Versionen exportieren (TXT)")
-            menu.addAction("Prompt+Versionen exportieren (PDF)")
+            act_exp_txt = menu.addAction(tr("Prompt exportieren (TXT)"))
+            act_exp_pdf = menu.addAction(tr("Prompt exportieren (PDF)"))
+            act_bundle_txt = menu.addAction(tr("Prompt+Versionen exportieren (TXT)"))
+            act_bundle_pdf = menu.addAction(tr("Prompt+Versionen exportieren (PDF)"))
         else:
-            menu.addAction("Version exportieren (TXT)")
-            menu.addAction("Version exportieren (PDF)")
+            act_exp_txt = menu.addAction(tr("Version exportieren (TXT)"))
+            act_exp_pdf = menu.addAction(tr("Version exportieren (PDF)"))
         menu.addSeparator()
 
         # Löschen
-        act_delete = menu.addAction("Löschen")
+        act_delete = menu.addAction(tr("Löschen"))
 
         chosen = menu.exec(self.tree.viewport().mapToGlobal(pos))
         if not chosen:
@@ -437,13 +466,13 @@ class DashboardWidget(QtWidgets.QWidget):
         if chosen == act_copy:
             txt = self.clip.build_copy_text(p, v)
             self.clip.copy_to_clipboard(self.tree, txt)
-        elif kind == "prompt" and chosen == act_copy_full:
+        elif act_copy_full is not None and chosen == act_copy_full:
             parts = [self.clip.build_copy_text(p)]
             versions = [vv for vv in (p.versions or []) if vv is not None]
             for vv in sorted(versions, key=lambda x: getattr(x, "version_number", 0) or 0):
                 parts.append(self.clip.build_copy_text(p, vv))
             self.clip.copy_to_clipboard(self.tree, "\n\n".join(parts))
-        elif kind == "prompt" and chosen == act_new_ver:
+        elif act_new_ver is not None and chosen == act_new_ver:
             dlg = VersionDialog(self.storage, p, None, self)
             if dlg.exec() == QtWidgets.QDialog.Accepted:
                 bus.promptsChanged.emit()
@@ -456,46 +485,56 @@ class DashboardWidget(QtWidgets.QWidget):
                 dlg = VersionDialog(self.storage, p, v, self)
             if dlg.exec() == QtWidgets.QDialog.Accepted:
                 bus.promptsChanged.emit()
-        elif chosen.text().startswith("Prompt exportieren") and "TXT" in chosen.text():
+        elif chosen in board_actions:
+            ok, _ = self.storage.add_item_to_board(board_actions[chosen], p.id, v.id if v else None)
+            if ok:
+                bus.boardsChanged.emit()
+            else:
+                QtWidgets.QMessageBox.information(
+                    self, tr("Hinweis"), tr("Dieses Element ist auf dem Board bereits vorhanden."))
+        elif kind == "prompt" and chosen == act_exp_txt:
             self._export_prompt_txt(p)
-        elif chosen.text().startswith("Prompt exportieren") and "PDF" in chosen.text():
+        elif kind == "prompt" and chosen == act_exp_pdf:
             default_pdf = f"{sanitize_export_filename(p.title)}.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
+                self, tr("PDF speichern"), default_pdf, tr("PDF-Datei (*.pdf)"))
             if path:
                 export_single_prompt(p, self.settings, path, self, protected_paths=self._protected_paths())
-        elif chosen.text().startswith("Prompt+Versionen exportieren") and "TXT" in chosen.text():
+        elif kind == "prompt" and chosen == act_bundle_txt:
             self._export_bundle_txt(p)
-        elif chosen.text().startswith("Prompt+Versionen exportieren") and "PDF" in chosen.text():
+        elif kind == "prompt" and chosen == act_bundle_pdf:
             default_pdf = f"{sanitize_export_filename(p.title)}_all.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
+                self, tr("PDF speichern"), default_pdf, tr("PDF-Datei (*.pdf)"))
             if path:
                 export_single_prompt_with_versions(p, self.settings, path, self, protected_paths=self._protected_paths())
-        elif kind == "version" and chosen.text().startswith("Version exportieren") and "TXT" in chosen.text():
+        elif kind == "version" and chosen == act_exp_txt:
             self._export_version_txt(v)
-        elif kind == "version" and chosen.text().startswith("Version exportieren") and "PDF" in chosen.text():
+        elif kind == "version" and chosen == act_exp_pdf:
             default_pdf = f"{sanitize_export_filename(v.title, 'version')}.pdf"
             path, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "PDF speichern", default_pdf, "PDF-Datei (*.pdf)")
+                self, tr("PDF speichern"), default_pdf, tr("PDF-Datei (*.pdf)"))
             if path:
                 export_single_version(v, path, parent=self, settings=self.settings, protected_paths=self._protected_paths())
         elif chosen == act_delete:
-            if kind == "prompt":
-                if QtWidgets.QMessageBox.question(
-                    self, "Löschen", f"Prompt „{p.title}“ wirklich löschen?"
-                ) == QtWidgets.QMessageBox.StandardButton.Yes:
-                    self.storage.delete_prompt(p.id)
-                    bus.promptsChanged.emit()
-            else:
-                if QtWidgets.QMessageBox.question(
-                    self, "Löschen",
-                    f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
-                ) == QtWidgets.QMessageBox.StandardButton.Yes:
-                    self.storage.delete_version(p.id, v.id)
-                    p.versions = [x for x in (p.versions or []) if x is not None and getattr(x, "id", None) != v.id]
-                    p.updated_at = now_iso()
-                    bus.promptsChanged.emit()
+            self._confirm_and_delete(p, v if kind == "version" else None)
+
+    def _confirm_and_delete(self, p: Prompt, v: Optional[Version] = None):
+        if v is None:
+            if QtWidgets.QMessageBox.question(
+                self, tr("Löschen"), tr("Prompt „{title}“ wirklich löschen?", title=p.title)
+            ) == QtWidgets.QMessageBox.StandardButton.Yes:
+                self.storage.delete_prompt(p.id)
+                bus.promptsChanged.emit()
+        else:
+            if QtWidgets.QMessageBox.question(
+                self, tr("Löschen"),
+                tr("Version „v{num} – {title}“ wirklich löschen?", num=v.version_number, title=v.title)
+            ) == QtWidgets.QMessageBox.StandardButton.Yes:
+                self.storage.delete_version(p.id, v.id)
+                p.versions = [x for x in (p.versions or []) if x is not None and getattr(x, "id", None) != v.id]
+                p.updated_at = now_iso()
+                bus.promptsChanged.emit()
 
     # -- Copy‐Shortcuts für Tree‐Icons -------------------------------
 
@@ -540,23 +579,13 @@ class DashboardWidget(QtWidgets.QWidget):
         if not p:
             return
         if kind == "prompt":
-            if QtWidgets.QMessageBox.question(
-                self, "Löschen", f"Prompt „{p.title}“ wirklich löschen?"
-            ) == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.storage.delete_prompt(p.id)
-                bus.promptsChanged.emit()
+            self._confirm_and_delete(p)
         else:
             vid = rest[0] if rest else None
             v = self.storage.get_version(pid, vid) if vid else None
             if not v:
                 return
-            if QtWidgets.QMessageBox.question(
-                self, "Löschen", f"Version „v{v.version_number} – {v.title}“ wirklich löschen?"
-            ) == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.storage.delete_version(p.id, v.id)
-                p.versions = [x for x in (p.versions or []) if x is not None and getattr(x, "id", None) != v.id]
-                p.updated_at = now_iso()
-                bus.promptsChanged.emit()
+            self._confirm_and_delete(p, v)
 
     def copy_current_item_to_clipboard(self, item: Optional[QtWidgets.QTreeWidgetItem] = None):
         target = item or self.tree.currentItem()
@@ -657,39 +686,39 @@ class DashboardWidget(QtWidgets.QWidget):
     def _export_prompt_txt(self, p: Prompt):
         default_name = f"{sanitize_export_filename(p.title)}.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", default_name, "Textdatei (*.txt)"
+            self, tr("TXT speichern"), default_name, tr("Textdatei (*.txt)")
         )
         if not path:
             return
         try:
             text = self.clip.build_copy_text(p)
             atomic_write_text(path, text, protected_paths=self._protected_paths())
-            QtWidgets.QMessageBox.information(self, "Export", "Prompt erfolgreich exportiert.")
+            QtWidgets.QMessageBox.information(self, tr("Export"), tr("Prompt erfolgreich exportiert."))
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
+            QtWidgets.QMessageBox.critical(self, tr("Fehler"), tr("TXT-Export fehlgeschlagen:\n{error}", error=e))
 
     def _export_version_txt(self, v):
         default_name = f"{sanitize_export_filename(v.title, 'version')}.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", default_name, "Textdatei (*.txt)"
+            self, tr("TXT speichern"), default_name, tr("Textdatei (*.txt)")
         )
         if not path:
             return
         p = self.storage.get_prompt(v.prompt_id) if hasattr(v, "prompt_id") else None
         if not p:
-            QtWidgets.QMessageBox.critical(self, "Fehler", "Zugehöriger Prompt nicht gefunden.")
+            QtWidgets.QMessageBox.critical(self, tr("Fehler"), tr("Zugehöriger Prompt nicht gefunden."))
             return
         try:
             text = self.clip.build_copy_text(p, v)
             atomic_write_text(path, text, protected_paths=self._protected_paths())
-            QtWidgets.QMessageBox.information(self, "Export", "Version erfolgreich exportiert.")
+            QtWidgets.QMessageBox.information(self, tr("Export"), tr("Version erfolgreich exportiert."))
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Fehler", f"TXT-Export fehlgeschlagen:\n{e}")
+            QtWidgets.QMessageBox.critical(self, tr("Fehler"), tr("TXT-Export fehlgeschlagen:\n{error}", error=e))
 
     def _export_bundle_txt(self, p: Prompt):
         default_name = f"{sanitize_export_filename(p.title)}_all.txt"
         path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self, "TXT speichern", default_name, "Textdatei (*.txt)"
+            self, tr("TXT speichern"), default_name, tr("Textdatei (*.txt)")
         )
         if not path:
             return
@@ -700,9 +729,9 @@ class DashboardWidget(QtWidgets.QWidget):
                 parts.append(self.clip.build_copy_text(p, ver))
             bundle_content = "\n\n".join(parts)
             atomic_write_text(path, bundle_content, protected_paths=self._protected_paths())
-            QtWidgets.QMessageBox.information(self, "Export", "Bundle erfolgreich exportiert.")
+            QtWidgets.QMessageBox.information(self, tr("Export"), tr("Bundle erfolgreich exportiert."))
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Fehler", f"Bundle-Export fehlgeschlagen:\n{e}")
+            QtWidgets.QMessageBox.critical(self, tr("Fehler"), tr("Bundle-Export fehlgeschlagen:\n{error}", error=e))
 
 
     # --- Create Prompt helper ---

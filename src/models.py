@@ -6,6 +6,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
 from enum import Enum
+import re
 
 
 class CopyMode(str, Enum):
@@ -58,6 +59,7 @@ class BoardItem:
     prompt_id: str
     version_id: Optional[str] = None   # None => Haupt-Prompt
     created_at: str = field(default_factory=now_iso)
+    color: Optional[str] = None        # individuelle Kachelfarbe '#RRGGBB'; None => Standardfarbe
 
 
 @dataclass
@@ -134,6 +136,20 @@ def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     )
 
 
+_HEX_COLOR_RE = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def normalize_item_color(value: Any) -> Optional[str]:
+    """Gibt eine gueltige '#RRGGBB'-Farbe (Grossbuchstaben) oder None zurueck.
+
+    Board-JSONs koennen von Hand oder fremden Tools stammen; nur strikt valide
+    Hex-Farben gelangen ins Kachel-Stylesheet (keine QSS-Injektion, kein Crash).
+    """
+    if isinstance(value, str) and _HEX_COLOR_RE.match(value.strip()):
+        return value.strip().upper()
+    return None
+
+
 def boarditem_from_dict(d: Dict[str, Any]) -> BoardItem:
     """Reconstruct a BoardItem from a dict (feldweise, schema-drift-robust)."""
     # Bugsweep 19/28 BUG-BM01: .get()-Defaults für id, board_id, prompt_id verhindern KeyError bei schema-drift
@@ -143,6 +159,7 @@ def boarditem_from_dict(d: Dict[str, Any]) -> BoardItem:
         prompt_id=d.get("prompt_id") or "",
         version_id=d.get("version_id"),
         created_at=d.get("created_at") or now_iso(),
+        color=normalize_item_color(d.get("color")),
     )
 
 

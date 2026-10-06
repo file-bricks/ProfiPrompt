@@ -5,49 +5,50 @@ from models import Prompt, Version, gen_id, now_iso
 from storage import Storage
 from storage_actions import report_storage_errors
 from dataclasses import replace
+from i18n import tr
 
 class PromptDialog(QtWidgets.QDialog):
     def __init__(self, storage: Storage, prompt: Optional[Prompt] = None, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Prompt bearbeiten" if prompt else "Prompt erstellen")
+        self.setWindowTitle(tr("Prompt bearbeiten") if prompt else tr("Prompt erstellen"))
         self.setModal(True)
         self.storage = storage
         self.prompt = prompt
 
         self.title_edit = QtWidgets.QLineEdit()
-        self.title_edit.setAccessibleName("Titel")
-        self.title_edit.setAccessibleDescription("Titel des Prompts (Pflichtfeld)")
-        self.title_edit.setPlaceholderText("Titel des Prompts eingeben …")
+        self.title_edit.setAccessibleName(tr("Titel"))
+        self.title_edit.setAccessibleDescription(tr("Titel des Prompts (Pflichtfeld)"))
+        self.title_edit.setPlaceholderText(tr("Titel des Prompts eingeben …"))
 
         self.purpose_edit = QtWidgets.QLineEdit()
-        self.purpose_edit.setAccessibleName("Zweck")
-        self.purpose_edit.setAccessibleDescription("Zweck und Verwendungsziel des Prompts")
-        self.purpose_edit.setPlaceholderText("Verwendungszweck beschreiben …")
+        self.purpose_edit.setAccessibleName(tr("Zweck"))
+        self.purpose_edit.setAccessibleDescription(tr("Zweck und Verwendungsziel des Prompts"))
+        self.purpose_edit.setPlaceholderText(tr("Verwendungszweck beschreiben …"))
 
         self.tags_edit = QtWidgets.QLineEdit()
-        self.tags_edit.setAccessibleName("Tags")
-        self.tags_edit.setAccessibleDescription("Kommagetrennte Liste von Schlagwörtern")
-        self.tags_edit.setPlaceholderText("z. B. Coding, Refactoring, Python")
+        self.tags_edit.setAccessibleName(tr("Tags"))
+        self.tags_edit.setAccessibleDescription(tr("Kommagetrennte Liste von Schlagwörtern"))
+        self.tags_edit.setPlaceholderText(tr("z. B. Coding, Refactoring, Python"))
 
         self.text_edit = QtWidgets.QPlainTextEdit()
-        self.text_edit.setAccessibleName("Prompt-Text")
-        self.text_edit.setAccessibleDescription("Vollständiger Prompt-Text (Pflichtfeld)")
-        self.text_edit.setPlaceholderText("Hier den Prompt-Text formulieren …")
+        self.text_edit.setAccessibleName(tr("Prompt-Text"))
+        self.text_edit.setAccessibleDescription(tr("Vollständiger Prompt-Text (Pflichtfeld)"))
+        self.text_edit.setPlaceholderText(tr("Hier den Prompt-Text formulieren …"))
 
         self.result_edit = QtWidgets.QPlainTextEdit()
-        self.result_edit.setAccessibleName("Ergebnis")
-        self.result_edit.setAccessibleDescription("Zuletzt erzieltes Testergebnis oder Modellausgabe")
-        self.result_edit.setPlaceholderText("Optionale Modellausgabe oder Notizen …")
+        self.result_edit.setAccessibleName(tr("Ergebnis"))
+        self.result_edit.setAccessibleDescription(tr("Zuletzt erzieltes Testergebnis oder Modellausgabe"))
+        self.result_edit.setPlaceholderText(tr("Optionale Modellausgabe oder Notizen …"))
 
-        lbl_title = QtWidgets.QLabel("Titel*")
+        lbl_title = QtWidgets.QLabel(tr("Titel*"))
         lbl_title.setBuddy(self.title_edit)
-        lbl_purpose = QtWidgets.QLabel("Zweck")
+        lbl_purpose = QtWidgets.QLabel(tr("Zweck"))
         lbl_purpose.setBuddy(self.purpose_edit)
-        lbl_tags = QtWidgets.QLabel("Tags (Komma)")
+        lbl_tags = QtWidgets.QLabel(tr("Tags (Komma)"))
         lbl_tags.setBuddy(self.tags_edit)
-        lbl_text = QtWidgets.QLabel("Prompt-Text*")
+        lbl_text = QtWidgets.QLabel(tr("Prompt-Text*"))
         lbl_text.setBuddy(self.text_edit)
-        lbl_result = QtWidgets.QLabel("Ergebnis")
+        lbl_result = QtWidgets.QLabel(tr("Ergebnis"))
         lbl_result.setBuddy(self.result_edit)
 
         form = QtWidgets.QFormLayout()
@@ -60,24 +61,24 @@ class PromptDialog(QtWidgets.QDialog):
         # Versionenliste (readonly)
         self.versions_list = QtWidgets.QListWidget()
         self.versions_list.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
-        self.versions_list.setAccessibleName("Versionen-Liste")
-        self.versions_list.setAccessibleDescription("Übersicht aller Versionen dieses Prompts")
-        group_versions = QtWidgets.QGroupBox("Versionen")
-        group_versions.setAccessibleName("Versionen-Gruppe")
+        self.versions_list.setAccessibleName(tr("Versionen-Liste"))
+        self.versions_list.setAccessibleDescription(tr("Übersicht aller Versionen dieses Prompts"))
+        group_versions = QtWidgets.QGroupBox(tr("Versionen"))
+        group_versions.setAccessibleName(tr("Versionen-Gruppe"))
         vlay = QtWidgets.QVBoxLayout(group_versions)
         vlay.addWidget(self.versions_list)
 
         # Buttons
-        btn_save = QtWidgets.QPushButton("Speichern")
+        btn_save = QtWidgets.QPushButton(tr("Speichern"))
         btn_save.setDefault(True)
-        btn_save.setAccessibleName("Speichern")
-        btn_save.setAccessibleDescription("Speichert die Änderungen und schließt den Dialog")
-        btn_save.setToolTip("Prompt speichern (Enter)")
+        btn_save.setAccessibleName(tr("Speichern"))
+        btn_save.setAccessibleDescription(tr("Speichert die Änderungen und schließt den Dialog"))
+        btn_save.setToolTip(tr("Prompt speichern (Enter)"))
 
-        btn_cancel = QtWidgets.QPushButton("Abbrechen")
-        btn_cancel.setAccessibleName("Abbrechen")
-        btn_cancel.setAccessibleDescription("Verwirft Änderungen und schließt den Dialog")
-        btn_cancel.setToolTip("Abbrechen (Esc)")
+        btn_cancel = QtWidgets.QPushButton(tr("Abbrechen"))
+        btn_cancel.setAccessibleName(tr("Abbrechen"))
+        btn_cancel.setAccessibleDescription(tr("Verwirft Änderungen und schließt den Dialog"))
+        btn_cancel.setToolTip(tr("Abbrechen (Esc)"))
 
         btns = QtWidgets.QHBoxLayout()
         btns.addStretch(1)
@@ -118,7 +119,7 @@ class PromptDialog(QtWidgets.QDialog):
         title = self.title_edit.text().strip()
         text = self.text_edit.toPlainText().strip()
         if not title or not text:
-            QtWidgets.QMessageBox.warning(self, "Fehler", "Titel und Prompt-Text sind Pflichtfelder.")
+            QtWidgets.QMessageBox.warning(self, tr("Fehler"), tr("Titel und Prompt-Text sind Pflichtfelder."))
             return
         tags = [t.strip() for t in self.tags_edit.text().split(",") if t.strip()]
         purpose = self.purpose_edit.text().strip()
@@ -151,7 +152,7 @@ class VersionDialog(QtWidgets.QDialog):
         self.version = version  # None => Neuerstellung, sonst Bearbeitung
 
         is_edit = self.version is not None
-        self.setWindowTitle("Version bearbeiten" if is_edit else "Neue Version anlegen")
+        self.setWindowTitle(tr("Version bearbeiten") if is_edit else tr("Neue Version anlegen"))
         self.setModal(True)
 
         # Kontext/Status
@@ -159,12 +160,12 @@ class VersionDialog(QtWidgets.QDialog):
         v_title = (self.version.title or "") if is_edit and self.version else ""
         v_num = getattr(self.version, "version_number", None) or "?" if is_edit and self.version else ""
         context_lbl = QtWidgets.QLabel(
-            f"Prompt: {p_title}"
-            + (f"\nBearbeite: v{v_num} — {v_title}" if is_edit else "")
+            tr("Prompt: {title}", title=p_title)
+            + ("\n" + tr("Bearbeite: v{num} — {title}", num=v_num, title=v_title) if is_edit else "")
         )
         context_lbl.setStyleSheet("color:#666;")
-        context_lbl.setAccessibleName("Versions-Kontext")
-        context_lbl.setAccessibleDescription(f"Zugeordneter Prompt: {p_title}")
+        context_lbl.setAccessibleName(tr("Versions-Kontext"))
+        context_lbl.setAccessibleDescription(tr("Zugeordneter Prompt: {title}", title=p_title))
 
         # Felder
         raw_tags = (self.version.tags if is_edit and self.version else (getattr(self.prompt, "tags", []) or []))
@@ -172,36 +173,36 @@ class VersionDialog(QtWidgets.QDialog):
             str(t).strip() for t in (raw_tags or []) if t is not None and str(t).strip()
         ]
         self.title_edit = QtWidgets.QLineEdit((self.version.title or "") if is_edit and self.version else "")
-        self.title_edit.setAccessibleName("Versionstitel")
-        self.title_edit.setAccessibleDescription("Titel dieser Prompt-Version (Pflichtfeld)")
-        self.title_edit.setPlaceholderText("Titel der Version …")
+        self.title_edit.setAccessibleName(tr("Versionstitel"))
+        self.title_edit.setAccessibleDescription(tr("Titel dieser Prompt-Version (Pflichtfeld)"))
+        self.title_edit.setPlaceholderText(tr("Titel der Version …"))
 
         self.tags_edit = QtWidgets.QLineEdit(", ".join(tag_items))
-        self.tags_edit.setAccessibleName("Tags")
-        self.tags_edit.setAccessibleDescription("Kommagetrennte Liste von Schlagwörtern")
-        self.tags_edit.setPlaceholderText("z. B. v2, überarbeitet, kurz")
+        self.tags_edit.setAccessibleName(tr("Tags"))
+        self.tags_edit.setAccessibleDescription(tr("Kommagetrennte Liste von Schlagwörtern"))
+        self.tags_edit.setPlaceholderText(tr("z. B. v2, überarbeitet, kurz"))
 
         self.text_edit = QtWidgets.QPlainTextEdit(
             (self.version.text or "") if is_edit and self.version else (getattr(self.prompt, "text", "") or "")
         )
-        self.text_edit.setAccessibleName("Prompt-Text")
-        self.text_edit.setAccessibleDescription("Vollständiger Prompt-Text dieser Version (Pflichtfeld)")
-        self.text_edit.setPlaceholderText("Prompt-Text für diese Version formulieren …")
+        self.text_edit.setAccessibleName(tr("Prompt-Text"))
+        self.text_edit.setAccessibleDescription(tr("Vollständiger Prompt-Text dieser Version (Pflichtfeld)"))
+        self.text_edit.setPlaceholderText(tr("Prompt-Text für diese Version formulieren …"))
 
         self.result_edit = QtWidgets.QPlainTextEdit(
             (getattr(self.version, "result", "") or "") if is_edit and self.version else ""
         )
-        self.result_edit.setAccessibleName("Ergebnis")
-        self.result_edit.setAccessibleDescription("Testergebnis oder Notizen dieser Version")
-        self.result_edit.setPlaceholderText("Optionale Modellausgabe für diese Version …")
+        self.result_edit.setAccessibleName(tr("Ergebnis"))
+        self.result_edit.setAccessibleDescription(tr("Testergebnis oder Notizen dieser Version"))
+        self.result_edit.setPlaceholderText(tr("Optionale Modellausgabe für diese Version …"))
 
-        lbl_title = QtWidgets.QLabel("Titel*")
+        lbl_title = QtWidgets.QLabel(tr("Titel*"))
         lbl_title.setBuddy(self.title_edit)
-        lbl_tags = QtWidgets.QLabel("Tags (Komma)")
+        lbl_tags = QtWidgets.QLabel(tr("Tags (Komma)"))
         lbl_tags.setBuddy(self.tags_edit)
-        lbl_text = QtWidgets.QLabel("Prompt-Text*")
+        lbl_text = QtWidgets.QLabel(tr("Prompt-Text*"))
         lbl_text.setBuddy(self.text_edit)
-        lbl_result = QtWidgets.QLabel("Ergebnis")
+        lbl_result = QtWidgets.QLabel(tr("Ergebnis"))
         lbl_result.setBuddy(self.result_edit)
 
         form = QtWidgets.QFormLayout()
@@ -211,28 +212,28 @@ class VersionDialog(QtWidgets.QDialog):
         form.addRow(lbl_result, self.result_edit)
 
         # Buttons
-        btn_cancel = QtWidgets.QPushButton("Abbrechen")
-        btn_cancel.setAccessibleName("Abbrechen")
-        btn_cancel.setAccessibleDescription("Verwirft Eingaben und schließt den Dialog")
-        btn_cancel.setToolTip("Abbrechen (Esc)")
+        btn_cancel = QtWidgets.QPushButton(tr("Abbrechen"))
+        btn_cancel.setAccessibleName(tr("Abbrechen"))
+        btn_cancel.setAccessibleDescription(tr("Verwirft Eingaben und schließt den Dialog"))
+        btn_cancel.setToolTip(tr("Abbrechen (Esc)"))
 
         if is_edit:
-            btn_save_update = QtWidgets.QPushButton("Speichern")
+            btn_save_update = QtWidgets.QPushButton(tr("Speichern"))
             btn_save_update.setDefault(True)
-            btn_save_update.setAccessibleName("Speichern")
-            btn_save_update.setAccessibleDescription("Speichert die Änderungen an dieser Version")
-            btn_save_update.setToolTip("Version aktualisieren (Enter)")
+            btn_save_update.setAccessibleName(tr("Speichern"))
+            btn_save_update.setAccessibleDescription(tr("Speichert die Änderungen an dieser Version"))
+            btn_save_update.setToolTip(tr("Version aktualisieren (Enter)"))
 
-            btn_save_new = QtWidgets.QPushButton("Als neue Version speichern")
-            btn_save_new.setAccessibleName("Als neue Version speichern")
-            btn_save_new.setAccessibleDescription("Erstellt eine neue Version mit fortlaufender Nummer")
-            btn_save_new.setToolTip("Als neue Version anlegen")
+            btn_save_new = QtWidgets.QPushButton(tr("Als neue Version speichern"))
+            btn_save_new.setAccessibleName(tr("Als neue Version speichern"))
+            btn_save_new.setAccessibleDescription(tr("Erstellt eine neue Version mit fortlaufender Nummer"))
+            btn_save_new.setToolTip(tr("Als neue Version anlegen"))
         else:
-            btn_save_create = QtWidgets.QPushButton("Version erstellen")
+            btn_save_create = QtWidgets.QPushButton(tr("Version erstellen"))
             btn_save_create.setDefault(True)
-            btn_save_create.setAccessibleName("Version erstellen")
-            btn_save_create.setAccessibleDescription("Erstellt eine neue Version dieses Prompts")
-            btn_save_create.setToolTip("Version anlegen (Enter)")
+            btn_save_create.setAccessibleName(tr("Version erstellen"))
+            btn_save_create.setAccessibleDescription(tr("Erstellt eine neue Version dieses Prompts"))
+            btn_save_create.setToolTip(tr("Version anlegen (Enter)"))
 
         btns = QtWidgets.QHBoxLayout()
         btns.addStretch(1)
@@ -259,7 +260,7 @@ class VersionDialog(QtWidgets.QDialog):
         title = self.title_edit.text().strip()
         text = self.text_edit.toPlainText().strip()
         if not title or not text:
-            QtWidgets.QMessageBox.warning(self, "Fehler", "Titel und Prompt-Text sind Pflichtfelder.")
+            QtWidgets.QMessageBox.warning(self, tr("Fehler"), tr("Titel und Prompt-Text sind Pflichtfelder."))
             return None
         tags = [t.strip() for t in self.tags_edit.text().split(",") if t.strip()]
         result = self.result_edit.toPlainText().strip()
@@ -277,7 +278,7 @@ class VersionDialog(QtWidgets.QDialog):
 
         pid = self.prompt.id if self.prompt else v.prompt_id
         if not self.storage.upsert_version(pid, v):
-            QtWidgets.QMessageBox.warning(self, "Speichern fehlgeschlagen", "Der zugehörige Prompt wurde nicht gefunden.")
+            QtWidgets.QMessageBox.warning(self, tr("Speichern fehlgeschlagen"), tr("Der zugehörige Prompt wurde nicht gefunden."))
             return
         self.version = v
 
@@ -313,7 +314,7 @@ class VersionDialog(QtWidgets.QDialog):
             updated_at=now_iso(),
         )
         if not self.storage.add_version(self.prompt.id, new_v):
-            QtWidgets.QMessageBox.warning(self, "Speichern fehlgeschlagen", "Der zugehörige Prompt wurde nicht gefunden.")
+            QtWidgets.QMessageBox.warning(self, tr("Speichern fehlgeschlagen"), tr("Der zugehörige Prompt wurde nicht gefunden."))
             return
         if self.prompt:
             self.prompt.versions.append(new_v)

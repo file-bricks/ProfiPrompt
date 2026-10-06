@@ -82,6 +82,10 @@ Pflichtfelder:
 - `version_id`: referenzierte Version-ID oder `null`, wenn das Item auf den Haupt-Prompt zeigt.
 - `created_at`: ISO-8601-Zeitstempel.
 
+Optionale Felder (additiv, seit 2026-10-06):
+
+- `color`: individuelle Kachelfarbe als `#RRGGBB` oder `null` für die Standardfarbe. Importe ohne dieses Feld bleiben gültig; ungültige Werte werden beim Laden verworfen.
+
 ## Beispiel
 
 ```json

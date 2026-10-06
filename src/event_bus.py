@@ -6,5 +6,6 @@ class EventBus(QObject):
     copyRequested   = Signal(str, str, object)  # kind, id, parent
     dragRequested   = Signal(str, object)       # kind, (prompt_id, version_id)
     dragItem        = Signal(object)
+    languageChanged = Signal(str)               # neuer Sprachcode (live-Umschaltung)
 
 bus = EventBus()

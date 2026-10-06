@@ -5,6 +5,25 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Sprachwechsel für alle Bereiche, Kacheln auf andere Boards senden/duplizieren & Kachelfarben (2026-10-06)
+
+- **Sprachwechsel live für die gesamte Oberfläche (`src/i18n.py`, alle Widgets):**
+  - Bisher übersetzte ein Sprachwechsel nur die Menüleiste; Tabellenköpfe des Prompt-Baums (Titel/Zweck/Tags/Erstellt/Aktualisiert), Filterleiste, Versions-Unterzeilen (Kopier-Buttons), Board-Leiste, Kacheln, Kontextmenüs, Dialoge, Export-/Fehlermeldungen und die Tastenspalte der Shortcut-Tabelle blieben deutsch.
+  - Neues Modul `i18n.py` mit einem gemeinsamen Translator (`tr()`); `MainWindow.change_language()` verteilt `bus.languageChanged`, worauf Dashboard, Prompt-Baum und BoardManager per `retranslate_ui()` live neu beschriften – kein Neustart mehr nötig. Die modale Hinweisbox wurde durch eine Statusleisten-Meldung ersetzt.
+  - 174 neue Übersetzungs-Keys in allen 6 Sprachen (DE/EN/ES/ZH/JA/RU, 299 Keys, 100 % Parität).
+  - **Bugfix:** Das Dashboard-Kontextmenü verglich Export-Aktionen per deutschem Menütext (`chosen.text().startswith(...)`); nach Übersetzung wären alle Exporte wirkungslos gewesen. Jetzt Vergleich per Aktionsobjekt.
+  - `TranslationSystem(auto_register=...)`: Die laufende App schreibt fehlende Keys nicht mehr mit leeren Werten in die gebündelte `translations.json`.
+- **Regression behoben – Kacheln auf andere Boards senden/duplizieren (`src/board_manager.py`, `src/storage.py`):**
+  - Kachel-Kontextmenü: „Auf Board verschieben ▸“ und „Auf Board duplizieren ▸“ mit allen anderen Boards sowie „Neues Board …“.
+  - `Storage.transfer_item()` / `move_item_to_board()` / `copy_item_to_board()` aktualisieren Quell- und Ziel-Board in einem atomaren Schreibvorgang (keine verlorenen/doppelten Kacheln); Duplikate auf dem Ziel-Board werden mit Hinweis abgewiesen.
+  - Neuer Button „Umbenennen“ in der Board-Leiste (`Storage.rename_board()`); Prompt-Baum-Kontextmenü „Auf Board heften ▸“ als tastaturbedienbare Alternative zu Drag & Drop.
+- **Feature – individuelle Kachelfarbe (`src/models.py`, `src/board_manager.py`):**
+  - Kontextmenü „Kachelfarbe ▸“ mit Standardfarbe, 9 Vorgaben und „Eigene Farbe …“ (Farbdialog). Gespeichert pro Board-Kachel im neuen optionalen Feld `BoardItem.color` (`#RRGGBB`), wird beim Verschieben/Duplizieren mitgenommen.
+  - Strikte Validierung (`normalize_item_color`): ungültige Werte aus fremden/alten JSONs werden verworfen (kein QSS-Injection, kein Crash); Dateien ohne `color` laden unverändert.
+- **Board-Raster (`src/board_manager.py`):**
+  - Spaltenzahl folgt jetzt der Dock-Breite (statt fest 3 Spalten mit horizontalem Scrollen); alte Kacheln werden beim Neuaufbau sofort ausgeblendet (behebt kurzzeitig überlappende Geister-Kacheln).
+- **Tests (`tests/test_i18n_live_board_transfer_tile_colors_20261006.py`):** 32 neue Tests (Live-Sprachwechsel inkl. Tabellenköpfen, Key-Abdeckung aller `tr()`-Aufrufe mit Platzhalter-Parität, Transfer/Verschieben/Duplizieren, Kachelfarben, responsives Raster). Gesamtsuite: 325 passed, 3 skipped.
+
 ### Barrierefreiheit: Kachel-Tastatursteuerung, Version-AccessibleNames & Schema-Drift-Härtung (2026-10-04)
 
 - **Kachel-Tastaturbedienung & Signale (`src/board_manager.py`):**
