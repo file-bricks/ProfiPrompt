@@ -3,7 +3,7 @@
   "publisher": "CN=52596601-BAB4-4F3F-B182-E8F3F273B202",
   "publisher_display": "Geiger",
   "identity_name": "Geiger.ProfiPrompt",
-  "version": "1.0.1.0",
+  "version": "1.0.2.0",
   "exe_name": "ProfiPrompt",
   "msix_name": "ProfiPrompt.msix",
   "output_dir": "store_package",
@@ -12,7 +12,9 @@
   "pfx_path": "",
   "pfx_password": "",
   "timestamp_url": "http://timestamp.digicert.com",
-  "license_files": ["../../LICENSE"],
+  "license_files": [
+    "../../LICENSE"
+  ],
   "enable_i18n": true,
   "capabilities": "internetClient,runFullTrust",
   "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",

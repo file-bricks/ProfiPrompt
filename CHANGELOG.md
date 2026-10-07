@@ -5,6 +5,25 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-10-07
+
+ProfiPrompt 1.0.2
+• Fehler beim Lesen der Bibliothek schützen vorhandene Daten und Exporte. Schreibfehler werden gemeldet, statt eine unbestätigte Datei als erfolgreich gespeichert zu behandeln.
+• Entf und Rücktaste entfernen Board-Kacheln erst nach Ihrer Bestätigung; „Nein“ erhält die Kachel.
+• Prompts, Versionsänderungen und Board-Verweise werden zuverlässiger gespeichert. Verwaiste Kacheln sowie Drag-and-drop-Probleme wurden behoben.
+• Der Sprachwechsel aktualisiert nun mehr Bereiche direkt, einschließlich Tabellen und Boards.
+• Kacheln können auf andere Boards verschoben oder dupliziert, Boards umbenannt und Kachelfarben individuell gewählt werden.
+• Tastaturbedienung und Beschriftungen wurden verbessert. Über-Dialog und JSON-Export zeigen die aktuelle Version; Programmsymbole entsprechen dem Store-Symbol.
+
+ProfiPrompt 1.0.2
+• Library read errors preserve existing data and exports. Write failures are reported instead of treating an unconfirmed file as successfully saved.
+• Delete and Backspace remove board tiles only after confirmation; choosing No keeps the tile.
+• More reliable prompt/version persistence and board references. Fixed orphaned tiles and drag-and-drop issues.
+• Language changes update more UI areas immediately, including tables and boards.
+• Move or duplicate tiles to other boards, rename boards and choose individual tile colors.
+• Improved keyboard controls and labels. About and JSON exports show the current version; application icons match the Store icon.
+
+
 ### Sprachwechsel für alle Bereiche, Kacheln auf andere Boards senden/duplizieren & Kachelfarben (2026-10-06)
 
 - **Sprachwechsel live für die gesamte Oberfläche (`src/i18n.py`, alle Widgets):**

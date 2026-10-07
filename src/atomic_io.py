@@ -78,10 +78,8 @@ def atomic_write_text(
         with open(tmp_path, "w", encoding=encoding) as f:
             f.write(text)
             f.flush()
-            try:
-                os.fsync(f.fileno())
-            except (OSError, AttributeError):
-                pass
+            # A failed durability check must preserve the previous file.
+            os.fsync(f.fileno())
 
         if target_path.exists():
             try:

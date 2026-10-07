@@ -1,5 +1,6 @@
 from typing import Optional
 import sys
+from app_version import __version__
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -245,7 +246,7 @@ class MainWindow(QMainWindow):
         )
 
     def _show_about(self):
-        QMessageBox.information(self, tr("Über"), "Prompt Manager v1.0.1\nModern Dark Edition")
+        QMessageBox.information(self, tr("Über"), f"ProfiPrompt {__version__}\nModern Dark Edition")
 
     # --- Exports ---
     @report_storage_errors
@@ -435,8 +436,13 @@ class MainWindow(QMainWindow):
             bus.boardsChanged.emit()
 
 def main():
+    if len(sys.argv) == 3 and sys.argv[1] == "--release-smoke":
+        from platform_smoke import run_platform_smoke
+        run_platform_smoke(sys.argv[2], headless=False)
+        return
     app = QApplication(sys.argv)
     app.setApplicationName("Prompt Manager")
+    app.setApplicationVersion(__version__)
     app.setWindowIcon(load_app_icon())
 
     settings = SettingsManager()

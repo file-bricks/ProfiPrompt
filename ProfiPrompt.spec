@@ -1,58 +1,36 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec file für ProfiPrompt
-# Build: python -m PyInstaller ProfiPrompt.spec --clean --noconfirm
+import json
+import os
+from pathlib import Path
 
-block_cipher = None
-
+root = Path.cwd()
 a = Analysis(
-    ['src/profiprompt.py'],
-    pathex=['src', '.'],
+    [str(root / "src" / "profiprompt.py")],
+    pathex=[str(root / "src"), str(root)],
     binaries=[],
     datas=[
-        ('src/icons', 'icons'),
-        ('locales', 'locales'),
-        ('translator.py', '.'),
+        (str(root / "pyproject.toml"), "."),
+        (str(root / "DesktopIcon.ico"), "."),
+        (str(root / "DesktopIcon.png"), "."),
+        (str(root / "locales"), "locales"),
+        *[(str(root / "src" / "icons" / filename), "icons")
+          for filename in ("clipboard-dark.png", "clipboard-light.png", "paperclip-dark.png", "paperclip-light.png")],
+        *[(str(root / filename), ".")
+          for filename in ("LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.txt", "PRIVACY_POLICY.md")],
     ],
-    hiddenimports=[
-        'PySide6.QtWidgets',
-        'PySide6.QtGui',
-        'PySide6.QtCore',
-        'PySide6.QtPrintSupport',
-    ],
+    hiddenimports=["PySide6.QtPrintSupport"],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=['tkinter', 'matplotlib', 'numpy', 'scipy'],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
+    excludes=json.loads(os.environ["PYINSTALLER_EXCLUDES"]),
     noarchive=False,
+    optimize=0,
 )
-
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-
+pyz = PYZ(a.pure)
 exe = EXE(
-    pyz,
-    a.scripts,
-    [],
-    exclude_binaries=True,
-    name='ProfiPrompt',
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=True,
-    console=False,
-    disable_windowed_traceback=False,
-    icon='src/icons/BCO.0bdc6366-1e3b-4548-ae52-db1ba790b9b1_umgewandelt.ico',
+    pyz, a.scripts, [], exclude_binaries=True, name="ProfiPrompt",
+    debug=False, bootloader_ignore_signals=False, strip=False, upx=False,
+    console=False, disable_windowed_traceback=False,
+    icon=[str(root / "DesktopIcon.ico")],
 )
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='ProfiPrompt',
-)
+coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name="ProfiPrompt")

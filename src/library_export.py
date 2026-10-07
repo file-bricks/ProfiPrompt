@@ -8,11 +8,12 @@ from pathlib import Path
 from typing import Any
 
 from atomic_io import atomic_write_json
+from app_version import __version__
 from models import Board, Prompt, board_to_dict, prompt_to_dict
 
 SCHEMA_VERSION = "profiprompt-library-v1"
 APP_NAME = "ProfiPrompt"
-APP_VERSION = "1.0.1"
+APP_VERSION = __version__
 
 
 def build_library_export(storage, exported_at: str | None = None) -> dict[str, Any]:

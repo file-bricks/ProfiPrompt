@@ -366,22 +366,31 @@ def test_board_rename_via_ui(qapp, storage, settings, monkeypatch):
 
 
 # --------------------------------------------------------------------------- Responsive grid
-def test_grid_columns_follow_viewport_width_without_overlap(qapp, tmp_path, settings):
+def test_grid_columns_follow_viewport_width_without_overlap(qapp, qtbot, tmp_path, settings):
     st = Storage(tmp_path / "grid")
     st.save_prompts([Prompt(id=f"p{i}", title=f"T{i}", purpose="", text="x") for i in range(5)])
     st.save_boards([Board(id="b", title="B", items=[
         BoardItem(id=f"i{i}", board_id="b", prompt_id=f"p{i}") for i in range(5)])])
     bm = BoardManager(st, settings)
     try:
+        def settled(columns):
+            visible = [tile for tile in _tiles(bm) if tile.isVisible()]
+            rects = [tile.geometry() for tile in visible]
+            return bm._layout_cols == columns and len(visible) == 5 and all(
+                not a.intersects(b) for i, a in enumerate(rects) for b in rects[i + 1:]
+            )
+
+        # Top-level minimum width depends on theme, font and native platform.
+        # Test the grid's actual viewport and wait for Qt's queued layout work.
+        bm.scroll.setFixedWidth(340)
         bm.resize(340, 600)
         bm.show()
         qapp.processEvents()
         bm.reload_items()
-        qapp.processEvents()
-        assert bm._layout_cols == 1
+        qtbot.waitUntil(lambda: settled(1), timeout=1000)
+        bm.scroll.setFixedWidth(1000)
         bm.resize(1000, 600)
-        qapp.processEvents()
-        assert bm._layout_cols == 3
+        qtbot.waitUntil(lambda: settled(3), timeout=1000)
         visible = [t for t in _tiles(bm) if t.isVisible()]
         assert len(visible) == 5
         rects = [t.geometry() for t in visible]
