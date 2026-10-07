@@ -116,7 +116,7 @@ ProfiPrompt adressiert 4 zentrale Anwendergruppen und Stakeholder-Personas:
 | **Multimodale Clipboard-Engine** | **JA (4 Modi)** | NEIN (Reines Kopieren)| NEIN (Einfach) | Standard-Einfügen |
 | **Multi-Format-Exporte (PDF/TXT/JSON)**| **JA (Integriert)** | Nur per Plugin | Proprietärer Export | NEIN |
 | **Eigenständiger Offline-PWA-Begleiter**| **JA (Enthalten)** | NEIN | NEIN (Online-Zwang) | NEIN |
-| **Atomare Speicherung & .bak-Schutz**| **JA (Sicher)** | Abhängig vom OS | Cloud-Datenbank | Variiert |
+| **Atomare Speicherung & manuelle JSON-Sicherungen**| **JA** | Abhängig vom OS | Cloud-Datenbank | Variiert |
 | **Keine Abokosten / 100% Open MIT** | **JA (100% Frei)** | Frei / Sync-Abo | Kostenpflichtig ($10-30/m)| Freemium / Abo |
 | **Offener, portabler Standard (`v1.json`)**| **JA (Offen)** | Nur Markdown | Vendor-Lock-in | Proprietäre DB |
 
@@ -137,7 +137,7 @@ flowchart TD
 
     subgraph Storage["Lokale Datenspeicherung (.prompt_manager/)"]
         JSONStore["Atomarer JSON-Speicher (prompts.json, boards.json)"]
-        BackupStore["Automatische Backup-Snapshots (*.bak)"]
+        BackupStore["Manuelle JSON-Bibliotheksexporte"]
     end
 
     subgraph ExportFormat["Portabler Bibliotheksstandard"]
@@ -185,7 +185,7 @@ ProfiPrompt garantiert 10 strikte Architektur-Invarianten gemäß [THIRD_PARTY_L
 - **INV-ATOMIC-03:** Atomare Dateispeicherung (Tempfile + Replace Schreibvorgänge).
 - **INV-SCHEMA-04:** Offenes, portables Schema (`profiprompt-library-v1.json`).
 - **INV-UNPRIV-05:** Keine Rechteausweitung & RunAsInvoker (ausschließlich unprivilegierter Benutzerraum).
-- **INV-BACKUP-06:** Ausfallsichere Backups (.bak-Sicherheitskopien).
+- **INV-BACKUP-06:** Manuelle JSON-Bibliothekssicherungen; vorhandene Exporte bleiben bei Lesefehlern erhalten.
 - **INV-COPY-07:** Sichere lokale Zwischenablage (reiner RAM-Transfer ohne Protokollierung).
 - **INV-PRINT-08:** Deterministisches Vektor-Rendering (Qt-Druckengine).
 - **INV-PWA-09:** Isolierter PWA-Begleiter (rein lesender Sandbox-Betrieb).
@@ -224,7 +224,7 @@ sequenceDiagram
 
     Engineer->>UI: Neue Prompt-Version anlegen (v1.1)
     UI->>Engine: Parameter, Tags & Notizen validieren
-    Engine->>Store: Atomarer Schreibvorgang in prompts.json + .bak
+    Engine->>Store: Atomarer Schreibvorgang in prompts.json
     Store-->>UI: Persistenz bestätigt
     Engineer->>UI: Kopier-Modus wählen (Markdown / Ergebnis / Text)
     UI->>Clip: Sanitisierten Puffer bereitstellen
@@ -331,7 +331,7 @@ ProfiPrompt/
 │   ├── profiprompt.py          # Haupteinstiegspunkt und Hauptfenster
 │   ├── prompt_dialog.py        # Editor für Prompts und Versionsverläufe
 │   ├── settings_manager.py     # QSettings-Konfigurationsmanager
-│   ├── storage.py              # Atomare JSON-Persistenz & .bak-Schutz
+│   ├── storage.py              # Atomare JSON-Persistenz & Schutz bei Lesefehlern
 │   ├── theme.py                # Fusion Dark- und Light-Themes
 │   └── translator.py           # Live i18n Übersetzungssystem
 ├── web_companion/              # Read-Only Web/PWA-Begleiter

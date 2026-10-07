@@ -330,7 +330,8 @@ def test_library_export_empty_storage(tmp_path):
 
     assert payload["schema_version"] == SCHEMA_VERSION
     assert payload["app"]["name"] == "ProfiPrompt"
-    assert payload["app"]["version"] == "1.0.1"
+    from app_version import __version__
+    assert payload["app"]["version"] == __version__
     assert payload["app"]["exported_at"] == "2026-05-24T00:00:00+00:00"
     assert payload["stats"] == {
         "prompt_count": 0,

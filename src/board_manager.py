@@ -177,11 +177,6 @@ class PromptTile(QtWidgets.QFrame):
             return
         elif event.key() in (QtCore.Qt.Key.Key_Delete, QtCore.Qt.Key.Key_Backspace):
             self.removeRequested.emit(self)
-            p = self.parent()
-            while p and not hasattr(p, "remove_tile_item"):
-                p = p.parent()
-            if p and hasattr(p, "remove_tile_item"):
-                p.remove_tile_item(self.prompt.id, self.version.id if self.version else None)
             event.accept()
             return
         elif event.key() in (QtCore.Qt.Key.Key_Menu, QtCore.Qt.Key.Key_F10):
@@ -633,9 +628,7 @@ class BoardManager(QtWidgets.QWidget):
         pid = tile.prompt.id
         vid = tile.version.id if tile.version else None
 
-        if self.storage.remove_item_from_board(board.id, pid, vid):
-            self.reload_items()
-            bus.boardsChanged.emit()
+        self.remove_tile_item(pid, vid)
 
     # --- Drag & Drop ---
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):

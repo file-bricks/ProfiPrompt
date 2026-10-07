@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt pytest Pillow
+          python -m pip install -r requirements.txt pytest pytest-qt Pillow
       - name: Run Python tests
         run: python -m pytest -ra -v
       - name: Compile entry points

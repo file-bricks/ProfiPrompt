@@ -116,7 +116,7 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 | **Multi-Mode Clipboard Engine** | **YES (4 Config Modes)**| NO (Raw copy) | NO (Single copy) | Basic text paste |
 | **Multi-Format Export (PDF/TXT/JSON)**| **YES (Integrated)** | Requires Plugins | Proprietary Export | NO |
 | **Standalone Offline PWA Companion** | **YES (Included)** | NO | NO (Online only) | NO |
-| **Atomic Writes & Auto-Recovery** | **YES (.bak shield)** | OS Dependent | Cloud Managed | Varies |
+| **Atomic Writes & Manual JSON Backups** | **YES** | OS Dependent | Cloud Managed | Varies |
 | **Zero Subscription / 100% Open MIT**| **YES (100% Free)** | Free / Paid Sync | Paid ($10-30/month) | Freemium / Paid |
 | **Open Portable Schema Standard** | **YES (`v1.json`)** | Markdown only | Vendor Lock-in | Proprietary DB |
 
@@ -137,7 +137,7 @@ flowchart TD
 
     subgraph Storage["Local Data Persistence (.prompt_manager/)"]
         JSONStore["Atomic JSON Storage (prompts.json, boards.json)"]
-        BackupStore["Automatic Backup Snapshots (*.bak)"]
+        BackupStore["Manual JSON Library Exports"]
     end
 
     subgraph ExportFormat["Portable Library Standard"]
@@ -185,7 +185,7 @@ ProfiPrompt enforces 10 strict operational invariants documented in [THIRD_PARTY
 - **INV-ATOMIC-03:** Atomic File Persistence (tempfile + replace writes).
 - **INV-SCHEMA-04:** Open Portable Schema (`profiprompt-library-v1.json`).
 - **INV-UNPRIV-05:** Non-Elevation & RunAsInvoker (unprivileged user space).
-- **INV-BACKUP-06:** Fail-Safe Backup & Recovery (automatic `.bak` preservation).
+- **INV-BACKUP-06:** Manual JSON library backups; existing exports are preserved when library reads fail.
 - **INV-COPY-07:** Local Clipboard Safety (memory-only sanitized clipboard access).
 - **INV-PRINT-08:** Deterministic Multi-Format Rendering (Qt vector print engine).
 - **INV-PWA-09:** Read-Only Companion Isolation (PWA companion runs sandboxed).
@@ -224,7 +224,7 @@ sequenceDiagram
 
     Engineer->>UI: Create new prompt version (v1.1)
     UI->>Engine: Validate parameters, tags & change notes
-    Engine->>Store: Atomic commit to prompts.json + .bak
+    Engine->>Store: Atomic commit to prompts.json
     Store-->>UI: Persistence confirmed
     Engineer->>UI: Select copy action (Markdown / Result / Body)
     UI->>Clip: Prepare sanitized buffer
@@ -331,7 +331,7 @@ ProfiPrompt/
 │   ├── profiprompt.py          # Application entry point and main window
 │   ├── prompt_dialog.py        # Editor dialogs for prompts and version histories
 │   ├── settings_manager.py     # QSettings configuration manager
-│   ├── storage.py              # Atomic JSON persistence & .bak recovery
+│   ├── storage.py              # Atomic JSON persistence & read-error protection
 │   ├── theme.py                # Fusion Dark and Light theme palettes
 │   └── translator.py           # Live i18n translation engine
 ├── web_companion/              # Read-only Web/PWA companion

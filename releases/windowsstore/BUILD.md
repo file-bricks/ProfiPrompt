@@ -1,56 +1,52 @@
-# ProfiPrompt - Windows Store Build-Anleitung
+# ProfiPrompt – Windows Store Build-Anleitung
 
-Stand: 2026-06-14
+Stand: 2026-10-07
 
-## Voraussetzungen
+Die verbindlichen Einreichungsgates stehen in der .SOFTWARE-Pipeline unter
+`_STORE/WINDOWS_STORE_BUGFIX_POLICY.md`, Abschnitt 7a.
 
-1. Python 3.10+ mit PySide6
-2. PyInstaller (`pip install pyinstaller`)
-3. Windows App Certification Kit / Windows SDK
-4. Aktuelles MSIX `releases\ProfiPrompt.msix`
-5. Für echten Store-Lauf: Publisher-/Identity-Werte passend zu `store_package.json`
+## Build
 
-## Schritt 1: EXE bauen und Store-Artefakte prüfen
+Ein isoliertes Python-Environment mit `requirements.txt`, PyInstaller und den
+Testabhängigkeiten verwenden. `python` im PATH muss auf dieses Environment zeigen.
+`build_exe.bat` ruft `scripts/build_release.py` auf: zuerst den zentralen
+`build_exclude_scanner.py`, dann einen vollständigen Onedir-Build.
 
-```bash
-cd "C:\_Local_DEV\repos\ProfiPrompt"
-build_exe.bat
-python scripts/check_store_readiness.py
+```powershell
+python scripts/gen_store_icons.py
+.\build_exe.bat
+python "$env:OneDrive\.TOPICS\.SOFTWARE\_STORE\icon_consistency_check.py" .
+& "$env:OneDrive\.TOPICS\.SOFTWARE\_STORE\msstore_build_msix.ps1" -ProjectRoot (Get-Location).Path -ExePath ".\dist\ProfiPrompt\ProfiPrompt.exe" -OutputMsix ".\releases\windowsstore\v1.0.2\ProfiPrompt.msix"
 ```
 
-Der Preflight prüft `store_package.json`, `STORE_LISTING.md`,
-`releases/windowsstore/store_settings.json`, die Store-Screenshot-Summary,
-`releases\ProfiPrompt.msix` und vorhandene WACK-Reports.
-Für `STORE_LISTING.md` validiert er zusätzlich beide Sprachabschnitte, die
-Kurzbeschreibungen, Schlüsselwörter, Kategorien und die Ausrichtung zur
-Store-Konfiguration.
+Für bestehende Materialprüfungen kann dasselbe Paket zusätzlich unter
+`releases/ProfiPrompt.msix` abgelegt werden. Beide Dateien müssen dieselbe SHA256 haben.
 
-Ein lokales Testprotokoll für den aktuellen Paketstand wird so erzeugt:
+## Tests und Paketprüfung
 
-```bash
-python scripts/check_store_readiness.py write-test-protocol
-```
+Die vollständige Pytest-Suite und der Übersetzungscheck müssen bestanden sein.
+Das gebaute MSIX erneut mit `icon_consistency_check.py --package` prüfen.
+Das Paket in einen frischen Ordner entpacken und **dessen EXE** mit
+`--release-smoke <frischer Ausgabeordner>` starten. Screenshots müssen unter der
+nativen Windows-Plattform entstehen; Runtime, Qt-Plug-ins und Versionsdaten
+müssen vollständig sein.
 
-Das Protokoll liegt unter `releases\windowsstore\test_reports\`, enthält
-MSIX-SHA256, Materialstatus und markiert fehlende WACK-XML ausdrücklich als
-offenes Gate.
+`python scripts/check_store_readiness.py write-test-protocol` schreibt einen
+ergänzenden Materialbericht unter `releases/windowsstore/test_reports`.
+Der ältere Readiness-Checker meldet einen fehlenden WACK-Report weiterhin als
+Warnung. WACK ist nach der aktuellen zentralen Pipeline ein optionaler
+Qualitätsnachweis und ersetzt kein Paketgate.
 
-## Schritt 2: WACK-Testprotokoll erneuern
+## Einreichung
 
-1. `releases\ProfiPrompt.msix` im Windows App Certification Kit prüfen.
-2. XML-Report unter `releases\windowsstore\test_reports\wack_YYYYMMDD_HHMMSS.xml` speichern.
-3. Report lokal auswerten:
+Eine Icon-Collage aus dem gebauten Paket erzeugen, auf den OneDrive-Desktop
+legen und nach `.USR` kopieren. Erst das dokumentierte Sicht-OK des Users
+erlaubt die Einreichung. Die Freigabe und alle Testnachweise müssen an die
+SHA256 des tatsächlich hochgeladenen MSIX gebunden sein.
 
-```bash
-python scripts/check_store_readiness.py review-wack-report
-```
+Deutsch und Englisch vorbereitete Neuigkeiten gehören in das Feld
+`baseListing.releaseNotes` der Store-Listings. Nach dem Update diese Felder
+und den Einreichungsstatus über die Store-API zurücklesen.
+Der Store signiert das Paket; lokal wird es dafür nicht signiert.
 
-## Schritt 3: Store Submission
-
-Vor dem Partner-Center-Upload noch einmal ausführen:
-
-```bash
-python scripts/check_store_readiness.py
-```
-
-Preis: kostenlos
+Preis: kostenlos.

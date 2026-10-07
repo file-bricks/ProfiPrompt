@@ -143,7 +143,7 @@ def test_bm04_drop_event_rejects_nonexistent_version(qapp, tmp_path):
     assert len(boards[0].items) == 0, "Ungueltiger Versions-Drop hat faelschlicherweise Item angelegt"
 
 
-def test_bm04_remove_item_emits_boards_changed(qapp, tmp_path):
+def test_bm04_remove_item_emits_boards_changed(qapp, tmp_path, monkeypatch):
     """BUG-BM04: _remove_item_from_board() muss bus.boardsChanged emittieren."""
     st = _storage.Storage(tmp_path)
     settings = _sm.SettingsManager()
@@ -163,6 +163,7 @@ def test_bm04_remove_item_emits_boards_changed(qapp, tmp_path):
     signal_received = []
     bus.boardsChanged.connect(lambda: signal_received.append(True))
 
+    monkeypatch.setattr(QtWidgets.QMessageBox, "question", lambda *a, **k: QtWidgets.QMessageBox.StandardButton.Yes)
     try:
         bm._remove_item_from_board(tiles[0])
         assert len(signal_received) > 0, "_remove_item_from_board() hat boardsChanged nicht emittiert"

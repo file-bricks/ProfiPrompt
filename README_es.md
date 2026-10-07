@@ -116,7 +116,7 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 | **Motor de portapapeles multimodal** | **SÍ (4 modos configurables)**| NO (Copia básica) | NO (Copia única) | Pegado estándar |
 | **Exportación multiformato (PDF/TXT/JSON)**| **SÍ (Integrada)** | Requiere plugins | Exportación propietaria | NO |
 | **Compañero Web/PWA offline independiente**| **SÍ (Incluido)** | NO | NO (Solo online) | NO |
-| **Escrituras atómicas y auto-recuperación**| **SÍ (Escudo .bak)** | Depende del SO | Base de datos en la nube | Variable |
+| **Escrituras atómicas y copias JSON manuales**| **SÍ** | Depende del SO | Base de datos en la nube | Variable |
 | **Sin suscripciones / 100% Código abierto MIT**| **SÍ (100% Libre)**| Libre / Sync de pago | De pago ($10-30/mes) | Freemium / De pago |
 | **Estándar de esquema abierto (`v1.json`)**| **SÍ (Abierto)** | Solo Markdown | Bloqueo de proveedor | Base de datos propietaria |
 
@@ -137,7 +137,7 @@ flowchart TD
 
     subgraph Storage["Persistencia local de datos (.prompt_manager/)"]
         JSONStore["Almacenamiento atómico JSON (prompts.json, boards.json)"]
-        BackupStore["Instantáneas automáticas de respaldo (*.bak)"]
+        BackupStore["Exportaciones JSON manuales de la biblioteca"]
     end
 
     subgraph ExportFormat["Estándar de biblioteca portátil"]
@@ -185,7 +185,7 @@ ProfiPrompt aplica 10 invariantes operativas estrictas documentadas en [THIRD_PA
 - **INV-ATOMIC-03:** Persistencia atómica de archivos (escrituras mediante tempfile + replace).
 - **INV-SCHEMA-04:** Esquema abierto y portátil (`profiprompt-library-v1.json`).
 - **INV-UNPRIV-05:** Sin elevación de privilegios y RunAsInvoker (espacio de usuario no privilegiado).
-- **INV-BACKUP-06:** Copias de seguridad y recuperación a prueba de fallos (preservación automática `.bak`).
+- **INV-BACKUP-06:** Copias JSON manuales; las exportaciones existentes se conservan si falla la lectura de la biblioteca.
 - **INV-COPY-07:** Seguridad en el portapapeles local (acceso a memoria saneado sin registro externo).
 - **INV-PRINT-08:** Renderizado multiformato determinista (motor vectorial de impresión de Qt).
 - **INV-PWA-09:** Aislamiento del compañero de solo lectura (entorno sandboxed para la PWA).
@@ -224,7 +224,7 @@ sequenceDiagram
 
     Engineer->>UI: Crear nueva versión de prompt (v1.1)
     UI->>Engine: Validar parámetros, etiquetas y notas de cambio
-    Engine->>Store: Escritura atómica en prompts.json + .bak
+    Engine->>Store: Escritura atómica en prompts.json
     Store-->>UI: Persistencia confirmada
     Engineer->>UI: Seleccionar modo de copia (Markdown / Resultado / Texto)
     UI->>Clip: Preparar búfer saneado
@@ -331,7 +331,7 @@ ProfiPrompt/
 │   ├── profiprompt.py          # Punto de entrada y ventana principal
 │   ├── prompt_dialog.py        # Diálogos de edición de prompts e historiales
 │   ├── settings_manager.py     # Gestor de configuraciones QSettings
-│   ├── storage.py              # Persistencia atómica JSON y respaldos .bak
+│   ├── storage.py              # Persistencia atómica JSON y protección ante errores de lectura
 │   ├── theme.py                # Paletas de temas Fusion Dark y Light
 │   └── translator.py           # Motor de traducción i18n dinámica
 ├── web_companion/              # Compañero Web/PWA de solo lectura
