@@ -555,6 +555,7 @@ class BoardManager(QtWidgets.QWidget):
 
         menu.addSeparator()
         menu.addAction(tr("Vom Board entfernen"), lambda: self._remove_item_from_board(tile))
+        menu._submenus = [m_move, m_copy, m_color]
         return menu
 
     def _on_tile_context_menu(self, tile, gpos):

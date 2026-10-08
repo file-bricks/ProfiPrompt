@@ -269,7 +269,7 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert re.search(r"Last-checked:\s*2026-09-(?:13|16|20|22|28)", llms_text), "llms.txt must have recent Last-checked date"
+    assert re.search(r"Last-checked:\s*2026-(?:09-(?:13|16|20|22|28)|10-08)", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
     assert "THIRD_PARTY_LICENSES.txt" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
@@ -282,7 +282,7 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     assert "Plain-Text Licenses" in pyproject_text
     assert "MARKETING-LOG.txt" in pyproject_text
     assert "NOTICE" in pyproject_text
-    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]' in pyproject_text
+    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt", "CONTRIBUTING.md"]' in pyproject_text
 
 
 def test_canonical_root_notice_attribution() -> None:
@@ -428,4 +428,90 @@ def test_marketing_log_pfad_a_entry_20260928() -> None:
 
     assert "11. REPOSITORY HYGIENE, CI LIFECYCLE HARDENING, MULTI-HOST DEFENSE & CONTRACT TESTS" in mkt_text
     assert "2026-09-28" in mkt_text
+    assert "Pfad A" in mkt_text
+
+
+def test_contributing_bilingual_guidelines_and_invariants() -> None:
+    """Verify CONTRIBUTING.md defines bilingual sections (EN/DE) and all 10 invariants."""
+    contrib_file = ROOT / "CONTRIBUTING.md"
+    assert contrib_file.is_file(), "CONTRIBUTING.md must exist"
+    text = contrib_file.read_text(encoding="utf-8")
+
+    assert "#english" in text or 'id="english"' in text
+    assert "#deutsch" in text or 'id="deutsch"' in text
+    assert "RunAsInvoker" in text
+    assert "Plan D" in text
+    assert "1.0.2" in text
+    assert "§ 521 BGB" in text
+    assert "48h" in text
+
+    expected_invariants = [
+        "INV-LOCAL-01", "INV-OFFLINE-02", "INV-ATOMIC-03", "INV-SCHEMA-04",
+        "INV-UNPRIV-05", "INV-BACKUP-06", "INV-COPY-07", "INV-PRINT-08",
+        "INV-PWA-09", "INV-SLA-10"
+    ]
+    for inv in expected_invariants:
+        assert inv in text, f"Invariant {inv} missing in CONTRIBUTING.md"
+
+
+def test_dependabot_configuration() -> None:
+    """Verify .github/dependabot.yml exists and configures github-actions dependency updates."""
+    dep_file = ROOT / ".github" / "dependabot.yml"
+    assert dep_file.is_file(), ".github/dependabot.yml must exist"
+    text = dep_file.read_text(encoding="utf-8")
+    assert "package-ecosystem: \"github-actions\"" in text or "package-ecosystem: 'github-actions'" in text or "package-ecosystem: github-actions" in text
+    assert "interval: \"weekly\"" in text or "interval: 'weekly'" in text or "interval: weekly" in text
+
+
+def test_pep621_contributing_url_and_license_files() -> None:
+    """Verify pyproject.toml includes Contributing URL and license-files includes CONTRIBUTING.md."""
+    pyproject_file = ROOT / "pyproject.toml"
+    assert pyproject_file.is_file()
+    text = pyproject_file.read_text(encoding="utf-8")
+
+    assert 'Contributing = "https://github.com/file-bricks/ProfiPrompt/blob/master/CONTRIBUTING.md"' in text
+    assert '"CONTRIBUTING.md"' in text
+
+
+def test_third_party_licenses_audit_recency_20261008() -> None:
+    """Verify THIRD_PARTY_LICENSES.md and THIRD_PARTY_LICENSES.txt are re-audited to 2026-10-08."""
+    md_file = ROOT / "THIRD_PARTY_LICENSES.md"
+    txt_file = ROOT / "THIRD_PARTY_LICENSES.txt"
+    assert md_file.is_file()
+    assert txt_file.is_file()
+
+    md_text = md_file.read_text(encoding="utf-8")
+    txt_text = txt_file.read_text(encoding="utf-8")
+
+    assert "2026-10-08" in md_text
+    assert "CONTRIBUTING.md" in md_text
+    assert "2026-10-08" in txt_text
+    assert "CONTRIBUTING.md" in txt_text
+
+
+def test_changelog_pfad_a_entry_20261008() -> None:
+    """Verify CHANGELOG.md documents Pfad A technical hygiene on 2026-10-08 under [Unreleased]."""
+    changelog_file = ROOT / "CHANGELOG.md"
+    assert changelog_file.is_file()
+    text = changelog_file.read_text(encoding="utf-8")
+
+    unreleased_idx = text.find("## [Unreleased]")
+    assert unreleased_idx != -1
+    next_release_idx = text.find("\n## [", unreleased_idx + 1)
+    unreleased_section = text[unreleased_idx:next_release_idx] if next_release_idx != -1 else text[unreleased_idx:]
+
+    assert "2026-10-08" in unreleased_section
+    assert "Pfad A" in unreleased_section
+    assert "CONTRIBUTING.md" in unreleased_section
+    assert "dependabot.yml" in unreleased_section
+
+
+def test_marketing_log_pfad_a_entry_20261008() -> None:
+    """Verify MARKETING-LOG.txt documents Section 12 for the 2026-10-08 Pfad A run."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file()
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "12. REPOSITORY HYGIENE, BILINGUAL CONTRIBUTING GUIDELINES, DEPENDABOT GUARD & CONTRACT TESTS" in mkt_text
+    assert "2026-10-08" in mkt_text
     assert "Pfad A" in mkt_text

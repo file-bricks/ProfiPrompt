@@ -34,6 +34,11 @@ LOCK.*
 LOCK.user.*
 LOCK.until.*
 LOCK.condition.*
+LOCK.dev.*
+LOCK.antigravity.*
+LOCK.bugsearch.*
+TASKPLAN_*.md
+*-TASKPLAN*
 LOCK.permissions.json
 .automation-lock
 *.lock
@@ -130,6 +135,8 @@ docs/superpowers/
 *-Mac Studio*
 *-MacBook*
 *-IDEAPAD*
+*-IDEAPAD-GEI*
+*-IDEAPAD-GEI.*
 *.sync-temp-*
 *.sync-conflict-*
 *.conflict

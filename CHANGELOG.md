@@ -5,6 +5,29 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Pfad A / Technische Hygiene: Bilinguale Beitragsrichtlinien, Dependabot-Guard, Multi-Host-Härtung & Vertragstests (2026-10-08)
+
+- **Bilinguale Beitragsrichtlinien (`CONTRIBUTING.md`):**
+  - Umfassende zweisprachige Beitragsrichtlinien (EN/DE) mit wechselseitiger Schnellnavigation (`#english`, `#deutsch`) implementiert.
+  - Spezifikation aller 10 Governance- und Laufzeit-Invarianten: `INV-LOCAL-01` (100% Local-First & Zero-Egress), `INV-OFFLINE-02` (Offline-Autonomie), `INV-ATOMIC-03` (Atomare Dateipersistenz), `INV-SCHEMA-04` (Offenes Datenformat `profiprompt-library-v1.json`), `INV-UNPRIV-05` (Unprivilegierter Modus & `RunAsInvoker`), `INV-BACKUP-06` (Ausfallsichere `.bak`-Backups), `INV-COPY-07` (Lokale Zwischenablagen-Sicherheit), `INV-PRINT-08` (Deterministischer Mehrformat-Export TXT/PDF), `INV-PWA-09` (Schreibgeschützte Begleiter-Isolation), `INV-SLA-10` (48h Response / 5-Tage Triage Security-SLA).
+  - Verbindliche Verankerung des unprivilegierten `RunAsInvoker`-Benutzermodus (keine Administrator- oder UAC-Rechte).
+  - Plan D Entwicklungsarchitektur (`C:\_Local_DEV\repos\ProfiPrompt`, origin `https://github.com/file-bricks/ProfiPrompt.git`) dokumentiert.
+  - Gesetzlicher Haftungsausschluss (§ 521 BGB Gefälligkeitsrecht) und 48h Security Response SLA gemäß `SECURITY.md`.
+  - Strikte Versions-Freeze-Disziplin per `T-20260920-167562623` (Version 1.0.2 unverändert eingefroren).
+- **Automatisierte Abhängigkeitsüberwachung (`.github/dependabot.yml`):**
+  - Wöchentlichen Dependabot-Check für GitHub Actions (`package-ecosystem: github-actions`) eingerichtet; schließt die Flotten-Abdeckungslücke.
+- **Multi-Host- und Lock-Schutz in `.gitignore`:**
+  - Gehärtet gegen Taskplan-Dateien (`TASKPLAN_*.md`, `*-TASKPLAN*`), Multi-Agent-Locks (`LOCK.dev.*`, `LOCK.antigravity.*`, `LOCK.bugsearch.*`) und Host-spezifische Konflikt-Tokens (`*-IDEAPAD-GEI*`, `*-IDEAPAD-GEI.*`).
+- **PEP 621 Standardisierung in `pyproject.toml`:**
+  - `Contributing`-URL unter `[project.urls]` registriert und `CONTRIBUTING.md` in die `license-files`-Whitelist aufgenommen.
+- **Level 1 SBOM Re-Audit (`THIRD_PARTY_LICENSES.md`, `THIRD_PARTY_LICENSES.txt`):**
+  - Prüfdatum auf 2026-10-08 synchronisiert, Querverweise zu `CONTRIBUTING.md` ergänzt und 100% permissive Lizenzierung (0 Copyleft, LGPL-3.0 dynamische Bindung) re-auditiert.
+- **Dokumentations-, Badge- und RAG-Kontext-Synchronisation:**
+  - Badges für Contributing Guidelines, Pytest-Bestand und Prüfdatum 2026-10-08 in `README.md`, `README_de.md` und `README_es.md` aktualisiert unter Erhalt aller 17 bilateralen Schnellnavigations-Anker (`sec-01`..`sec-17`).
+  - `llms.txt` Stand 2026-10-08 mit Baseline und `CONTRIBUTING.md`-Verweis aktualisiert.
+- **Automatisierte Vertragstests (`tests/test_security_license_contract.py`):**
+  - Neue Vertragstests für zweisprachige CONTRIBUTING.md-Richtlinien & Invarianten, Dependabot-Konfiguration, PEP 621 Contributing-URL & license-files Whitelist, Level 1 SBOM Audit-Aktualität 2026-10-08 und Marketing-Log Pfad-A-Eintrag 2026-10-08 implementiert.
+
 ## [1.0.2] - 2026-10-07
 
 ProfiPrompt 1.0.2

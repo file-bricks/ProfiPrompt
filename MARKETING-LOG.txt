@@ -240,3 +240,33 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
 - Contract Test Suite Expansion:
   - Added test_ci_lifecycle_workflows_and_labels_manifest, test_changelog_pfad_a_entry, and test_marketing_log_pfad_a_entry_20260928 in tests/test_security_license_contract.py.
   - Verification: 174 Pytest tests passing (3 skipped), 46 Node.js companion tests passing = 220 automated tests 100% green.
+
+--------------------------------------------------------------------------------
+12. REPOSITORY HYGIENE, BILINGUAL CONTRIBUTING GUIDELINES, DEPENDABOT GUARD & CONTRACT TESTS (2026-10-08, Pfad A)
+--------------------------------------------------------------------------------
+- Bilingual Contributing Guidelines (CONTRIBUTING.md):
+  - Created modern bilingual contributing guide (EN/DE) with reciprocal navigation anchors (#english, #deutsch).
+  - Explicitly specified all 10 governance and runtime invariants: INV-LOCAL-01 (100% Local-First & Zero Egress), INV-OFFLINE-02 (Full Offline Autonomy), INV-ATOMIC-03 (Atomic File Persistence), INV-SCHEMA-04 (Open Portable Schema profiprompt-library-v1.json), INV-UNPRIV-05 (Non-Elevation & RunAsInvoker), INV-BACKUP-06 (Fail-Safe Backup & Recovery), INV-COPY-07 (Local Clipboard Safety), INV-PRINT-08 (Deterministic Multi-Format Rendering), INV-PWA-09 (Read-Only Companion Isolation), and INV-SLA-10 (48h Response / 5d Triage Security SLA).
+  - Codified unprivileged RunAsInvoker non-elevation mode (zero administrator or UAC privileges required).
+  - Codified Plan D Local Development Architecture (Source of Truth C:\_Local_DEV\repos\ProfiPrompt, origin https://github.com/file-bricks/ProfiPrompt.git).
+  - Codified German statutory liability disclaimer (§ 521 BGB Gefälligkeitsrecht) and 48h Security Response SLA.
+  - Enforced strict version freeze discipline per T-20260920-167562623 (version 1.0.2 frozen).
+- Automated Dependency Guard (.github/dependabot.yml):
+  - Deployed .github/dependabot.yml for automated weekly monitoring of GitHub Actions workflows, closing the fleet coverage gap.
+- Multi-Host Cloud-Sync & Lock-Defense Hardening (.gitignore):
+  - Hardened against taskplans (TASKPLAN_*.md, *-TASKPLAN*).
+  - Hardened against multi-agent locks (LOCK.dev.*, LOCK.antigravity.*, LOCK.bugsearch.*).
+  - Hardened against host-specific conflict tokens (*-IDEAPAD-GEI*, *-IDEAPAD-GEI.*).
+- PEP 621 Standardisation (pyproject.toml):
+  - Registered Contributing URL in [project.urls] pointing to CONTRIBUTING.md.
+  - Added CONTRIBUTING.md to license-files whitelist.
+  - Preserved version = "1.0.2" strictly unchanged per version-freeze policy T-20260920-167562623.
+- Level 1 SBOM Re-Audit (THIRD_PARTY_LICENSES.md & THIRD_PARTY_LICENSES.txt):
+  - Re-audited full software inventory to Stand 2026-10-08 with cross-references to CONTRIBUTING.md.
+  - Re-certified 100% permissive open-source stack, zero copyleft, and unprivileged RunAsInvoker execution.
+- Context & Badge Parity:
+  - Synchronized llms.txt Last-checked to 2026-10-08, added Contributing Guidelines canonical URL, and synchronized test baseline (339 automated tests).
+  - Synchronized Shields.io badges in README.md, README_de.md, and README_es.md (Contributing Guidelines, 293 passed Python tests, verified-2026--10--08) while maintaining all 17 bilateral quick navigation anchors (sec-01..sec-17).
+- Automated Contract Test Expansion:
+  - Added new contract tests in tests/test_security_license_contract.py: test_contributing_bilingual_guidelines_and_invariants, test_dependabot_configuration, test_pep621_contributing_url_and_license_files, test_third_party_licenses_audit_recency_20261008, test_changelog_pfad_a_entry_20261008, and test_marketing_log_pfad_a_entry_20261008.
+  - Full suite verification: 100% green across all automated tests.

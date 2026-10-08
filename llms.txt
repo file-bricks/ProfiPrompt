@@ -1,6 +1,6 @@
 # ProfiPrompt
 
-Last-checked: 2026-09-28
+Last-checked: 2026-10-08
 
 
 ## Canonical links
@@ -8,6 +8,7 @@ Last-checked: 2026-09-28
 - Repository: https://github.com/file-bricks/ProfiPrompt
 - Issues: https://github.com/file-bricks/ProfiPrompt/issues
 - License: MIT (https://github.com/file-bricks/ProfiPrompt/blob/master/LICENSE)
+- Contributing Guidelines: https://github.com/file-bricks/ProfiPrompt/blob/master/CONTRIBUTING.md
 - Canonical Attribution: https://github.com/file-bricks/ProfiPrompt/blob/master/NOTICE
 - Third-Party Licenses & Level 1 SBOM: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.md
 - Plain-Text Licenses: https://github.com/file-bricks/ProfiPrompt/blob/master/THIRD_PARTY_LICENSES.txt
@@ -63,9 +64,9 @@ offline pwa prompt companion
 
 ## Validation
 
-- Python tests: `python -m pytest` (174 passed, 3 skipped)
+- Python tests: `python -m pytest` (293 passed, 3 skipped)
 - Web/PWA tests: `node --test web_companion/tests/*.test.mjs` (46 passed)
-- Total test suite: 220 passing tests (100% green)
+- Total test suite: 339 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`
 

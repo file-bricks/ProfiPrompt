@@ -9,7 +9,7 @@ description = "Local-first PySide6 desktop application for AI prompt management,
 readme = "README.md"
 authors = [{ name = "Lukas Geiger", email = "support@lukasgeiger.com" }]
 license = { text = "MIT" }
-license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]
+license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt", "CONTRIBUTING.md"]
 keywords = [
     "pyside6",
     "qt6",
@@ -63,6 +63,7 @@ Repository = "https://github.com/file-bricks/ProfiPrompt.git"
 Issues = "https://github.com/file-bricks/ProfiPrompt/issues"
 Changelog = "https://github.com/file-bricks/ProfiPrompt/blob/master/CHANGELOG.md"
 Security = "https://github.com/file-bricks/ProfiPrompt/blob/master/SECURITY.md"
+Contributing = "https://github.com/file-bricks/ProfiPrompt/blob/master/CONTRIBUTING.md"
 Notice = "https://github.com/file-bricks/ProfiPrompt/blob/master/NOTICE"
 "Parent Organization" = "https://github.com/file-bricks"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"

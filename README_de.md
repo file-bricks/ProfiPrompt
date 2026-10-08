@@ -8,22 +8,23 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 174 passed](https://img.shields.io/badge/Pytest-174%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 293 passed](https://img.shields.io/badge/Pytest-293%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Lokal--First%20%7C%20Zero--Egress-success.svg)]()
 [![Security: User-Mode](https://img.shields.io/badge/security-User--Mode%20%7C%20Non--Elevation-informational.svg)](SECURITY.md)
 [![Security SLA: 48h Response](https://img.shields.io/badge/security-48h%20Response%20%7C%205d%20Triage-blue.svg)](SECURITY.md)
+[![Contributing: Guidelines](https://img.shields.io/badge/contributing-guidelines-orange.svg)](CONTRIBUTING.md)
 [![Third-Party Audited](https://img.shields.io/badge/third--party-audited-success.svg)](THIRD_PARTY_LICENSES.md)
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
-[![Verified: 2026-09-28](https://img.shields.io/badge/verified-2026--09--28-blue.svg)](llms.txt)
+[![Verified: 2026-10-08](https://img.shields.io/badge/verified-2026--10--08-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
 
-| Direkte Dokumentenverweise | [🛡️ Sicherheitsrichtlinie](SECURITY.md) • [⚖️ Drittanbieter-Lizenzen](THIRD_PARTY_LICENSES.md) • [📄 Lizenz-Text](THIRD_PARTY_LICENSES.txt) • [📜 Marketing-Log](MARKETING-LOG.txt) • [🤖 LLM-Kontext](llms.txt) • [📋 Kanonischer Hinweis](NOTICE) |
+| Direkte Dokumentenverweise | [🛡️ Sicherheitsrichtlinie](SECURITY.md) • [🤝 Mitwirkungsrichtlinien](CONTRIBUTING.md) • [⚖️ Drittanbieter-Lizenzen](THIRD_PARTY_LICENSES.md) • [📄 Lizenz-Text](THIRD_PARTY_LICENSES.txt) • [📜 Marketing-Log](MARKETING-LOG.txt) • [🤖 LLM-Kontext](llms.txt) • [📋 Kanonischer Hinweis](NOTICE) |
 |---|---|
 
 > **ProfiPrompt** ist eine quelloffene, lokale Desktop-Anwendung (PySide6 / Qt6) mit mobilem Web/PWA-Begleiter zur systematischen Erstellung, Versionierung, Organisation und Bereitstellung generativer KI-Prompts — völlig ohne Cloud-Zwang oder Telemetrie-Risiken.
@@ -341,8 +342,9 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # PWA-Installations-Manifest
 │   ├── service-worker.js       # Offline Service-Worker Cache-Engine
 │   └── tests/                  # Automatisierte Node.js Tests (46 Tests)
-├── tests/                      # Pytest Regressions-Testsuite (160+ Tests)
+├── tests/                      # Pytest Regressions-Testsuite (293+ Tests)
 ├── CHANGELOG.md                # Versionshistorie nach Keep a Changelog
+├── CONTRIBUTING.md             # Zweisprachige Beitragsrichtlinien & Invarianten
 ├── EXPORTFORMAT.md             # Standardisierte JSON-Formatspezifikation
 ├── LICENSE                     # MIT-Lizenz
 ├── llms.txt                    # Maschinenlesbarer LLM-Kontext
@@ -355,7 +357,8 @@ ProfiPrompt/
 ├── SECURITY.md                 # Sicherheitsrichtlinie mit 48h SLA
 ├── START.bat                   # Windows-Starter-Skript
 ├── STORE_LISTING.md            # Microsoft Store Beschreibungen
-└── THIRD_PARTY_LICENSES.md     # Drittanbieter-Lizenzen & 10 Laufzeit-Invarianten
+├── THIRD_PARTY_LICENSES.md     # Drittanbieter-Lizenzen & 10 Laufzeit-Invarianten
+└── THIRD_PARTY_LICENSES.txt    # Textfassung der Level 1 SBOM Drittanbieter-Lizenzen
 ```
 
 ---
@@ -363,10 +366,10 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Tests & Qualitätssicherung
 
-ProfiPrompt wird durch **206 automatisierte Tests** abgesichert:
+ProfiPrompt wird durch **339+ automatisierte Tests** abgesichert:
 
 ```bash
-# Python Pytest-Suite ausführen (160 bestanden, 3 übersprungen)
+# Python Pytest-Suite ausführen (293 bestanden, 3 übersprungen)
 pytest -v
 
 # Web-Companion Node.js Testsuite ausführen (46 bestanden)

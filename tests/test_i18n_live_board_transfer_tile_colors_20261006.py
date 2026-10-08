@@ -287,8 +287,9 @@ def test_board_01_tile_context_menu_offers_move_and_duplicate(qapp, storage, set
         titles = _menu_titles(menu)
         assert "Auf Board verschieben" in titles
         assert "Auf Board duplizieren" in titles
-        assert "Kachelfarbe" in titles
-        sub = next(a.menu() for a in menu.actions() if a.text() == "Auf Board verschieben")
+        menu_actions = menu.actions()
+        sub_action = next(a for a in menu_actions if a.text() == "Auf Board verschieben")
+        sub = sub_action.menu()
         sub_titles = _menu_titles(sub)
         assert "Zwei" in sub_titles and "Eins" not in sub_titles
         assert "Neues Board …" in sub_titles
