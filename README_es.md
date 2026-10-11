@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 293 passed](https://img.shields.io/badge/Pytest-293%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 344 passed](https://img.shields.io/badge/Pytest-344%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -19,7 +19,7 @@
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
-[![Verified: 2026-10-08](https://img.shields.io/badge/verified-2026--10--08-blue.svg)](llms.txt)
+[![Verified: 2026-10-11](https://img.shields.io/badge/verified-2026--10--11-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
@@ -125,6 +125,59 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 
 <a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Arquitectura y flujo de datos
+
+### Topología arquitectónica de cuatro niveles
+
+```text
++==================================================================================================+
+|                        PROFIPROMPT: TOPOLOGÍA ARQUITECTÓNICA DE CUATRO NIVELES                   |
++==================================================================================================+
+|                                                                                                  |
+|  [NIVEL 1: PYSIDE6 QT6 GUI, ESTACIÓN DE TRABAJO Y PLANO DE ESCRITORIO MULTILINGÜE]               |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Ventanas de escritorio: Interfaz nativa PySide6 (Qt6) con temas Fusion Dark y Claro         |  |
+|  | - Aislamiento RunAsInvoker: Ejecución en modo usuario sin privilegios ni UAC (INV-UNPRIV-05) |  |
+|  | - Árbol de prompts y búsqueda: Jerarquía filtrable con etiquetas de versión y contadores     |  |
+|  | - Tableros Kanban visuales: Tarjetas arrastrables, transferir/duplicar y colores a medida   |  |
+|  | - UI multilingüe en vivo: Cambio de idioma en tiempo real (DE, EN, ES, ZH, JA, RU) sin      |  |
+|  |   reiniciar mediante bus de eventos de retraducción y registro compartido de traducción      |  |
+|  | - Motor de portapapeles multimodal: 4 modos de copia inmediata (Cuerpo, Título, etc.) (INV)   |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [NIVEL 2: CONTROL DE VERSIONES, ORQUESTACIÓN DE TABLEROS Y MOTOR DE EXPORTACIÓN]               |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Historial de versiones y ramas: Árboles de revisión ilimitados (v1.0, v1.1) e IDs fijos     |  |
+|  | - Registro de resultados de modelos: Respuestas de IA guardadas y notas de pruebas A/B       |  |
+|  | - Orquestación de tableros: Agrupación temática, ordenación y confirmación de borrado        |  |
+|  | - Exportador vectorial PDF y TXT: Motor de impresión Qt QPrinter y paquetes de texto (INV)    |  |
+|  | - Estándar de esquema abierto: profiprompt-library-v1.json contra bloqueo de proveedor (INV) |  |
+|  | - Compañero Web de solo lectura: Shell PWA offline para revisión móvil sin red (INV-PWA)     |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [NIVEL 3: PERSISTENCIA ATÓMICA DE DATOS Y PLANO DE ALMACENAMIENTO TOLERANTE A FALLOS]           |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Almacenamiento Local-First: Persistencia JSON 100% offline en ~/.prompt_manager/ (INV-01)   |  |
+|  | - Autonomía offline total: Gestión de prompts aislada sin dependencia de la nube (INV-02)   |  |
+|  | - Seguridad atómica: Archivo temporal + os.replace atómico contra corrupción de datos (INV)|  |
+|  | - Capa de respaldo tolerante a fallos: Preservación de copias .bak y exportaciones (INV-06)  |  |
+|  | - Serialización determinista: Codificación UTF-8 con formato determinista y esquemas         |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [NIVEL 4: DEFENSA AIR-GAP, NO ELEVACIÓN RUNASINVOKER E INTEGRIDAD LEVEL 1 SBOM]                 |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Límite de cero egreso de red: Ejecución aislada sin telemetría ni sockets externos (INV-01) |  |
+|  | - Garantía de no elevación: Opera estrictamente en espacio de usuario estándar (INV-PRIV-05)  |  |
+|  | - Archivo de texto Level 1 SBOM: THIRD_PARTY_LICENSES.txt re-auditado a fecha 2026-10-11     |  |
+|  | - Pila permisiva sin Copyleft: 100% compatible con MIT y enlace dinámico LGPL                |  |
+|  | - Aviso legal y SLA de seguridad: § 521 BGB y respuesta en 48 horas (INV-SLA-10)             |  |
+|  +--------------------------------------------------------------------------------------------+  |
++==================================================================================================+
+```
+
+### Diagrama de componentes del sistema
 
 ```mermaid
 flowchart TD
@@ -366,10 +419,10 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Pruebas y control de calidad
 
-ProfiPrompt cuenta con el respaldo de **339+ pruebas automatizadas** que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
+ProfiPrompt cuenta con el respaldo de **390 pruebas automatizadas** (344 Python Pytest + 46 Node.js Web Companion, 100% superadas) que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
 
 ```bash
-# Ejecutar suite de pruebas unitarias y de integración de Python (293 superadas, 3 omitidas)
+# Ejecutar suite de pruebas unitarias y de integración de Python (344 superadas, 3 omitidas)
 pytest -v
 
 # Validar paridad del 100% de traducciones en los 6 idiomas (Policy P-006)

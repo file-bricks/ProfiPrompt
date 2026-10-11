@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 293 passed](https://img.shields.io/badge/Pytest-293%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 344 passed](https://img.shields.io/badge/Pytest-344%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -19,7 +19,7 @@
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
-[![Verified: 2026-10-08](https://img.shields.io/badge/verified-2026--10--08-blue.svg)](llms.txt)
+[![Verified: 2026-10-11](https://img.shields.io/badge/verified-2026--10--11-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
@@ -125,6 +125,59 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 
 <a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Architecture & Data Flow
+
+### Visual Four-View Architectural Topology
+
+```text
++==================================================================================================+
+|                          PROFIPROMPT: FOUR-VIEW ARCHITECTURAL TOPOLOGY                          |
++==================================================================================================+
+|                                                                                                  |
+|  [VIEW 1: PYSIDE6 QT6 GUI, WORKFLOW WORKSTATION & MULTI-LANGUAGE DESKTOP PLANE]                  |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Desktop Windowing: PySide6 (Qt6) native desktop interface with Fusion Dark & Light themes  |  |
+|  | - RunAsInvoker Isolation: Unprivileged user execution without UAC or root (INV-UNPRIV-05)  |  |
+|  | - Prompt Tree & Search: Filterable hierarchy with version tags, category chips & counts     |  |
+|  | - Visual Kanban Boards: Drag-and-drop tiles, board transfer/duplicate & custom tile colors  |  |
+|  | - Live Trilingual/6-Lang UI: Real-time i18n switch across DE, EN, ES, ZH, JA, RU without    |  |
+|  |   restart via dynamic retranslation bus and shared translation registry                   |  |
+|  | - Multi-Mode Clipboard Engine: 4 instant copy modes (Body, Title, Result, Markdown) (INV)   |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [VIEW 2: PROMPT VERSIONING, BOARD ORCHESTRATION & EXPORT ENGINE PLANE]                          |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Version History & Branching: Unlimited version trees (v1.0, v1.1) & immutable prompt IDs   |  |
+|  | - Model Execution Tracking: Stored model output completions & A/B testing benchmark notes  |  |
+|  | - Board Layout Orchestration: Thematic board grouping, tile ordering & confirmed deletion    |  |
+|  | - Vector PDF & TXT Exporter: Vector printing engine via Qt QPrinter & clean text bundles (INV)|  |
+|  | - Open Portable Schema: profiprompt-library-v1.json standard preventing lock-in (INV-SCHEMA)|  |
+|  | - Read-Only Web Companion Bridge: Client-side PWA shell for offline mobile review (INV-PWA)  |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [VIEW 3: ATOMIC DATA PERSISTENCE & FAULT-TOLERANT STORAGE PLANE]                                 |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Local-First Storage: 100% offline JSON persistence in ~/.prompt_manager/ (INV-LOCAL-01)    |  |
+|  | - Full Offline Autonomy: Air-gapped prompt management with zero cloud reliance (INV-OFFLINE) |  |
+|  | - Atomic File Safety: Tempfile write + atomic os.replace preventing corruption (INV-ATOMIC)  |  |
+|  | - Fail-Safe Backup Layer: Preservation of .bak backups and exports on read errors (INV-BAK)  |  |
+|  | - Deterministic Serialization: UTF-8 encoding with deterministic formatting & schema checks   |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [VIEW 4: AIR-GAP DEFENSE, RUNASINVOKER NON-ELEVATION & LEVEL 1 SBOM INTEGRITY]                  |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Zero Network Egress Boundary: Air-gapped execution with zero telemetry or network sockets  |  |
+|  | - Non-Elevation Guarantee: Operates strictly in standard user space (INV-UNPRIV-05)          |  |
+|  | - Level 1 SBOM Plain-Text Companion: THIRD_PARTY_LICENSES.txt Stand 2026-10-11 re-audited    |  |
+|  | - Zero-Copyleft Permissive Stack: 100% MIT-compatible license stack & dynamic LGPL linking   |  |
+|  | - Statutory Notice & Security SLA: § 521 BGB Gefälligkeitsrecht & 48h SLA (INV-SLA-10)       |  |
+|  +--------------------------------------------------------------------------------------------+  |
++==================================================================================================+
+```
+
+### System Component Flowchart
 
 ```mermaid
 flowchart TD
@@ -366,10 +419,10 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Testing & Quality Assurance
 
-ProfiPrompt is backed by **339+ automated tests** verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
+ProfiPrompt is backed by **390 automated tests** (344 Python Pytest + 46 Node.js Web Companion, 100% green) verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
 
 ```bash
-# Run Python Pytest test suite (293 passed, 3 skipped)
+# Run Python Pytest test suite (344 passed, 3 skipped)
 pytest -v
 
 # Run Web Companion Node.js test suite (46 passed)

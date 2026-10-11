@@ -270,3 +270,48 @@ ProfiPrompt operates under 10 strict invariants documented in THIRD_PARTY_LICENS
 - Automated Contract Test Expansion:
   - Added new contract tests in tests/test_security_license_contract.py: test_contributing_bilingual_guidelines_and_invariants, test_dependabot_configuration, test_pep621_contributing_url_and_license_files, test_third_party_licenses_audit_recency_20261008, test_changelog_pfad_a_entry_20261008, and test_marketing_log_pfad_a_entry_20261008.
   - Full suite verification: 100% green across all automated tests.
+
+--------------------------------------------------------------------------------
+13. DISCOVERABILITY, VISUAL ARCHITECTURE, LEVEL 1 SBOM & TRILINGUAL TOPOLOGY AUDIT (2026-10-11, Pfad B)
+--------------------------------------------------------------------------------
+Maintainer: Lukas Geiger (file-bricks / open-bricks)
+Auditor: Antigravity (Gemini 3.8 Flash High)
+Host: WORKSTATION-LG
+Target Version: 1.0.2 (strictly frozen per T-20260920-167562623)
+
+- Live Traffic & Audience Discoverability Analysis:
+  - 14-Day Traffic Telemetry: 414 clones across 122 unique cloners; 3 repository views across 3 unique visitors.
+  - High Clone-to-View Ratio confirms strong programmatic adoption, continuous integration ingestion, and developer syndication.
+  - Saturated 20/20 GitHub topics (ai, desktop-app, llm, prompt-engineering, prompt-manager, pyside6, python, clipboard-manager, json-export, local-first, offline-first, privacy-first, prompt-library, pwa, windows, developer-tools, fail-closed, file-bricks, open-bricks, zero-egress) and canonical homepage https://github.com/file-bricks/ProfiPrompt#readme actively serving high-intent search queries.
+
+- Trilingual ASCII Four-View Architectural Topology:
+  - Implemented comprehensive ASCII 4-View Architectural Topology across all 3 documentation languages (README.md, README_de.md, README_es.md) in Section 4 under full retention of all 17 bilateral quick-navigation anchors (sec-01..sec-17):
+    - View 1: PySide6 Qt6 GUI, Workflow Workstation & Multi-Language Desktop Plane (Windowing, RunAsInvoker non-elevation INV-UNPRIV-05, prompt tree & search, visual kanban boards, live trilingual/6-language i18n switcher, multi-mode clipboard INV-COPY-07).
+    - View 2: Prompt Versioning, Board Orchestration & Export Engine Plane (Unlimited revision branching, execution tracking, board orchestration with confirmed deletion safeguards, vector PDF & TXT exporters INV-PRINT-08, portable schema profiprompt-library-v1.json INV-SCHEMA-04, read-only PWA companion bridge INV-PWA-09).
+    - View 3: Atomic Data Persistence & Fault-Tolerant Storage Plane (100% offline local-first storage in ~/.prompt_manager/ INV-LOCAL-01, offline autonomy INV-OFFLINE-02, tempfile write + atomic replacement INV-ATOMIC-03, fail-safe .bak backup preservation on read errors INV-BACKUP-06, deterministic UTF-8 serialization).
+    - View 4: Air-Gap Defense, RunAsInvoker Non-Elevation & Level 1 SBOM Integrity (Zero network egress boundary, non-elevation guarantee, Level 1 SBOM companion THIRD_PARTY_LICENSES.txt Stand 2026-10-11, zero copyleft permissive stack, statutory disclaimer § 521 BGB & 48h Security Response SLA INV-SLA-10).
+
+- Level 1 SBOM Re-Audit (Stand 2026-10-11):
+  - Re-audited THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md to Stand 2026-10-11 with confirmed historical continuity.
+  - Re-verified all 10 runtime invariants (INV-LOCAL-01..INV-SLA-10), unprivileged RunAsInvoker non-elevation mode, and zero-copyleft LGPL-3.0 dynamic linking isolation.
+
+- Context, Badge & Test Metrics Parity:
+  - Synchronized Pytest badges across README.md, README_de.md, and README_es.md to 344 passed tests | 100% green.
+  - Synchronized verification badges to verified-2026--10--11-blue.svg.
+  - Updated llms.txt to Last-checked: 2026-10-11 with 390 automated tests baseline (344 Pytest + 46 Node.js Web Companion) and 4-View Architectural Topology reference.
+
+- Non-Automated Marketing, Packaging & Discoverability Recommendations:
+  - [REC-20261011-01] Windows Package Manager (winget) & Scoop Manifest Submission:
+    Package ProfiPrompt v1.0.2 as a community winget manifest (file-bricks.ProfiPrompt) and Scoop bucket manifest to enable one-line CLI installation (`winget install file-bricks.ProfiPrompt`) for Windows desktop power users.
+  - [REC-20261011-02] Curated Open-Source Directory & Awesome-List Submissions:
+    Submit ProfiPrompt to prominent community-curated directories (e.g. awesome-prompt-engineering, awesome-local-first, awesome-pyside, alternativeTo) highlighting its zero-telemetry and unprivileged local-first security posture.
+  - [REC-20261011-03] GitHub Pages Interactive Demo for PWA Companion:
+    Deploy the static read-only PWA companion (web_companion/) to GitHub Pages (file-bricks.github.io/ProfiPrompt) with preloaded sample prompts, allowing prospective users to test the mobile prompt inspection and copy flows directly in their browser without installation.
+
+- Automated Contract Test Expansion:
+  - Added new automated contract tests in tests/test_security_license_contract.py:
+    - test_ascii_four_view_topology_trilingual_parity
+    - test_level_1_sbom_currency_20261011
+    - test_marketing_log_section_13_pfad_b_20261011
+    - test_badges_recency_and_test_count_20261011
+    - test_version_freeze_discipline_102

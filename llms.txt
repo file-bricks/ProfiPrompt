@@ -1,6 +1,6 @@
 # ProfiPrompt
 
-Last-checked: 2026-10-08
+Last-checked: 2026-10-11
 
 
 ## Canonical links
@@ -58,15 +58,15 @@ offline pwa prompt companion
 - Default user data lives under the local user profile in `.prompt_manager`.
 - The Web/PWA companion is read-only and imports `profiprompt-library-v1.json` directly in the browser.
 - No telemetry, cloud sync, analytics, or external API access is part of the app.
-- Governed by 10 strict runtime invariants (INV-LOCAL-01 through INV-SLA-10) with Level 1 SBOM Invariant Cross-Reference Matrix detailed in `THIRD_PARTY_LICENSES.md`.
+- Governed by 10 strict runtime invariants (INV-LOCAL-01 through INV-SLA-10) with Level 1 SBOM Invariant Cross-Reference Matrix detailed in `THIRD_PARTY_LICENSES.md` and ASCII 4-View Architectural Topology in `README.md`.
 - Certified for unprivileged user execution (`RunAsInvoker`) without administrative elevation.
 - Liability governed by German law and limited to intent and gross negligence (§ 521 BGB Gefälligkeitsrecht) with a committed 48h Security Response SLA.
 
 ## Validation
 
-- Python tests: `python -m pytest` (293 passed, 3 skipped)
+- Python tests: `python -m pytest` (344 passed, 3 skipped)
 - Web/PWA tests: `node --test web_companion/tests/*.test.mjs` (46 passed)
-- Total test suite: 339 passing tests (100% green)
+- Total test suite: 390 passing tests (100% green)
 - Compile smoke: `python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py`
 - Store readiness: `python scripts/check_store_readiness.py` and `python scripts/check_store_readiness.py write-test-protocol`
 

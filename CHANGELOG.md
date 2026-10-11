@@ -5,6 +5,23 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Pfad B / Marketing, Discoverability, Visual Architecture & Level 1 SBOM (2026-10-11)
+
+- **Trilinguale ASCII Vier-Ebenen-Architekturtopologie (`README.md`, `README_de.md`, `README_es.md`):**
+  - Umfassende ASCII 4-View Architectural Topology in allen drei Dokumentationssprachen (EN, DE, ES) in Abschnitt 4 integriert unter Erhalt aller 17 bilateralen Schnellnavigations-Anker (`sec-01`..`sec-17`).
+  - Detaillierte Projektion der vier architektonischen Ebenen: Ebene 1 (PySide6 Qt6 GUI, Workflow Workstation, Kanban-Boards, Live-6-Sprachen-UI-Retranslation, Multi-Mode-Clipboard), Ebene 2 (Prompt-Versionierung, Board-Orchestrierung mit bestätigten Löschdialogen, Vektor-PDF/TXT-Exporte, offenes `profiprompt-library-v1.json`-Schema, read-only PWA-Begleiter), Ebene 3 (Atomare JSON-Persistenz unter `~/.prompt_manager/`, Tempfile-Write + os.replace, .bak-Backup-Schutz bei Lesefehlern), Ebene 4 (Zero-Egress-Luftspaltgrenze, unprivilegierter RunAsInvoker-Benutzermodus, Level 1 SBOM, § 521 BGB Gefälligkeitsrecht und 48h Security Response SLA).
+  - Alle 10 Invarianten (`INV-LOCAL-01`..`INV-SLA-10`) bilateral in allen drei Topologien abgebildet.
+- **Level 1 SBOM Re-Audit (`THIRD_PARTY_LICENSES.md`, `THIRD_PARTY_LICENSES.txt`):**
+  - Re-Audit auf Stand 2026-10-11 mit Bestätigung aller 10 Invarianten, unprivilegiertem RunAsInvoker-Modus, Zero-Copyleft Permissive Stack (MIT, LGPL-3.0 dynamische Bindung) und historischer Audit-Kontinuität.
+- **Dokumentations-, Badge- und RAG-Kontext-Synchronisation:**
+  - Badges für verifizierte Tests in `README.md`, `README_de.md` und `README_es.md` auf 344 Pytest-Tests (100% grün) und Prüfdatum 2026-10-11 synchronisiert.
+  - `llms.txt` Stand 2026-10-11 mit 390 automatisierten Tests (344 Pytest + 46 Node.js Web Companion) und 4-View-Topologie-Referenz aktualisiert.
+  - `MARKETING-LOG.txt` um Abschnitt 13 mit 14-Tage-Traffic-Analyse (414 Clones / 122 Uniques, 3 Views / 3 Uniques) und 3 nicht-automatisierten Handlungsempfehlungen (`REC-20261011-01`..`03`) ergänzt.
+- **Automatisierte Vertragstests (`tests/test_security_license_contract.py`):**
+  - Fünf neue Vertragstests implementiert: `test_ascii_four_view_topology_trilingual_parity`, `test_level_1_sbom_currency_20261011`, `test_marketing_log_section_13_pfad_b_20261011`, `test_badges_recency_and_test_count_20261011`, `test_version_freeze_discipline_102`.
+- **Strikte Versions-Freeze-Disziplin per `T-20260920-167562623`:**
+  - Version 1.0.2 unverändert eingefroren (kein Versions-Bump).
+
 ### Pfad A / Technische Hygiene: Bilinguale Beitragsrichtlinien, Dependabot-Guard, Multi-Host-Härtung & Vertragstests (2026-10-08)
 
 - **Bilinguale Beitragsrichtlinien (`CONTRIBUTING.md`):**

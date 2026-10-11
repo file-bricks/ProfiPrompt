@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 293 passed](https://img.shields.io/badge/Pytest-293%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 344 passed](https://img.shields.io/badge/Pytest-344%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Lokal--First%20%7C%20Zero--Egress-success.svg)]()
@@ -19,7 +19,7 @@
 [![Marketing Log Active](https://img.shields.io/badge/marketing-log%20active-blueviolet.svg)](MARKETING-LOG.txt)
 [![Code Style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Attribution: NOTICE](https://img.shields.io/badge/attribution-NOTICE-blue.svg)](NOTICE)
-[![Verified: 2026-10-08](https://img.shields.io/badge/verified-2026--10--08-blue.svg)](llms.txt)
+[![Verified: 2026-10-11](https://img.shields.io/badge/verified-2026--10--11-blue.svg)](llms.txt)
 [![Ecosystem: file-bricks](https://img.shields.io/badge/%F0%9F%A7%B1%20ecosystem-file--bricks-blue.svg)](https://github.com/file-bricks)
 [![Umbrella: open-bricks](https://img.shields.io/badge/%F0%9F%8F%97%EF%B8%8F%20umbrella-open--bricks-indigo.svg)](https://github.com/open-bricks)
 [![LLM-Ready](https://img.shields.io/badge/LLM--Ready-llms.txt-blue.svg)](llms.txt)
@@ -125,6 +125,59 @@ ProfiPrompt adressiert 4 zentrale Anwendergruppen und Stakeholder-Personas:
 
 <a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Systemarchitektur & Datenfluss
+
+### Visuelle Vier-Ebenen-Architekturtopologie
+
+```text
++==================================================================================================+
+|                         PROFIPROMPT: VIER-EBENEN-ARCHITEKTURTOPOLOGIE                            |
++==================================================================================================+
+|                                                                                                  |
+|  [EBENE 1: PYSIDE6 QT6 GUI, WORKFLOW-WORKSTATION & MEHRSPRACHIGE DESKTOP-EBENE]                  |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Desktop-Fenster: PySide6 (Qt6) native Desktop-Oberfläche mit Fusion Dark & Hell-Designs     |  |
+|  | - RunAsInvoker-Isolation: Ausführung im unprivilegierten Benutzermodus ohne UAC (INV-UNPRIV)  |  |
+|  | - Prompt-Baum & Suche: Filterbare Hierarchie mit Versions-Chips, Schlagworten & Live-Zählern  |  |
+|  | - Visuelle Kanban-Boards: Drag-and-Drop-Kacheln, Board-Transfer/Duplizieren & Kachelfarben   |  |
+|  | - Live-Mehrsprachigkeit: Echtzeit-Sprachwechsel für 6 Sprachen (DE, EN, ES, ZH, JA, RU)     |  |
+|  |   ohne Neustart über dynamischen Retranslation-Eventbus und gemeinsame Übersetzungs-Registry |  |
+|  | - Multimodale Clipboard-Engine: 4 Sofort-Kopiermodi (Text, Titel, Ergebnis, Markdown) (INV)   |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [EBENE 2: PROMPT-VERSIONIERUNG, BOARD-ORCHESTRIERUNG & EXPORT-ENGINE-EBENE]                     |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Versionshistorie & Verzweigung: Unbegrenzte Revisionsbäume (v1.0, v1.1) & feste Prompt-IDs  |  |
+|  | - Modell-Ergebnis-Protokoll: Gespeicherte KI-Antworten & A/B-Testnotizen pro Revision        |  |
+|  | - Board-Orchestrierung: Thematische Gruppierung, Kachelanordnung & bestätigte Löschdialoge   |  |
+|  | - Vektor-PDF- & TXT-Export: Druck-Engine über Qt QPrinter & saubere Textdateibündel (INV)    |  |
+|  | - Offener portabler Standard: profiprompt-library-v1.json gegen Vendor-Lock-in (INV-SCHEMA)  |  |
+|  | - Read-Only Web-Begleiter: Client-seitige Offline-PWA für mobile Bibliotheksprüfung (INV-PWA)|  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [EBENE 3: ATOMARE DATENPERSISTENZ & FEHLERTOLERANTE SPEICHEREBENE]                              |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Local-First-Speicher: 100% Offline-JSON-Persistenz unter ~/.prompt_manager/ (INV-LOCAL-01)  |  |
+|  | - Vollständige Offline-Autonomie: Air-Gapped Prompt-Pflege ohne Cloud-Abhängigkeit (INV-OFF)  |  |
+|  | - Atomare Schreibsicherheit: Temporärdatei + atomares os.replace gegen Datenkorruption (INV)  |  |
+|  | - Ausfallsichere Backups: Erhalt von .bak-Sicherungen und Exporten bei Lesefehlern (INV-BAK)  |  |
+|  | - Deterministische Serialisierung: UTF-8 mit deterministischer Formatierung & Schema-Checks  |  |
+|  +--------------------------------------------------------------------------------------------+  |
+|                                                |                                                 |
+|                                                v                                                 |
+|  [EBENE 4: AIR-GAP-SCHUTZ, RUNASINVOKER-BENUTZERMODUS & LEVEL 1 SBOM INTEGRITÄT]                 |
+|  +--------------------------------------------------------------------------------------------+  |
+|  | - Zero-Egress-Netzwerkgrenze: Air-Gapped Ausführung ohne Telemetrie und Netzwerksockets      |  |
+|  | - Keine Privilegien-Eskalation: Läuft ausschließlich mit Standard-Benutzerrechten (INV-PRIV) |  |
+|  | - Level 1 SBOM Begleitdatei: THIRD_PARTY_LICENSES.txt Stand 2026-10-11 re-auditiert          |  |
+|  | - Zero-Copyleft Permissive Stack: 100% MIT-kompatibler Stack & dynamische LGPL-Einbindung     |  |
+|  | - Gesetzlicher Hinweis & SLA: § 521 BGB Gefälligkeitsrecht & 48h Security Response (INV-SLA)  |  |
+|  +--------------------------------------------------------------------------------------------+  |
++==================================================================================================+
+```
+
+### Systemkomponenten-Ablaufdiagramm
 
 ```mermaid
 flowchart TD
@@ -366,10 +419,10 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Tests & Qualitätssicherung
 
-ProfiPrompt wird durch **339+ automatisierte Tests** abgesichert:
+ProfiPrompt wird durch **390 automatisierte Tests** (344 Python Pytest + 46 Node.js Web Companion, 100% grün) abgesichert:
 
 ```bash
-# Python Pytest-Suite ausführen (293 bestanden, 3 übersprungen)
+# Python Pytest-Suite ausführen (344 bestanden, 3 übersprungen)
 pytest -v
 
 # Web-Companion Node.js Testsuite ausführen (46 bestanden)

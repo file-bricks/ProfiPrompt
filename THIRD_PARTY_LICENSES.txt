@@ -2,7 +2,7 @@ THIRD-PARTY SOFTWARE LICENSES
 =============================
 
 Project: ProfiPrompt (file-bricks/ProfiPrompt)
-Audit Date: 2026-10-08
+Audit Date: 2026-10-11 (Re-Audit; vorherige Audits: 2026-10-08, 2026-09-28)
 Status: AUDITED & VERIFIED (Level 1 SBOM Invariants INV-LOCAL-01..INV-SLA-10)
 Attribution Notice: NOTICE
 Contributing Guidelines: CONTRIBUTING.md

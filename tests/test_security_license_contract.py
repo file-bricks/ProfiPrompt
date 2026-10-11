@@ -269,7 +269,7 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     llms_file = ROOT / "llms.txt"
     assert llms_file.is_file()
     llms_text = llms_file.read_text(encoding="utf-8")
-    assert re.search(r"Last-checked:\s*2026-(?:09-(?:13|16|20|22|28)|10-08)", llms_text), "llms.txt must have recent Last-checked date"
+    assert re.search(r"Last-checked:\s*2026-(?:09-(?:13|16|20|22|28)|10-(?:08|11))", llms_text), "llms.txt must have recent Last-checked date"
     assert "THIRD_PARTY_LICENSES.md" in llms_text
     assert "THIRD_PARTY_LICENSES.txt" in llms_text
     assert "MARKETING-LOG.txt" in llms_text
@@ -515,3 +515,73 @@ def test_marketing_log_pfad_a_entry_20261008() -> None:
     assert "12. REPOSITORY HYGIENE, BILINGUAL CONTRIBUTING GUIDELINES, DEPENDABOT GUARD & CONTRACT TESTS" in mkt_text
     assert "2026-10-08" in mkt_text
     assert "Pfad A" in mkt_text
+
+
+def test_ascii_four_view_topology_trilingual_parity() -> None:
+    """Verify README.md, README_de.md, and README_es.md contain ASCII 4-View Architectural Topology with all 10 invariants."""
+    en_readme = ROOT / "README.md"
+    de_readme = ROOT / "README_de.md"
+    es_readme = ROOT / "README_es.md"
+    assert en_readme.is_file() and de_readme.is_file() and es_readme.is_file()
+
+    en_text = en_readme.read_text(encoding="utf-8")
+    de_text = de_readme.read_text(encoding="utf-8")
+    es_text = es_readme.read_text(encoding="utf-8")
+
+    # Verify View headers
+    assert "FOUR-VIEW ARCHITECTURAL TOPOLOGY" in en_text
+    assert "[VIEW 1:" in en_text and "[VIEW 2:" in en_text and "[VIEW 3:" in en_text and "[VIEW 4:" in en_text
+
+    assert "VIER-EBENEN-ARCHITEKTURTOPOLOGIE" in de_text
+    assert "[EBENE 1:" in de_text and "[EBENE 2:" in de_text and "[EBENE 3:" in de_text and "[EBENE 4:" in de_text
+
+    assert "TOPOLOGÍA ARQUITECTÓNICA DE CUATRO NIVELES" in es_text
+    assert "[NIVEL 1:" in es_text and "[NIVEL 2:" in es_text and "[NIVEL 3:" in es_text and "[NIVEL 4:" in es_text
+
+    # All 10 invariants must be present in the English topology
+    for inv in [
+        "INV-LOCAL-01", "INV-OFFLINE", "INV-ATOMIC", "INV-SCHEMA",
+        "INV-UNPRIV-05", "INV-BAK", "INV-PRINT", "INV-PWA", "INV-SLA-10"
+    ]:
+        assert inv in en_text, f"{inv} missing in README.md topology"
+
+
+def test_level_1_sbom_currency_20261011() -> None:
+    """Verify THIRD_PARTY_LICENSES.md and THIRD_PARTY_LICENSES.txt are re-audited to 2026-10-11."""
+    md_file = ROOT / "THIRD_PARTY_LICENSES.md"
+    txt_file = ROOT / "THIRD_PARTY_LICENSES.txt"
+    assert md_file.is_file() and txt_file.is_file()
+
+    md_text = md_file.read_text(encoding="utf-8")
+    txt_text = txt_file.read_text(encoding="utf-8")
+
+    assert "2026-10-11" in md_text
+    assert "2026-10-11" in txt_text
+
+
+def test_marketing_log_section_13_pfad_b_20261011() -> None:
+    """Verify MARKETING-LOG.txt documents Section 13 for the 2026-10-11 Pfad B run with all 3 recommendations."""
+    mkt_file = ROOT / "MARKETING-LOG.txt"
+    assert mkt_file.is_file()
+    mkt_text = mkt_file.read_text(encoding="utf-8")
+
+    assert "13. DISCOVERABILITY, VISUAL ARCHITECTURE, LEVEL 1 SBOM & TRILINGUAL TOPOLOGY AUDIT" in mkt_text
+    assert "2026-10-11" in mkt_text
+    assert "Pfad B" in mkt_text
+    assert "REC-20261011-01" in mkt_text
+    assert "REC-20261011-02" in mkt_text
+    assert "REC-20261011-03" in mkt_text
+
+
+def test_badges_recency_and_test_count_20261011() -> None:
+    """Verify all 3 READMEs contain badges for 344 passed tests and 2026-10-11 verification."""
+    for filename in ["README.md", "README_de.md", "README_es.md"]:
+        text = (ROOT / filename).read_text(encoding="utf-8")
+        assert "Pytest-344%20passed" in text, f"Pytest 344 passed badge missing in {filename}"
+        assert "verified-2026--10--11" in text, f"Verified 2026-10-11 badge missing in {filename}"
+
+
+def test_version_freeze_discipline_102() -> None:
+    """Verify version 1.0.2 is strictly preserved in pyproject.toml per T-20260920-167562623."""
+    pyproject_text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'version = "1.0.2"' in pyproject_text, "version must remain strictly frozen at 1.0.2"
