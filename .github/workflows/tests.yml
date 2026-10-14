@@ -59,3 +59,14 @@ jobs:
           node-version: '22'
       - name: Run Web/PWA companion tests
         run: node --test web_companion/tests/*.test.mjs
+
+  github-script-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify v9 runtime with mocked REST calls
+        uses: actions/github-script@v9
+        with:
+          script: |
+            await require('./scripts/ci-github-script-compat.cjs')({ getOctokit });
