@@ -342,7 +342,7 @@ def test_ci_workflow_guardrails() -> None:
     assert "concurrency:" in auto_assign_yml, "auto-assign.yml must define concurrency"
     assert "cancel-in-progress: true" in auto_assign_yml, "auto-assign.yml must set cancel-in-progress"
     assert "timeout-minutes: 5" in auto_assign_yml, "auto-assign.yml must set timeout-minutes: 5"
-    assert "actions/github-script@v7" in auto_assign_yml
+    assert "actions/github-script@v9" in auto_assign_yml
 
     label_sync_yml = (workflows_dir / "label-sync.yml").read_text(encoding="utf-8")
     assert "concurrency:" in label_sync_yml, "label-sync.yml must define concurrency"
