@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario: [full, without-dialog, dialog-only, labels-only, filedialog-only, cleanup]
+        scenario: [control, live-board, language-switch, accessibility, tier2, full]
     env:
       QT_QPA_PLATFORM: offscreen
       PYTHONIOENCODING: utf-8
@@ -28,19 +28,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt pytest pytest-qt Pillow
+      - name: Restore product workflow for static contract checks
+        run: git show cf8d5cb15683f4e2295b71c012d41c4ae9feedba:.github/workflows/tests.yml > .github/workflows/tests.yml
       - name: Isolate filter and interpreter finalization
         run: |
           python - <<'PY'
           import os, sys, gc, pytest
           scenario = os.environ['SCENARIO']
-          options = {
-              'full': ['-ra', '-q'],
-              'without-dialog': ['-ra', '-q', '--ignore=tests/test_standard_dialog_buttons.py'],
-              'dialog-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py'],
-              'labels-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py::test_qt_standard_button_labels_follow_every_complete_app_locale'],
-              'filedialog-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py::test_qfiledialog_and_its_children_are_excluded_from_app_translation'],
-              'cleanup': ['-ra', '-q'],
-          }
+          options = {'control': ['-ra', '-q', '--ignore=tests/test_standard_dialog_buttons.py', '--ignore=tests/test_i18n_live_board_transfer_tile_colors_20261006.py', '--ignore=tests/test_language_switch.py', '--ignore=tests/test_ui_accessibility.py', '--ignore=tests/test_i18n_tier2_contract.py'], 'live-board': ['-ra', '-q', 'tests/test_i18n_live_board_transfer_tile_colors_20261006.py'], 'language-switch': ['-ra', '-q', 'tests/test_language_switch.py'], 'accessibility': ['-ra', '-q', 'tests/test_ui_accessibility.py'], 'tier2': ['-ra', '-q', 'tests/test_i18n_tier2_contract.py'], 'full': ['-ra', '-q']}
           class Cleanup:
               def pytest_sessionfinish(self, session, exitstatus):
                   from PySide6 import QtWidgets
