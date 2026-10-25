@@ -577,10 +577,10 @@ def test_marketing_log_section_13_pfad_b_20261011() -> None:
 
 
 def test_badges_recency_and_test_count_20261011() -> None:
-    """Verify all 3 READMEs contain badges for 344 passed tests and 2026-10-11 verification."""
+    """Verify all 3 READMEs contain badges for 354 passed tests and 2026-10-11 verification."""
     for filename in ["README.md", "README_de.md", "README_es.md"]:
         text = (ROOT / filename).read_text(encoding="utf-8")
-        assert "Pytest-344%20passed" in text, f"Pytest 344 passed badge missing in {filename}"
+        assert "Pytest-354%20passed" in text, f"Pytest 354 passed badge missing in {filename}"
         assert "verified-2026--10--11" in text, f"Verified 2026-10-11 badge missing in {filename}"
 
 
