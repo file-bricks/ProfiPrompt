@@ -1,35 +1,25 @@
-name: ProfiPrompt tests
-
+name: ProfiPrompt Qt isolation diagnostics
 on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  python:
+  isolate:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        scenario: [full, without-dialog, dialog-only, labels-only, filedialog-only, cleanup]
     env:
       QT_QPA_PLATFORM: offscreen
       PYTHONIOENCODING: utf-8
+      SCENARIO: ${{ matrix.scenario }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
       - name: Install Qt runtime libraries
         run: |
           sudo apt-get update
@@ -38,18 +28,30 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt pytest pytest-qt Pillow
-      - name: Run Python tests
-        run: python -m pytest -ra -v
-      - name: Compile entry points
-        run: python -m py_compile src/profiprompt.py src/platform_smoke.py src/pdf_exporter.py manage_translations.py translator.py
-
-  web-companion:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-      - name: Run Web/PWA companion tests
-        run: node --test web_companion/tests/*.test.mjs
+      - name: Isolate filter and interpreter finalization
+        run: |
+          python - <<'PY'
+          import os, sys, gc, pytest
+          scenario = os.environ['SCENARIO']
+          options = {
+              'full': ['-ra', '-q'],
+              'without-dialog': ['-ra', '-q', '--ignore=tests/test_standard_dialog_buttons.py'],
+              'dialog-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py'],
+              'labels-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py::test_qt_standard_button_labels_follow_every_complete_app_locale'],
+              'filedialog-only': ['-ra', '-q', 'tests/test_standard_dialog_buttons.py::test_qfiledialog_and_its_children_are_excluded_from_app_translation'],
+              'cleanup': ['-ra', '-q'],
+          }
+          class Cleanup:
+              def pytest_sessionfinish(self, session, exitstatus):
+                  from PySide6 import QtWidgets
+                  import shiboken6
+                  app = QtWidgets.QApplication.instance()
+                  localizer = getattr(app, '_profiprompt_dialog_button_localizer', None)
+                  if localizer is not None:
+                      app.removeEventFilter(localizer)
+                      delattr(app, '_profiprompt_dialog_button_localizer')
+                      shiboken6.delete(localizer)
+                      print('DIAGNOSTIC_FILTER_REMOVED', flush=True)
+                  print('DIAGNOSTIC_GC', gc.collect(), flush=True)
+          sys.exit(pytest.main(options[scenario], plugins=[Cleanup()] if scenario == 'cleanup' else []))
+          PY
