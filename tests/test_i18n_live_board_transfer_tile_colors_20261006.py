@@ -10,7 +10,7 @@ Gepruefte Punkte:
                   waeren alle Exporte stumm wirkungslos gewesen.
   I18N-03 (MITTEL): Laufzeit-Lookups durften fehlende Keys mit leeren Uebersetzungen in die
                   gebuendelte translations.json schreiben (Paritaets-Bruch).
-  I18N-04: Jeder im Code verwendete tr()-Key existiert in allen 6 Sprachen mit gleichen
+  I18N-04: Jeder im Code verwendete tr()-Key existiert in allen 11 Sprachen mit gleichen
            Platzhaltern.
   BOARD-01 (Regression): Kacheln liessen sich nicht mehr auf ein anderes Board senden
            (verschieben) oder dorthin duplizieren.
@@ -37,7 +37,7 @@ from profiprompt import MainWindow
 from translator import TranslationSystem
 
 ROOT = Path(__file__).resolve().parents[1]
-LANGS = ("de", "en", "es", "zh", "ja", "ru")
+LANGS = ("en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt")
 
 
 # --------------------------------------------------------------------------- fixtures
@@ -131,6 +131,20 @@ def test_i18n_01_dashboard_headers_in_every_language(qapp, storage, settings, la
             assert headers[0] != "Titel"
     finally:
         dash.close()
+
+
+def test_i18n_arabic_switch_sets_rtl_and_persists(qapp, storage, settings):
+    win = MainWindow(storage, settings)
+    try:
+        win.change_language("ar")
+        assert i18n.get_language() == "ar"
+        assert settings.get_language() == "ar"
+        assert qapp.layoutDirection() == QtCore.Qt.RightToLeft
+        win.change_language("en")
+        assert qapp.layoutDirection() == QtCore.Qt.LeftToRight
+    finally:
+        win.change_language("de")
+        win.close()
 
 
 def test_i18n_01_shortcut_table_key_names_translated(qapp):

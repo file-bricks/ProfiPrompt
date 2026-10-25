@@ -9,7 +9,7 @@ test("import action uses a visible button while the file input stays out of tab 
 
   assert.match(
     html,
-    /<button id="import-trigger" class="button button--primary" type="button">\s*Bibliothek importieren\s*<\/button>/,
+    /<button id="import-trigger" class="button button--primary" type="button">\s*<span data-i18n="button.import">Bibliothek importieren<\/span>\s*<\/button>/,
   );
   assert.match(
     html,

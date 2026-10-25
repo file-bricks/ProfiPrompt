@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -21,20 +21,35 @@
       <header class="hero">
         <div class="hero__copy">
           <p class="hero__eyeline">ProfiPrompt Companion</p>
-          <h1>Prompt-Bibliotheken unterwegs lesen, filtern und kopieren</h1>
+      <h1 data-i18n="hero.title">Prompt-Bibliotheken unterwegs lesen, filtern und kopieren</h1>
           <p class="hero__lead">
-            Importiert <code>profiprompt-library-v1.json</code>, hält die Bibliothek lokal im
-            Browser und bleibt als kleine PWA bewusst read-only.
+            <span data-i18n="hero.lead.prefix">Importiert </span><code>profiprompt-library-v1.json</code><span data-i18n="hero.lead.suffix">, hält die Bibliothek lokal im Browser und bleibt als kleine PWA bewusst read-only.</span>
           </p>
         </div>
         <div class="hero__panel">
+          <label class="field field--language">
+            <span data-i18n="language.label">Sprache</span>
+            <select id="language-select" aria-label="Sprache" data-i18n-aria-label="language.label">
+              <option value="en">English</option>
+              <option value="de" selected>Deutsch</option>
+              <option value="es">Español</option>
+              <option value="zh">简体中文</option>
+              <option value="ja">日本語</option>
+              <option value="ru">Русский</option>
+              <option value="fr">Français</option>
+              <option value="hi">हिन्दी</option>
+              <option value="ar">العربية</option>
+              <option value="bn">বাংলা</option>
+              <option value="pt">Português</option>
+            </select>
+          </label>
           <div class="hero__panel-row">
-            <span class="hero__label">Status</span>
-            <strong id="library-status">Keine Bibliothek geladen</strong>
+            <span class="hero__label" data-i18n="panel.status">Status</span>
+            <strong id="library-status" data-i18n="status.no_library">Keine Bibliothek geladen</strong>
           </div>
           <div class="hero__panel-row">
-            <span class="hero__label">Speicher</span>
-            <strong>Lokal im Browser</strong>
+            <span class="hero__label" data-i18n="panel.storage">Speicher</span>
+            <strong data-i18n="storage.local">Lokal im Browser</strong>
           </div>
           <div class="hero__actions">
             <input
@@ -46,85 +61,87 @@
               aria-hidden="true"
             >
             <button id="import-trigger" class="button button--primary" type="button">
-              Bibliothek importieren
+              <span data-i18n="button.import">Bibliothek importieren</span>
             </button>
             <button id="clear-library" class="button button--ghost" type="button">
-              Bibliothek löschen
+              <span data-i18n="button.clear">Bibliothek löschen</span>
             </button>
           </div>
         </div>
       </header>
 
       <main class="workspace">
-        <section class="stats" aria-label="Bibliotheksstatistik">
+        <section class="stats" aria-label="Bibliotheksstatistik" data-i18n-aria-label="stats.label">
           <article class="stat-card">
-            <span class="stat-card__label">Prompts</span>
+            <span class="stat-card__label" data-i18n="stats.prompts">Prompts</span>
             <strong id="stat-prompts">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Versionen</span>
+            <span class="stat-card__label" data-i18n="stats.versions">Versionen</span>
             <strong id="stat-versions">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Boards</span>
+            <span class="stat-card__label" data-i18n="stats.boards">Boards</span>
             <strong id="stat-boards">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Tags</span>
+            <span class="stat-card__label" data-i18n="stats.tags">Tags</span>
             <strong id="stat-tags">0</strong>
           </article>
         </section>
 
-        <section class="toolbar" aria-label="Suche und Kopieroptionen">
+        <section class="toolbar" aria-label="Suche und Kopieroptionen" data-i18n-aria-label="toolbar.label">
           <label class="field field--search">
-            <span>Suche</span>
+            <span data-i18n="toolbar.search">Suche</span>
             <input
               id="search-input"
               type="search"
               placeholder="Titel, Zweck, Tags, Text oder Board durchsuchen"
+              data-i18n-placeholder="search.placeholder"
+              dir="auto"
               autocomplete="off"
             >
           </label>
           <label class="field">
-            <span>Kopiermodus</span>
+            <span data-i18n="toolbar.copy_mode">Kopiermodus</span>
             <select id="copy-mode">
-              <option value="all">Alles</option>
-              <option value="title">Titel</option>
-              <option value="text">Prompttext</option>
-              <option value="result">Ergebnis</option>
+              <option value="all" data-i18n="copy.all">Alles</option>
+              <option value="title" data-i18n="copy.title">Titel</option>
+              <option value="text" data-i18n="copy.text">Prompttext</option>
+              <option value="result" data-i18n="copy.result">Ergebnis</option>
             </select>
           </label>
           <label class="field field--checkbox">
             <input id="include-metadata" type="checkbox" checked>
-            <span>Tags beim Kopieren anhängen</span>
+            <span data-i18n="copy.include_tags">Tags beim Kopieren anhängen</span>
           </label>
           <button id="install-app" class="button button--ghost" type="button" hidden>
-            PWA installieren
+            <span data-i18n="button.install">PWA installieren</span>
           </button>
         </section>
 
-        <section class="mobile-guide" aria-label="Android- und iOS-Hinweise">
+        <section class="mobile-guide" aria-label="Android- und iOS-Hinweise" data-i18n-aria-label="mobile.guide.label">
           <article class="guide-card">
             <div class="guide-card__head">
               <div>
-                <p class="guide-card__eyeline">P2 Mobile-Readiness</p>
-                <h2>Installieren, importieren und offline prüfen</h2>
+                <p class="guide-card__eyeline" data-i18n="mobile.guide.eyeline">P2 Mobile-Readiness</p>
+                <h2 data-i18n="mobile.guide.title">Installieren, importieren und offline prüfen</h2>
               </div>
-              <span id="mobile-guide-platform" class="guide-card__badge">Desktop / Laptop</span>
+              <span id="mobile-guide-platform" class="guide-card__badge" data-i18n="platform.desktop">Desktop / Laptop</span>
             </div>
             <ul class="guide-list">
-              <li><strong>Installieren:</strong> <span id="mobile-guide-install"></span></li>
-              <li><strong>Import:</strong> <span id="mobile-guide-import"></span></li>
-              <li><strong>Offline:</strong> <span id="mobile-guide-offline"></span></li>
-              <li><strong>Kopieren:</strong> <span id="mobile-guide-copy"></span></li>
+              <li><strong data-i18n="guide.install.label">Installieren:</strong> <span id="mobile-guide-install"></span></li>
+              <li><strong data-i18n="guide.import.label">Import:</strong> <span id="mobile-guide-import"></span></li>
+              <li><strong data-i18n="guide.offline.label">Offline:</strong> <span id="mobile-guide-offline"></span></li>
+              <li><strong data-i18n="guide.copy.label">Kopieren:</strong> <span id="mobile-guide-copy"></span></li>
             </ul>
           </article>
         </section>
 
-        <section class="layout" aria-label="Companion-Arbeitsbereich">
+        <section class="layout" aria-label="Companion-Arbeitsbereich" data-i18n-aria-label="workspace.label">
           <aside class="panel panel--boards">
             <div class="panel__head">
-              <h2>Boards</h2>
+              <h2 data-i18n="board.heading">Boards</h2>
               <span id="board-count" class="panel__meta">0</span>
             </div>
             <div id="board-list" class="board-list"></div>
@@ -132,7 +149,7 @@
 
           <section class="panel panel--prompts">
             <div class="panel__head">
-              <h2>Prompts</h2>
+              <h2 data-i18n="prompt.heading">Prompts</h2>
               <span id="prompt-count" class="panel__meta">0 Treffer</span>
             </div>
             <div id="prompt-list" class="prompt-list"></div>
@@ -141,40 +158,40 @@
           <section class="panel panel--detail">
             <div class="panel__head">
               <div>
-                <h2 id="detail-title">Noch nichts ausgewählt</h2>
+                <h2 id="detail-title" data-i18n="detail.empty_title">Noch nichts ausgewählt</h2>
                 <p id="detail-purpose" class="panel__subhead">
-                  Lade eine Bibliothek und wähle links ein Prompt oder Board.
+                  <span data-i18n="detail.empty_purpose">Lade eine Bibliothek und wähle links ein Prompt oder Board.</span>
                 </p>
               </div>
               <button id="copy-button" class="button button--primary" type="button" disabled>
-                Auswahl kopieren
+                <span data-i18n="button.copy_selection">Auswahl kopieren</span>
               </button>
             </div>
 
             <div id="detail-meta" class="detail-meta"></div>
 
             <label class="field">
-              <span>Version</span>
+              <span data-i18n="detail.version">Version</span>
               <select id="version-select" disabled></select>
             </label>
 
             <div class="detail-columns">
               <article class="detail-card">
                 <div class="detail-card__head">
-                  <h3>Prompt</h3>
-                  <span id="detail-text-label">Aktueller Stand</span>
+                  <h3 data-i18n="detail.prompt">Prompt</h3>
+                  <span id="detail-text-label" data-i18n="detail.current_state">Aktueller Stand</span>
                 </div>
                 <pre id="detail-text" class="detail-card__body empty-copy">
-Noch kein Prompt gewählt.
+                <span data-i18n="detail.empty_text">Noch kein Prompt gewählt.</span>
                 </pre>
               </article>
               <article class="detail-card">
                 <div class="detail-card__head">
-                  <h3>Ergebnis</h3>
-                  <span>Optional</span>
+                  <h3 data-i18n="detail.result">Ergebnis</h3>
+                  <span data-i18n="detail.optional">Optional</span>
                 </div>
                 <pre id="detail-result" class="detail-card__body empty-copy">
-Kein Ergebnis vorhanden.
+                <span data-i18n="detail.empty_result">Kein Ergebnis vorhanden.</span>
                 </pre>
               </article>
             </div>
@@ -182,22 +199,24 @@ Kein Ergebnis vorhanden.
             <div id="copy-fallback" class="copy-fallback" hidden>
               <div class="copy-fallback__head">
                 <div>
-                  <h3>Manueller Copy-Fallback</h3>
-                  <p>Für iOS Safari oder gesperrte Zwischenablagen: Text markieren und selbst kopieren.</p>
+                  <h3 data-i18n="copy_fallback.title">Manueller Copy-Fallback</h3>
+                  <p data-i18n="copy_fallback.help">Für iOS Safari oder gesperrte Zwischenablagen: Text markieren und selbst kopieren.</p>
                 </div>
                 <button id="copy-fallback-close" class="button button--ghost" type="button">
-                  Schließen
+                  <span data-i18n="copy_fallback.close">Schließen</span>
                 </button>
               </div>
               <textarea
                 id="copy-fallback-text"
                 class="copy-fallback__text"
+                dir="auto"
                 readonly
                 aria-label="Text für manuelles Kopieren"
+                data-i18n-aria-label="copy_fallback.text_label"
               ></textarea>
               <div class="copy-fallback__actions">
                 <button id="copy-fallback-select" class="button button--primary" type="button">
-                  Text markieren
+                  <span data-i18n="copy_fallback.select">Text markieren</span>
                 </button>
               </div>
             </div>

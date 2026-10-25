@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
         self.app = QApplication.instance()
         # Gemeinsamer App-Translator: Startsprache setzen, BEVOR Widgets entstehen
         self.translator = i18n.init(self.settings.get_language())
+        self._apply_language_direction(i18n.get_language())
 
         self.setWindowTitle("Prompt Manager")
         self.setWindowIcon(load_app_icon())
@@ -164,17 +165,12 @@ class MainWindow(QMainWindow):
         cur = i18n.get_language() if self.translator is not None else self.settings.get_language()
         lang_group = QActionGroup(self)
         lang_group.setExclusive(True)
-        lang_names = {
-            "de": "Deutsch",
-            "en": "English",
-            "es": "Español",
-            "zh": "简体中文",
-            "ja": "日本語",
-            "ru": "Русский",
-        }
+        lang_names = TranslationSystem.get_language_display_names()
+        available = set(self.translator.get_available_languages()) if self.translator is not None else {"de"}
         for code, label in lang_names.items():
             act = QAction(label, self, checkable=True)
             act.setChecked(cur == code)
+            act.setEnabled(code in available)
             act.triggered.connect(lambda checked=False, c=code: self.change_language(c))
             lang_group.addAction(act)
             m_lang.addAction(act)
@@ -186,8 +182,11 @@ class MainWindow(QMainWindow):
         Board-Leiste und Kacheln blieben bis zum Neustart deutsch. Jetzt verteilt
         i18n.set_language() das Signal bus.languageChanged an alle Widgets.
         """
+        available = self.translator.get_available_languages() if self.translator is not None else ["de"]
+        if lang not in available or not i18n.set_language(lang):
+            return
         self.settings.set_language(lang)
-        i18n.set_language(lang)
+        self._apply_language_direction(lang)
         self.retranslate()
         messages = {
             "de": "Sprache auf Deutsch umgestellt.",
@@ -196,8 +195,18 @@ class MainWindow(QMainWindow):
             "zh": "语言已切换为中文。",
             "ja": "言語を日本語に切り替えました。",
             "ru": "Язык переключен на русский.",
+            "fr": "La langue est passée au français.",
+            "hi": "भाषा हिन्दी में बदल दी गई।",
+            "ar": "تم تغيير اللغة إلى العربية.",
+            "bn": "ভাষা বাংলায় পরিবর্তন করা হয়েছে।",
+            "pt": "Idioma alterado para português.",
         }
         self.statusBar().showMessage(messages.get(lang, messages["en"]), 5000)
+
+    def _apply_language_direction(self, lang: str):
+        """Set the application layout direction without rewriting prompt data."""
+        if self.app is not None:
+            self.app.setLayoutDirection(Qt.RightToLeft if lang == "ar" else Qt.LeftToRight)
 
     def retranslate(self):
         """Baut Menueleiste und Fenster-Chrome in der aktuellen Sprache neu auf."""
@@ -446,6 +455,9 @@ def main():
     app.setWindowIcon(load_app_icon())
 
     settings = SettingsManager()
+    from dialog_button_localizer import install_standard_button_localizer
+    install_standard_button_localizer(app)
+    app.setLayoutDirection(Qt.RightToLeft if settings.get_language() == "ar" else Qt.LeftToRight)
     # Theme aus den Einstellungen anwenden (Hell/Dunkel, U2)
     apply_theme(app, settings.get_theme())
 

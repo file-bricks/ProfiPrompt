@@ -1,14 +1,16 @@
 export const SCHEMA_VERSION = "profiprompt-library-v1";
 
-export function normalizeLibraryPayload(payload) {
+export function normalizeLibraryPayload(payload, options = {}) {
+  const t = options.t;
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-    throw new Error("Die Bibliothek ist kein gültiges JSON-Objekt.");
+    throw new Error(t?.("error.invalid_json_object") ?? "Die Bibliothek ist kein gültiges JSON-Objekt.");
   }
   if (payload.schema_version !== SCHEMA_VERSION) {
-    throw new Error(
-      `Unerwartete schema_version: ${payload.schema_version ?? "leer"}. ` +
-        `Erwartet wird ${SCHEMA_VERSION}.`,
-    );
+    const message = t?.("error.schema_mismatch", {
+      actual: payload.schema_version ?? "leer",
+      expected: SCHEMA_VERSION,
+    });
+    throw new Error(message ?? `Unerwartete schema_version: ${payload.schema_version ?? "leer"}. Erwartet wird ${SCHEMA_VERSION}.`);
   }
 
   const prompts = ensureArray(payload.prompts).map(normalizePrompt);
@@ -28,7 +30,8 @@ export function normalizeLibraryPayload(payload) {
 }
 
 export function filterPrompts(library, options = {}) {
-  const query = normalizeQuery(options.query);
+  const locale = options.locale ?? "de";
+  const query = normalizeQuery(options.query, locale);
   const boardId = options.boardId ?? "all";
   const boardsByPrompt = buildBoardsByPrompt(library);
 
@@ -46,7 +49,7 @@ export function filterPrompts(library, options = {}) {
     if (!query) {
       return true;
     }
-    return buildPromptSearchHaystack(prompt, boardsByPrompt.get(prompt.id) ?? []).includes(query);
+    return buildPromptSearchHaystack(prompt, boardsByPrompt.get(prompt.id) ?? [], locale).includes(query);
   });
 }
 
@@ -90,6 +93,7 @@ export function buildCopyText(prompt, version = null, options = {}) {
   const text = version?.text ?? prompt.text;
   const result = version?.result ?? prompt.last_result ?? "";
   const tags = version?.tags?.length ? version.tags : prompt.tags;
+  const labels = options.labels ?? {};
   const parts = [];
 
   if (mode === "title") {
@@ -101,12 +105,12 @@ export function buildCopyText(prompt, version = null, options = {}) {
   } else {
     parts.push(`${title}\n\n${text}`);
     if ((result ?? "").trim()) {
-      parts.push(`--- Ergebnis ---\n${result}`);
+      parts.push(`${labels.resultHeading ?? "--- Ergebnis ---"}\n${result}`);
     }
   }
 
   if (includeMetadata) {
-    parts.push(`[Tags: ${tags.length ? tags.join(", ") : "–"}]`);
+    parts.push(labels.tagsHeading ?? `[Tags: ${tags.length ? tags.join(", ") : "–"}]`);
   }
   return parts.join("\n");
 }
@@ -123,32 +127,37 @@ export function detectClientPlatform(userAgent = "") {
 }
 
 export function buildMobileGuide(options = {}) {
+  const t = (key, fallback) => options.t?.(key) ?? fallback;
   const platform = detectClientPlatform(options.userAgent);
   const hasInstallPrompt = options.hasInstallPrompt === true;
   const hasLibrary = options.hasLibrary === true;
 
   const installText =
     platform === "ios"
-      ? "In Safari über Teilen > Zum Home-Bildschirm installieren."
+      ? t("guide.install.ios", "In Safari über Teilen > Zum Home-Bildschirm installieren.")
       : hasInstallPrompt
-        ? "Installieren-Schaltfläche nutzen, sobald Chrome den PWA-Prompt anbietet."
-        : "Companion einmal in Chrome öffnen; der Installieren-Button erscheint nach dem PWA-Prompt.";
+        ? t("guide.install.prompt", "Installieren-Schaltfläche nutzen, sobald Chrome den PWA-Prompt anbietet.")
+        : t("guide.install.chrome", "Companion einmal in Chrome öffnen; der Installieren-Button erscheint nach dem PWA-Prompt.");
 
   const importText = hasLibrary
-    ? "Bibliothek ist lokal gespeichert. Für einen neuen Stand einfach erneut JSON importieren."
-    : "Desktop-Export profiprompt-library-v1.json bereitstellen und im Companion importieren.";
+    ? t("guide.import.saved", "Bibliothek ist lokal gespeichert. Für einen neuen Stand einfach erneut JSON importieren.")
+    : t("guide.import.empty", "Desktop-Export profiprompt-library-v1.json bereitstellen und im Companion importieren.");
 
   const offlineText = hasLibrary
-    ? "Nach dem ersten erfolgreichen Laden bleibt die Bibliothek lokal verfügbar; Offline-Start danach prüfen."
-    : "Für Offline-Tests zuerst online öffnen, Service Worker laden lassen und einmal eine Bibliothek importieren.";
+    ? t("guide.offline.saved", "Nach dem ersten erfolgreichen Laden bleibt die Bibliothek lokal verfügbar; Offline-Start danach prüfen.")
+    : t("guide.offline.empty", "Für Offline-Tests zuerst online öffnen, Service Worker laden lassen und einmal eine Bibliothek importieren.");
 
   const copyText =
     platform === "ios"
-      ? "Safari kann die Zwischenablage blockieren. Dann erscheint ein manuelles Kopierfeld zum Markieren."
-      : "Kopieren läuft bevorzugt über die Zwischenablage; bei Sperren greift der manuelle Fallback.";
+      ? t("guide.copy.ios", "Safari kann die Zwischenablage blockieren. Dann erscheint ein manuelles Kopierfeld zum Markieren.")
+      : t("guide.copy.other", "Kopieren läuft bevorzugt über die Zwischenablage; bei Sperren greift der manuelle Fallback.");
 
   const platformLabel =
-    platform === "ios" ? "iPhone / iPad" : platform === "android" ? "Android" : "Desktop / Laptop";
+    platform === "ios"
+      ? t("platform.ios", "iPhone / iPad")
+      : platform === "android"
+        ? t("platform.android", "Android")
+        : t("platform.desktop", "Desktop / Laptop");
 
   return {
     platform,
@@ -164,11 +173,11 @@ export function serializeLibrary(library) {
   return JSON.stringify(library);
 }
 
-export function parseStoredLibrary(raw) {
+export function parseStoredLibrary(raw, options = {}) {
   if (!raw) {
     return null;
   }
-  return normalizeLibraryPayload(JSON.parse(raw));
+  return normalizeLibraryPayload(JSON.parse(raw), options);
 }
 
 function normalizeApp(app) {
@@ -250,7 +259,7 @@ function buildBoardsByPrompt(library) {
   return boardsByPrompt;
 }
 
-function buildPromptSearchHaystack(prompt, boards) {
+function buildPromptSearchHaystack(prompt, boards, locale = "de") {
   const values = [
     prompt.title,
     prompt.purpose,
@@ -265,11 +274,11 @@ function buildPromptSearchHaystack(prompt, boards) {
       ...version.tags,
     ]),
   ];
-  return normalizeQuery(values.join("\n"));
+  return normalizeQuery(values.join("\n"), locale);
 }
 
-function normalizeQuery(value) {
-  return ensureString(value).trim().toLocaleLowerCase("de");
+function normalizeQuery(value, locale = "de") {
+  return ensureString(value).trim().toLocaleLowerCase(locale);
 }
 
 function ensureArray(value) {

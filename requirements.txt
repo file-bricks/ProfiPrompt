@@ -1,1 +1,4 @@
-PySide6>=6.5.0
+# Linux Python 3.10/3.11: 6.12.0 drops None references in wrapped void calls.
+# Reproduced by the ownership probe and full suite in Actions run 40206799258.
+PySide6>=6.5.0,!=6.12.0; python_version < '3.12' and sys_platform == 'linux'
+PySide6>=6.5.0; python_version >= '3.12' or sys_platform != 'linux'

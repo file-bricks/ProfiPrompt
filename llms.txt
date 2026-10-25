@@ -18,7 +18,7 @@ Last-checked: 2026-10-11
 
 ## Summary
 
-ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt versions, boards, clipboard copy modes, and TXT/PDF/JSON exports. The app stores user data locally as JSON and does not require cloud services or telemetry. Fully supports 6 languages (DE, EN, ES, ZH, JA, RU) under Policy P-006 Tier-2.
+ProfiPrompt is a local-first PySide6 desktop app for managing AI prompts, prompt versions, boards, clipboard copy modes, and TXT/PDF/JSON exports. The app stores user data locally as JSON and does not require cloud services or telemetry. The desktop app and read-only Web/PWA companion provide complete UI catalogs in 11 languages (EN, DE, ES, ZH, JA, RU, FR, HI, AR, BN, PT); the language choice persists in each runtime.
 
 ## Main interfaces
 

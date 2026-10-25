@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Vertragstests: Policy P-006 Tier-2 6-Sprachen-I18N-Standard (ProfiPrompt).
+"""Vertragstests: Policy P-006 Tier-2 11-Sprachen-I18N-Standard (ProfiPrompt).
 
 Verifiziert:
-1. locales/translations.json Integritaet und 100% Schluessel-Paritaet ueber alle 6 Sprachen.
+1. locales/translations.json Integritaet und 100% Schluessel-Paritaet ueber alle 11 Sprachen.
 2. Deterministische 4-Stufen-Fallback-Kette (target -> en -> de -> key).
 3. Parameter-Interpolation via t(key, **kwargs) und Fehlertoleranz.
 4. TranslationSystem-Klassenmethoden und Metadaten-Mappings.
@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 
 from translator import TranslationSystem, get_translator, t  # noqa: E402
 
-EXPECTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")
+EXPECTED_LANGUAGES = ("en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt")
 
 
 def test_translation_file_integrity_and_100_percent_parity():
@@ -48,7 +48,9 @@ def test_translation_file_integrity_and_100_percent_parity():
 
 def test_four_tier_deterministic_fallback(tmp_path):
     """Prüft die 4-Stufen-Fallback-Kette: target -> en -> de -> key."""
-    tr = TranslationSystem("es", app_dir=tmp_path)
+    tr = TranslationSystem("de", app_dir=tmp_path)
+    # This unit test uses a deliberately partial synthetic catalog. Select its
+    # target directly; runtime set_language() requires a complete locale.
     # Stufe 1: target_lang ('es') vorhanden
     tr.translations["key1"] = {
         "de": "Datei DE",
@@ -58,6 +60,7 @@ def test_four_tier_deterministic_fallback(tmp_path):
         "ja": "",
         "ru": "",
     }
+    tr.current_lang = "es"
     assert tr.t("key1") == "Archivo ES"
 
     # Stufe 2: target_lang ('es') fehlt -> Fallback auf 'en'
@@ -127,10 +130,16 @@ def test_translation_system_class_helpers():
     assert names["zh"] == "简体中文"
     assert names["ja"] == "日本語"
     assert names["ru"] == "Русский"
+    assert names["fr"] == "Français"
+    assert names["hi"] == "हिन्दी"
+    assert names["ar"] == "العربية"
+    assert names["bn"] == "বাংলা"
+    assert names["pt"] == "Português"
 
     display_names = TranslationSystem.get_language_display_names()
     assert display_names["de"] == "Deutsch (de)"
     assert display_names["es"] == "Español (es)"
+    assert display_names["ar"] == "العربية (ar)"
 
 
 def test_manage_translations_check_subprocess():

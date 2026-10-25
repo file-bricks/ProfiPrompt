@@ -8,7 +8,7 @@ Geprüfte Aspekte:
 - Standard-Shortcuts (F1, Ctrl+F, Ctrl+N, Ctrl+B, Ctrl+1, Ctrl+2, Ctrl+Q, F5, Ctrl+,, Ctrl+Shift+C)
 - Formular-Buddies (QLabel.setBuddy) & semantische Accessible Names/Descriptions
 - Sichtbarer Tastatur-Fokusring (#PromptTile:focus)
-- Tier-2 6-Sprachen-Parität für alle Barrierefreiheits- und Tastenkürzel-Texte
+- Tier-2 11-Sprachen-Parität für alle Barrierefreiheits- und Tastenkürzel-Texte
 """
 
 from __future__ import annotations
@@ -98,8 +98,8 @@ def test_shortcuts_dialog_structure_and_conformance_notice(qapp):
 
 
 def test_shortcuts_dialog_multilingual_parity(qapp):
-    """Verifiziert die Lokalisierung des ShortcutsDialog über alle 6 Sprachen."""
-    langs = ["de", "en", "es", "zh", "ja", "ru"]
+    """Verifiziert die Lokalisierung des ShortcutsDialog über alle 11 Sprachen."""
+    langs = ["en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt"]
     for lang in langs:
         translator = make_translator(lang)
         dlg = ShortcutsDialog(translator=translator)

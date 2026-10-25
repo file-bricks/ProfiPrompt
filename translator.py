@@ -1,16 +1,21 @@
 """
 TranslationSystem - Multi-Language Support fuer ProfiPrompt
 ===========================================================
-Version: 2.0.0 (Policy P-006 Tier-2 6-Sprachen-Standard)
+Version: 2.0.0 (11-Sprachen-World-Set)
 Quelle: Policy P-006 / CONVENTIONS.md
 
-Unterstützte Sprachen:
-- de: Deutsch (Standard)
+Laufzeitsprachen:
 - en: English
+- de: Deutsch (Standard)
 - es: Español
 - zh: 简体中文
 - ja: 日本語
 - ru: Русский
+- fr: Français
+- hi: हिन्दी
+- ar: العربية
+- bn: বাংলা
+- pt: Português
 
 Deterministische 4-Stufen-Fallback-Kette:
   target_lang -> 'en' -> 'de' -> key
@@ -35,23 +40,35 @@ from typing import Dict, List, Optional, Set
 class TranslationSystem:
     """Multi-Language Support System v2.0 with deterministic fallbacks."""
 
-    SUPPORTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")
+    # Valid World-Set codes. A language becomes selectable only when every
+    # catalog row has a non-empty value for it (see get_available_languages).
+    SUPPORTED_LANGUAGES = ("en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt")
     FALLBACK_LANGUAGES = ("en", "de")
     LANGUAGE_NAMES = {
-        "de": "Deutsch",
         "en": "English",
+        "de": "Deutsch",
         "es": "Español",
         "zh": "简体中文",
         "ja": "日本語",
         "ru": "Русский",
+        "fr": "Français",
+        "hi": "हिन्दी",
+        "ar": "العربية",
+        "bn": "বাংলা",
+        "pt": "Português",
     }
     LANGUAGE_DISPLAY_NAMES = {
-        "de": "Deutsch (de)",
         "en": "English (en)",
+        "de": "Deutsch (de)",
         "es": "Español (es)",
         "zh": "简体中文 (zh)",
         "ja": "日本語 (ja)",
         "ru": "Русский (ru)",
+        "fr": "Français (fr)",
+        "hi": "हिन्दी (hi)",
+        "ar": "العربية (ar)",
+        "bn": "বাংলা (bn)",
+        "pt": "Português (pt)",
     }
 
     def __init__(self, default_lang: str = "de", app_dir: Optional[Path] = None,
@@ -60,7 +77,7 @@ class TranslationSystem:
         Initialisiert Translation-System.
 
         Args:
-            default_lang: Standard-Sprache ('de', 'en', 'es', 'zh', 'ja', 'ru')
+            default_lang: Standard-Sprache ('de', 'en', 'es', 'zh', 'ja', 'ru', 'fr', 'hi', 'ar', 'bn', 'pt')
             app_dir: Verzeichnis der Anwendung (default: Verzeichnis von translator.py)
             auto_register: Fehlende deutsche Keys bei t() in translations.json
                 anlegen (Entwickler-Werkzeug). Die laufende App schaltet das ab,
@@ -98,6 +115,8 @@ class TranslationSystem:
 
         self.translations: Dict[str, Dict[str, str]] = {}
         self._load_translations()
+        if not self.is_language_complete(self.current_lang):
+            self.current_lang = "de"
 
     def _load_translations(self) -> None:
         if self.translations_file.exists():
@@ -122,12 +141,17 @@ class TranslationSystem:
 
     def _new_translation_entry(self, de: str, en: str) -> Dict[str, str]:
         return {
-            "de": de,
             "en": en,
+            "de": de,
             "es": "",
             "zh": "",
             "ja": "",
             "ru": "",
+            "fr": "",
+            "hi": "",
+            "ar": "",
+            "bn": "",
+            "pt": "",
         }
 
     def t(self, key: str, **kwargs) -> str:
@@ -168,7 +192,7 @@ class TranslationSystem:
 
     def set_language(self, lang: str) -> bool:
         """Setzt die aktive Sprache, falls sie unterstützt wird."""
-        if lang in self.SUPPORTED_LANGUAGES:
+        if lang in self.get_available_languages():
             self.current_lang = lang
             return True
         return False
@@ -178,8 +202,25 @@ class TranslationSystem:
 
     @classmethod
     def get_supported_languages(cls) -> List[str]:
-        """Return the supported language codes."""
-        return list(cls.SUPPORTED_LANGUAGES)
+        """Return complete locale codes that may be selected at runtime."""
+        return cls("de", auto_register=False).get_available_languages()
+
+    def is_language_complete(self, lang: str) -> bool:
+        """True when every catalog entry has a usable value for ``lang``."""
+        if lang not in self.SUPPORTED_LANGUAGES:
+            return False
+        if lang == "de" and not self.translations:
+            return True
+        return bool(self.translations) and all(
+            isinstance(entry, dict)
+            and isinstance(entry.get(lang), str)
+            and bool(entry[lang].strip())
+            for entry in self.translations.values()
+        )
+
+    def get_available_languages(self) -> List[str]:
+        """Return only complete locales; incomplete drafts stay out of the UI."""
+        return [lang for lang in self.SUPPORTED_LANGUAGES if self.is_language_complete(lang)]
 
     @classmethod
     def get_language_names(cls) -> Dict[str, str]:

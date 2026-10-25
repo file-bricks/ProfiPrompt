@@ -5,7 +5,12 @@
     "es": "Archivo",
     "zh": "文件",
     "ja": "ファイル",
-    "ru": "Файл"
+    "ru": "Файл",
+    "fr": "Fichier",
+    "hi": "फ़ाइल",
+    "ar": "الملف",
+    "bn": "ফাইল",
+    "pt": "Arquivo"
   },
   "Bearbeiten": {
     "de": "Bearbeiten",
@@ -13,7 +18,12 @@
     "es": "Editar",
     "zh": "编辑",
     "ja": "編集",
-    "ru": "Правка"
+    "ru": "Правка",
+    "fr": "Modifier",
+    "hi": "संपादित करें",
+    "ar": "تعديل",
+    "bn": "সম্পাদনা করুন",
+    "pt": "Editar"
   },
   "Ansicht": {
     "de": "Ansicht",
@@ -21,7 +31,12 @@
     "es": "Ver",
     "zh": "视图",
     "ja": "表示",
-    "ru": "Вид"
+    "ru": "Вид",
+    "fr": "Vue",
+    "hi": "दृश्य",
+    "ar": "عرض",
+    "bn": "দৃশ্য",
+    "pt": "Visualização"
   },
   "Hilfe": {
     "de": "Hilfe",
@@ -29,7 +44,12 @@
     "es": "Ayuda",
     "zh": "帮助",
     "ja": "ヘルプ",
-    "ru": "Справка"
+    "ru": "Справка",
+    "fr": "Aide",
+    "hi": "मदद",
+    "ar": "المساعدة",
+    "bn": "সাহায্য",
+    "pt": "Ajuda"
   },
   "Beenden": {
     "de": "Beenden",
@@ -37,7 +57,12 @@
     "es": "Salir",
     "zh": "退出",
     "ja": "終了",
-    "ru": "Выход"
+    "ru": "Выход",
+    "fr": "Quitter",
+    "hi": "बाहर निकलें",
+    "ar": "إنهاء",
+    "bn": "বন্ধ করুন",
+    "pt": "Encerrar"
   },
   "Speichern": {
     "de": "Speichern",
@@ -45,7 +70,12 @@
     "es": "Guardar",
     "zh": "保存",
     "ja": "保存",
-    "ru": "Сохранить"
+    "ru": "Сохранить",
+    "fr": "Enregistrer",
+    "hi": "सहेजें",
+    "ar": "حفظ",
+    "bn": "সংরক্ষণ করুন",
+    "pt": "Salvar"
   },
   "Abbrechen": {
     "de": "Abbrechen",
@@ -53,7 +83,12 @@
     "es": "Cancelar",
     "zh": "取消",
     "ja": "キャンセル",
-    "ru": "Отмена"
+    "ru": "Отмена",
+    "fr": "Annuler",
+    "hi": "रद्द करें",
+    "ar": "إلغاء",
+    "bn": "বাতিল করুন",
+    "pt": "Cancelar"
   },
   "Löschen": {
     "de": "Löschen",
@@ -61,7 +96,12 @@
     "es": "Eliminar",
     "zh": "删除",
     "ja": "削除",
-    "ru": "Удалить"
+    "ru": "Удалить",
+    "fr": "Supprimer",
+    "hi": "मिटाएँ",
+    "ar": "حذف",
+    "bn": "মুছুন",
+    "pt": "Excluir"
   },
   "Zurücksetzen": {
     "de": "Zurücksetzen",
@@ -69,7 +109,12 @@
     "es": "Restablecer",
     "zh": "重置",
     "ja": "リセット",
-    "ru": "Сбросить"
+    "ru": "Сбросить",
+    "fr": "Réinitialiser",
+    "hi": "रीसेट करें",
+    "ar": "إعادة التعيين",
+    "bn": "রিসেট করুন",
+    "pt": "Redefinir"
   },
   "OK": {
     "de": "OK",
@@ -77,7 +122,12 @@
     "es": "Aceptar",
     "zh": "确定",
     "ja": "OK",
-    "ru": "ОК"
+    "ru": "ОК",
+    "fr": "OK",
+    "hi": "ठीक है",
+    "ar": "OK",
+    "bn": "ঠিক আছে",
+    "pt": "OK"
   },
   "Neuen Prompt erstellen": {
     "de": "Neuen Prompt erstellen",
@@ -85,7 +135,12 @@
     "es": "Crear nuevo prompt",
     "zh": "创建新提示词",
     "ja": "新規プロンプト作成",
-    "ru": "Создать новый промпт"
+    "ru": "Создать новый промпт",
+    "fr": "Créer un nouveau prompt",
+    "hi": "नया प्रॉम्प्ट बनाएँ",
+    "ar": "إنشاء مطالبة جديدة",
+    "bn": "নতুন প্রম্পট তৈরি করুন",
+    "pt": "Criar novo prompt"
   },
   "Version erstellen": {
     "de": "Version erstellen",
@@ -93,7 +148,12 @@
     "es": "Crear versión",
     "zh": "创建版本",
     "ja": "バージョン作成",
-    "ru": "Создать версию"
+    "ru": "Создать версию",
+    "fr": "Créer une version",
+    "hi": "संस्करण बनाएँ",
+    "ar": "إنشاء إصدار",
+    "bn": "নতুন সংস্করণ তৈরি করুন",
+    "pt": "Criar versão"
   },
   "Als neue Version speichern": {
     "de": "Als neue Version speichern",
@@ -101,7 +161,12 @@
     "es": "Guardar como nueva versión",
     "zh": "另存为新版本",
     "ja": "新しいバージョンとして保存",
-    "ru": "Сохранить как новую версию"
+    "ru": "Сохранить как новую версию",
+    "fr": "Enregistrer comme nouvelle version",
+    "hi": "नए संस्करण के रूप में सहेजें",
+    "ar": "حفظ كإصدار جديد",
+    "bn": "নতুন সংস্করণ হিসেবে সংরক্ষণ করুন",
+    "pt": "Salvar como nova versão"
   },
   "Filter zurücksetzen": {
     "de": "Filter zurücksetzen",
@@ -109,7 +174,12 @@
     "es": "Restablecer filtros",
     "zh": "重置筛选",
     "ja": "フィルターをリセット",
-    "ru": "Сбросить фильтр"
+    "ru": "Сбросить фильтр",
+    "fr": "Réinitialiser le filtre",
+    "hi": "फ़िल्टर रीसेट करें",
+    "ar": "إعادة ضبط المرشح",
+    "bn": "ফিল্টার পুনরায় সেট করুন",
+    "pt": "Redefinir filtro"
   },
   "Kopier-Einstellungen": {
     "de": "Kopier-Einstellungen",
@@ -117,7 +187,12 @@
     "es": "Configuración de copia",
     "zh": "复制设置",
     "ja": "コピー設定",
-    "ru": "Настройки копирования"
+    "ru": "Настройки копирования",
+    "fr": "Paramètres de copie",
+    "hi": "कॉपी सेटिंग्स",
+    "ar": "إعدادات النسخ",
+    "bn": "কপি সেটিংস",
+    "pt": "Configurações de cópia"
   },
   "Kopier-Einstellungen …": {
     "de": "Kopier-Einstellungen …",
@@ -125,7 +200,12 @@
     "es": "Configuración de copia …",
     "zh": "复制设置 …",
     "ja": "コピー設定 …",
-    "ru": "Настройки копирования …"
+    "ru": "Настройки копирования …",
+    "fr": "Paramètres de copie …",
+    "hi": "कॉपी सेटिंग्स …",
+    "ar": "إعدادات النسخ …",
+    "bn": "কপি সেটিংস …",
+    "pt": "Configurações de cópia …"
   },
   "Darstellung": {
     "de": "Darstellung",
@@ -133,7 +213,12 @@
     "es": "Apariencia",
     "zh": "外观",
     "ja": "外観",
-    "ru": "Внешний вид"
+    "ru": "Внешний вид",
+    "fr": "Présentation",
+    "hi": "प्रदर्शन",
+    "ar": "العرض",
+    "bn": "প্রদর্শন",
+    "pt": "Exibição"
   },
   "Darstellung …": {
     "de": "Darstellung …",
@@ -141,7 +226,12 @@
     "es": "Apariencia …",
     "zh": "外观 …",
     "ja": "外観 …",
-    "ru": "Внешний вид …"
+    "ru": "Внешний вид …",
+    "fr": "Représentation …",
+    "hi": "प्रदर्शन …",
+    "ar": "المظهر …",
+    "bn": "প্রদর্শন …",
+    "pt": "Exibição …"
   },
   "Boards anzeigen/ausblenden": {
     "de": "Boards anzeigen/ausblenden",
@@ -149,7 +239,12 @@
     "es": "Mostrar/Ocultar paneles",
     "zh": "显示/隐藏面板",
     "ja": "ボードの表示/非表示",
-    "ru": "Показать/Скрыть доски"
+    "ru": "Показать/Скрыть доски",
+    "fr": "Afficher/masquer les tableaux",
+    "hi": "बोर्ड दिखाएँ/छिपाएँ",
+    "ar": "عرض/إخفاء اللوحات",
+    "bn": "বোর্ড দেখান/লুকান",
+    "pt": "Mostrar/ocultar quadros"
   },
   "Anleitung": {
     "de": "Anleitung",
@@ -157,7 +252,12 @@
     "es": "Instrucciones",
     "zh": "使用说明",
     "ja": "使い方",
-    "ru": "Руководство"
+    "ru": "Руководство",
+    "fr": "Mode d'emploi",
+    "hi": "मार्गदर्शिका",
+    "ar": "الإرشادات",
+    "bn": "নির্দেশাবলী",
+    "pt": "Instruções"
   },
   "Über Prompt Manager": {
     "de": "Über Prompt Manager",
@@ -165,7 +265,12 @@
     "es": "Acerca de Prompt Manager",
     "zh": "关于 Prompt Manager",
     "ja": "Prompt Manager について",
-    "ru": "О программе Prompt Manager"
+    "ru": "О программе Prompt Manager",
+    "fr": "À propos de Prompt Manager",
+    "hi": "Prompt Manager के बारे में",
+    "ar": "حول مدير الموجّهات",
+    "bn": "Prompt Manager সম্পর্কে",
+    "pt": "Sobre o Prompt Manager"
   },
   "Über": {
     "de": "Über",
@@ -173,7 +278,12 @@
     "es": "Acerca de",
     "zh": "关于",
     "ja": "バージョン情報",
-    "ru": "О программе"
+    "ru": "О программе",
+    "fr": "À propos",
+    "hi": "परिचय",
+    "ar": "حول",
+    "bn": "পরিচিতি",
+    "pt": "Sobre"
   },
   "Alle Prompts (TXT)": {
     "de": "Alle Prompts (TXT)",
@@ -181,7 +291,12 @@
     "es": "Todos los prompts (TXT)",
     "zh": "所有提示词 (TXT)",
     "ja": "すべてのプロンプト (TXT)",
-    "ru": "Все промпты (TXT)"
+    "ru": "Все промпты (TXT)",
+    "fr": "Tous les prompts (TXT)",
+    "hi": "सभी प्रॉम्प्ट्स (TXT)",
+    "ar": "جميع المطالبات (TXT)",
+    "bn": "সব প্রম্পট (TXT)",
+    "pt": "Todos os prompts (TXT)"
   },
   "Alle Prompts (PDF)": {
     "de": "Alle Prompts (PDF)",
@@ -189,7 +304,12 @@
     "es": "Todos los prompts (PDF)",
     "zh": "所有提示词 (PDF)",
     "ja": "すべてのプロンプト (PDF)",
-    "ru": "Все промпты (PDF)"
+    "ru": "Все промпты (PDF)",
+    "fr": "Tous les prompts (PDF)",
+    "hi": "सभी प्रॉम्प्ट (PDF)",
+    "ar": "جميع المطالبات (PDF)",
+    "bn": "সব প্রম্পট (PDF)",
+    "pt": "Todos os prompts (PDF)"
   },
   "Bibliothek (JSON)": {
     "de": "Bibliothek (JSON)",
@@ -197,7 +317,12 @@
     "es": "Biblioteca (JSON)",
     "zh": "提示词库 (JSON)",
     "ja": "ライブラリ (JSON)",
-    "ru": "Библиотека (JSON)"
+    "ru": "Библиотека (JSON)",
+    "fr": "Bibliothèque (JSON)",
+    "hi": "लाइब्रेरी (JSON)",
+    "ar": "مكتبة (JSON)",
+    "bn": "লাইব্রেরি (JSON)",
+    "pt": "Biblioteca (JSON)"
   },
   "Aktueller Prompt (TXT)": {
     "de": "Aktueller Prompt (TXT)",
@@ -205,7 +330,12 @@
     "es": "Prompt actual (TXT)",
     "zh": "当前提示词 (TXT)",
     "ja": "現在のプロンプト (TXT)",
-    "ru": "Текущий промпт (TXT)"
+    "ru": "Текущий промпт (TXT)",
+    "fr": "Invite actuelle (TXT)",
+    "hi": "वर्तमान प्रॉम्प्ट (TXT)",
+    "ar": "الموجّه الحالي (TXT)",
+    "bn": "বর্তমান প্রম্পট (TXT)",
+    "pt": "Prompt atual (TXT)"
   },
   "Aktueller Prompt (PDF)": {
     "de": "Aktueller Prompt (PDF)",
@@ -213,7 +343,12 @@
     "es": "Prompt actual (PDF)",
     "zh": "当前提示词 (PDF)",
     "ja": "現在のプロンプト (PDF)",
-    "ru": "Текущий промпт (PDF)"
+    "ru": "Текущий промпт (PDF)",
+    "fr": "Invite actuelle (PDF)",
+    "hi": "वर्तमान प्रॉम्प्ट (PDF)",
+    "ar": "الموجّه الحالي (PDF)",
+    "bn": "বর্তমান প্রম্পট (PDF)",
+    "pt": "Prompt atual (PDF)"
   },
   "Aktuelle Version (TXT)": {
     "de": "Aktuelle Version (TXT)",
@@ -221,7 +356,12 @@
     "es": "Versión actual (TXT)",
     "zh": "当前版本 (TXT)",
     "ja": "現在のバージョン (TXT)",
-    "ru": "Текущая версия (TXT)"
+    "ru": "Текущая версия (TXT)",
+    "fr": "Version actuelle (TXT)",
+    "hi": "वर्तमान संस्करण (TXT)",
+    "ar": "الإصدار الحالي (TXT)",
+    "bn": "বর্তমান সংস্করণ (TXT)",
+    "pt": "Versão atual (TXT)"
   },
   "Aktuelle Version (PDF)": {
     "de": "Aktuelle Version (PDF)",
@@ -229,7 +369,12 @@
     "es": "Versión actual (PDF)",
     "zh": "当前版本 (PDF)",
     "ja": "現在のバージョン (PDF)",
-    "ru": "Текущая версия (PDF)"
+    "ru": "Текущая версия (PDF)",
+    "fr": "Version actuelle (PDF)",
+    "hi": "वर्तमान संस्करण (PDF)",
+    "ar": "الإصدار الحالي (PDF)",
+    "bn": "বর্তমান সংস্করণ (PDF)",
+    "pt": "Versão atual (PDF)"
   },
   "Sprache / Language": {
     "de": "Sprache / Language",
@@ -237,7 +382,12 @@
     "es": "Idioma",
     "zh": "语言",
     "ja": "言語",
-    "ru": "Язык"
+    "ru": "Язык",
+    "fr": "Langue",
+    "hi": "भाषा",
+    "ar": "اللغة",
+    "bn": "ভাষা",
+    "pt": "Idioma"
   },
   "Suche in Titel/Text/Tags …": {
     "de": "Suche in Titel/Text/Tags …",
@@ -245,7 +395,12 @@
     "es": "Buscar en título/texto/etiquetas …",
     "zh": "搜索标题/正文/标签 …",
     "ja": "タイトル/テキスト/タグを検索 …",
-    "ru": "Поиск по названию/тексту/тегам …"
+    "ru": "Поиск по названию/тексту/тегам …",
+    "fr": "Rechercher dans le titre/texte/tags …",
+    "hi": "शीर्षक/पाठ/टैग में खोजें …",
+    "ar": "البحث في العنوان/النص/الوسوم …",
+    "bn": "শিরোনাম/লেখা/ট্যাগে খুঁজুন …",
+    "pt": "Pesquisar em título/texto/tags …"
   },
   "Suche:": {
     "de": "Suche:",
@@ -253,7 +408,12 @@
     "es": "Buscar:",
     "zh": "搜索:",
     "ja": "検索:",
-    "ru": "Поиск:"
+    "ru": "Поиск:",
+    "fr": "Recherche :",
+    "hi": "खोजें:",
+    "ar": "بحث:",
+    "bn": "খোঁজ:",
+    "pt": "Busca:"
   },
   "Tag:": {
     "de": "Tag:",
@@ -261,7 +421,12 @@
     "es": "Etiqueta:",
     "zh": "标签:",
     "ja": "タグ:",
-    "ru": "Тег:"
+    "ru": "Тег:",
+    "fr": "Balise :",
+    "hi": "टैग:",
+    "ar": "الوسم:",
+    "bn": "ট্যাগ:",
+    "pt": "Tag:"
   },
   "Von:": {
     "de": "Von:",
@@ -269,7 +434,12 @@
     "es": "Desde:",
     "zh": "起始:",
     "ja": "開始:",
-    "ru": "С:"
+    "ru": "С:",
+    "fr": "De :",
+    "hi": "से:",
+    "ar": "من:",
+    "bn": "থেকে:",
+    "pt": "De:"
   },
   "Bis:": {
     "de": "Bis:",
@@ -277,7 +447,12 @@
     "es": "Hasta:",
     "zh": "截止:",
     "ja": "終了:",
-    "ru": "По:"
+    "ru": "По:",
+    "fr": "Jusqu’à :",
+    "hi": "तक:",
+    "ar": "حتى:",
+    "bn": "পর্যন্ত:",
+    "pt": "Até:"
   },
   "Board:": {
     "de": "Board:",
@@ -285,7 +460,12 @@
     "es": "Panel:",
     "zh": "面板:",
     "ja": "ボード:",
-    "ru": "Доска:"
+    "ru": "Доска:",
+    "fr": "Tableau :",
+    "hi": "बोर्ड:",
+    "ar": "اللوحة:",
+    "bn": "বোর্ড:",
+    "pt": "Quadro:"
   },
   "Kopiert! 📋": {
     "de": "Kopiert! 📋",
@@ -293,7 +473,12 @@
     "es": "¡Copiado! 📋",
     "zh": "已复制! 📋",
     "ja": "コピーしました! 📋",
-    "ru": "Скопировано! 📋"
+    "ru": "Скопировано! 📋",
+    "fr": "Copié ! 📋",
+    "hi": "कॉपी किया गया! 📋",
+    "ar": "نُسخ! 📋",
+    "bn": "কপি হয়েছে! 📋",
+    "pt": "Copiado! 📋"
   },
   "Neu": {
     "de": "Neu",
@@ -301,7 +486,12 @@
     "es": "Nuevo",
     "zh": "新建",
     "ja": "新規",
-    "ru": "Новый"
+    "ru": "Новый",
+    "fr": "Neuf",
+    "hi": "नया",
+    "ar": "جديد",
+    "bn": "নতুন",
+    "pt": "Novo"
   },
   "Prompt bearbeiten": {
     "de": "Prompt bearbeiten",
@@ -309,7 +499,12 @@
     "es": "Editar prompt",
     "zh": "编辑提示词",
     "ja": "プロンプトを編集",
-    "ru": "Редактировать промпт"
+    "ru": "Редактировать промпт",
+    "fr": "Modifier l'invite",
+    "hi": "प्रॉम्प्ट संपादित करें",
+    "ar": "تعديل الموجه",
+    "bn": "প্রম্পট সম্পাদনা করুন",
+    "pt": "Editar prompt"
   },
   "Version bearbeiten": {
     "de": "Version bearbeiten",
@@ -317,7 +512,12 @@
     "es": "Editar versión",
     "zh": "编辑版本",
     "ja": "バージョンを編集",
-    "ru": "Редактировать версию"
+    "ru": "Редактировать версию",
+    "fr": "Modifier la version",
+    "hi": "संस्करण संपादित करें",
+    "ar": "تعديل الإصدار",
+    "bn": "সংস্করণ সম্পাদনা করুন",
+    "pt": "Editar versão"
   },
   "Neuer Prompt": {
     "de": "Neuer Prompt",
@@ -325,7 +525,12 @@
     "es": "Nuevo prompt",
     "zh": "新建提示词",
     "ja": "新規プロンプト",
-    "ru": "Новый промпт"
+    "ru": "Новый промпт",
+    "fr": "Nouveau prompt",
+    "hi": "नया प्रॉम्प्ट",
+    "ar": "مطالبة جديدة",
+    "bn": "নতুন প্রম্পট",
+    "pt": "Novo prompt"
   },
   "Neue Version": {
     "de": "Neue Version",
@@ -333,7 +538,12 @@
     "es": "Nueva versión",
     "zh": "新建版本",
     "ja": "新規バージョン",
-    "ru": "Новая версия"
+    "ru": "Новая версия",
+    "fr": "Nouvelle version",
+    "hi": "नया संस्करण",
+    "ar": "نسخة جديدة",
+    "bn": "নতুন সংস্করণ",
+    "pt": "Nova versão"
   },
   "Titel:": {
     "de": "Titel:",
@@ -341,7 +551,12 @@
     "es": "Título:",
     "zh": "标题:",
     "ja": "タイトル:",
-    "ru": "Название:"
+    "ru": "Название:",
+    "fr": "Titre:",
+    "hi": "शीर्षक:",
+    "ar": "العنوان:",
+    "bn": "শিরোনাম:",
+    "pt": "Título:"
   },
   "Zweck:": {
     "de": "Zweck:",
@@ -349,7 +564,12 @@
     "es": "Propósito:",
     "zh": "用途:",
     "ja": "用途:",
-    "ru": "Назначение:"
+    "ru": "Назначение:",
+    "fr": "Objectif :",
+    "hi": "उद्देश्य:",
+    "ar": "الغرض:",
+    "bn": "উদ্দেশ্য:",
+    "pt": "Finalidade:"
   },
   "Tags (kommagetrennt):": {
     "de": "Tags (kommagetrennt):",
@@ -357,7 +577,12 @@
     "es": "Etiquetas (separadas por comas):",
     "zh": "标签 (逗号分隔):",
     "ja": "タグ (カンマ区切り):",
-    "ru": "Теги (через запятую):"
+    "ru": "Теги (через запятую):",
+    "fr": "Tags (séparés par des virgules) :",
+    "hi": "टैग (कॉमा से अलग):",
+    "ar": "الوسوم (مفصولة بفواصل):",
+    "bn": "ট্যাগ (কমা দিয়ে আলাদা):",
+    "pt": "Tags (separadas por vírgula):"
   },
   "Prompt-Text:": {
     "de": "Prompt-Text:",
@@ -365,7 +590,12 @@
     "es": "Texto del prompt:",
     "zh": "提示词内容:",
     "ja": "プロンプトテキスト:",
-    "ru": "Текст промпта:"
+    "ru": "Текст промпта:",
+    "fr": "Texte du prompt :",
+    "hi": "प्रॉम्प्ट टेक्स्ट:",
+    "ar": "نص الموجّه:",
+    "bn": "প্রম্পটের লেখা:",
+    "pt": "Texto do prompt:"
   },
   "Letztes Ergebnis:": {
     "de": "Letztes Ergebnis:",
@@ -373,7 +603,12 @@
     "es": "Último resultado:",
     "zh": "最新结果:",
     "ja": "最新の結果:",
-    "ru": "Последний результат:"
+    "ru": "Последний результат:",
+    "fr": "Dernier résultat :",
+    "hi": "अंतिम परिणाम:",
+    "ar": "النتيجة الأخيرة:",
+    "bn": "সর্বশেষ ফলাফল:",
+    "pt": "Último resultado:"
   },
   "Titel und Prompt-Text sind Pflichtfelder.": {
     "de": "Titel und Prompt-Text sind Pflichtfelder.",
@@ -381,7 +616,12 @@
     "es": "El título y el texto del prompt son campos obligatorios.",
     "zh": "标题和提示词内容为必填项。",
     "ja": "タイトルとプロンプトテキストは必須項目です。",
-    "ru": "Название и текст промпта обязательны для заполнения."
+    "ru": "Название и текст промпта обязательны для заполнения.",
+    "fr": "Le titre et le texte du prompt sont des champs obligatoires.",
+    "hi": "शीर्षक और प्रॉम्प्ट-टेक्स्ट अनिवार्य फ़ील्ड हैं।",
+    "ar": "يُعدّ العنوان ونص الموجّه حقلين إلزاميين.",
+    "bn": "শিরোনাম এবং প্রম্পট-টেক্সট আবশ্যিক ক্ষেত্র।",
+    "pt": "Título e texto do prompt são campos obrigatórios."
   },
   "Zugehöriger Prompt nicht gefunden.": {
     "de": "Zugehöriger Prompt nicht gefunden.",
@@ -389,7 +629,12 @@
     "es": "No se encontró el prompt asociado.",
     "zh": "未找到关联的提示词。",
     "ja": "関連するプロンプトが見つかりません。",
-    "ru": "Связанный промпт не найден."
+    "ru": "Связанный промпт не найден.",
+    "fr": "Prompt associé introuvable.",
+    "hi": "संबंधित प्रॉम्प्ट नहीं मिला।",
+    "ar": "لم يُعثر على الموجّه المرتبط.",
+    "bn": "সংশ্লিষ্ট প্রম্পট পাওয়া যায়নি।",
+    "pt": "Prompt relacionado não encontrado."
   },
   "Möchten Sie diesen Prompt wirklich löschen?": {
     "de": "Möchten Sie diesen Prompt wirklich löschen?",
@@ -397,7 +642,12 @@
     "es": "¿Realmente desea eliminar este prompt?",
     "zh": "您确定要删除此提示词吗？",
     "ja": "このプロンプトを本当に削除しますか？",
-    "ru": "Вы действительно хотите удалить этот промпт?"
+    "ru": "Вы действительно хотите удалить этот промпт?",
+    "fr": "Voulez-vous vraiment supprimer ce prompt ?",
+    "hi": "क्या आप वाकई इस प्रॉम्प्ट को हटाना चाहते हैं?",
+    "ar": "هل تريد حقًا حذف هذا الموجه؟",
+    "bn": "আপনি কি সত্যিই এই প্রম্পটটি মুছতে চান?",
+    "pt": "Tem certeza de que deseja excluir este prompt?"
   },
   "Möchten Sie diese Version wirklich löschen?": {
     "de": "Möchten Sie diese Version wirklich löschen?",
@@ -405,7 +655,12 @@
     "es": "¿Realmente desea eliminar esta versión?",
     "zh": "您确定要删除此版本吗？",
     "ja": "このバージョンを本当に削除しますか？",
-    "ru": "Вы действительно хотите удалить эту версию?"
+    "ru": "Вы действительно хотите удалить эту версию?",
+    "fr": "Voulez-vous vraiment supprimer cette version ?",
+    "hi": "क्या आप वास्तव में इस संस्करण को हटाना चाहते हैं?",
+    "ar": "هل تريد حقًا حذف هذا الإصدار؟",
+    "bn": "আপনি কি সত্যিই এই সংস্করণটি মুছতে চান?",
+    "pt": "Você realmente deseja excluir esta versão?"
   },
   "Bestätigung": {
     "de": "Bestätigung",
@@ -413,7 +668,12 @@
     "es": "Confirmación",
     "zh": "确认",
     "ja": "確認",
-    "ru": "Подтверждение"
+    "ru": "Подтверждение",
+    "fr": "Confirmation",
+    "hi": "पुष्टि",
+    "ar": "تأكيد",
+    "bn": "নিশ্চিতকরণ",
+    "pt": "Confirmação"
   },
   "Erfolg": {
     "de": "Erfolg",
@@ -421,7 +681,12 @@
     "es": "Éxito",
     "zh": "成功",
     "ja": "成功",
-    "ru": "Успешно"
+    "ru": "Успешно",
+    "fr": "Succès",
+    "hi": "सफलता",
+    "ar": "نجاح",
+    "bn": "সাফল্য",
+    "pt": "Sucesso"
   },
   "Fehler": {
     "de": "Fehler",
@@ -429,7 +694,12 @@
     "es": "Error",
     "zh": "错误",
     "ja": "エラー",
-    "ru": "Ошибка"
+    "ru": "Ошибка",
+    "fr": "Erreur",
+    "hi": "त्रुटि",
+    "ar": "خطأ",
+    "bn": "ত্রুটি",
+    "pt": "Erro"
   },
   "Hinweis": {
     "de": "Hinweis",
@@ -437,7 +707,12 @@
     "es": "Aviso",
     "zh": "提示",
     "ja": "お知らせ",
-    "ru": "Примечание"
+    "ru": "Примечание",
+    "fr": "Remarque",
+    "hi": "सूचना",
+    "ar": "ملاحظة",
+    "bn": "নোট",
+    "pt": "Nota"
   },
   "Prompt erfolgreich exportiert.": {
     "de": "Prompt erfolgreich exportiert.",
@@ -445,7 +720,12 @@
     "es": "Prompt exportado con éxito.",
     "zh": "提示词导出成功。",
     "ja": "プロンプトを正常にエクスポートしました。",
-    "ru": "Промпт успешно экспортирован."
+    "ru": "Промпт успешно экспортирован.",
+    "fr": "Prompt exporté avec succès.",
+    "hi": "प्रॉम्प्ट सफलतापूर्वक निर्यात किया गया।",
+    "ar": "تم تصدير المطالبة بنجاح.",
+    "bn": "প্রম্পট সফলভাবে রপ্তানি করা হয়েছে।",
+    "pt": "Prompt exportado com sucesso."
   },
   "Version erfolgreich exportiert.": {
     "de": "Version erfolgreich exportiert.",
@@ -453,7 +733,12 @@
     "es": "Versión exportada con éxito.",
     "zh": "版本导出成功。",
     "ja": "バージョンを正常にエクスポートしました。",
-    "ru": "Версия успешно экспортирована."
+    "ru": "Версия успешно экспортирована.",
+    "fr": "Version exportée avec succès.",
+    "hi": "संस्करण सफलतापूर्वक निर्यात किया गया।",
+    "ar": "تم تصدير الإصدار بنجاح.",
+    "bn": "সংস্করণ সফলভাবে রপ্তানি হয়েছে।",
+    "pt": "Exportação da versão concluída com sucesso."
   },
   "Bundle erfolgreich exportiert.": {
     "de": "Bundle erfolgreich exportiert.",
@@ -461,7 +746,12 @@
     "es": "Paquete exportado con éxito.",
     "zh": "软件包导出成功。",
     "ja": "バンドルを正常にエクスポートしました。",
-    "ru": "Пакет успешно экспортирован."
+    "ru": "Пакет успешно экспортирован.",
+    "fr": "Bundle exporté avec succès.",
+    "hi": "बंडल सफलतापूर्वक निर्यात किया गया।",
+    "ar": "تم تصدير الحزمة بنجاح.",
+    "bn": "প্যাকেজ সফলভাবে রপ্তানি হয়েছে।",
+    "pt": "Pacote exportado com sucesso."
   },
   "TXT erfolgreich gespeichert.": {
     "de": "TXT erfolgreich gespeichert.",
@@ -469,7 +759,12 @@
     "es": "TXT guardado con éxito.",
     "zh": "TXT 保存成功。",
     "ja": "TXT が正常に保存されました。",
-    "ru": "TXT успешно сохранен."
+    "ru": "TXT успешно сохранен.",
+    "fr": "Le fichier TXT a été enregistré avec succès.",
+    "hi": "TXT सफलतापूर्वक सहेजी गई।",
+    "ar": "تم حفظ ملف TXT بنجاح.",
+    "bn": "TXT সফলভাবে সংরক্ষিত হয়েছে।",
+    "pt": "TXT salvo com sucesso."
   },
   "PDF erfolgreich gespeichert.": {
     "de": "PDF erfolgreich gespeichert.",
@@ -477,7 +772,12 @@
     "es": "PDF guardado con éxito.",
     "zh": "PDF 保存成功。",
     "ja": "PDF が正常に保存されました。",
-    "ru": "PDF успешно сохранен."
+    "ru": "PDF успешно сохранен.",
+    "fr": "Le fichier PDF a été enregistré avec succès.",
+    "hi": "PDF सफलतापूर्वक सहेजा गया।",
+    "ar": "تم حفظ ملف PDF بنجاح.",
+    "bn": "PDF সফলভাবে সংরক্ষণ করা হয়েছে।",
+    "pt": "PDF salvo com sucesso."
   },
   "Boards": {
     "de": "Boards",
@@ -485,7 +785,12 @@
     "es": "Paneles",
     "zh": "面板",
     "ja": "ボード",
-    "ru": "Доски"
+    "ru": "Доски",
+    "fr": "Tableaux",
+    "hi": "बोर्ड",
+    "ar": "اللوحات",
+    "bn": "বোর্ড",
+    "pt": "Quadros"
   },
   "Neues Board": {
     "de": "Neues Board",
@@ -493,7 +798,12 @@
     "es": "Nuevo panel",
     "zh": "新建面板",
     "ja": "新規ボード",
-    "ru": "Новая доска"
+    "ru": "Новая доска",
+    "fr": "Nouveau tableau",
+    "hi": "नया बोर्ड",
+    "ar": "لوحة جديدة",
+    "bn": "নতুন বোর্ড",
+    "pt": "Novo quadro"
   },
   "Board umbenennen": {
     "de": "Board umbenennen",
@@ -501,7 +811,12 @@
     "es": "Renombrar panel",
     "zh": "重命名面板",
     "ja": "ボードの名前を変更",
-    "ru": "Переименовать доску"
+    "ru": "Переименовать доску",
+    "fr": "Renommer le tableau",
+    "hi": "बोर्ड का नाम बदलें",
+    "ar": "إعادة تسمية اللوحة",
+    "bn": "বোর্ড নাম পরিবর্তন করুন",
+    "pt": "Renomear quadro"
   },
   "Board löschen": {
     "de": "Board löschen",
@@ -509,7 +824,12 @@
     "es": "Eliminar panel",
     "zh": "删除面板",
     "ja": "ボードを削除",
-    "ru": "Удалить доску"
+    "ru": "Удалить доску",
+    "fr": "Supprimer le tableau",
+    "hi": "बोर्ड हटाएँ",
+    "ar": "حذف اللوحة",
+    "bn": "বোর্ড মুছুন",
+    "pt": "Excluir quadro"
   },
   "Theme:": {
     "de": "Theme:",
@@ -517,7 +837,12 @@
     "es": "Tema:",
     "zh": "主题:",
     "ja": "テーマ:",
-    "ru": "Тема:"
+    "ru": "Тема:",
+    "fr": "Thème :",
+    "hi": "थीम:",
+    "ar": "السمة:",
+    "bn": "থিম:",
+    "pt": "Tema:"
   },
   "Dunkel": {
     "de": "Dunkel",
@@ -525,7 +850,12 @@
     "es": "Oscuro",
     "zh": "暗色",
     "ja": "ダーク",
-    "ru": "Темная"
+    "ru": "Темная",
+    "fr": "Sombre",
+    "hi": "गहरा",
+    "ar": "داكن",
+    "bn": "গাঢ়",
+    "pt": "Escuro"
   },
   "Hell": {
     "de": "Hell",
@@ -533,7 +863,12 @@
     "es": "Claro",
     "zh": "亮色",
     "ja": "ライト",
-    "ru": "Светлая"
+    "ru": "Светлая",
+    "fr": "Clair",
+    "hi": "हेल",
+    "ar": "فاتح",
+    "bn": "হালকা",
+    "pt": "Claro"
   },
   "Hauptprompt-Farbe:": {
     "de": "Hauptprompt-Farbe:",
@@ -541,7 +876,12 @@
     "es": "Color del prompt principal:",
     "zh": "主提示词颜色:",
     "ja": "メインプロンプトの色:",
-    "ru": "Цвет основного промпта:"
+    "ru": "Цвет основного промпта:",
+    "fr": "Couleur de l'invite principale :",
+    "hi": "मुख्य प्रॉम्प्ट रंग:",
+    "ar": "اللون الرئيسي للموجه:",
+    "bn": "প্রধান প্রম্পটের রং:",
+    "pt": "Cor principal do prompt:"
   },
   "Versionsprompt-Farbe:": {
     "de": "Versionsprompt-Farbe:",
@@ -549,7 +889,12 @@
     "es": "Color de versión de prompt:",
     "zh": "版本提示词颜色:",
     "ja": "バージョンプロンプトの色:",
-    "ru": "Цвет версии промпта:"
+    "ru": "Цвет версии промпта:",
+    "fr": "Couleur des prompts de version :",
+    "hi": "संस्करण प्रॉम्प्ट का रंग:",
+    "ar": "لون موجّهات الإصدار:",
+    "bn": "সংস্করণ প্রম্পটের রং:",
+    "pt": "Cor dos prompts de versão:"
   },
   "Farbe wählen": {
     "de": "Farbe wählen",
@@ -557,7 +902,12 @@
     "es": "Elegir color",
     "zh": "选择颜色",
     "ja": "色を選択",
-    "ru": "Выбрать цвет"
+    "ru": "Выбрать цвет",
+    "fr": "Choisir une couleur",
+    "hi": "रंग चुनें",
+    "ar": "اختيار اللون",
+    "bn": "রং বেছে নিন",
+    "pt": "Escolher cor"
   },
   "Kopier-Modus:": {
     "de": "Kopier-Modus:",
@@ -565,7 +915,12 @@
     "es": "Modo de copia:",
     "zh": "复制模式:",
     "ja": "コピーモード:",
-    "ru": "Режим копирования:"
+    "ru": "Режим копирования:",
+    "fr": "Mode de copie :",
+    "hi": "कॉपी-मोड:",
+    "ar": "وضع النسخ:",
+    "bn": "কপি-মোড:",
+    "pt": "Modo de cópia:"
   },
   "Nur Prompt-Text": {
     "de": "Nur Prompt-Text",
@@ -573,7 +928,12 @@
     "es": "Solo texto del prompt",
     "zh": "仅提示词内容",
     "ja": "プロンプトテキストのみ",
-    "ru": "Только текст промпта"
+    "ru": "Только текст промпта",
+    "fr": "Texte de l'invite uniquement",
+    "hi": "केवल प्रॉम्प्ट-टेक्स्ट",
+    "ar": "نص الموجه فقط",
+    "bn": "শুধু প্রম্পট-টেক্সট",
+    "pt": "Apenas texto do prompt"
   },
   "Vollständig mit Metadaten": {
     "de": "Vollständig mit Metadaten",
@@ -581,7 +941,12 @@
     "es": "Completo con metadatos",
     "zh": "包含完整元数据",
     "ja": "メタデータ付き完全版",
-    "ru": "Полный с метаданными"
+    "ru": "Полный с метаданными",
+    "fr": "Entièrement avec métadonnées",
+    "hi": "पूरी तरह से मेटाडेटा के साथ",
+    "ar": "مكتمل مع البيانات الوصفية",
+    "bn": "মেটাডেটাসহ সম্পূর্ণ",
+    "pt": "Totalmente com metadados"
   },
   "In Zwischenablage kopieren": {
     "de": "In Zwischenablage kopieren",
@@ -589,7 +954,12 @@
     "es": "Copiar al portapapeles",
     "zh": "复制到剪贴板",
     "ja": "クリップボードにコピー",
-    "ru": "Копировать в буфер обмена"
+    "ru": "Копировать в буфер обмена",
+    "fr": "Copier dans le presse-papiers",
+    "hi": "क्लिपबोर्ड पर कॉपी करें",
+    "ar": "نسخ إلى الحافظة",
+    "bn": "ক্লিপবোর্ডে কপি করুন",
+    "pt": "Copiar para a área de transferência"
   },
   "&Datei": {
     "de": "&Datei",
@@ -597,7 +967,12 @@
     "es": "&Archivo",
     "zh": "&文件",
     "ja": "&ファイル",
-    "ru": "&Файл"
+    "ru": "&Файл",
+    "fr": "&Fichier",
+    "hi": "&फ़ाइल",
+    "ar": "&ملف",
+    "bn": "&ফাইল",
+    "pt": "&Arquivo"
   },
   "&Bearbeiten": {
     "de": "&Bearbeiten",
@@ -605,7 +980,12 @@
     "es": "&Editar",
     "zh": "&编辑",
     "ja": "&編集",
-    "ru": "&Правка"
+    "ru": "&Правка",
+    "fr": "&Modifier",
+    "hi": "&बदलें",
+    "ar": "&تحرير",
+    "bn": "&সম্পাদনা",
+    "pt": "&Editar"
   },
   "&Ansicht": {
     "de": "&Ansicht",
@@ -613,7 +993,12 @@
     "es": "&Ver",
     "zh": "&视图",
     "ja": "&表示",
-    "ru": "&Вид"
+    "ru": "&Вид",
+    "fr": "&Affichage",
+    "hi": "&दृश्य",
+    "ar": "&عرض",
+    "bn": "&দৃশ্য",
+    "pt": "&Exibir"
   },
   "&Sprache / Language": {
     "de": "&Sprache / Language",
@@ -621,7 +1006,12 @@
     "es": "&Idioma",
     "zh": "&语言",
     "ja": "&言語",
-    "ru": "&Язык"
+    "ru": "&Язык",
+    "fr": "&Langue",
+    "hi": "&भाषा",
+    "ar": "&اللغة",
+    "bn": "&ভাষা",
+    "pt": "&Idioma"
   },
   "&Hilfe": {
     "de": "&Hilfe",
@@ -629,7 +1019,12 @@
     "es": "&Ayuda",
     "zh": "&帮助",
     "ja": "&ヘルプ",
-    "ru": "&Справка"
+    "ru": "&Справка",
+    "fr": "&Aide",
+    "hi": "&सहायता",
+    "ar": "&مساعدة",
+    "bn": "&সহায়তা",
+    "pt": "&Ajuda"
   },
   "Tastaturkürzel & Hilfe": {
     "de": "Tastaturkürzel & Hilfe",
@@ -637,7 +1032,12 @@
     "es": "Atajos de teclado y ayuda",
     "zh": "键盘快捷键与帮助",
     "ja": "キーボードショートカットとヘルプ",
-    "ru": "Сочетания клавиш и справка"
+    "ru": "Сочетания клавиш и справка",
+    "fr": "Raccourcis clavier et aide",
+    "hi": "कीबोर्ड शॉर्टकट और सहायता",
+    "ar": "اختصارات لوحة المفاتيح والمساعدة",
+    "bn": "কীবোর্ড শর্টকাট ও সহায়তা",
+    "pt": "Atalhos de teclado e ajuda"
   },
   "Tastaturkürzel & Barrierefreiheit": {
     "de": "Tastaturkürzel & Barrierefreiheit",
@@ -645,7 +1045,12 @@
     "es": "Atajos de teclado y accesibilidad",
     "zh": "键盘快捷键与无障碍",
     "ja": "キーボードショートカットとアクセシビリティ",
-    "ru": "Сочетания клавиш и доступность"
+    "ru": "Сочетания клавиш и доступность",
+    "fr": "Raccourcis clavier et accessibilité",
+    "hi": "कीबोर्ड शॉर्टकट और सुगम्यता",
+    "ar": "اختصارات لوحة المفاتيح وإمكانية الوصول",
+    "bn": "কীবোর্ড শর্টকাট ও অ্যাক্সেসিবিলিটি",
+    "pt": "Atalhos de teclado e acessibilidade"
   },
   "Tastaturkürzel": {
     "de": "Tastaturkürzel",
@@ -653,7 +1058,12 @@
     "es": "Atajos de teclado",
     "zh": "键盘快捷键",
     "ja": "キーボードショートカット",
-    "ru": "Сочетания клавиш"
+    "ru": "Сочетания клавиш",
+    "fr": "Raccourcis clavier",
+    "hi": "कीबोर्ड शॉर्टकट",
+    "ar": "اختصارات لوحة المفاتيح",
+    "bn": "কীবোর্ড শর্টকাট",
+    "pt": "Atalhos de teclado"
   },
   "Tastenkombination": {
     "de": "Tastenkombination",
@@ -661,7 +1071,12 @@
     "es": "Atajo",
     "zh": "快捷键",
     "ja": "ショートカット",
-    "ru": "Сочетание клавиш"
+    "ru": "Сочетание клавиш",
+    "fr": "Raccourci clavier",
+    "hi": "कीबोर्ड शॉर्टकट",
+    "ar": "اختصار لوحة المفاتيح",
+    "bn": "কীবোর্ড শর্টকাট",
+    "pt": "Atalho de teclado"
   },
   "Funktion / Aktion": {
     "de": "Funktion / Aktion",
@@ -669,7 +1084,12 @@
     "es": "Acción",
     "zh": "操作",
     "ja": "アクション",
-    "ru": "Действие"
+    "ru": "Действие",
+    "fr": "Fonction / Action",
+    "hi": "कार्य / क्रिया",
+    "ar": "الوظيفة / الإجراء",
+    "bn": "ফাংশন / ক্রিয়া",
+    "pt": "Função / Ação"
   },
   "Bereich": {
     "de": "Bereich",
@@ -677,7 +1097,12 @@
     "es": "Ámbito",
     "zh": "范围",
     "ja": "スコープ",
-    "ru": "Область"
+    "ru": "Область",
+    "fr": "Zone",
+    "hi": "क्षेत्र",
+    "ar": "المجال",
+    "bn": "এলাকা",
+    "pt": "Área"
   },
   "Global": {
     "de": "Global",
@@ -685,7 +1110,12 @@
     "es": "Global",
     "zh": "全局",
     "ja": "グローバル",
-    "ru": "Глобально"
+    "ru": "Глобально",
+    "fr": "Global",
+    "hi": "वैश्विक",
+    "ar": "عام",
+    "bn": "বিশ্বব্যাপী",
+    "pt": "Global"
   },
   "Prompt-Liste": {
     "de": "Prompt-Liste",
@@ -693,7 +1123,12 @@
     "es": "Lista de prompts",
     "zh": "提示词列表",
     "ja": "プロンプトリスト",
-    "ru": "Список промптов"
+    "ru": "Список промптов",
+    "fr": "Liste de prompts",
+    "hi": "प्रॉम्प्ट सूची",
+    "ar": "قائمة الموجهات",
+    "bn": "প্রম্পটের তালিকা",
+    "pt": "Lista de prompts"
   },
   "Board": {
     "de": "Board",
@@ -701,7 +1136,12 @@
     "es": "Panel",
     "zh": "面板",
     "ja": "ボード",
-    "ru": "Доска"
+    "ru": "Доска",
+    "fr": "Tableau",
+    "hi": "बोर्ड",
+    "ar": "اللوحة",
+    "bn": "বোর্ড",
+    "pt": "Quadro"
   },
   "Navigation": {
     "de": "Navigation",
@@ -709,7 +1149,12 @@
     "es": "Navegación",
     "zh": "导航",
     "ja": "ナビゲーション",
-    "ru": "Навигация"
+    "ru": "Навигация",
+    "fr": "Navigation",
+    "hi": "नेविगेशन",
+    "ar": "التنقل",
+    "bn": "নেভিগেশন",
+    "pt": "Navegação"
   },
   "Schließen": {
     "de": "Schließen",
@@ -717,7 +1162,12 @@
     "es": "Cerrar",
     "zh": "关闭",
     "ja": "閉じる",
-    "ru": "Закрыть"
+    "ru": "Закрыть",
+    "fr": "Fermer",
+    "hi": "बंद करें",
+    "ar": "إغلاق",
+    "bn": "বন্ধ করুন",
+    "pt": "Fechar"
   },
   "Tastaturkürzel & Hilfe anzeigen": {
     "de": "Tastaturkürzel & Hilfe anzeigen",
@@ -725,7 +1175,12 @@
     "es": "Mostrar atajos de teclado y ayuda",
     "zh": "显示键盘快捷键与帮助",
     "ja": "キーボードショートカットとヘルプを表示",
-    "ru": "Показать сочетания клавиш и справку"
+    "ru": "Показать сочетания клавиш и справку",
+    "fr": "Afficher les raccourcis clavier et l'aide",
+    "hi": "कीबोर्ड शॉर्टकट और सहायता दिखाएँ",
+    "ar": "عرض اختصارات لوحة المفاتيح والمساعدة",
+    "bn": "কীবোর্ড শর্টকাট ও সহায়তা দেখান",
+    "pt": "Mostrar atalhos de teclado e ajuda"
   },
   "Suche fokussieren": {
     "de": "Suche fokussieren",
@@ -733,7 +1188,12 @@
     "es": "Enfocar búsqueda",
     "zh": "聚焦搜索",
     "ja": "検索にフォーカス",
-    "ru": "Фокус на поиске"
+    "ru": "Фокус на поиске",
+    "fr": "Mettre le focus sur le champ de recherche",
+    "hi": "खोज फ़ील्ड पर फ़ोकस करें",
+    "ar": "التركيز على حقل البحث",
+    "bn": "অনুসন্ধান ক্ষেত্রে ফোকাস করুন",
+    "pt": "Focar o campo de pesquisa"
   },
   "Prompt-Liste fokussieren": {
     "de": "Prompt-Liste fokussieren",
@@ -741,7 +1201,12 @@
     "es": "Enfocar lista de prompts",
     "zh": "聚焦提示词列表",
     "ja": "プロンプトリストにフォーカス",
-    "ru": "Фокус на списке промптов"
+    "ru": "Фокус на списке промптов",
+    "fr": "Concentrer la liste de prompts",
+    "hi": "प्रॉम्प्ट सूची पर फ़ोकस करें",
+    "ar": "تركيز قائمة المطالبات",
+    "bn": "প্রম্পটের তালিকায় ফোকাস করুন",
+    "pt": "Focar na lista de prompts"
   },
   "Board-Bereich fokussieren": {
     "de": "Board-Bereich fokussieren",
@@ -749,7 +1214,12 @@
     "es": "Enfocar área del panel",
     "zh": "聚焦面板区域",
     "ja": "ボードエリアにフォーカス",
-    "ru": "Фокус на области доски"
+    "ru": "Фокус на области доски",
+    "fr": "Mettre le focus sur la zone du tableau",
+    "hi": "बोर्ड क्षेत्र पर फ़ोकस करें",
+    "ar": "تركيز منطقة اللوحة",
+    "bn": "বোর্ড এলাকায় ফোকাস করুন",
+    "pt": "Focar a área do quadro"
   },
   "Aktualisieren": {
     "de": "Aktualisieren",
@@ -757,7 +1227,12 @@
     "es": "Actualizar",
     "zh": "刷新",
     "ja": "更新",
-    "ru": "Обновить"
+    "ru": "Обновить",
+    "fr": "Mettre à jour",
+    "hi": "अद्यतन करें",
+    "ar": "تحديث",
+    "bn": "হালনাগাদ করুন",
+    "pt": "Atualizar"
   },
   "Ansicht & Daten aktualisieren": {
     "de": "Ansicht & Daten aktualisieren",
@@ -765,7 +1240,12 @@
     "es": "Actualizar vista y datos",
     "zh": "刷新视图与数据",
     "ja": "表示とデータを更新",
-    "ru": "Обновить вид и данные"
+    "ru": "Обновить вид и данные",
+    "fr": "Afficher et actualiser les données",
+    "hi": "दृश्य और डेटा रीफ़्रेश करें",
+    "ar": "عرض وتحديث البيانات",
+    "bn": "ডেটা দেখুন ও আপডেট করুন",
+    "pt": "Ver e atualizar dados"
   },
   "Anwendung beenden": {
     "de": "Anwendung beenden",
@@ -773,7 +1253,12 @@
     "es": "Salir de la aplicación",
     "zh": "退出应用程序",
     "ja": "アプリケーションを終了",
-    "ru": "Завершить работу приложения"
+    "ru": "Завершить работу приложения",
+    "fr": "Quitter l'application",
+    "hi": "ऐप्लिकेशन बंद करें",
+    "ar": "إنهاء التطبيق",
+    "bn": "অ্যাপ্লিকেশন বন্ধ করুন",
+    "pt": "Encerrar aplicação"
   },
   "Kopier-Einstellungen öffnen": {
     "de": "Kopier-Einstellungen öffnen",
@@ -781,7 +1266,12 @@
     "es": "Abrir configuración de copia",
     "zh": "打开复制设置",
     "ja": "コピー設定を開く",
-    "ru": "Открыть настройки копирования"
+    "ru": "Открыть настройки копирования",
+    "fr": "Ouvrir les paramètres de copie",
+    "hi": "कॉपी सेटिंग्स खोलें",
+    "ar": "فتح إعدادات النسخ",
+    "bn": "কপি সেটিংস খুলুন",
+    "pt": "Abrir configurações de cópia"
   },
   "Darstellungseinstellungen öffnen": {
     "de": "Darstellungseinstellungen öffnen",
@@ -789,7 +1279,12 @@
     "es": "Abrir configuración de apariencia",
     "zh": "打开外观设置",
     "ja": "外観設定を開く",
-    "ru": "Открыть настройки внешнего вида"
+    "ru": "Открыть настройки внешнего вида",
+    "fr": "Ouvrir les paramètres d'affichage",
+    "hi": "प्रदर्शन सेटिंग्स खोलें",
+    "ar": "فتح إعدادات العرض",
+    "bn": "ডিসপ্লে সেটিংস খুলুন",
+    "pt": "Abrir configurações de exibição"
   },
   "Menü Datei öffnen": {
     "de": "Menü Datei öffnen",
@@ -797,7 +1292,12 @@
     "es": "Abrir menú Archivo",
     "zh": "打开文件菜单",
     "ja": "ファイルメニューを開く",
-    "ru": "Открыть меню Файл"
+    "ru": "Открыть меню Файл",
+    "fr": "Ouvrir le menu Fichier",
+    "hi": "फ़ाइल मेनू खोलें",
+    "ar": "فتح قائمة الملف",
+    "bn": "ফাইল মেনু খুলুন",
+    "pt": "Abrir o menu Arquivo"
   },
   "Menü Bearbeiten öffnen": {
     "de": "Menü Bearbeiten öffnen",
@@ -805,7 +1305,12 @@
     "es": "Abrir menú Editar",
     "zh": "打开编辑菜单",
     "ja": "編集メニューを開く",
-    "ru": "Открыть меню Правка"
+    "ru": "Открыть меню Правка",
+    "fr": "Ouvrir le menu Modifier",
+    "hi": "मेनू संपादित करें खोलें",
+    "ar": "فتح قائمة التحرير",
+    "bn": "সম্পাদনা মেনু খুলুন",
+    "pt": "Abrir menu Editar"
   },
   "Menü Ansicht öffnen": {
     "de": "Menü Ansicht öffnen",
@@ -813,7 +1318,12 @@
     "es": "Abrir menú Ver",
     "zh": "打开视图菜单",
     "ja": "表示メニューを開く",
-    "ru": "Открыть меню Вид"
+    "ru": "Открыть меню Вид",
+    "fr": "Ouvrir le menu Affichage",
+    "hi": "दृश्य मेनू खोलें",
+    "ar": "فتح قائمة العرض",
+    "bn": "দৃশ্য মেনু খুলুন",
+    "pt": "Abrir menu Exibição"
   },
   "Menü Sprache öffnen": {
     "de": "Menü Sprache öffnen",
@@ -821,7 +1331,12 @@
     "es": "Abrir menú Idioma",
     "zh": "打开语言菜单",
     "ja": "言語メニューを開く",
-    "ru": "Открыть меню Язык"
+    "ru": "Открыть меню Язык",
+    "fr": "Ouvrir le menu Langue",
+    "hi": "भाषा मेनू खोलें",
+    "ar": "فتح قائمة اللغة",
+    "bn": "ভাষা মেনু খুলুন",
+    "pt": "Abrir o menu Idioma"
   },
   "Menü Hilfe öffnen": {
     "de": "Menü Hilfe öffnen",
@@ -829,7 +1344,12 @@
     "es": "Abrir menú Ayuda",
     "zh": "打开帮助菜单",
     "ja": "ヘルプメニューを開く",
-    "ru": "Открыть меню Справка"
+    "ru": "Открыть меню Справка",
+    "fr": "Ouvrir le menu Aide",
+    "hi": "मेनू सहायता खोलें",
+    "ar": "فتح قائمة المساعدة",
+    "bn": "মেনু সহায়তা খুলুন",
+    "pt": "Abrir menu Ajuda"
   },
   "Ausgewählten Prompt / Version bearbeiten": {
     "de": "Ausgewählten Prompt / Version bearbeiten",
@@ -837,7 +1357,12 @@
     "es": "Editar prompt o versión seleccionada",
     "zh": "编辑选中的提示词或版本",
     "ja": "選択したプロンプト/バージョンを編集",
-    "ru": "Редактировать выбранный промпт или версию"
+    "ru": "Редактировать выбранный промпт или версию",
+    "fr": "Modifier le prompt / la version sélectionné(e)",
+    "hi": "चयनित प्रॉम्प्ट / संस्करण संपादित करें",
+    "ar": "تحرير المطالبة / الإصدار المحدد",
+    "bn": "নির্বাচিত প্রম্পট / সংস্করণ সম্পাদনা করুন",
+    "pt": "Editar prompt / versão selecionada"
   },
   "Ausgewählten Prompt / Version löschen": {
     "de": "Ausgewählten Prompt / Version löschen",
@@ -845,7 +1370,12 @@
     "es": "Eliminar prompt o versión seleccionada",
     "zh": "删除选中的提示词或版本",
     "ja": "選択したプロンプト/バージョンを削除",
-    "ru": "Удалить выбранный промпт или версию"
+    "ru": "Удалить выбранный промпт или версию",
+    "fr": "Supprimer le prompt / la version sélectionné(e)",
+    "hi": "चयनित प्रॉम्प्ट / संस्करण हटाएँ",
+    "ar": "حذف الموجه / الإصدار المحدد",
+    "bn": "নির্বাচিত প্রম্পট / সংস্করণ মুছুন",
+    "pt": "Excluir o prompt / versão selecionado"
   },
   "Ausgewählten Prompt bearbeiten": {
     "de": "Ausgewählten Prompt bearbeiten",
@@ -853,7 +1383,12 @@
     "es": "Editar prompt seleccionado",
     "zh": "编辑选中的提示词",
     "ja": "選択したプロンプトを編集",
-    "ru": "Редактировать выбранный промпт"
+    "ru": "Редактировать выбранный промпт",
+    "fr": "Modifier l'invite sélectionnée",
+    "hi": "चयनित प्रॉम्प्ट संपादित करें",
+    "ar": "تحرير المطالبة المحددة",
+    "bn": "নির্বাচিত প্রম্পট সম্পাদনা করুন",
+    "pt": "Editar prompt selecionado"
   },
   "Prompt-Text in Zwischenablage kopieren": {
     "de": "Prompt-Text in Zwischenablage kopieren",
@@ -861,7 +1396,12 @@
     "es": "Copiar texto del prompt al portapapeles",
     "zh": "复制提示词文本到剪贴板",
     "ja": "プロンプトテキストをクリップボードにコピー",
-    "ru": "Копировать текст промпта в буфер обмена"
+    "ru": "Копировать текст промпта в буфер обмена",
+    "fr": "Copier le texte du prompt dans le presse-papiers",
+    "hi": "प्रॉम्प्ट टेक्स्ट क्लिपबोर्ड पर कॉपी करें",
+    "ar": "نسخ نص الموجه إلى الحافظة",
+    "bn": "প্রম্পট-টেক্সট ক্লিপবোর্ডে কপি করুন",
+    "pt": "Copiar texto do prompt para a área de transferência"
   },
   "Kachel bearbeiten / Details öffnen": {
     "de": "Kachel bearbeiten / Details öffnen",
@@ -869,7 +1409,12 @@
     "es": "Editar mosaico / Abrir detalles",
     "zh": "编辑卡片 / 打开详情",
     "ja": "タイルを編集 / 詳細を開く",
-    "ru": "Редактировать плитку / Открыть детали"
+    "ru": "Редактировать плитку / Открыть детали",
+    "fr": "Modifier la tuile / Ouvrir les détails",
+    "hi": "टाइल संपादित करें / विवरण खोलें",
+    "ar": "تعديل البطاقة / فتح التفاصيل",
+    "bn": "টাইল সম্পাদনা করুন / বিস্তারিত খুলুন",
+    "pt": "Editar bloco / abrir detalhes"
   },
   "Kachel aktivieren / auswählen": {
     "de": "Kachel aktivieren / auswählen",
@@ -877,7 +1422,12 @@
     "es": "Activar / Seleccionar mosaico",
     "zh": "激活 / 选择卡片",
     "ja": "タイルを有効化 / 選択",
-    "ru": "Активировать / Выбрать плитку"
+    "ru": "Активировать / Выбрать плитку",
+    "fr": "Activer / sélectionner la tuile",
+    "hi": "टाइल सक्रिय करें / चुनें",
+    "ar": "تفعيل البطاقة / تحديدها",
+    "bn": "টাইল সক্রিয় করুন / নির্বাচন করুন",
+    "pt": "Ativar / selecionar bloco"
   },
   "Kachel-Text in Zwischenablage kopieren": {
     "de": "Kachel-Text in Zwischenablage kopieren",
@@ -885,7 +1435,12 @@
     "es": "Copiar texto del mosaico al portapapeles",
     "zh": "复制卡片文本到剪贴板",
     "ja": "タイルテキストをクリップボードにコピー",
-    "ru": "Копировать текст плитки в буфер обмена"
+    "ru": "Копировать текст плитки в буфер обмена",
+    "fr": "Copier le texte de la tuile dans le presse-papiers",
+    "hi": "टाइल का पाठ क्लिपबोर्ड पर कॉपी करें",
+    "ar": "نسخ نص البطاقة إلى الحافظة",
+    "bn": "টাইলের লেখা ক্লিপবোর্ডে কপি করুন",
+    "pt": "Copiar o texto do bloco para a área de transferência"
   },
   "Kachel vom Board entfernen": {
     "de": "Kachel vom Board entfernen",
@@ -893,7 +1448,12 @@
     "es": "Quitar mosaico del panel",
     "zh": "从面板移除卡片",
     "ja": "タイルをボードから削除",
-    "ru": "Удалить плитку с доски"
+    "ru": "Удалить плитку с доски",
+    "fr": "Retirer la tuile du tableau",
+    "hi": "टाइल को बोर्ड से हटाएँ",
+    "ar": "إزالة البطاقة من اللوحة",
+    "bn": "বোর্ড থেকে টাইল সরান",
+    "pt": "Remover o bloco do quadro"
   },
   "Kontextmenü öffnen": {
     "de": "Kontextmenü öffnen",
@@ -901,7 +1461,12 @@
     "es": "Abrir menú contextual",
     "zh": "打开上下文菜单",
     "ja": "コンテキストメニューを開く",
-    "ru": "Открыть контекстное меню"
+    "ru": "Открыть контекстное меню",
+    "fr": "Ouvrir le menu contextuel",
+    "hi": "संदर्भ मेनू खोलें",
+    "ar": "فتح قائمة السياق",
+    "bn": "প্রসঙ্গ মেনু খুলুন",
+    "pt": "Abrir menu de contexto"
   },
   "Prompt-Übersicht": {
     "de": "Prompt-Übersicht",
@@ -909,7 +1474,12 @@
     "es": "Resumen de prompts",
     "zh": "提示词概览",
     "ja": "プロンプト一覧",
-    "ru": "Обзор промптов"
+    "ru": "Обзор промптов",
+    "fr": "Vue d’ensemble des prompts",
+    "hi": "प्रॉम्प्ट-अवलोकन",
+    "ar": "نظرة عامة على الموجّهات",
+    "bn": "প্রম্পটের সারসংক্ষেপ",
+    "pt": "Visão geral do prompt"
   },
   "Kachelschriftart wählen": {
     "de": "Kachelschriftart wählen",
@@ -917,7 +1487,12 @@
     "es": "Elegir fuente de mosaico",
     "zh": "选择卡片字体",
     "ja": "タイルフォントの選択",
-    "ru": "Выбрать шрифт плиток"
+    "ru": "Выбрать шрифт плиток",
+    "fr": "Choisir la police des tuiles",
+    "hi": "टाइल फ़ॉन्ट चुनें",
+    "ar": "اختيار خط البلاطات",
+    "bn": "টাইলের ফন্ট বেছে নিন",
+    "pt": "Escolher fonte de blocos"
   },
   "Diese Anwendung unterstützt barrierefreie Tastaturbedienung nach BITV 2.0 und WCAG 2.1 AA. Alle Funktionen sind ohne Maus über standardisierte Tastaturbefehle erreichbar.": {
     "de": "Diese Anwendung unterstützt barrierefreie Tastaturbedienung nach BITV 2.0 und WCAG 2.1 AA. Alle Funktionen sind ohne Maus über standardisierte Tastaturbefehle erreichbar.",
@@ -925,7 +1500,12 @@
     "es": "Esta aplicación admite el manejo accesible por teclado según BITV 2.0 y WCAG 2.1 AA. Todas las funciones son accesibles sin ratón mediante atajos estandarizados.",
     "zh": "本应用程序支持符合 BITV 2.0 和 WCAG 2.1 AA 标准的无障碍键盘操作。所有功能均可通过标准快捷键免鼠标使用。",
     "ja": "本アプリケーションは BITV 2.0 および WCAG 2.1 AA に準拠したアクセシブルなキーボード操作に対応しています。すべての機能はマウスなしで標準ショートカットから利用可能です。",
-    "ru": "Приложение поддерживает доступное управление с клавиатуры в соответствии с BITV 2.0 и WCAG 2.1 AA. Все функции доступны без мыши с помощью стандартных сочетаний клавиш."
+    "ru": "Приложение поддерживает доступное управление с клавиатуры в соответствии с BITV 2.0 и WCAG 2.1 AA. Все функции доступны без мыши с помощью стандартных сочетаний клавиш.",
+    "fr": "Cette application prend en charge l'utilisation au clavier accessible conformément à la BITV 2.0 et aux WCAG 2.1 AA. Toutes les fonctions sont accessibles sans souris grâce à des raccourcis clavier standardisés.",
+    "hi": "यह एप्लिकेशन BITV 2.0 और WCAG 2.1 AA के अनुसार सुलभ कीबोर्ड संचालन का समर्थन करता है। सभी सुविधाएँ मानकीकृत कीबोर्ड कमांड के माध्यम से माउस के बिना उपलब्ध हैं।",
+    "ar": "تدعم هذه التطبيقات التشغيل بلوحة المفاتيح وفق معايير إمكانية الوصول BITV 2.0 وWCAG 2.1 AA. جميع الوظائف متاحة دون استخدام الفأرة من خلال اختصارات لوحة المفاتيح الموحّدة.",
+    "bn": "এই অ্যাপ্লিকেশনটি BITV 2.0 এবং WCAG 2.1 AA অনুযায়ী প্রবেশযোগ্য কীবোর্ড পরিচালনা সমর্থন করে। সমস্ত বৈশিষ্ট্য মাউস ছাড়াই প্রমিত কীবোর্ড শর্টকাটের মাধ্যমে অ্যাক্সেস করা যায়।",
+    "pt": "Esta aplicação suporta operação por teclado acessível de acordo com BITV 2.0 e WCAG 2.1 AA. Todas as funções podem ser acessadas sem rato, através de atalhos de teclado padronizados."
   },
   "Alle Prompts als TXT-Datei exportieren": {
     "de": "Alle Prompts als TXT-Datei exportieren",
@@ -933,7 +1513,12 @@
     "es": "Exportar todos los prompts como archivo TXT",
     "zh": "将所有提示词导出为 TXT 文件",
     "ja": "すべてのプロンプトを TXT ファイルとしてエクスポート",
-    "ru": "Экспортировать все промпты в TXT-файл"
+    "ru": "Экспортировать все промпты в TXT-файл",
+    "fr": "Exporter tous les prompts sous forme de fichier TXT",
+    "hi": "सभी प्रॉम्प्ट्स को TXT फ़ाइल के रूप में निर्यात करें",
+    "ar": "تصدير جميع المطالبات كملف TXT",
+    "bn": "সব প্রম্পট TXT ফাইল হিসেবে রপ্তানি করুন",
+    "pt": "Exportar todos os prompts como arquivo TXT"
   },
   "Alle Prompts als PDF-Datei exportieren": {
     "de": "Alle Prompts als PDF-Datei exportieren",
@@ -941,7 +1526,12 @@
     "es": "Exportar todos los prompts como archivo PDF",
     "zh": "将所有提示词导出为 PDF 文件",
     "ja": "すべてのプロンプトを PDF ファイルとしてエクスポート",
-    "ru": "Экспортировать все промпты в PDF-файл"
+    "ru": "Экспортировать все промпты в PDF-файл",
+    "fr": "Exporter tous les prompts au format PDF",
+    "hi": "सभी प्रॉम्प्ट को PDF फ़ाइल के रूप में निर्यात करें",
+    "ar": "تصدير جميع المطالبات كملف PDF",
+    "bn": "সব প্রম্পট PDF ফাইল হিসেবে এক্সপোর্ট করুন",
+    "pt": "Exportar todos os prompts como arquivo PDF"
   },
   "Ausgewählten Prompt als TXT exportieren": {
     "de": "Ausgewählten Prompt als TXT exportieren",
@@ -949,7 +1539,12 @@
     "es": "Exportar prompt seleccionado como TXT",
     "zh": "将选中的提示词导出为 TXT",
     "ja": "選択したプロンプトを TXT としてエクスポート",
-    "ru": "Экспортировать выбранный промпт в TXT"
+    "ru": "Экспортировать выбранный промпт в TXT",
+    "fr": "Exporter le prompt sélectionné en TXT",
+    "hi": "चयनित प्रॉम्प्ट को TXT के रूप में निर्यात करें",
+    "ar": "تصدير المطالبة المحددة بصيغة TXT",
+    "bn": "এই নির্বাচিত প্রম্পটটি TXT হিসেবে এক্সপোর্ট করুন",
+    "pt": "Exportar o prompt selecionado como TXT"
   },
   "Ausgewählten Prompt als PDF exportieren": {
     "de": "Ausgewählten Prompt als PDF exportieren",
@@ -957,7 +1552,12 @@
     "es": "Exportar prompt seleccionado como PDF",
     "zh": "将选中的提示词导出为 PDF",
     "ja": "選択したプロンプトを PDF としてエクスポート",
-    "ru": "Экспортировать выбранный промпт в PDF"
+    "ru": "Экспортировать выбранный промпт в PDF",
+    "fr": "Exporter le prompt sélectionné au format PDF",
+    "hi": "चयनित प्रॉम्प्ट को PDF के रूप में निर्यात करें",
+    "ar": "تصدير الموجه المحدد بصيغة PDF",
+    "bn": "নির্বাচিত প্রম্পট PDF হিসেবে রপ্তানি করুন",
+    "pt": "Exportar o prompt selecionado como PDF"
   },
   "Ausgewählte Version als TXT exportieren": {
     "de": "Ausgewählte Version als TXT exportieren",
@@ -965,7 +1565,12 @@
     "es": "Exportar versión seleccionada como TXT",
     "zh": "将选中的版本导出为 TXT",
     "ja": "選択したバージョンを TXT としてエクスポート",
-    "ru": "Экспортировать выбранную версию в TXT"
+    "ru": "Экспортировать выбранную версию в TXT",
+    "fr": "Exporter la version sélectionnée au format TXT",
+    "hi": "चुने गए संस्करण को TXT के रूप में निर्यात करें",
+    "ar": "تصدير الإصدار المحدد بصيغة TXT",
+    "bn": "ষ্পনির্বাচিত সংস্করণটি TXT হিসেবে এক্সপোর্ট করুন",
+    "pt": "Exportar a versão selecionada como TXT"
   },
   "Ausgewählte Version als PDF exportieren": {
     "de": "Ausgewählte Version als PDF exportieren",
@@ -973,7 +1578,12 @@
     "es": "Exportar versión seleccionada como PDF",
     "zh": "将选中的版本导出为 PDF",
     "ja": "選択したバージョンを PDF としてエクスポート",
-    "ru": "Экспортировать выбранную версию в PDF"
+    "ru": "Экспортировать выбранную версию в PDF",
+    "fr": "Exporter la version sélectionnée en PDF",
+    "hi": "चयनित संस्करण को PDF के रूप में निर्यात करें",
+    "ar": "تصدير النسخة المحددة بصيغة PDF",
+    "bn": "নির্বাচিত সংস্করণ PDF হিসেবে রপ্তানি করুন",
+    "pt": "Exportar a versão selecionada como PDF"
   },
   "Anleitung anzeigen": {
     "de": "Anleitung anzeigen",
@@ -981,7 +1591,12 @@
     "es": "Mostrar guía del usuario",
     "zh": "显示使用指南",
     "ja": "ユーザーガイドを表示",
-    "ru": "Показать руководство пользователя"
+    "ru": "Показать руководство пользователя",
+    "fr": "Afficher le guide",
+    "hi": "मार्गदर्शिका दिखाएँ",
+    "ar": "عرض الدليل",
+    "bn": "নির্দেশিকা দেখান",
+    "pt": "Mostrar instruções"
   },
   "Informationen über Prompt Manager": {
     "de": "Informationen über Prompt Manager",
@@ -989,7 +1604,12 @@
     "es": "Información sobre Prompt Manager",
     "zh": "关于 Prompt Manager 的信息",
     "ja": "Prompt Manager に関する情報",
-    "ru": "Информация о Prompt Manager"
+    "ru": "Информация о Prompt Manager",
+    "fr": "Informations sur Prompt Manager",
+    "hi": "Prompt Manager के बारे में जानकारी",
+    "ar": "معلومات حول مدير الموجّهات",
+    "bn": "Prompt Manager সম্পর্কে তথ্য",
+    "pt": "Informações sobre o Prompt Manager"
   },
   "Gesamte Bibliothek im JSON-Format sichern": {
     "de": "Gesamte Bibliothek im JSON-Format sichern",
@@ -997,7 +1617,12 @@
     "es": "Guardar toda la biblioteca en formato JSON",
     "zh": "将整个提示词库备份为 JSON 格式",
     "ja": "ライブラリ全体を JSON 形式で保存",
-    "ru": "Сохранить всю библиотеку в формате JSON"
+    "ru": "Сохранить всю библиотеку в формате JSON",
+    "fr": "Sauvegarder l'intégralité de la bibliothèque au format JSON",
+    "hi": "पूरी लाइब्रेरी को JSON प्रारूप में बैक अप लें",
+    "ar": "نسخ المكتبة بأكملها احتياطيًا بتنسيق JSON",
+    "bn": "সম্পূর্ণ লাইব্রেরি JSON ফরম্যাটে ব্যাকআপ করুন",
+    "pt": "Fazer backup de toda a biblioteca no formato JSON"
   },
   "Theme-Auswahl": {
     "de": "Theme-Auswahl",
@@ -1005,7 +1630,12 @@
     "es": "Selección de tema",
     "zh": "主题选择",
     "ja": "テーマの選択",
-    "ru": "Выбор темы"
+    "ru": "Выбор темы",
+    "fr": "Sélection du thème",
+    "hi": "थीम चयन",
+    "ar": "اختيار السمة",
+    "bn": "থিম নির্বাচন",
+    "pt": "Seleção de tema"
   },
   "Auswahl zwischen dunklem und hellem Farbschema": {
     "de": "Auswahl zwischen dunklem und hellem Farbschema",
@@ -1013,7 +1643,12 @@
     "es": "Elegir entre esquema de colores oscuro y claro",
     "zh": "在深色和浅色配色方案之间选择",
     "ja": "ダークとライトの配色を選択",
-    "ru": "Выбор между тёмной и светлой цветовой схемой"
+    "ru": "Выбор между тёмной и светлой цветовой схемой",
+    "fr": "Sélection entre le thème de couleurs sombre et clair",
+    "hi": "डार्क और लाइट रंग योजना के बीच चयन",
+    "ar": "اختيار بين نظام الألوان الداكن والفاتح",
+    "bn": "গাঢ় ও হালকা রঙের স্কিমের মধ্যে নির্বাচন করুন",
+    "pt": "Selecionar entre o esquema de cores escuro e o claro"
   },
   "Farbe Hauptprompt-Kacheln": {
     "de": "Farbe Hauptprompt-Kacheln",
@@ -1021,7 +1656,12 @@
     "es": "Color de mosaicos de prompt principal",
     "zh": "主提示磁贴颜色",
     "ja": "メインプロンプトタイルの色",
-    "ru": "Цвет плиток основных промптов"
+    "ru": "Цвет плиток основных промптов",
+    "fr": "Couleur des tuiles du prompt principal",
+    "hi": "मुख्य प्रॉम्प्ट टाइलों का रंग",
+    "ar": "لون بلاط الموجه الرئيسي",
+    "bn": "প্রধান প্রম্পট টাইলের রং",
+    "pt": "Cor dos blocos do prompt principal"
   },
   "Farbe Versionsprompt-Kacheln": {
     "de": "Farbe Versionsprompt-Kacheln",
@@ -1029,7 +1669,12 @@
     "es": "Color de mosaicos de versión",
     "zh": "版本提示磁贴颜色",
     "ja": "バージョンタイルの色",
-    "ru": "Цвет плиток версий"
+    "ru": "Цвет плиток версий",
+    "fr": "Couleur des tuiles des prompts de version",
+    "hi": "संस्करण प्रॉम्प्ट टाइलों का रंग",
+    "ar": "ألوان بلاطات مطالبات الإصدار",
+    "bn": "সংস্করণ প্রম্পট টাইলের রং",
+    "pt": "Cor dos blocos dos prompts de versão"
   },
   "Farbe Hauptprompt-Kacheln:": {
     "de": "Farbe Hauptprompt-Kacheln:",
@@ -1037,7 +1682,12 @@
     "es": "Color de mosaicos de prompt principal:",
     "zh": "主提示磁贴颜色：",
     "ja": "メインプロンプトタイルの色:",
-    "ru": "Цвет плиток основных промптов:"
+    "ru": "Цвет плиток основных промптов:",
+    "fr": "Couleur des tuiles du prompt principal :",
+    "hi": "मुख्य प्रॉम्प्ट टाइलों का रंग:",
+    "ar": "لون بلاطات الموجه الرئيسي:",
+    "bn": "প্রধান প্রম্পট টাইলের রং:",
+    "pt": "Cor dos blocos do prompt principal:"
   },
   "Farbe Versionsprompt-Kacheln:": {
     "de": "Farbe Versionsprompt-Kacheln:",
@@ -1045,7 +1695,12 @@
     "es": "Color de mosaicos de versión:",
     "zh": "版本提示磁贴颜色：",
     "ja": "バージョンタイルの色:",
-    "ru": "Цвет плиток версий:"
+    "ru": "Цвет плиток версий:",
+    "fr": "Couleur des tuiles des prompts de version :",
+    "hi": "संस्करण प्रॉम्प्ट टाइलों का रंग:",
+    "ar": "لون بطاقات إصدارات الموجه:",
+    "bn": "সংস্করণ প্রম্পট টাইলের রং:",
+    "pt": "Cor dos blocos dos prompts de versão:"
   },
   "Kachelfarben zurücksetzen": {
     "de": "Kachelfarben zurücksetzen",
@@ -1053,7 +1708,12 @@
     "es": "Restablecer colores de mosaicos",
     "zh": "重置磁贴颜色",
     "ja": "タイルの色をリセット",
-    "ru": "Сбросить цвета плиток"
+    "ru": "Сбросить цвета плиток",
+    "fr": "Réinitialiser les couleurs des tuiles",
+    "hi": "टाइल के रंग रीसेट करें",
+    "ar": "إعادة تعيين ألوان البلاطات",
+    "bn": "টাইলের রং রিসেট করুন",
+    "pt": "Redefinir cores dos blocos"
   },
   "Setzt die Kachelfarben auf die Standardwerte zurück": {
     "de": "Setzt die Kachelfarben auf die Standardwerte zurück",
@@ -1061,7 +1721,12 @@
     "es": "Restablece los colores de los mosaicos a los valores predeterminados",
     "zh": "将磁贴颜色恢复为默认值",
     "ja": "タイルの色を既定値に戻します",
-    "ru": "Сбрасывает цвета плиток на значения по умолчанию"
+    "ru": "Сбрасывает цвета плиток на значения по умолчанию",
+    "fr": "Réinitialise les couleurs des tuiles aux valeurs par défaut",
+    "hi": "टाइल के रंग डिफ़ॉल्ट मानों पर रीसेट करें",
+    "ar": "أعِد تعيين ألوان البلاط إلى القيم الافتراضية",
+    "bn": "ডিফল্ট মানে টাইলের রঙ পুনরায় সেট করে",
+    "pt": "Redefine as cores dos blocos para os valores padrão"
   },
   "Standardfarben wiederherstellen": {
     "de": "Standardfarben wiederherstellen",
@@ -1069,7 +1734,12 @@
     "es": "Restaurar colores predeterminados",
     "zh": "恢复默认颜色",
     "ja": "既定の色に戻す",
-    "ru": "Восстановить цвета по умолчанию"
+    "ru": "Восстановить цвета по умолчанию",
+    "fr": "Rétablir les couleurs standard",
+    "hi": "मानक रंग पुनर्स्थापित करें",
+    "ar": "استعادة الألوان الافتراضية",
+    "bn": "ডিফল্ট রং পুনরুদ্ধার করুন",
+    "pt": "Restaurar cores padrão"
   },
   "Darstellungs-Einstellungen speichern und anwenden": {
     "de": "Darstellungs-Einstellungen speichern und anwenden",
@@ -1077,7 +1747,12 @@
     "es": "Guardar y aplicar la configuración de apariencia",
     "zh": "保存并应用外观设置",
     "ja": "表示設定を保存して適用",
-    "ru": "Сохранить и применить настройки оформления"
+    "ru": "Сохранить и применить настройки оформления",
+    "fr": "Enregistrer et appliquer les paramètres d'affichage",
+    "hi": "प्रदर्शन सेटिंग्स सहेजें और लागू करें",
+    "ar": "حفظ إعدادات العرض وتطبيقها",
+    "bn": "প্রদর্শন সেটিংস সংরক্ষণ ও প্রয়োগ করুন",
+    "pt": "Salvar e aplicar configurações de exibição"
   },
   "Einstellungen speichern (Enter)": {
     "de": "Einstellungen speichern (Enter)",
@@ -1085,7 +1760,12 @@
     "es": "Guardar configuración (Intro)",
     "zh": "保存设置（Enter）",
     "ja": "設定を保存 (Enter)",
-    "ru": "Сохранить настройки (Enter)"
+    "ru": "Сохранить настройки (Enter)",
+    "fr": "Enregistrer les paramètres (Entrée)",
+    "hi": "सेटिंग्स सहेजें (Enter)",
+    "ar": "حفظ الإعدادات (Enter)",
+    "bn": "সেটিংস সংরক্ষণ করুন (Enter)",
+    "pt": "Salvar configurações (Enter)"
   },
   "Änderungen verwerfen und Dialog schließen": {
     "de": "Änderungen verwerfen und Dialog schließen",
@@ -1093,7 +1773,12 @@
     "es": "Descartar cambios y cerrar el diálogo",
     "zh": "放弃更改并关闭对话框",
     "ja": "変更を破棄してダイアログを閉じる",
-    "ru": "Отменить изменения и закрыть диалог"
+    "ru": "Отменить изменения и закрыть диалог",
+    "fr": "Annuler les modifications et fermer la boîte de dialogue",
+    "hi": "परिवर्तन रद्द करें और संवाद बंद करें",
+    "ar": "تجاهل التغييرات وإغلاق مربع الحوار",
+    "bn": "ড্রাফট বাতিল করুন এবং ডায়ালগ বন্ধ করুন",
+    "pt": "Descartar alterações e fechar o diálogo"
   },
   "Abbrechen (Esc)": {
     "de": "Abbrechen (Esc)",
@@ -1101,7 +1786,12 @@
     "es": "Cancelar (Esc)",
     "zh": "取消（Esc）",
     "ja": "キャンセル (Esc)",
-    "ru": "Отмена (Esc)"
+    "ru": "Отмена (Esc)",
+    "fr": "Annuler (Échap)",
+    "hi": "रद्द करें (Esc)",
+    "ar": "إلغاء (Esc)",
+    "bn": "বাতিল করুন (Esc)",
+    "pt": "Cancelar (Esc)"
   },
   "Hauptprompts": {
     "de": "Hauptprompts",
@@ -1109,7 +1799,12 @@
     "es": "prompts principales",
     "zh": "主提示",
     "ja": "メインプロンプト",
-    "ru": "основных промптов"
+    "ru": "основных промптов",
+    "fr": "Prompts principaux",
+    "hi": "मुख्य प्रॉम्प्ट्स",
+    "ar": "الموجهات الرئيسية",
+    "bn": "প্রধান প্রম্পটগুলো",
+    "pt": "Prompts principais"
   },
   "Versionsprompts": {
     "de": "Versionsprompts",
@@ -1117,7 +1812,12 @@
     "es": "versiones",
     "zh": "版本提示",
     "ja": "バージョン",
-    "ru": "версий"
+    "ru": "версий",
+    "fr": "Prompts de version",
+    "hi": "संस्करण प्रॉम्प्ट",
+    "ar": "موجّهات الإصدارات",
+    "bn": "সংস্করণ প্রম্পট",
+    "pt": "Prompts de versão"
   },
   "Kachelfarbe für {kind} ändern (Aktuell: {color})": {
     "de": "Kachelfarbe für {kind} ändern (Aktuell: {color})",
@@ -1125,7 +1825,12 @@
     "es": "Cambiar color de mosaico para {kind} (actual: {color})",
     "zh": "更改{kind}的磁贴颜色（当前：{color}）",
     "ja": "{kind}のタイル色を変更 (現在: {color})",
-    "ru": "Изменить цвет плиток для {kind} (текущий: {color})"
+    "ru": "Изменить цвет плиток для {kind} (текущий: {color})",
+    "fr": "Changer la couleur de la tuile pour {kind} (actuelle : {color})",
+    "hi": "{kind} टाइल का रंग बदलें (वर्तमान: {color})",
+    "ar": "تغيير لون البلاطة لـ {kind} (الحالي: {color})",
+    "bn": "{kind} টাইলের রং বদলান (বর্তমান: {color})",
+    "pt": "Alterar a cor do bloco para {kind} (atual: {color})"
   },
   "Aktuelle Hex-Farbe für {kind}: {color}": {
     "de": "Aktuelle Hex-Farbe für {kind}: {color}",
@@ -1133,7 +1838,12 @@
     "es": "Color hex actual para {kind}: {color}",
     "zh": "{kind}的当前十六进制颜色：{color}",
     "ja": "{kind}の現在の16進カラー: {color}",
-    "ru": "Текущий hex-цвет для {kind}: {color}"
+    "ru": "Текущий hex-цвет для {kind}: {color}",
+    "fr": "Couleur hexadécimale actuelle pour {kind} : {color}",
+    "hi": "{kind} के लिए वर्तमान हेक्स रंग: {color}",
+    "ar": "اللون السداسي الحالي لـ {kind}: {color}",
+    "bn": "{kind}-এর বর্তমান হেক্স রং: {color}",
+    "pt": "Cor hexadecimal atual para {kind}: {color}"
   },
   "Kachelfarbe wählen": {
     "de": "Kachelfarbe wählen",
@@ -1141,7 +1851,12 @@
     "es": "Elegir color de mosaico",
     "zh": "选择磁贴颜色",
     "ja": "タイルの色を選択",
-    "ru": "Выбрать цвет плитки"
+    "ru": "Выбрать цвет плитки",
+    "fr": "Choisir la couleur de la tuile",
+    "hi": "टाइल का रंग चुनें",
+    "ar": "اختر لون البلاطة",
+    "bn": "টাইলের রং বেছে নিন",
+    "pt": "Escolher cor do bloco"
   },
   "Möchten Sie diese Kachel wirklich vom Board entfernen?": {
     "de": "Möchten Sie diese Kachel wirklich vom Board entfernen?",
@@ -1149,7 +1864,12 @@
     "es": "¿Desea realmente quitar este mosaico del tablero?",
     "zh": "确定要从看板中移除此磁贴吗？",
     "ja": "このタイルをボードから削除しますか？",
-    "ru": "Действительно удалить эту плитку с доски?"
+    "ru": "Действительно удалить эту плитку с доски?",
+    "fr": "Voulez-vous vraiment retirer cette tuile du tableau ?",
+    "hi": "क्या आप वाकई इस टाइल को बोर्ड से हटाना चाहते हैं?",
+    "ar": "هل تريد حقًا إزالة هذه البطاقة من اللوحة؟",
+    "bn": "আপনি কি সত্যিই এই টাইলটি বোর্ড থেকে সরাতে চান?",
+    "pt": "Tem certeza de que deseja remover este cartão do quadro?"
   },
   "Kachel entfernen": {
     "de": "Kachel entfernen",
@@ -1157,7 +1877,12 @@
     "es": "Quitar mosaico",
     "zh": "移除磁贴",
     "ja": "タイルを削除",
-    "ru": "Удалить плитку"
+    "ru": "Удалить плитку",
+    "fr": "Supprimer la tuile",
+    "hi": "टाइल हटाएँ",
+    "ar": "إزالة البطاقة",
+    "bn": "টাইল সরান",
+    "pt": "Remover bloco"
   },
   "Kachel-Typ: {badge}": {
     "de": "Kachel-Typ: {badge}",
@@ -1165,7 +1890,12 @@
     "es": "Tipo de mosaico: {badge}",
     "zh": "磁贴类型：{badge}",
     "ja": "タイルの種類: {badge}",
-    "ru": "Тип плитки: {badge}"
+    "ru": "Тип плитки: {badge}",
+    "fr": "Type de tuile : {badge}",
+    "hi": "टाइल का प्रकार: {badge}",
+    "ar": "نوع البلاطة: {badge}",
+    "bn": "টাইলের ধরন: {badge}",
+    "pt": "Tipo de bloco: {badge}"
   },
   "Kachel-Untertitel: {text}": {
     "de": "Kachel-Untertitel: {text}",
@@ -1173,7 +1903,12 @@
     "es": "Subtítulo del mosaico: {text}",
     "zh": "磁贴副标题：{text}",
     "ja": "タイルのサブタイトル: {text}",
-    "ru": "Подзаголовок плитки: {text}"
+    "ru": "Подзаголовок плитки: {text}",
+    "fr": "Sous-titre de tuile : {text}",
+    "hi": "टाइल का उपशीर्षक: {text}",
+    "ar": "العنوان الفرعي للبلاطة: {text}",
+    "bn": "টাইলের উপশিরোনাম: {text}",
+    "pt": "Subtítulo do bloco: {text}"
   },
   "Kachel-Vorschau: {text}": {
     "de": "Kachel-Vorschau: {text}",
@@ -1181,7 +1916,12 @@
     "es": "Vista previa del mosaico: {text}",
     "zh": "磁贴预览：{text}",
     "ja": "タイルのプレビュー: {text}",
-    "ru": "Предпросмотр плитки: {text}"
+    "ru": "Предпросмотр плитки: {text}",
+    "fr": "Aperçu de la tuile : {text}",
+    "hi": "कार्ड पूर्वावलोकन: {text}",
+    "ar": "معاينة البلاطة: {text}",
+    "bn": "টাইলের পূর্বরূপ: {text}",
+    "pt": "Pré-visualização do bloco: {text}"
   },
   "Prompt-Kachel: {title}": {
     "de": "Prompt-Kachel: {title}",
@@ -1189,7 +1929,12 @@
     "es": "Mosaico de prompt: {title}",
     "zh": "提示磁贴：{title}",
     "ja": "プロンプトタイル: {title}",
-    "ru": "Плитка промпта: {title}"
+    "ru": "Плитка промпта: {title}",
+    "fr": "Tuile d'invite : {title}",
+    "hi": "प्रॉम्प्ट टाइल: {title}",
+    "ar": "بطاقة الموجّه: {title}",
+    "bn": "প্রম্পট টাইল: {title}",
+    "pt": "Bloco de prompt: {title}"
   },
   "Umbenennen": {
     "de": "Umbenennen",
@@ -1197,7 +1942,12 @@
     "es": "Renombrar",
     "zh": "重命名",
     "ja": "名前を変更",
-    "ru": "Переименовать"
+    "ru": "Переименовать",
+    "fr": "Renommer",
+    "hi": "नाम बदलें",
+    "ar": "إعادة التسمية",
+    "bn": "নাম পরিবর্তন করুন",
+    "pt": "Renomear"
   },
   "Schriftart": {
     "de": "Schriftart",
@@ -1205,7 +1955,12 @@
     "es": "Fuente",
     "zh": "字体",
     "ja": "フォント",
-    "ru": "Шрифт"
+    "ru": "Шрифт",
+    "fr": "Police de caractères",
+    "hi": "फ़ॉन्ट",
+    "ar": "الخط",
+    "bn": "ফন্ট",
+    "pt": "Fonte"
   },
   "Aktives Board": {
     "de": "Aktives Board",
@@ -1213,7 +1968,12 @@
     "es": "Tablero activo",
     "zh": "当前看板",
     "ja": "アクティブなボード",
-    "ru": "Активная доска"
+    "ru": "Активная доска",
+    "fr": "Tableau actif",
+    "hi": "सक्रिय बोर्ड",
+    "ar": "اللوحة النشطة",
+    "bn": "সক্রিয় বোর্ড",
+    "pt": "Quadro ativo"
   },
   "Wählt das aktive Prompt-Board aus": {
     "de": "Wählt das aktive Prompt-Board aus",
@@ -1221,7 +1981,12 @@
     "es": "Selecciona el tablero de prompts activo",
     "zh": "选择当前提示看板",
     "ja": "アクティブなプロンプトボードを選択します",
-    "ru": "Выбирает активную доску промптов"
+    "ru": "Выбирает активную доску промптов",
+    "fr": "Sélectionne le tableau de prompts actif",
+    "hi": "सक्रिय प्रॉम्प्ट बोर्ड चुनता है",
+    "ar": "يحدّد لوحة الموجّهات النشطة",
+    "bn": "সক্রিয় প্রম্পট বোর্ড নির্বাচন করে",
+    "pt": "Seleciona o quadro de prompts ativo"
   },
   "Erstellt ein neues leeres Prompt-Board": {
     "de": "Erstellt ein neues leeres Prompt-Board",
@@ -1229,7 +1994,12 @@
     "es": "Crea un nuevo tablero de prompts vacío",
     "zh": "创建一个新的空提示看板",
     "ja": "新しい空のプロンプトボードを作成します",
-    "ru": "Создаёт новую пустую доску промптов"
+    "ru": "Создаёт новую пустую доску промптов",
+    "fr": "Crée un nouveau tableau de prompts vide",
+    "hi": "नया खाली प्रॉम्प्ट बोर्ड बनाता है",
+    "ar": "ينشئ لوحة تعليمات فارغة جديدة.",
+    "bn": "একটি নতুন ফাঁকা প্রম্পট বোর্ড তৈরি করে",
+    "pt": "Cria um novo quadro de prompts vazio"
   },
   "Benennt das aktuell ausgewählte Prompt-Board um": {
     "de": "Benennt das aktuell ausgewählte Prompt-Board um",
@@ -1237,7 +2007,12 @@
     "es": "Renombra el tablero de prompts seleccionado",
     "zh": "重命名当前选中的提示看板",
     "ja": "選択中のプロンプトボードの名前を変更します",
-    "ru": "Переименовывает выбранную доску промптов"
+    "ru": "Переименовывает выбранную доску промптов",
+    "fr": "Renomme le tableau de prompts actuellement sélectionné",
+    "hi": "मौजूदा चयनित प्रॉम्प्ट बोर्ड का नाम बदलता है",
+    "ar": "يعيد تسمية لوحة الموجه المحددة حاليًا",
+    "bn": "বর্তমানে নির্বাচিত প্রম্পট বোর্ডের নাম পরিবর্তন করে",
+    "pt": "Renomeia o quadro de prompts atualmente selecionado"
   },
   "Löscht das aktuell ausgewählte Prompt-Board": {
     "de": "Löscht das aktuell ausgewählte Prompt-Board",
@@ -1245,7 +2020,12 @@
     "es": "Elimina el tablero de prompts seleccionado",
     "zh": "删除当前选中的提示看板",
     "ja": "選択中のプロンプトボードを削除します",
-    "ru": "Удаляет выбранную доску промптов"
+    "ru": "Удаляет выбранную доску промптов",
+    "fr": "Supprime le tableau de prompts actuellement sélectionné",
+    "hi": "चयनित प्रॉम्प्ट-बोर्ड हटाता है",
+    "ar": "يحذف لوحة المطالبات المحددة حاليًا",
+    "bn": "আপনার বর্তমানে নির্বাচিত প্রম্পট-বোর্ডটি মুছে ফেলে",
+    "pt": "Exclui o painel de prompts atualmente selecionado"
   },
   "Öffnet die Schriftartenauswahl für Board-Kacheln": {
     "de": "Öffnet die Schriftartenauswahl für Board-Kacheln",
@@ -1253,7 +2033,12 @@
     "es": "Abre la selección de fuente para los mosaicos",
     "zh": "打开看板磁贴的字体选择",
     "ja": "ボードタイルのフォント選択を開きます",
-    "ru": "Открывает выбор шрифта для плиток доски"
+    "ru": "Открывает выбор шрифта для плиток доски",
+    "fr": "Ouvre le sélecteur de police pour les tuiles de tableau",
+    "hi": "बोर्ड टाइलों के लिए फ़ॉन्ट चयन खोलता है।",
+    "ar": "افتح منتقي الخطوط لبلاطات اللوحة.",
+    "bn": "বোর্ড টাইলসের জন্য ফন্ট নির্বাচন খোলে",
+    "pt": "Abre a seleção de fontes para os blocos do quadro"
   },
   "Board-Arbeitsfläche": {
     "de": "Board-Arbeitsfläche",
@@ -1261,7 +2046,12 @@
     "es": "Área de trabajo del tablero",
     "zh": "看板工作区",
     "ja": "ボードのワークスペース",
-    "ru": "Рабочая область доски"
+    "ru": "Рабочая область доски",
+    "fr": "Espace de travail du tableau",
+    "hi": "बोर्ड कार्यक्षेत्र",
+    "ar": "مساحة عمل اللوحة",
+    "bn": "বোর্ডের কর্মক্ষেত্র",
+    "pt": "Área de trabalho do quadro"
   },
   "Bereich mit angehefteten Prompt-Kacheln": {
     "de": "Bereich mit angehefteten Prompt-Kacheln",
@@ -1269,7 +2059,12 @@
     "es": "Área con mosaicos de prompts fijados",
     "zh": "包含已固定提示磁贴的区域",
     "ja": "ピン留めされたプロンプトタイルの領域",
-    "ru": "Область с закреплёнными плитками промптов"
+    "ru": "Область с закреплёнными плитками промптов",
+    "fr": "Zone des cartes de prompt épinglées",
+    "hi": "पिन की गई प्रॉम्प्ट टाइलों का क्षेत्र",
+    "ar": "منطقة بطاقات الموجّهات المثبّتة",
+    "bn": "পিন করা প্রম্পট টাইলগুলোর এলাকা",
+    "pt": "Área com blocos de prompt fixados"
   },
   "Kachel-Raster": {
     "de": "Kachel-Raster",
@@ -1277,7 +2072,12 @@
     "es": "Cuadrícula de mosaicos",
     "zh": "磁贴网格",
     "ja": "タイルグリッド",
-    "ru": "Сетка плиток"
+    "ru": "Сетка плиток",
+    "fr": "Trame en mosaïque",
+    "hi": "टाइल ग्रिड",
+    "ar": "شبكة البلاط",
+    "bn": "টাইলের গ্রিড",
+    "pt": "Grade de blocos"
   },
   "Schriftart wählen": {
     "de": "Schriftart wählen",
@@ -1285,7 +2085,12 @@
     "es": "Elegir fuente",
     "zh": "选择字体",
     "ja": "フォントを選択",
-    "ru": "Выбрать шрифт"
+    "ru": "Выбрать шрифт",
+    "fr": "Choisir la police de caractères",
+    "hi": "फ़ॉन्ट चुनें",
+    "ar": "اختر نوع الخط",
+    "bn": "ফন্ট নির্বাচন করুন",
+    "pt": "Escolher fonte"
   },
   "Name:": {
     "de": "Name:",
@@ -1293,7 +2098,12 @@
     "es": "Nombre:",
     "zh": "名称：",
     "ja": "名前:",
-    "ru": "Название:"
+    "ru": "Название:",
+    "fr": "Nom :",
+    "hi": "नाम:",
+    "ar": "الاسم:",
+    "bn": "নাম:",
+    "pt": "Nome:"
   },
   "Kopieren": {
     "de": "Kopieren",
@@ -1301,7 +2111,12 @@
     "es": "Copiar",
     "zh": "复制",
     "ja": "コピー",
-    "ru": "Копировать"
+    "ru": "Копировать",
+    "fr": "Copier",
+    "hi": "कॉपी करें",
+    "ar": "نسخ",
+    "bn": "কপি করুন",
+    "pt": "Copiar"
   },
   "Auf Board verschieben": {
     "de": "Auf Board verschieben",
@@ -1309,7 +2124,12 @@
     "es": "Mover al tablero",
     "zh": "移动到看板",
     "ja": "ボードへ移動",
-    "ru": "Переместить на доску"
+    "ru": "Переместить на доску",
+    "fr": "Déplacer sur le tableau",
+    "hi": "बोर्ड पर ले जाएँ",
+    "ar": "نقل إلى اللوحة",
+    "bn": "বোর্ডে সরান",
+    "pt": "Mover para o quadro"
   },
   "Auf Board duplizieren": {
     "de": "Auf Board duplizieren",
@@ -1317,7 +2137,12 @@
     "es": "Duplicar en tablero",
     "zh": "复制到看板",
     "ja": "ボードへ複製",
-    "ru": "Дублировать на доску"
+    "ru": "Дублировать на доску",
+    "fr": "Dupliquer sur le tableau",
+    "hi": "बोर्ड पर डुप्लिकेट करें",
+    "ar": "تكرار على اللوحة",
+    "bn": "বোর্ডে নকল করুন",
+    "pt": "Duplicar no quadro"
   },
   "Neues Board …": {
     "de": "Neues Board …",
@@ -1325,7 +2150,12 @@
     "es": "Nuevo tablero …",
     "zh": "新建看板 …",
     "ja": "新しいボード …",
-    "ru": "Новая доска …"
+    "ru": "Новая доска …",
+    "fr": "Nouveau tableau …",
+    "hi": "नया बोर्ड …",
+    "ar": "لوحة جديدة …",
+    "bn": "নতুন বোর্ড …",
+    "pt": "Novo quadro …"
   },
   "(ohne Titel)": {
     "de": "(ohne Titel)",
@@ -1333,7 +2163,12 @@
     "es": "(sin título)",
     "zh": "（无标题）",
     "ja": "(無題)",
-    "ru": "(без названия)"
+    "ru": "(без названия)",
+    "fr": "(sans titre)",
+    "hi": "(शीर्षकरहित)",
+    "ar": "(بدون عنوان)",
+    "bn": "(শিরোনামহীন)",
+    "pt": "(sem título)"
   },
   "Kachelfarbe": {
     "de": "Kachelfarbe",
@@ -1341,7 +2176,12 @@
     "es": "Color del mosaico",
     "zh": "磁贴颜色",
     "ja": "タイルの色",
-    "ru": "Цвет плитки"
+    "ru": "Цвет плитки",
+    "fr": "Couleur de la tuile",
+    "hi": "टाइल का रंग",
+    "ar": "لون البلاط",
+    "bn": "টাইলের রং",
+    "pt": "Cor do bloco"
   },
   "Standardfarbe": {
     "de": "Standardfarbe",
@@ -1349,7 +2189,12 @@
     "es": "Color predeterminado",
     "zh": "默认颜色",
     "ja": "既定の色",
-    "ru": "Цвет по умолчанию"
+    "ru": "Цвет по умолчанию",
+    "fr": "Couleur standard",
+    "hi": "मानक रंग",
+    "ar": "اللون القياسي",
+    "bn": "ডিফল্ট রঙ",
+    "pt": "Cor padrão"
   },
   "Eigene Farbe …": {
     "de": "Eigene Farbe …",
@@ -1357,7 +2202,12 @@
     "es": "Color personalizado …",
     "zh": "自定义颜色 …",
     "ja": "カスタムカラー …",
-    "ru": "Свой цвет …"
+    "ru": "Свой цвет …",
+    "fr": "Couleur personnalisée …",
+    "hi": "कस्टम रंग …",
+    "ar": "لون مخصص …",
+    "bn": "নিজস্ব রঙ …",
+    "pt": "Cor personalizada …"
   },
   "Vom Board entfernen": {
     "de": "Vom Board entfernen",
@@ -1365,7 +2215,12 @@
     "es": "Quitar del tablero",
     "zh": "从看板移除",
     "ja": "ボードから削除",
-    "ru": "Убрать с доски"
+    "ru": "Убрать с доски",
+    "fr": "Retirer du tableau",
+    "hi": "बोर्ड से हटाएँ",
+    "ar": "إزالة من اللوحة",
+    "bn": "বোর্ড থেকে সরান",
+    "pt": "Remover do quadro"
   },
   "Board „{title}“ wirklich löschen?": {
     "de": "Board „{title}“ wirklich löschen?",
@@ -1373,7 +2228,12 @@
     "es": "¿Eliminar realmente el tablero «{title}»?",
     "zh": "确定删除看板“{title}”吗？",
     "ja": "ボード「{title}」を削除しますか？",
-    "ru": "Действительно удалить доску «{title}»?"
+    "ru": "Действительно удалить доску «{title}»?",
+    "fr": "Voulez-vous vraiment supprimer le tableau « {title} » ?",
+    "hi": "क्या बोर्ड „{title}“ को सचमुच हटाना है?",
+    "ar": "هل تريد حقًا حذف اللوحة „{title}“؟",
+    "bn": "Board „{title}“ কি সত্যিই মুছে ফেলতে চান?",
+    "pt": "Realmente excluir o board „{title}“?"
   },
   "Kachel auf Board „{title}“ verschoben.": {
     "de": "Kachel auf Board „{title}“ verschoben.",
@@ -1381,7 +2241,12 @@
     "es": "Mosaico movido al tablero «{title}».",
     "zh": "磁贴已移动到看板“{title}”。",
     "ja": "タイルをボード「{title}」へ移動しました。",
-    "ru": "Плитка перемещена на доску «{title}»."
+    "ru": "Плитка перемещена на доску «{title}».",
+    "fr": "Tuile déplacée sur le tableau « {title} ».",
+    "hi": "टाइल बोर्ड „{title}“ पर ले जाई गई।",
+    "ar": "تم نقل البطاقة إلى اللوحة „{title}“.",
+    "bn": "বোর্ড „{title}“-এ টাইলটি সরানো হয়েছে।",
+    "pt": "Bloco movido para o quadro “{title}”."
   },
   "Kachel auf Board „{title}“ dupliziert.": {
     "de": "Kachel auf Board „{title}“ dupliziert.",
@@ -1389,7 +2254,12 @@
     "es": "Mosaico duplicado en el tablero «{title}».",
     "zh": "磁贴已复制到看板“{title}”。",
     "ja": "タイルをボード「{title}」へ複製しました。",
-    "ru": "Плитка продублирована на доску «{title}»."
+    "ru": "Плитка продублирована на доску «{title}».",
+    "fr": "Tuile dupliquée sur le tableau « {title} ».",
+    "hi": "टाइल बोर्ड „{title}“ पर डुप्लिकेट की गई।",
+    "ar": "تم تكرار البطاقة على اللوحة „{title}“.",
+    "bn": "বোর্ড „{title}“-এ টাইলটি নকল করা হয়েছে।",
+    "pt": "Bloco duplicado no quadro “{title}”."
   },
   "Diese Kachel ist auf Board „{title}“ bereits vorhanden.": {
     "de": "Diese Kachel ist auf Board „{title}“ bereits vorhanden.",
@@ -1397,7 +2267,12 @@
     "es": "Este mosaico ya existe en el tablero «{title}».",
     "zh": "此磁贴已存在于看板“{title}”上。",
     "ja": "このタイルはボード「{title}」に既にあります。",
-    "ru": "Эта плитка уже есть на доске «{title}»."
+    "ru": "Эта плитка уже есть на доске «{title}».",
+    "fr": "Cette tuile est déjà présente sur le tableau « {title} ».",
+    "hi": "यह टाइल बोर्ड „{title}“ पर पहले से मौजूद है।",
+    "ar": "هذه البطاقة موجودة بالفعل على اللوحة „{title}“.",
+    "bn": "এই টাইলটি বোর্ড „{title}“-এ ইতিমধ্যেই উপস্থিত আছে।",
+    "pt": "Este bloco já existe no quadro “{title}”."
   },
   "Rot": {
     "de": "Rot",
@@ -1405,7 +2280,12 @@
     "es": "Rojo",
     "zh": "红色",
     "ja": "赤",
-    "ru": "Красный"
+    "ru": "Красный",
+    "fr": "Rouge",
+    "hi": "लाल",
+    "ar": "أحمر",
+    "bn": "লাল",
+    "pt": "Vermelho"
   },
   "Orange": {
     "de": "Orange",
@@ -1413,7 +2293,12 @@
     "es": "Naranja",
     "zh": "橙色",
     "ja": "オレンジ",
-    "ru": "Оранжевый"
+    "ru": "Оранжевый",
+    "fr": "Orange",
+    "hi": "नारंगी",
+    "ar": "برتقالي",
+    "bn": "কমলা",
+    "pt": "Laranja"
   },
   "Gelb": {
     "de": "Gelb",
@@ -1421,7 +2306,12 @@
     "es": "Amarillo",
     "zh": "黄色",
     "ja": "黄",
-    "ru": "Жёлтый"
+    "ru": "Жёлтый",
+    "fr": "Jaune",
+    "hi": "पीला",
+    "ar": "أصفر",
+    "bn": "হলুদ",
+    "pt": "Amarelo"
   },
   "Grün": {
     "de": "Grün",
@@ -1429,7 +2319,12 @@
     "es": "Verde",
     "zh": "绿色",
     "ja": "緑",
-    "ru": "Зелёный"
+    "ru": "Зелёный",
+    "fr": "Vert",
+    "hi": "हरा",
+    "ar": "أخضر",
+    "bn": "সবুজ",
+    "pt": "Verde"
   },
   "Türkis": {
     "de": "Türkis",
@@ -1437,7 +2332,12 @@
     "es": "Turquesa",
     "zh": "青绿色",
     "ja": "ターコイズ",
-    "ru": "Бирюзовый"
+    "ru": "Бирюзовый",
+    "fr": "Turquoise",
+    "hi": "फ़िरोज़ी",
+    "ar": "تركواز",
+    "bn": "ফিরোজা",
+    "pt": "Turquesa"
   },
   "Blau": {
     "de": "Blau",
@@ -1445,7 +2345,12 @@
     "es": "Azul",
     "zh": "蓝色",
     "ja": "青",
-    "ru": "Синий"
+    "ru": "Синий",
+    "fr": "Bleu",
+    "hi": "नीला",
+    "ar": "الأزرق",
+    "bn": "নীল",
+    "pt": "Azul"
   },
   "Violett": {
     "de": "Violett",
@@ -1453,7 +2358,12 @@
     "es": "Violeta",
     "zh": "紫色",
     "ja": "紫",
-    "ru": "Фиолетовый"
+    "ru": "Фиолетовый",
+    "fr": "Violet",
+    "hi": "बैंगनी",
+    "ar": "بنفسجي",
+    "bn": "বেগুনি",
+    "pt": "Violeta"
   },
   "Rosa": {
     "de": "Rosa",
@@ -1461,7 +2371,12 @@
     "es": "Rosa",
     "zh": "粉色",
     "ja": "ピンク",
-    "ru": "Розовый"
+    "ru": "Розовый",
+    "fr": "Rose",
+    "hi": "गुलाबी",
+    "ar": "وردي",
+    "bn": "গোলাপি",
+    "pt": "Rosa"
   },
   "Grau": {
     "de": "Grau",
@@ -1469,7 +2384,12 @@
     "es": "Gris",
     "zh": "灰色",
     "ja": "グレー",
-    "ru": "Серый"
+    "ru": "Серый",
+    "fr": "Gris",
+    "hi": "ग्रे",
+    "ar": "رمادي",
+    "bn": "ধূসর",
+    "pt": "Cinzento"
   },
   "Kopiert 📋": {
     "de": "Kopiert 📋",
@@ -1477,7 +2397,12 @@
     "es": "Copiado 📋",
     "zh": "已复制 📋",
     "ja": "コピーしました 📋",
-    "ru": "Скопировано 📋"
+    "ru": "Скопировано 📋",
+    "fr": "Copié 📋",
+    "hi": "कॉपी करें 📋",
+    "ar": "نسخ 📋",
+    "bn": "কপি করুন 📋",
+    "pt": "Copiado 📋"
   },
   "Kopiermodus": {
     "de": "Kopiermodus",
@@ -1485,7 +2410,12 @@
     "es": "Modo de copia",
     "zh": "复制模式",
     "ja": "コピーモード",
-    "ru": "Режим копирования"
+    "ru": "Режим копирования",
+    "fr": "Mode copie",
+    "hi": "कॉपी मोड",
+    "ar": "وضع النسخ",
+    "bn": "কপি মোড",
+    "pt": "Modo de cópia"
   },
   "Kopiermodus:": {
     "de": "Kopiermodus:",
@@ -1493,7 +2423,12 @@
     "es": "Modo de copia:",
     "zh": "复制模式：",
     "ja": "コピーモード:",
-    "ru": "Режим копирования:"
+    "ru": "Режим копирования:",
+    "fr": "Mode de copie :",
+    "hi": "कॉपी मोड:",
+    "ar": "وضع النسخ:",
+    "bn": "কপি মোড:",
+    "pt": "Modo de cópia:"
   },
   "Auswahl, welche Inhalte beim Kopieren in die Zwischenablage übernommen werden": {
     "de": "Auswahl, welche Inhalte beim Kopieren in die Zwischenablage übernommen werden",
@@ -1501,7 +2436,12 @@
     "es": "Selecciona qué contenido se copia al portapapeles",
     "zh": "选择复制到剪贴板的内容",
     "ja": "クリップボードにコピーする内容を選択します",
-    "ru": "Выбор содержимого, копируемого в буфер обмена"
+    "ru": "Выбор содержимого, копируемого в буфер обмена",
+    "fr": "Sélection des contenus à inclure lors de la copie dans le presse-papiers",
+    "hi": "क्लिपबोर्ड पर कॉपी की जाने वाली सामग्री चुनें",
+    "ar": "اختيار المحتوى الذي يُنسخ إلى الحافظة",
+    "bn": "ক্লিপবোর্ডে কপি করার সময় কোন কন্টেন্টগুলো অন্তর্ভুক্ত হবে তার নির্বাচন",
+    "pt": "Seleção de quais conteúdos serão incluídos ao copiar para a área de transferência"
   },
   "Metadaten (Tags) hinzufügen": {
     "de": "Metadaten (Tags) hinzufügen",
@@ -1509,7 +2449,12 @@
     "es": "Añadir metadatos (etiquetas)",
     "zh": "添加元数据（标签）",
     "ja": "メタデータ（タグ）を追加",
-    "ru": "Добавить метаданные (теги)"
+    "ru": "Добавить метаданные (теги)",
+    "fr": "Ajouter des métadonnées (tags)",
+    "hi": "मेटाडेटा (टैग) जोड़ें",
+    "ar": "إضافة البيانات الوصفية (الوسوم)",
+    "bn": "মেটাডেটা (ট্যাগ) যোগ করুন",
+    "pt": "Adicionar metadados (tags)"
   },
   "Metadaten hinzufügen": {
     "de": "Metadaten hinzufügen",
@@ -1517,7 +2462,12 @@
     "es": "Añadir metadatos",
     "zh": "添加元数据",
     "ja": "メタデータを追加",
-    "ru": "Добавить метаданные"
+    "ru": "Добавить метаданные",
+    "fr": "Ajouter des métadonnées",
+    "hi": "मेटाडेटा जोड़ें",
+    "ar": "إضافة البيانات الوصفية",
+    "bn": "মেটাডেটা যোগ করুন",
+    "pt": "Adicionar metadados"
   },
   "Schlagwörter und Metadaten an den kopierten Text anfügen": {
     "de": "Schlagwörter und Metadaten an den kopierten Text anfügen",
@@ -1525,7 +2475,12 @@
     "es": "Añadir etiquetas y metadatos al texto copiado",
     "zh": "在复制的文本后附加标签和元数据",
     "ja": "コピーしたテキストにタグとメタデータを付加",
-    "ru": "Добавлять теги и метаданные к скопированному тексту"
+    "ru": "Добавлять теги и метаданные к скопированному тексту",
+    "fr": "Ajouter des mots-clés et des métadonnées au texte copié",
+    "hi": "कॉपी किए गए पाठ में कीवर्ड और मेटाडेटा जोड़ें",
+    "ar": "إلحاق الكلمات المفتاحية والبيانات الوصفية بالنص المنسوخ",
+    "bn": "কপি করা টেক্সটে কীওয়ার্ড ও মেটাডেটা যুক্ত করুন",
+    "pt": "Anexar palavras-chave e metadados ao texto copiado"
   },
   "Kopier-Einstellungen speichern und Dialog schließen": {
     "de": "Kopier-Einstellungen speichern und Dialog schließen",
@@ -1533,7 +2488,12 @@
     "es": "Guardar configuración de copia y cerrar el diálogo",
     "zh": "保存复制设置并关闭对话框",
     "ja": "コピー設定を保存してダイアログを閉じる",
-    "ru": "Сохранить настройки копирования и закрыть диалог"
+    "ru": "Сохранить настройки копирования и закрыть диалог",
+    "fr": "Enregistrer les paramètres de copie et fermer la boîte de dialogue",
+    "hi": "कॉपी सेटिंग्स सहेजें और संवाद बंद करें",
+    "ar": "حفظ إعدادات النسخ وإغلاق مربع الحوار",
+    "bn": "কপি-সেটিংস সংরক্ষণ করুন এবং ডায়ালগ বন্ধ করুন",
+    "pt": "Salvar as configurações de cópia e fechar a caixa de diálogo"
   },
   "Nur Titel": {
     "de": "Nur Titel",
@@ -1541,7 +2501,12 @@
     "es": "Solo título",
     "zh": "仅标题",
     "ja": "タイトルのみ",
-    "ru": "Только заголовок"
+    "ru": "Только заголовок",
+    "fr": "Seulement le titre",
+    "hi": "केवल शीर्षक",
+    "ar": "نص العنوان فقط",
+    "bn": "শুধু শিরোনাম",
+    "pt": "Apenas título"
   },
   "Nur Ergebnis": {
     "de": "Nur Ergebnis",
@@ -1549,7 +2514,12 @@
     "es": "Solo resultado",
     "zh": "仅结果",
     "ja": "結果のみ",
-    "ru": "Только результат"
+    "ru": "Только результат",
+    "fr": "Résultat uniquement",
+    "hi": "केवल परिणाम",
+    "ar": "نتيجة فقط",
+    "bn": "শুধু ফলাফল",
+    "pt": "Apenas resultado"
   },
   "Alles": {
     "de": "Alles",
@@ -1557,7 +2527,12 @@
     "es": "Todo",
     "zh": "全部",
     "ja": "すべて",
-    "ru": "Всё"
+    "ru": "Всё",
+    "fr": "Tout",
+    "hi": "सभी",
+    "ar": "الكل",
+    "bn": "সব",
+    "pt": "Tudo"
   },
   "Titel": {
     "de": "Titel",
@@ -1565,7 +2540,12 @@
     "es": "Título",
     "zh": "标题",
     "ja": "タイトル",
-    "ru": "Заголовок"
+    "ru": "Заголовок",
+    "fr": "Titre",
+    "hi": "शीर्षक",
+    "ar": "العنوان",
+    "bn": "শিরোনাম",
+    "pt": "Título"
   },
   "Zweck": {
     "de": "Zweck",
@@ -1573,7 +2553,12 @@
     "es": "Propósito",
     "zh": "用途",
     "ja": "目的",
-    "ru": "Назначение"
+    "ru": "Назначение",
+    "fr": "Objectif",
+    "hi": "उद्देश्य",
+    "ar": "الغرض",
+    "bn": "উদ্দেশ্য",
+    "pt": "Finalidade"
   },
   "Tags": {
     "de": "Tags",
@@ -1581,7 +2566,12 @@
     "es": "Etiquetas",
     "zh": "标签",
     "ja": "タグ",
-    "ru": "Теги"
+    "ru": "Теги",
+    "fr": "Étiquettes",
+    "hi": "टैग",
+    "ar": "الوسوم",
+    "bn": "ট্যাগ",
+    "pt": "Tags"
   },
   "Erstellt": {
     "de": "Erstellt",
@@ -1589,7 +2579,12 @@
     "es": "Creado",
     "zh": "创建时间",
     "ja": "作成日",
-    "ru": "Создано"
+    "ru": "Создано",
+    "fr": "Créé",
+    "hi": "बनाया गया",
+    "ar": "أُنشئ",
+    "bn": "তৈরি হয়েছে",
+    "pt": "Criado"
   },
   "Aktualisiert": {
     "de": "Aktualisiert",
@@ -1597,7 +2592,12 @@
     "es": "Actualizado",
     "zh": "更新时间",
     "ja": "更新日",
-    "ru": "Обновлено"
+    "ru": "Обновлено",
+    "fr": "Mis à jour",
+    "hi": "अद्यतन किया गया",
+    "ar": "محدَّث",
+    "bn": "আপডেট করা হয়েছে",
+    "pt": "Atualizado"
   },
   "Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung": {
     "de": "Hierarchische Übersicht aller Prompts und Versionen mit Tastaturbedienung",
@@ -1605,7 +2605,12 @@
     "es": "Vista jerárquica de todos los prompts y versiones con soporte de teclado",
     "zh": "所有提示和版本的层级概览，支持键盘操作",
     "ja": "全プロンプトとバージョンの階層表示（キーボード操作対応）",
-    "ru": "Иерархический обзор всех промптов и версий с управлением с клавиатуры"
+    "ru": "Иерархический обзор всех промптов и версий с управлением с клавиатуры",
+    "fr": "Vue hiérarchique de tous les prompts et de leurs versions, avec navigation au clavier",
+    "hi": "प्रॉम्प्ट और संस्करणों का कीबोर्ड संचालन के साथ पदानुक्रमित अवलोकन",
+    "ar": "عرض هرمي لجميع المطالبات والإصدارات مع التنقل بلوحة المفاتيح",
+    "bn": "কীবোর্ড দিয়ে পরিচালনাযোগ্য সব প্রম্পট ও সংস্করণের স্তরভিত্তিক সারসংক্ষেপ",
+    "pt": "Visão hierárquica de todos os prompts e versões, com operação por teclado"
   },
   "Alle Tags": {
     "de": "Alle Tags",
@@ -1613,7 +2618,12 @@
     "es": "Todas las etiquetas",
     "zh": "所有标签",
     "ja": "すべてのタグ",
-    "ru": "Все теги"
+    "ru": "Все теги",
+    "fr": "Toutes les balises",
+    "hi": "सभी टैग",
+    "ar": "جميع العلامات",
+    "bn": "সব ট্যাগ",
+    "pt": "Todas as tags"
   },
   "Suchbegriff": {
     "de": "Suchbegriff",
@@ -1621,7 +2631,12 @@
     "es": "Término de búsqueda",
     "zh": "搜索词",
     "ja": "検索語",
-    "ru": "Поисковый запрос"
+    "ru": "Поисковый запрос",
+    "fr": "Terme de recherche",
+    "hi": "खोज शब्द",
+    "ar": "بحث",
+    "bn": "খোঁজার শব্দ",
+    "pt": "Termo de pesquisa"
   },
   "Suchfeld für Volltextsuche in Titeln, Texten und Tags": {
     "de": "Suchfeld für Volltextsuche in Titeln, Texten und Tags",
@@ -1629,7 +2644,12 @@
     "es": "Búsqueda de texto completo en títulos, textos y etiquetas",
     "zh": "在标题、文本和标签中进行全文搜索",
     "ja": "タイトル・本文・タグの全文検索",
-    "ru": "Полнотекстовый поиск по заголовкам, текстам и тегам"
+    "ru": "Полнотекстовый поиск по заголовкам, текстам и тегам",
+    "fr": "Champ de recherche pour la recherche en texte intégral dans les titres, les textes et les étiquettes",
+    "hi": "ट्इटल, टेक्स्ट और टैग्स में पूर्ण-पाठ खोज के लिए खोज फ़ील्ड",
+    "ar": "حقل البحث للبحث النصي الكامل في العناوين والنصوص والوسوم",
+    "bn": "শিরোনাম, লেখা ও ট্যাগে পূর্ণ-পাঠ অনুসন্ধানের ক্ষেত্র",
+    "pt": "Campo de pesquisa para busca de texto completo em títulos, textos e tags"
   },
   "Tag-Filter": {
     "de": "Tag-Filter",
@@ -1637,7 +2657,12 @@
     "es": "Filtro de etiquetas",
     "zh": "标签筛选",
     "ja": "タグフィルター",
-    "ru": "Фильтр по тегам"
+    "ru": "Фильтр по тегам",
+    "fr": "Filtre de tags",
+    "hi": "टैग फ़िल्टर",
+    "ar": "تصفية الوسوم",
+    "bn": "ট্যাগ-ফিল্টার",
+    "pt": "Filtro de tags"
   },
   "Filtert Prompts nach ausgewählten Tags": {
     "de": "Filtert Prompts nach ausgewählten Tags",
@@ -1645,7 +2670,12 @@
     "es": "Filtra los prompts por la etiqueta seleccionada",
     "zh": "按所选标签筛选提示",
     "ja": "選択したタグでプロンプトを絞り込みます",
-    "ru": "Фильтрует промпты по выбранному тегу"
+    "ru": "Фильтрует промпты по выбранному тегу",
+    "fr": "Filtre les prompts selon les tags sélectionnés",
+    "hi": "चयनित टैग के आधार पर प्रॉम्प्ट फ़िल्टर करता है",
+    "ar": "تصفية المطالبات حسب الوسوم المحددة",
+    "bn": "নির্বাচিত ট্যাগ অনুযায়ী প্রম্পটগুলো ফিল্টার করে",
+    "pt": "Filtra prompts por tags selecionadas"
   },
   "Startdatum": {
     "de": "Startdatum",
@@ -1653,7 +2683,12 @@
     "es": "Fecha de inicio",
     "zh": "开始日期",
     "ja": "開始日",
-    "ru": "Дата начала"
+    "ru": "Дата начала",
+    "fr": "Date de début",
+    "hi": "प्रारंभ तिथि",
+    "ar": "تاريخ البدء",
+    "bn": "শুরুর তারিখ",
+    "pt": "Data de início"
   },
   "Filtert Prompts ab dem angegebenen Erstellungsdatum": {
     "de": "Filtert Prompts ab dem angegebenen Erstellungsdatum",
@@ -1661,7 +2696,12 @@
     "es": "Filtra los prompts desde la fecha indicada",
     "zh": "筛选指定日期之后的提示",
     "ja": "指定日以降のプロンプトを絞り込みます",
-    "ru": "Фильтрует промпты начиная с указанной даты"
+    "ru": "Фильтрует промпты начиная с указанной даты",
+    "fr": "Filtre les prompts à partir de la date de création indiquée",
+    "hi": "निर्दिष्ट निर्माण तिथि से आगे के प्रॉम्प्ट फ़िल्टर करता है",
+    "ar": "يُصفّي المطالبات (Prompts) بدءًا من تاريخ الإنشاء المحدد.",
+    "bn": "নির্দিষ্ট তৈরির তারিখ থেকে প্রম্পটগুলো ফিল্টার করে",
+    "pt": "Filtra prompts a partir da data de criação especificada"
   },
   "Enddatum": {
     "de": "Enddatum",
@@ -1669,7 +2709,12 @@
     "es": "Fecha de fin",
     "zh": "结束日期",
     "ja": "終了日",
-    "ru": "Дата окончания"
+    "ru": "Дата окончания",
+    "fr": "Date de fin",
+    "hi": "समाप्ति तिथि",
+    "ar": "تاريخ الانتهاء",
+    "bn": "শেষ তারিখ",
+    "pt": "Data de término"
   },
   "Filtert Prompts bis zum angegebenen Erstellungsdatum": {
     "de": "Filtert Prompts bis zum angegebenen Erstellungsdatum",
@@ -1677,7 +2722,12 @@
     "es": "Filtra los prompts hasta la fecha indicada",
     "zh": "筛选指定日期之前的提示",
     "ja": "指定日までのプロンプトを絞り込みます",
-    "ru": "Фильтрует промпты до указанной даты"
+    "ru": "Фильтрует промпты до указанной даты",
+    "fr": "Filtre les invites jusqu'à la date de création spécifiée",
+    "hi": "निर्दिष्ट निर्माण तिथि तक के प्रॉम्प्ट फ़िल्टर करता है",
+    "ar": "يُصفّي المطالبات (Prompts) حتى تاريخ الإنشاء المحدد",
+    "bn": "তারিখ নির্ধারণের মাধ্যমে প্রম্পটগুলো ফিল্টার করে নির্দিষ্ট নির্মাণের তারিখ পর্যন্ত রাখে।",
+    "pt": "Filtra os prompts até a data de criação especificada"
   },
   "Setzt alle Such-, Tag- und Datumsfilter zurück": {
     "de": "Setzt alle Such-, Tag- und Datumsfilter zurück",
@@ -1685,7 +2735,12 @@
     "es": "Restablece todos los filtros de búsqueda, etiqueta y fecha",
     "zh": "重置所有搜索、标签和日期筛选",
     "ja": "検索・タグ・日付のフィルターをすべてリセットします",
-    "ru": "Сбрасывает все фильтры поиска, тегов и дат"
+    "ru": "Сбрасывает все фильтры поиска, тегов и дат",
+    "fr": "Réinitialise tous les filtres de recherche, d'étiquettes et de date",
+    "hi": "सभी खोज, टैग और दिनांक फ़िल्टर रीसेट करता है",
+    "ar": "يعيد تعيين جميع عوامل التصفية للبحث والوسوم والتاريخ.",
+    "bn": "সমস্ত অনুসন্ধান, ট্যাগ এবং তারিখ ফিল্টার পুনরায় সেট করে",
+    "pt": "Redefine todos os filtros de pesquisa, de tags e de data"
   },
   "Ohne Titel": {
     "de": "Ohne Titel",
@@ -1693,7 +2748,12 @@
     "es": "Sin título",
     "zh": "无标题",
     "ja": "無題",
-    "ru": "Без названия"
+    "ru": "Без названия",
+    "fr": "Sans titre",
+    "hi": "शीर्षकहीन",
+    "ar": "بلا عنوان",
+    "bn": "শিরোনামহীন",
+    "pt": "Sem título"
   },
   "Prompt kopieren: {title}": {
     "de": "Prompt kopieren: {title}",
@@ -1701,7 +2761,12 @@
     "es": "Copiar prompt: {title}",
     "zh": "复制提示：{title}",
     "ja": "プロンプトをコピー: {title}",
-    "ru": "Копировать промпт: {title}"
+    "ru": "Копировать промпт: {title}",
+    "fr": "Copier le prompt : {title}",
+    "hi": "प्रॉम्प्ट कॉपी करें: {title}",
+    "ar": "نسخ الموجه: {title}",
+    "bn": "প্রম্পট কপি করুন: {title}",
+    "pt": "Copiar prompt: {title}"
   },
   "Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage": {
     "de": "Kopiert den Prompt-Text entsprechend den Kopiermodi in die Zwischenablage",
@@ -1709,7 +2774,12 @@
     "es": "Copia el texto del prompt al portapapeles según el modo de copia",
     "zh": "按复制模式将提示文本复制到剪贴板",
     "ja": "コピーモードに従ってプロンプトをクリップボードにコピーします",
-    "ru": "Копирует текст промпта в буфер обмена согласно режиму копирования"
+    "ru": "Копирует текст промпта в буфер обмена согласно режиму копирования",
+    "fr": "Copie le texte de l'invite dans le presse-papiers selon les modes de copie",
+    "hi": "कॉपी मोड के अनुसार प्रॉम्प्ट टेक्स्ट को क्लिपबोर्ड पर कॉपी करता है",
+    "ar": "ينسخ نص الموجه إلى الحافظة وفقًا لأوضاع النسخ",
+    "bn": "কপি মোড অনুযায়ী প্রম্পটের লেখা ক্লিপবোর্ডে কপি করে",
+    "pt": "Copia o texto do prompt para a área de transferência de acordo com os modos de cópia"
   },
   "Version kopieren: {title}": {
     "de": "Version kopieren: {title}",
@@ -1717,7 +2787,12 @@
     "es": "Copiar versión: {title}",
     "zh": "复制版本：{title}",
     "ja": "バージョンをコピー: {title}",
-    "ru": "Копировать версию: {title}"
+    "ru": "Копировать версию: {title}",
+    "fr": "Copier la version : {title}",
+    "hi": "संस्करण की प्रतिलिपि बनाएँ: {title}",
+    "ar": "نسخ الإصدار: {title}",
+    "bn": "ভার্সন কপি করুন: {title}",
+    "pt": "Copiar versão: {title}"
   },
   "Kopiert diese Version in die Zwischenablage": {
     "de": "Kopiert diese Version in die Zwischenablage",
@@ -1725,7 +2800,12 @@
     "es": "Copia esta versión al portapapeles",
     "zh": "将此版本复制到剪贴板",
     "ja": "このバージョンをクリップボードにコピーします",
-    "ru": "Копирует эту версию в буфер обмена"
+    "ru": "Копирует эту версию в буфер обмена",
+    "fr": "Copier cette version dans le presse-papiers",
+    "hi": "इस संस्करण को क्लिपबोर्ड पर कॉपी करें",
+    "ar": "نسخ هذا الإصدار إلى الحافظة",
+    "bn": "এই সংস্করণটি ক্লিপবোর্ডে কপি করে",
+    "pt": "Copiar esta versão para a área de transferência"
   },
   "Neuen Prompt hinzufügen": {
     "de": "Neuen Prompt hinzufügen",
@@ -1733,7 +2813,12 @@
     "es": "Añadir nuevo prompt",
     "zh": "添加新提示",
     "ja": "新しいプロンプトを追加",
-    "ru": "Добавить новый промпт"
+    "ru": "Добавить новый промпт",
+    "fr": "Ajouter un nouveau prompt",
+    "hi": "नया प्रॉम्प्ट जोड़ें",
+    "ar": "إضافة مطالبة جديدة",
+    "bn": "নতুন প্রম্পট যোগ করুন",
+    "pt": "Adicionar novo prompt"
   },
   "Prompt kopieren": {
     "de": "Prompt kopieren",
@@ -1741,7 +2826,12 @@
     "es": "Copiar prompt",
     "zh": "复制提示",
     "ja": "プロンプトをコピー",
-    "ru": "Копировать промпт"
+    "ru": "Копировать промпт",
+    "fr": "Copier l'invite",
+    "hi": "प्रॉम्प्ट कॉपी करें",
+    "ar": "نسخ الموجه",
+    "bn": "প্রম্পট কপি করুন",
+    "pt": "Copiar prompt"
   },
   "Prompt inkl. Versionen kopieren": {
     "de": "Prompt inkl. Versionen kopieren",
@@ -1749,7 +2839,12 @@
     "es": "Copiar prompt con versiones",
     "zh": "复制提示（含版本）",
     "ja": "プロンプトをバージョンごとコピー",
-    "ru": "Копировать промпт с версиями"
+    "ru": "Копировать промпт с версиями",
+    "fr": "Copier le prompt avec ses versions",
+    "hi": "प्रॉम्प्ट और उसके संस्करण कॉपी करें",
+    "ar": "نسخ الموجه متضمنًا الإصدارات",
+    "bn": "প্রম্পট ও তার সংস্করণগুলো কপি করুন",
+    "pt": "Copiar prompt incl. versões"
   },
   "Version kopieren": {
     "de": "Version kopieren",
@@ -1757,7 +2852,12 @@
     "es": "Copiar versión",
     "zh": "复制版本",
     "ja": "バージョンをコピー",
-    "ru": "Копировать версию"
+    "ru": "Копировать версию",
+    "fr": "Copier la version",
+    "hi": "संस्करण कॉपी करें",
+    "ar": "نسخ الإصدار",
+    "bn": "সংস্করণ কপি করুন",
+    "pt": "Copiar versão"
   },
   "Neue Version anlegen": {
     "de": "Neue Version anlegen",
@@ -1765,7 +2865,12 @@
     "es": "Crear nueva versión",
     "zh": "新建版本",
     "ja": "新しいバージョンを作成",
-    "ru": "Создать новую версию"
+    "ru": "Создать новую версию",
+    "fr": "Créer une nouvelle version",
+    "hi": "नया संस्करण बनाएँ",
+    "ar": "إنشاء إصدار جديد",
+    "bn": "নতুন সংস্করণ তৈরি করুন",
+    "pt": "Criar nova versão"
   },
   "Auf Board heften": {
     "de": "Auf Board heften",
@@ -1773,7 +2878,12 @@
     "es": "Fijar en tablero",
     "zh": "固定到看板",
     "ja": "ボードにピン留め",
-    "ru": "Закрепить на доске"
+    "ru": "Закрепить на доске",
+    "fr": "Épingler sur le tableau",
+    "hi": "बोर्ड पर पिन करें",
+    "ar": "تثبيت على اللوحة",
+    "bn": "বোর্ডে পিন করুন",
+    "pt": "Fixar no quadro"
   },
   "Dieses Element ist auf dem Board bereits vorhanden.": {
     "de": "Dieses Element ist auf dem Board bereits vorhanden.",
@@ -1781,7 +2891,12 @@
     "es": "Este elemento ya está en el tablero.",
     "zh": "此项目已在看板上。",
     "ja": "この項目は既にボードにあります。",
-    "ru": "Этот элемент уже есть на доске."
+    "ru": "Этот элемент уже есть на доске.",
+    "fr": "Cet élément est déjà présent sur le tableau.",
+    "hi": "यह आइटम बोर्ड पर पहले से मौजूद है।",
+    "ar": "هذا العنصر موجود بالفعل على اللوحة.",
+    "bn": "এই আইটেমটি বোর্ডে ইতিমধ্যে আছে।",
+    "pt": "Este elemento já existe no quadro."
   },
   "Prompt exportieren (TXT)": {
     "de": "Prompt exportieren (TXT)",
@@ -1789,7 +2904,12 @@
     "es": "Exportar prompt (TXT)",
     "zh": "导出提示（TXT）",
     "ja": "プロンプトをエクスポート (TXT)",
-    "ru": "Экспорт промпта (TXT)"
+    "ru": "Экспорт промпта (TXT)",
+    "fr": "Exporter le prompt (TXT)",
+    "hi": "प्रॉम्प्ट निर्यात करें (TXT)",
+    "ar": "تصدير الموجه (TXT)",
+    "bn": "প্রম্পট TXT হিসেবে রপ্তানি করুন",
+    "pt": "Exportar prompt (TXT)"
   },
   "Prompt exportieren (PDF)": {
     "de": "Prompt exportieren (PDF)",
@@ -1797,7 +2917,12 @@
     "es": "Exportar prompt (PDF)",
     "zh": "导出提示（PDF）",
     "ja": "プロンプトをエクスポート (PDF)",
-    "ru": "Экспорт промпта (PDF)"
+    "ru": "Экспорт промпта (PDF)",
+    "fr": "Exporter le prompt (PDF)",
+    "hi": "प्रॉम्प्ट निर्यात करें (PDF)",
+    "ar": "تصدير الموجه (PDF)",
+    "bn": "প্রম্পট PDF হিসেবে রপ্তানি করুন",
+    "pt": "Exportar prompt (PDF)"
   },
   "Prompt+Versionen exportieren (TXT)": {
     "de": "Prompt+Versionen exportieren (TXT)",
@@ -1805,7 +2930,12 @@
     "es": "Exportar prompt + versiones (TXT)",
     "zh": "导出提示及版本（TXT）",
     "ja": "プロンプト＋バージョンをエクスポート (TXT)",
-    "ru": "Экспорт промпта с версиями (TXT)"
+    "ru": "Экспорт промпта с версиями (TXT)",
+    "fr": "Exporter le prompt et ses versions (TXT)",
+    "hi": "प्रॉम्प्ट और संस्करण TXT के रूप में निर्यात करें",
+    "ar": "تصدير الموجّه وإصداراته (TXT)",
+    "bn": "প্রম্পট ও সংস্করণ TXT হিসেবে রপ্তানি করুন",
+    "pt": "Exportar o prompt e suas versões (TXT)"
   },
   "Prompt+Versionen exportieren (PDF)": {
     "de": "Prompt+Versionen exportieren (PDF)",
@@ -1813,7 +2943,12 @@
     "es": "Exportar prompt + versiones (PDF)",
     "zh": "导出提示及版本（PDF）",
     "ja": "プロンプト＋バージョンをエクスポート (PDF)",
-    "ru": "Экспорт промпта с версиями (PDF)"
+    "ru": "Экспорт промпта с версиями (PDF)",
+    "fr": "Exporter le prompt et ses versions (PDF)",
+    "hi": "प्रॉम्प्ट और उसके संस्करण निर्यात करें (PDF)",
+    "ar": "تصدير الموجّه وإصداراته (PDF)",
+    "bn": "প্রম্পট ও সংস্করণ PDF হিসেবে রপ্তানি করুন",
+    "pt": "Exportar o prompt e suas versões (PDF)"
   },
   "Version exportieren (TXT)": {
     "de": "Version exportieren (TXT)",
@@ -1821,7 +2956,12 @@
     "es": "Exportar versión (TXT)",
     "zh": "导出版本（TXT）",
     "ja": "バージョンをエクスポート (TXT)",
-    "ru": "Экспорт версии (TXT)"
+    "ru": "Экспорт версии (TXT)",
+    "fr": "Exporter la version (TXT)",
+    "hi": "संस्करण निर्यात करें (TXT)",
+    "ar": "تصدير الإصدار (TXT)",
+    "bn": "সংস্করণ TXT হিসেবে রপ্তানি করুন",
+    "pt": "Exportar versão (TXT)"
   },
   "Version exportieren (PDF)": {
     "de": "Version exportieren (PDF)",
@@ -1829,7 +2969,12 @@
     "es": "Exportar versión (PDF)",
     "zh": "导出版本（PDF）",
     "ja": "バージョンをエクスポート (PDF)",
-    "ru": "Экспорт версии (PDF)"
+    "ru": "Экспорт версии (PDF)",
+    "fr": "Exporter la version (PDF)",
+    "hi": "PDF के रूप में संस्करण निर्यात करें",
+    "ar": "تصدير الإصدار (PDF)",
+    "bn": "PDF হিসেবে সংস্করণ রপ্তানি করুন",
+    "pt": "Exportar versão (PDF)"
   },
   "Export": {
     "de": "Export",
@@ -1837,7 +2982,12 @@
     "es": "Exportar",
     "zh": "导出",
     "ja": "エクスポート",
-    "ru": "Экспорт"
+    "ru": "Экспорт",
+    "fr": "Exporter",
+    "hi": "निर्यात",
+    "ar": "تصدير",
+    "bn": "রপ্তানি",
+    "pt": "Exportar"
   },
   "TXT speichern": {
     "de": "TXT speichern",
@@ -1845,7 +2995,12 @@
     "es": "Guardar TXT",
     "zh": "保存 TXT",
     "ja": "TXT を保存",
-    "ru": "Сохранить TXT"
+    "ru": "Сохранить TXT",
+    "fr": "Enregistrer au format TXT",
+    "hi": "TXT के रूप में सहेजें",
+    "ar": "حفظ كملف TXT",
+    "bn": "TXT সংরক্ষণ করুন",
+    "pt": "Salvar como TXT"
   },
   "Textdatei (*.txt)": {
     "de": "Textdatei (*.txt)",
@@ -1853,7 +3008,12 @@
     "es": "Archivo de texto (*.txt)",
     "zh": "文本文件 (*.txt)",
     "ja": "テキストファイル (*.txt)",
-    "ru": "Текстовый файл (*.txt)"
+    "ru": "Текстовый файл (*.txt)",
+    "fr": "Fichier texte (*.txt)",
+    "hi": "पाठ फ़ाइल (*.txt)",
+    "ar": "ملف نصي (*.txt)",
+    "bn": "ডেস্কটপ টেক্সট ফাইল (*.txt)",
+    "pt": "Arquivo de texto (*.txt)"
   },
   "PDF speichern": {
     "de": "PDF speichern",
@@ -1861,7 +3021,12 @@
     "es": "Guardar PDF",
     "zh": "保存 PDF",
     "ja": "PDF を保存",
-    "ru": "Сохранить PDF"
+    "ru": "Сохранить PDF",
+    "fr": "Enregistrer au format PDF",
+    "hi": "PDF सहेजें",
+    "ar": "حفظ كملف PDF",
+    "bn": "PDF সংরক্ষণ করুন",
+    "pt": "Salvar como PDF"
   },
   "PDF-Datei (*.pdf)": {
     "de": "PDF-Datei (*.pdf)",
@@ -1869,7 +3034,12 @@
     "es": "Archivo PDF (*.pdf)",
     "zh": "PDF 文件 (*.pdf)",
     "ja": "PDF ファイル (*.pdf)",
-    "ru": "PDF-файл (*.pdf)"
+    "ru": "PDF-файл (*.pdf)",
+    "fr": "Fichier PDF (*.pdf)",
+    "hi": "PDF-फ़ाइल (*.pdf)",
+    "ar": "ملف PDF (*.pdf)",
+    "bn": "PDF-ফাইল (*.pdf)",
+    "pt": "Arquivo PDF (*.pdf)"
   },
   "Prompt „{title}“ wirklich löschen?": {
     "de": "Prompt „{title}“ wirklich löschen?",
@@ -1877,7 +3047,12 @@
     "es": "¿Eliminar realmente el prompt «{title}»?",
     "zh": "确定删除提示“{title}”吗？",
     "ja": "プロンプト「{title}」を削除しますか？",
-    "ru": "Действительно удалить промпт «{title}»?"
+    "ru": "Действительно удалить промпт «{title}»?",
+    "fr": "Voulez-vous vraiment supprimer le prompt „{title}“ ?",
+    "hi": "{title} को वास्तव में हटाएँ?",
+    "ar": "هل تريد حقًا حذف الموجّه „{title}“؟",
+    "bn": "{title} প্রম্পটটি কি সত্যিই মুছে ফেলবেন?",
+    "pt": "Realmente excluir o prompt „{title}“?"
   },
   "Version „v{num} – {title}“ wirklich löschen?": {
     "de": "Version „v{num} – {title}“ wirklich löschen?",
@@ -1885,7 +3060,12 @@
     "es": "¿Eliminar realmente la versión «v{num} – {title}»?",
     "zh": "确定删除版本“v{num} – {title}”吗？",
     "ja": "バージョン「v{num} – {title}」を削除しますか？",
-    "ru": "Действительно удалить версию «v{num} – {title}»?"
+    "ru": "Действительно удалить версию «v{num} – {title}»?",
+    "fr": "Voulez-vous vraiment supprimer la version „v{num} – {title}“ ?",
+    "hi": "क्या संस्करण „v{num} – {title}“ को सचमुच हटाना है?",
+    "ar": "هل تريد حقًا حذف الإصدار „v{num} – {title}“؟",
+    "bn": "„v{num} – {title}“ সংস্করণটি কি সত্যিই মুছে ফেলবেন?",
+    "pt": "Versão „v{num} – {title}“ realmente excluir?"
   },
   "TXT-Export fehlgeschlagen:\n{error}": {
     "de": "TXT-Export fehlgeschlagen:\n{error}",
@@ -1893,7 +3073,12 @@
     "es": "Error al exportar TXT:\n{error}",
     "zh": "TXT 导出失败：\n{error}",
     "ja": "TXT のエクスポートに失敗しました:\n{error}",
-    "ru": "Ошибка экспорта TXT:\n{error}"
+    "ru": "Ошибка экспорта TXT:\n{error}",
+    "fr": "Échec de l’exportation TXT :\n{error}",
+    "hi": "TXT निर्यात विफल हुआ:\n{error}",
+    "ar": "فشل تصدير TXT:\n{error}",
+    "bn": "TXT-এক্সপোর্ট ব্যর্থ হয়েছে:\n{error}",
+    "pt": "Falha ao exportar TXT:\n{error}"
   },
   "Bundle-Export fehlgeschlagen:\n{error}": {
     "de": "Bundle-Export fehlgeschlagen:\n{error}",
@@ -1901,7 +3086,12 @@
     "es": "Error al exportar el paquete:\n{error}",
     "zh": "合集导出失败：\n{error}",
     "ja": "バンドルのエクスポートに失敗しました:\n{error}",
-    "ru": "Ошибка экспорта пакета:\n{error}"
+    "ru": "Ошибка экспорта пакета:\n{error}",
+    "fr": "Échec de l’exportation du lot :\n{error}",
+    "hi": "बंडल निर्यात विफल हुआ:\n{error}",
+    "ar": "فشل تصدير الحزمة:\n{error}",
+    "bn": "প্যাকেজ রপ্তানি ব্যর্থ হয়েছে:\n{error}",
+    "pt": "Falha ao exportar o pacote:\n{error}"
   },
   "PDF-Export fehlgeschlagen:\n{error}": {
     "de": "PDF-Export fehlgeschlagen:\n{error}",
@@ -1909,7 +3099,12 @@
     "es": "Error al exportar PDF:\n{error}",
     "zh": "PDF 导出失败：\n{error}",
     "ja": "PDF のエクスポートに失敗しました:\n{error}",
-    "ru": "Ошибка экспорта PDF:\n{error}"
+    "ru": "Ошибка экспорта PDF:\n{error}",
+    "fr": "Échec de l’exportation PDF :\n{error}",
+    "hi": "PDF निर्यात विफल हुआ:\n{error}",
+    "ar": "فشل تصدير PDF:\n{error}",
+    "bn": "PDF রপ্তানি ব্যর্থ হয়েছে:\n{error}",
+    "pt": "Falha ao exportar PDF:\n{error}"
   },
   "JSON-Export fehlgeschlagen:\n{error}": {
     "de": "JSON-Export fehlgeschlagen:\n{error}",
@@ -1917,7 +3112,12 @@
     "es": "Error al exportar JSON:\n{error}",
     "zh": "JSON 导出失败：\n{error}",
     "ja": "JSON のエクスポートに失敗しました:\n{error}",
-    "ru": "Ошибка экспорта JSON:\n{error}"
+    "ru": "Ошибка экспорта JSON:\n{error}",
+    "fr": "Échec de l’exportation JSON :\n{error}",
+    "hi": "JSON निर्यात विफल हुआ:\n{error}",
+    "ar": "فشل تصدير JSON:\n{error}",
+    "bn": "JSON রপ্তানি ব্যর্থ হয়েছে:\n{error}",
+    "pt": "Falha ao exportar JSON:\n{error}"
   },
   "Boards-Bereich": {
     "de": "Boards-Bereich",
@@ -1925,7 +3125,12 @@
     "es": "Área de tableros",
     "zh": "看板区域",
     "ja": "ボード領域",
-    "ru": "Область досок"
+    "ru": "Область досок",
+    "fr": "Section des tableaux",
+    "hi": "बोर्ड क्षेत्र",
+    "ar": "منطقة اللوحات",
+    "bn": "বোর্ডের এলাকা",
+    "pt": "Área de Quadros"
   },
   "Bereich für Kachel-Boards und Arbeitsflächen": {
     "de": "Bereich für Kachel-Boards und Arbeitsflächen",
@@ -1933,7 +3138,12 @@
     "es": "Área para tableros de mosaicos y espacios de trabajo",
     "zh": "磁贴看板和工作区区域",
     "ja": "タイルボードとワークスペースの領域",
-    "ru": "Область для досок с плитками и рабочих пространств"
+    "ru": "Область для досок с плитками и рабочих пространств",
+    "fr": "Zone pour les tableaux de tuiles et les espaces de travail",
+    "hi": "टाइल बोर्ड और कार्यक्षेत्र के लिए क्षेत्र",
+    "ar": "منطقة للوحات البلاطات ومساحات العمل",
+    "bn": "টাইল বোর্ড ও কর্মক্ষেত্রের এলাকা",
+    "pt": "Área para quadros de blocos e superfícies de trabalho"
   },
   "Statusleiste": {
     "de": "Statusleiste",
@@ -1941,7 +3151,12 @@
     "es": "Barra de estado",
     "zh": "状态栏",
     "ja": "ステータスバー",
-    "ru": "Строка состояния"
+    "ru": "Строка состояния",
+    "fr": "Barre d'état",
+    "hi": "स्थिति पट्टी",
+    "ar": "شريط الحالة",
+    "bn": "স্ট্যাটাস বার",
+    "pt": "Barra de status"
   },
   "Zeigt Statusmeldungen und Tastenkürzelhinweise an": {
     "de": "Zeigt Statusmeldungen und Tastenkürzelhinweise an",
@@ -1949,7 +3164,12 @@
     "es": "Muestra mensajes de estado y atajos de teclado",
     "zh": "显示状态消息和快捷键提示",
     "ja": "ステータスメッセージとショートカットのヒントを表示します",
-    "ru": "Показывает сообщения о состоянии и подсказки по сочетаниям клавиш"
+    "ru": "Показывает сообщения о состоянии и подсказки по сочетаниям клавиш",
+    "fr": "Affiche les messages d'état et les indications de raccourcis clavier",
+    "hi": "स्थिति संदेश और कीबोर्ड शॉर्टकट संकेत दिखाता है",
+    "ar": "يعرض رسائل الحالة وتلميحات اختصارات لوحة المفاتيح.",
+    "bn": "স্ট্যাটাস বার্তা ও কীবোর্ড শর্টকাটের নির্দেশনা দেখায়",
+    "pt": "Exibe mensagens de status e dicas de atalhos de teclado"
   },
   "• Doppelklick auf Liste: Bearbeiten\n• Drag & Drop auf Board rechts: Prompt anheften\n• Rechtsklick: Kontextmenü für Export/Löschen\n• Rechtsklick auf Kachel: auf anderes Board verschieben/duplizieren, Kachelfarbe": {
     "de": "• Doppelklick auf Liste: Bearbeiten\n• Drag & Drop auf Board rechts: Prompt anheften\n• Rechtsklick: Kontextmenü für Export/Löschen\n• Rechtsklick auf Kachel: auf anderes Board verschieben/duplizieren, Kachelfarbe",
@@ -1957,7 +3177,12 @@
     "es": "• Doble clic en la lista: editar\n• Arrastrar y soltar en el tablero de la derecha: fijar prompt\n• Clic derecho: menú contextual para exportar/eliminar\n• Clic derecho en un mosaico: mover/duplicar a otro tablero, color del mosaico",
     "zh": "• 在列表中双击：编辑\n• 拖放到右侧看板：固定提示\n• 右键：导出/删除的上下文菜单\n• 右键单击磁贴：移动/复制到其他看板、磁贴颜色",
     "ja": "• リストをダブルクリック: 編集\n• 右側のボードへドラッグ＆ドロップ: プロンプトをピン留め\n• 右クリック: エクスポート／削除のコンテキストメニュー\n• タイルを右クリック: 別のボードへ移動／複製、タイルの色",
-    "ru": "• Двойной щелчок в списке: редактировать\n• Перетащить на доску справа: закрепить промпт\n• Правый щелчок: контекстное меню экспорта/удаления\n• Правый щелчок по плитке: переместить/дублировать на другую доску, цвет плитки"
+    "ru": "• Двойной щелчок в списке: редактировать\n• Перетащить на доску справа: закрепить промпт\n• Правый щелчок: контекстное меню экспорта/удаления\n• Правый щелчок по плитке: переместить/дублировать на другую доску, цвет плитки",
+    "fr": "• Double-cliquez sur la liste : modifier\n• Glissez-déposez sur le tableau à droite : épingler le prompt\n• Clic droit : menu contextuel pour exporter/supprimer\n• Clic droit sur une tuile : déplacer ou dupliquer sur un autre tableau, changer sa couleur",
+    "hi": "• सूची पर डबल-क्लिक: संपादित करें\n• दाएँ बोर्ड पर खींचकर छोड़ें: प्रॉम्प्ट पिन करें\n• दायाँ-क्लिक: निर्यात/हटाने के लिए संदर्भ मेनू\n• टाइल पर दायाँ-क्लिक: दूसरे बोर्ड पर ले जाएँ/डुप्लिकेट करें, टाइल का रंग बदलें",
+    "ar": "• انقر نقرًا مزدوجًا على القائمة: تحرير\n• اسحب وأفلت على اللوحة إلى اليمين: تثبيت الموجّه\n• انقر بزر الفأرة الأيمن: قائمة سياقية للتصدير/الحذف\n• انقر بزر الفأرة الأيمن على البلاطة: نقلها/تكرارها إلى لوحة أخرى وتغيير لونها",
+    "bn": "• তালিকায় ডাবল-ক্লিক: সম্পাদনা করুন\n• ডান পাশের বোর্ডে টেনে এনে ছাড়ুন: প্রম্পট পিন করুন\n• ডান-ক্লিক: রপ্তানি/মোছার প্রসঙ্গ মেনু\n• টাইলের ওপর ডান-ক্লিক: অন্য বোর্ডে সরান/নকল করুন, টাইলের রং বদলান",
+    "pt": "• Clique duas vezes na lista: editar\n• Arraste e solte no quadro à direita: fixar o prompt\n• Clique com o botão direito: menu de contexto para exportar/excluir\n• Clique com o botão direito no bloco: mover/duplicar para outro quadro e alterar a cor do bloco"
   },
   "Bibliothek exportieren": {
     "de": "Bibliothek exportieren",
@@ -1965,7 +3190,12 @@
     "es": "Exportar biblioteca",
     "zh": "导出库",
     "ja": "ライブラリをエクスポート",
-    "ru": "Экспорт библиотеки"
+    "ru": "Экспорт библиотеки",
+    "fr": "Exporter la bibliothèque",
+    "hi": "लाइब्रेरी निर्यात करें",
+    "ar": "تصدير المكتبة",
+    "bn": "লাইব্রেরি রপ্তানি করুন",
+    "pt": "Exportar biblioteca"
   },
   "JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).": {
     "de": "JSON-Bibliothek erfolgreich gespeichert ({count} Prompts).",
@@ -1973,7 +3203,12 @@
     "es": "Biblioteca JSON guardada correctamente ({count} prompts).",
     "zh": "JSON 库已成功保存（{count} 个提示）。",
     "ja": "JSON ライブラリを保存しました（{count} 件のプロンプト）。",
-    "ru": "JSON-библиотека успешно сохранена ({count} промптов)."
+    "ru": "JSON-библиотека успешно сохранена ({count} промптов).",
+    "fr": "Bibliothèque JSON enregistrée avec succès ({count} prompts).",
+    "hi": "JSON लाइब्रेरी सफलतापूर्वक सहेजी गई ({count} प्रॉम्प्ट)।",
+    "ar": "تم حفظ مكتبة JSON بنجاح ({count} موجّهات).",
+    "bn": "JSON-লাইব্রেরি সফলভাবে সংরক্ষিত হয়েছে ({count} প্রম্পট)।",
+    "pt": "Biblioteca JSON salva com sucesso ({count} Prompts)."
   },
   "Prompt erstellen": {
     "de": "Prompt erstellen",
@@ -1981,7 +3216,12 @@
     "es": "Crear prompt",
     "zh": "创建提示",
     "ja": "プロンプトを作成",
-    "ru": "Создать промпт"
+    "ru": "Создать промпт",
+    "fr": "Créer un prompt",
+    "hi": "प्रॉम्प्ट बनाएँ",
+    "ar": "إنشاء الموجه",
+    "bn": "প্রম্পট তৈরি করুন",
+    "pt": "Criar prompt"
   },
   "Titel des Prompts (Pflichtfeld)": {
     "de": "Titel des Prompts (Pflichtfeld)",
@@ -1989,7 +3229,12 @@
     "es": "Título del prompt (obligatorio)",
     "zh": "提示标题（必填）",
     "ja": "プロンプトのタイトル（必須）",
-    "ru": "Заголовок промпта (обязательно)"
+    "ru": "Заголовок промпта (обязательно)",
+    "fr": "Titre de l'invite (champ obligatoire)",
+    "hi": "प्रॉम्प्ट का शीर्षक (अनिवार्य फ़ील्ड)",
+    "ar": "عنوان الطلب (حقل إلزامي)",
+    "bn": "প্রম্পটের শিরোনাম (আবশ্যিক ক্ষেত্র)",
+    "pt": "Título do prompt (campo obrigatório)"
   },
   "Titel des Prompts eingeben …": {
     "de": "Titel des Prompts eingeben …",
@@ -1997,7 +3242,12 @@
     "es": "Introduzca el título del prompt …",
     "zh": "输入提示标题 …",
     "ja": "プロンプトのタイトルを入力 …",
-    "ru": "Введите заголовок промпта …"
+    "ru": "Введите заголовок промпта …",
+    "fr": "Entrez le titre de l'invite …",
+    "hi": "प्रॉम्प्ट का शीर्षक दर्ज करें …",
+    "ar": "أدخل عنوان المطالبة …",
+    "bn": "প্রম্পটের শিরোনাম লিখুন …",
+    "pt": "Digite o título do prompt …"
   },
   "Zweck und Verwendungsziel des Prompts": {
     "de": "Zweck und Verwendungsziel des Prompts",
@@ -2005,7 +3255,12 @@
     "es": "Propósito y uso previsto del prompt",
     "zh": "提示的用途与目标",
     "ja": "プロンプトの目的と用途",
-    "ru": "Назначение и цель использования промпта"
+    "ru": "Назначение и цель использования промпта",
+    "fr": "Objectif et finalité d'utilisation de l'invite",
+    "hi": "प्रॉम्प्ट का उद्देश्य और उपयोग",
+    "ar": "الغرض من الموجه وهدف استخدامه",
+    "bn": "প্রম্পটের উদ্দেশ্য ও ব্যবহার লক্ষ্য",
+    "pt": "Finalidade e uso pretendido do prompt"
   },
   "Verwendungszweck beschreiben …": {
     "de": "Verwendungszweck beschreiben …",
@@ -2013,7 +3268,12 @@
     "es": "Describa el propósito …",
     "zh": "描述用途 …",
     "ja": "目的を記述 …",
-    "ru": "Опишите назначение …"
+    "ru": "Опишите назначение …",
+    "fr": "Décrire l'usage prévu …",
+    "hi": "उपयोग का वर्णन करें …",
+    "ar": "وصف الاستخدام …",
+    "bn": "ব্যবহারের উদ্দেশ্য বর্ণনা করুন …",
+    "pt": "Descrever a finalidade de uso …"
   },
   "Kommagetrennte Liste von Schlagwörtern": {
     "de": "Kommagetrennte Liste von Schlagwörtern",
@@ -2021,7 +3281,12 @@
     "es": "Lista de etiquetas separadas por comas",
     "zh": "以逗号分隔的标签列表",
     "ja": "カンマ区切りのタグ一覧",
-    "ru": "Список тегов через запятую"
+    "ru": "Список тегов через запятую",
+    "fr": "Liste de mots-clés séparés par des virgules",
+    "hi": "कॉमा से अलग किए गए कीवर्ड की सूची",
+    "ar": "قائمة مفصولة بفواصل من الكلمات المفتاحية",
+    "bn": "কমা দ্বারা পৃথক করা কীওয়ার্ডের তালিকা",
+    "pt": "Lista de palavras-chave separadas por vírgulas"
   },
   "z. B. Coding, Refactoring, Python": {
     "de": "z. B. Coding, Refactoring, Python",
@@ -2029,7 +3294,12 @@
     "es": "p. ej. programación, refactorización, Python",
     "zh": "例如：编程, 重构, Python",
     "ja": "例: コーディング, リファクタリング, Python",
-    "ru": "напр. код, рефакторинг, Python"
+    "ru": "напр. код, рефакторинг, Python",
+    "fr": "p. ex. Codage, refactorisation, Python",
+    "hi": "उदा. कोडिंग, रीफ़ैक्टरिंग, Python",
+    "ar": "مثال: البرمجة، إعادة هيكلة الشيفرة، Python",
+    "bn": "যেমন: কোডিং, রিফ্যাক্টরিং, Python",
+    "pt": "z. B. Codificação, Refatoração, Python"
   },
   "Prompt-Text": {
     "de": "Prompt-Text",
@@ -2037,7 +3307,12 @@
     "es": "Texto del prompt",
     "zh": "提示文本",
     "ja": "プロンプト本文",
-    "ru": "Текст промпта"
+    "ru": "Текст промпта",
+    "fr": "Texte du prompt",
+    "hi": "प्रॉम्प्ट टेक्स्ट",
+    "ar": "نص الموجّه",
+    "bn": "প্রম্পটের লেখা",
+    "pt": "Texto do prompt"
   },
   "Vollständiger Prompt-Text (Pflichtfeld)": {
     "de": "Vollständiger Prompt-Text (Pflichtfeld)",
@@ -2045,7 +3320,12 @@
     "es": "Texto completo del prompt (obligatorio)",
     "zh": "完整提示文本（必填）",
     "ja": "プロンプト全文（必須）",
-    "ru": "Полный текст промпта (обязательно)"
+    "ru": "Полный текст промпта (обязательно)",
+    "fr": "Texte complet du prompt (champ obligatoire)",
+    "hi": "पूर्ण प्रॉम्प्ट टेक्स्ट (अनिवार्य फ़ील्ड)",
+    "ar": "نص الموجّه الكامل (حقل إلزامي)",
+    "bn": "সম্পূর্ণ প্রম্পটের লেখা (আবশ্যিক ক্ষেত্র)",
+    "pt": "Texto completo do prompt (campo obrigatório)"
   },
   "Hier den Prompt-Text formulieren …": {
     "de": "Hier den Prompt-Text formulieren …",
@@ -2053,7 +3333,12 @@
     "es": "Redacte aquí el texto del prompt …",
     "zh": "在此编写提示文本 …",
     "ja": "ここにプロンプト本文を入力 …",
-    "ru": "Сформулируйте текст промпта здесь …"
+    "ru": "Сформулируйте текст промпта здесь …",
+    "fr": "Rédigez le texte du prompt ici …",
+    "hi": "यहाँ प्रॉम्प्ट टेक्स्ट लिखें …",
+    "ar": "اكتب نص الموجّه هنا …",
+    "bn": "এখানে প্রম্পটের লেখা লিখুন …",
+    "pt": "Formule o texto do prompt aqui …"
   },
   "Ergebnis": {
     "de": "Ergebnis",
@@ -2061,7 +3346,12 @@
     "es": "Resultado",
     "zh": "结果",
     "ja": "結果",
-    "ru": "Результат"
+    "ru": "Результат",
+    "fr": "Résultat",
+    "hi": "परिणाम",
+    "ar": "النتيجة",
+    "bn": "ফলাফল",
+    "pt": "Resultado"
   },
   "Zuletzt erzieltes Testergebnis oder Modellausgabe": {
     "de": "Zuletzt erzieltes Testergebnis oder Modellausgabe",
@@ -2069,7 +3359,12 @@
     "es": "Último resultado de prueba o salida del modelo",
     "zh": "最近的测试结果或模型输出",
     "ja": "最新のテスト結果またはモデル出力",
-    "ru": "Последний результат теста или ответ модели"
+    "ru": "Последний результат теста или ответ модели",
+    "fr": "Dernier résultat de test ou sortie du modèle",
+    "hi": "अंतिम परीक्षण परिणाम या मॉडल आउटपुट",
+    "ar": "آخر نتيجة اختبار أو مخرجات النموذج",
+    "bn": "সর্বশেষ পরীক্ষার ফলাফল বা মডেলের আউটপুট",
+    "pt": "Último resultado de teste ou saída do modelo"
   },
   "Optionale Modellausgabe oder Notizen …": {
     "de": "Optionale Modellausgabe oder Notizen …",
@@ -2077,7 +3372,12 @@
     "es": "Salida del modelo o notas opcionales …",
     "zh": "可选的模型输出或备注 …",
     "ja": "モデル出力やメモ（任意） …",
-    "ru": "Необязательный ответ модели или заметки …"
+    "ru": "Необязательный ответ модели или заметки …",
+    "fr": "Sortie optionnelle du modèle ou notes …",
+    "hi": "वैकल्पिक मॉडल आउटपुट या नोट्स …",
+    "ar": "مخرجات النموذج الاختيارية أو الملاحظات …",
+    "bn": "ঐচ্ছিক মডেল আউটপুট বা নোট …",
+    "pt": "Saída opcional do modelo ou notas …"
   },
   "Titel*": {
     "de": "Titel*",
@@ -2085,7 +3385,12 @@
     "es": "Título*",
     "zh": "标题*",
     "ja": "タイトル*",
-    "ru": "Заголовок*"
+    "ru": "Заголовок*",
+    "fr": "Titre*",
+    "hi": "शीर्षक*",
+    "ar": "العنوان*",
+    "bn": "শিরোনাম*",
+    "pt": "Título*"
   },
   "Tags (Komma)": {
     "de": "Tags (Komma)",
@@ -2093,7 +3398,12 @@
     "es": "Etiquetas (coma)",
     "zh": "标签（逗号分隔）",
     "ja": "タグ（カンマ区切り）",
-    "ru": "Теги (через запятую)"
+    "ru": "Теги (через запятую)",
+    "fr": "Tags (séparés par des virgules)",
+    "hi": "टैग (कॉमा-विभाजित)",
+    "ar": "الوسوم (مفصولة بفاصلة)",
+    "bn": "Tags (কমা-বিভাজিত)",
+    "pt": "Tags (vírgula)"
   },
   "Prompt-Text*": {
     "de": "Prompt-Text*",
@@ -2101,7 +3411,12 @@
     "es": "Texto del prompt*",
     "zh": "提示文本*",
     "ja": "プロンプト本文*",
-    "ru": "Текст промпта*"
+    "ru": "Текст промпта*",
+    "fr": "Texte du prompt*",
+    "hi": "प्रॉम्प्ट टेक्स्ट*",
+    "ar": "نص الموجّه*",
+    "bn": "প্রম্পটের লেখা*",
+    "pt": "Texto do prompt*"
   },
   "Versionen-Liste": {
     "de": "Versionen-Liste",
@@ -2109,7 +3424,12 @@
     "es": "Lista de versiones",
     "zh": "版本列表",
     "ja": "バージョン一覧",
-    "ru": "Список версий"
+    "ru": "Список версий",
+    "fr": "Liste des versions",
+    "hi": "संस्करणों की सूची",
+    "ar": "قائمة الإصدارات",
+    "bn": "সংস্করণের তালিকা",
+    "pt": "Lista de versões"
   },
   "Übersicht aller Versionen dieses Prompts": {
     "de": "Übersicht aller Versionen dieses Prompts",
@@ -2117,7 +3437,12 @@
     "es": "Resumen de todas las versiones de este prompt",
     "zh": "此提示所有版本的概览",
     "ja": "このプロンプトの全バージョンの一覧",
-    "ru": "Обзор всех версий этого промпта"
+    "ru": "Обзор всех версий этого промпта",
+    "fr": "Aperçu de toutes les versions de cette invite",
+    "hi": "इस प्रॉम्प्ट के सभी संस्करणों का अवलोकन",
+    "ar": "نظرة عامة على جميع إصدارات هذا الموجّه",
+    "bn": "এই প্রম্পটের সব সংস্করণের সারসংক্ষেপ",
+    "pt": "Visão geral de todas as versões deste prompt"
   },
   "Versionen": {
     "de": "Versionen",
@@ -2125,7 +3450,12 @@
     "es": "Versiones",
     "zh": "版本",
     "ja": "バージョン",
-    "ru": "Версии"
+    "ru": "Версии",
+    "fr": "Versions",
+    "hi": "संस्करण",
+    "ar": "الإصدارات",
+    "bn": "সংস্করণসমূহ",
+    "pt": "Versões"
   },
   "Versionen-Gruppe": {
     "de": "Versionen-Gruppe",
@@ -2133,7 +3463,12 @@
     "es": "Grupo de versiones",
     "zh": "版本分组",
     "ja": "バージョングループ",
-    "ru": "Группа версий"
+    "ru": "Группа версий",
+    "fr": "Groupe de versions",
+    "hi": "संस्करण समूह",
+    "ar": "مجموعة الإصدارات",
+    "bn": "সংস্করণ-গোষ্ঠী",
+    "pt": "Grupo de versões"
   },
   "Speichert die Änderungen und schließt den Dialog": {
     "de": "Speichert die Änderungen und schließt den Dialog",
@@ -2141,7 +3476,12 @@
     "es": "Guarda los cambios y cierra el diálogo",
     "zh": "保存更改并关闭对话框",
     "ja": "変更を保存してダイアログを閉じます",
-    "ru": "Сохраняет изменения и закрывает диалог"
+    "ru": "Сохраняет изменения и закрывает диалог",
+    "fr": "Enregistre les modifications et ferme la boîte de dialogue",
+    "hi": "सहेजें और संवाद बंद करें",
+    "ar": "يحفظ التغييرات ويغلق مربع الحوار",
+    "bn": "এটি পরিবর্তনগুলো সংরক্ষণ করে এবং সংলাপ বন্ধ করে দেয়",
+    "pt": "Salva as alterações e fecha o diálogo"
   },
   "Prompt speichern (Enter)": {
     "de": "Prompt speichern (Enter)",
@@ -2149,7 +3489,12 @@
     "es": "Guardar prompt (Intro)",
     "zh": "保存提示（Enter）",
     "ja": "プロンプトを保存 (Enter)",
-    "ru": "Сохранить промпт (Enter)"
+    "ru": "Сохранить промпт (Enter)",
+    "fr": "Enregistrer le prompt (Entrée)",
+    "hi": "प्रॉम्प्ट सहेजें (Enter)",
+    "ar": "حفظ المطالبة (Enter)",
+    "bn": "প্রম্পট সংরক্ষণ করুন (Enter)",
+    "pt": "Salvar prompt (Enter)"
   },
   "Verwirft Änderungen und schließt den Dialog": {
     "de": "Verwirft Änderungen und schließt den Dialog",
@@ -2157,7 +3502,12 @@
     "es": "Descarta los cambios y cierra el diálogo",
     "zh": "放弃更改并关闭对话框",
     "ja": "変更を破棄してダイアログを閉じます",
-    "ru": "Отменяет изменения и закрывает диалог"
+    "ru": "Отменяет изменения и закрывает диалог",
+    "fr": "Annule les modifications et ferme la boîte de dialogue",
+    "hi": "परिवर्तन रद्द करता है और संवाद बंद करता है",
+    "ar": "يتجاهل التغييرات ويغلق مربع الحوار",
+    "bn": "পরিবর্তনগুলো বাতিল করে ডায়ালগ বন্ধ করে",
+    "pt": "Descarta as alterações e fecha o diálogo"
   },
   "Versions-Kontext": {
     "de": "Versions-Kontext",
@@ -2165,7 +3515,12 @@
     "es": "Contexto de la versión",
     "zh": "版本上下文",
     "ja": "バージョンの情報",
-    "ru": "Контекст версии"
+    "ru": "Контекст версии",
+    "fr": "Contexte de version",
+    "hi": "संस्करण संदर्भ",
+    "ar": "سياق الإصدارات",
+    "bn": "সংস্করণের প্রসঙ্গ",
+    "pt": "Contexto de versões"
   },
   "Prompt: {title}": {
     "de": "Prompt: {title}",
@@ -2173,7 +3528,12 @@
     "es": "Prompt: {title}",
     "zh": "提示：{title}",
     "ja": "プロンプト: {title}",
-    "ru": "Промпт: {title}"
+    "ru": "Промпт: {title}",
+    "fr": "Prompt : {title}",
+    "hi": "प्रॉम्प्ट: {title}",
+    "ar": "الموجّه: {title}",
+    "bn": "প্রম্পট: {title}",
+    "pt": "Prompt: {title}"
   },
   "Bearbeite: v{num} — {title}": {
     "de": "Bearbeite: v{num} — {title}",
@@ -2181,7 +3541,12 @@
     "es": "Editando: v{num} — {title}",
     "zh": "正在编辑：v{num} — {title}",
     "ja": "編集中: v{num} — {title}",
-    "ru": "Редактирование: v{num} — {title}"
+    "ru": "Редактирование: v{num} — {title}",
+    "fr": "Modifier : v{num} — {title}",
+    "hi": "संपादित करें: v{num} — {title}",
+    "ar": "عدّل: v{num} — {title}",
+    "bn": "সম্পাদনা করুন: v{num} — {title}",
+    "pt": "Editar: v{num} — {title}"
   },
   "Zugeordneter Prompt: {title}": {
     "de": "Zugeordneter Prompt: {title}",
@@ -2189,7 +3554,12 @@
     "es": "Prompt asociado: {title}",
     "zh": "所属提示：{title}",
     "ja": "関連するプロンプト: {title}",
-    "ru": "Связанный промпт: {title}"
+    "ru": "Связанный промпт: {title}",
+    "fr": "Prompt associé : {title}",
+    "hi": "संबंधित प्रॉम्प्ट: {title}",
+    "ar": "الموجّه المرتبط: {title}",
+    "bn": "সম্পর্কিত প্রম্পট: {title}",
+    "pt": "Prompt atribuído: {title}"
   },
   "Versionstitel": {
     "de": "Versionstitel",
@@ -2197,7 +3567,12 @@
     "es": "Título de la versión",
     "zh": "版本标题",
     "ja": "バージョンのタイトル",
-    "ru": "Заголовок версии"
+    "ru": "Заголовок версии",
+    "fr": "Titre de version",
+    "hi": "संस्करण शीर्षक",
+    "ar": "عنوان الإصدار",
+    "bn": "সংস্করণের শিরোনাম",
+    "pt": "Título da versão"
   },
   "Titel dieser Prompt-Version (Pflichtfeld)": {
     "de": "Titel dieser Prompt-Version (Pflichtfeld)",
@@ -2205,7 +3580,12 @@
     "es": "Título de esta versión (obligatorio)",
     "zh": "此提示版本的标题（必填）",
     "ja": "このバージョンのタイトル（必須）",
-    "ru": "Заголовок этой версии (обязательно)"
+    "ru": "Заголовок этой версии (обязательно)",
+    "fr": "Titre de cette version du prompt (champ obligatoire)",
+    "hi": "इस प्रॉम्प्ट संस्करण का शीर्षक (अनिवार्य फ़ील्ड)",
+    "ar": "عنوان نسخة الموجه هذه (حقل إلزامي)",
+    "bn": "এই প্রম্পট সংস্করণের শিরোনাম (আবশ্যিক ক্ষেত্র)",
+    "pt": "Título desta versão do prompt (campo obrigatório)"
   },
   "Titel der Version …": {
     "de": "Titel der Version …",
@@ -2213,7 +3593,12 @@
     "es": "Título de la versión …",
     "zh": "版本标题 …",
     "ja": "バージョンのタイトル …",
-    "ru": "Заголовок версии …"
+    "ru": "Заголовок версии …",
+    "fr": "Titre de la version …",
+    "hi": "संस्करण का शीर्षक …",
+    "ar": "عنوان الإصدار …",
+    "bn": "সংস্করণের শিরোনাম …",
+    "pt": "Título da versão …"
   },
   "z. B. v2, überarbeitet, kurz": {
     "de": "z. B. v2, überarbeitet, kurz",
@@ -2221,7 +3606,12 @@
     "es": "p. ej. v2, revisado, corto",
     "zh": "例如：v2, 修订, 简短",
     "ja": "例: v2, 改訂, 短縮",
-    "ru": "напр. v2, исправлено, кратко"
+    "ru": "напр. v2, исправлено, кратко",
+    "fr": "p. ex. v2, révisé, court",
+    "hi": "उदा. v2, संशोधित, संक्षिप्त",
+    "ar": "مثال: v2، منقّح، مختصر",
+    "bn": "যেমন: v2, সংশোধিত, সংক্ষিপ্ত",
+    "pt": "por exemplo, v2, revisado, curto"
   },
   "Vollständiger Prompt-Text dieser Version (Pflichtfeld)": {
     "de": "Vollständiger Prompt-Text dieser Version (Pflichtfeld)",
@@ -2229,7 +3619,12 @@
     "es": "Texto completo de esta versión (obligatorio)",
     "zh": "此版本的完整提示文本（必填）",
     "ja": "このバージョンのプロンプト全文（必須）",
-    "ru": "Полный текст этой версии (обязательно)"
+    "ru": "Полный текст этой версии (обязательно)",
+    "fr": "Texte complet de l'invite de cette version (champ obligatoire)",
+    "hi": "इस संस्करण का पूरा प्रॉम्प्ट टेक्स्ट (अनिवार्य फ़ील्ड)",
+    "ar": "نص الموجّه الكامل لهذا الإصدار (حقل إلزامي)",
+    "bn": "এই সংস্করণের সম্পূর্ণ প্রম্পটের লেখা (আবশ্যিক ক্ষেত্র)",
+    "pt": "Texto completo do prompt desta versão (campo obrigatório)"
   },
   "Prompt-Text für diese Version formulieren …": {
     "de": "Prompt-Text für diese Version formulieren …",
@@ -2237,7 +3632,12 @@
     "es": "Redacte el texto de esta versión …",
     "zh": "编写此版本的提示文本 …",
     "ja": "このバージョンの本文を入力 …",
-    "ru": "Сформулируйте текст для этой версии …"
+    "ru": "Сформулируйте текст для этой версии …",
+    "fr": "Formulez le texte de l'invite pour cette version …",
+    "hi": "इस संस्करण के लिए प्रॉम्प्ट टेक्स्ट लिखें …",
+    "ar": "صِغ نص المطالبة (Prompt) لهذا الإصدار …",
+    "bn": "এই সংস্করণের জন্য প্রম্পটের লেখা লিখুন …",
+    "pt": "Formular o texto do prompt para esta versão …"
   },
   "Testergebnis oder Notizen dieser Version": {
     "de": "Testergebnis oder Notizen dieser Version",
@@ -2245,7 +3645,12 @@
     "es": "Resultado de prueba o notas de esta versión",
     "zh": "此版本的测试结果或备注",
     "ja": "このバージョンのテスト結果またはメモ",
-    "ru": "Результат теста или заметки этой версии"
+    "ru": "Результат теста или заметки этой версии",
+    "fr": "Résultat des tests ou notes de cette version",
+    "hi": "इस संस्करण का परीक्षण परिणाम या नोट्स",
+    "ar": "نتيجة الاختبار أو ملاحظات هذا الإصدار",
+    "bn": "এই সংস্করণের পরীক্ষার ফলাফল বা নোট",
+    "pt": "Resultado do teste ou notas desta versão"
   },
   "Optionale Modellausgabe für diese Version …": {
     "de": "Optionale Modellausgabe für diese Version …",
@@ -2253,7 +3658,12 @@
     "es": "Salida del modelo opcional para esta versión …",
     "zh": "此版本的可选模型输出 …",
     "ja": "このバージョンのモデル出力（任意） …",
-    "ru": "Необязательный ответ модели для этой версии …"
+    "ru": "Необязательный ответ модели для этой версии …",
+    "fr": "Sortie optionnelle du modèle pour cette version …",
+    "hi": "इस संस्करण के लिए वैकल्पिक मॉडल आउटपुट …",
+    "ar": "إخراج نموذج اختياري لهذا الإصدار …",
+    "bn": "এই সংস্করণের জন্য ঐচ্ছিক মডেল আউটপুট …",
+    "pt": "Saída opcional do modelo para esta versão …"
   },
   "Verwirft Eingaben und schließt den Dialog": {
     "de": "Verwirft Eingaben und schließt den Dialog",
@@ -2261,7 +3671,12 @@
     "es": "Descarta la entrada y cierra el diálogo",
     "zh": "放弃输入并关闭对话框",
     "ja": "入力を破棄してダイアログを閉じます",
-    "ru": "Отменяет ввод и закрывает диалог"
+    "ru": "Отменяет ввод и закрывает диалог",
+    "fr": "Rejette les saisies et ferme la boîte de dialogue",
+    "hi": "इनपुट छोड़ता है और संवाद बंद करता है",
+    "ar": "يتجاهل المدخلات ويغلق مربع الحوار",
+    "bn": "ইনপুট বাতিল করে এবং ডায়ালগ বন্ধ করে",
+    "pt": "Descarta as entradas e fecha o diálogo"
   },
   "Speichert die Änderungen an dieser Version": {
     "de": "Speichert die Änderungen an dieser Version",
@@ -2269,7 +3684,12 @@
     "es": "Guarda los cambios de esta versión",
     "zh": "保存对此版本的更改",
     "ja": "このバージョンへの変更を保存します",
-    "ru": "Сохраняет изменения этой версии"
+    "ru": "Сохраняет изменения этой версии",
+    "fr": "Enregistre les modifications apportées à cette version",
+    "hi": "इस संस्करण में किए गए बदलावों को सहेजता है",
+    "ar": "حفظ التغييرات المُجراة على هذا الإصدار",
+    "bn": "এই সংস্করণের পরিবর্তনগুলি সংরক্ষণ করে",
+    "pt": "Salva as alterações feitas nesta versão"
   },
   "Version aktualisieren (Enter)": {
     "de": "Version aktualisieren (Enter)",
@@ -2277,7 +3697,12 @@
     "es": "Actualizar versión (Intro)",
     "zh": "更新版本（Enter）",
     "ja": "バージョンを更新 (Enter)",
-    "ru": "Обновить версию (Enter)"
+    "ru": "Обновить версию (Enter)",
+    "fr": "Mettre à jour la version (Entrée)",
+    "hi": "संस्करण अपडेट करें (Enter)",
+    "ar": "تحديث الإصدار (Enter)",
+    "bn": "সংস্করণ হালনাগাদ করুন (Enter)",
+    "pt": "Atualizar versão (Enter)"
   },
   "Erstellt eine neue Version mit fortlaufender Nummer": {
     "de": "Erstellt eine neue Version mit fortlaufender Nummer",
@@ -2285,7 +3710,12 @@
     "es": "Crea una nueva versión con el siguiente número",
     "zh": "以下一个编号创建新版本",
     "ja": "連番で新しいバージョンを作成します",
-    "ru": "Создаёт новую версию со следующим номером"
+    "ru": "Создаёт новую версию со следующим номером",
+    "fr": "Crée une nouvelle version avec un numéro séquentiel",
+    "hi": "नए क्रमिक नंबर के साथ एक नया संस्करण बनाता है",
+    "ar": "ينشئ نسخة جديدة برقم تسلسلي متزايد",
+    "bn": "ক্রমিক নম্বরসহ একটি নতুন সংস্করণ তৈরি করে",
+    "pt": "Cria uma nova versão com número sequencial"
   },
   "Als neue Version anlegen": {
     "de": "Als neue Version anlegen",
@@ -2293,7 +3723,12 @@
     "es": "Crear como nueva versión",
     "zh": "另存为新版本",
     "ja": "新しいバージョンとして作成",
-    "ru": "Создать как новую версию"
+    "ru": "Создать как новую версию",
+    "fr": "Créer comme nouvelle version",
+    "hi": "के रूप में एक नया संस्करण बनाएँ",
+    "ar": "إنشاء إصدار جديد",
+    "bn": "নতুন সংস্করণ হিসেবে তৈরি করুন",
+    "pt": "Criar nova versão"
   },
   "Erstellt eine neue Version dieses Prompts": {
     "de": "Erstellt eine neue Version dieses Prompts",
@@ -2301,7 +3736,12 @@
     "es": "Crea una nueva versión de este prompt",
     "zh": "创建此提示的新版本",
     "ja": "このプロンプトの新しいバージョンを作成します",
-    "ru": "Создаёт новую версию этого промпта"
+    "ru": "Создаёт новую версию этого промпта",
+    "fr": "Crée une nouvelle version de ce prompt",
+    "hi": "इस प्रॉम्प्ट का नया संस्करण बनाता है",
+    "ar": "ينشئ نسخة جديدة من هذا الموجه",
+    "bn": "একটি নতুন সংস্করণ তৈরি করে এই প্রম্পটের",
+    "pt": "Cria uma nova versão deste prompt"
   },
   "Version anlegen (Enter)": {
     "de": "Version anlegen (Enter)",
@@ -2309,7 +3749,12 @@
     "es": "Crear versión (Intro)",
     "zh": "创建版本（Enter）",
     "ja": "バージョンを作成 (Enter)",
-    "ru": "Создать версию (Enter)"
+    "ru": "Создать версию (Enter)",
+    "fr": "Créer une version (Entrée)",
+    "hi": "संस्करण बनाएँ (Enter)",
+    "ar": "إنشاء إصدار (Enter)",
+    "bn": "সংস্করণ তৈরি করুন (Enter)",
+    "pt": "Criar versão (Enter)"
   },
   "Speichern fehlgeschlagen": {
     "de": "Speichern fehlgeschlagen",
@@ -2317,7 +3762,12 @@
     "es": "Error al guardar",
     "zh": "保存失败",
     "ja": "保存に失敗しました",
-    "ru": "Ошибка сохранения"
+    "ru": "Ошибка сохранения",
+    "fr": "Échec de l'enregistrement",
+    "hi": "सहेजना विफल रहा",
+    "ar": "فشل الحفظ",
+    "bn": "সংরক্ষণ ব্যর্থ হয়েছে",
+    "pt": "Falha ao salvar"
   },
   "Der zugehörige Prompt wurde nicht gefunden.": {
     "de": "Der zugehörige Prompt wurde nicht gefunden.",
@@ -2325,7 +3775,12 @@
     "es": "No se encontró el prompt asociado.",
     "zh": "未找到对应的提示。",
     "ja": "関連するプロンプトが見つかりません。",
-    "ru": "Связанный промпт не найден."
+    "ru": "Связанный промпт не найден.",
+    "fr": "Le prompt associé est introuvable.",
+    "hi": "संबंधित प्रॉम्प्ट नहीं मिला।",
+    "ar": "لم يُعثر على المطالبة المرتبطة.",
+    "bn": "সংশ্লিষ্ট প্রম্পটটি খুঁজে পাওয়া যায়নি।",
+    "pt": "O prompt correspondente não foi encontrado."
   },
   "Bibliothek nicht verfügbar": {
     "de": "Bibliothek nicht verfügbar",
@@ -2333,7 +3788,12 @@
     "es": "Biblioteca no disponible",
     "zh": "库不可用",
     "ja": "ライブラリを利用できません",
-    "ru": "Библиотека недоступна"
+    "ru": "Библиотека недоступна",
+    "fr": "Bibliothèque non disponible",
+    "hi": "पुस्तकालय उपलब्ध नहीं है",
+    "ar": "مكتبة غير متوفرة",
+    "bn": "লাইব্রেরি উপলব্ধ নেই",
+    "pt": "Biblioteca não disponível"
   },
   "Die Bibliothek konnte nicht gelesen oder gespeichert werden.\nPrüfen Sie die Datei und ihre Zugriffsrechte und versuchen Sie es erneut.": {
     "de": "Die Bibliothek konnte nicht gelesen oder gespeichert werden.\nPrüfen Sie die Datei und ihre Zugriffsrechte und versuchen Sie es erneut.",
@@ -2341,7 +3801,12 @@
     "es": "No se pudo leer ni guardar la biblioteca.\nCompruebe el archivo y sus permisos de acceso e inténtelo de nuevo.",
     "zh": "无法读取或保存库。\n请检查文件及其访问权限后重试。",
     "ja": "ライブラリを読み込めないか保存できませんでした。\nファイルとアクセス権を確認して再試行してください。",
-    "ru": "Не удалось прочитать или сохранить библиотеку.\nПроверьте файл и права доступа и повторите попытку."
+    "ru": "Не удалось прочитать или сохранить библиотеку.\nПроверьте файл и права доступа и повторите попытку.",
+    "fr": "La bibliothèque n’a pas pu être lue ni enregistrée.\nVérifiez le fichier et ses droits d’accès, puis réessayez.",
+    "hi": "लाइब्रेरी पढ़ी या सहेजी नहीं जा सकी।\nफ़ाइल और उसकी पहुँच अनुमतियाँ जाँचें, फिर दोबारा प्रयास करें।",
+    "ar": "تعذّرت قراءة المكتبة أو حفظها.\nتحقّق من الملف وأذونات الوصول إليه، ثم حاول مرة أخرى.",
+    "bn": "লাইব্রেরিটি পড়া বা সংরক্ষণ করা যায়নি।\nফাইল ও এর প্রবেশাধিকার পরীক্ষা করে আবার চেষ্টা করুন।",
+    "pt": "Não foi possível ler nem salvar a biblioteca.\nVerifique o arquivo e as permissões de acesso e tente novamente."
   },
   "Eingabe / Return": {
     "de": "Eingabe / Return",
@@ -2349,7 +3814,12 @@
     "es": "Intro / Retorno",
     "zh": "Enter / 回车",
     "ja": "Enter / Return",
-    "ru": "Enter / Return"
+    "ru": "Enter / Return",
+    "fr": "Entrée / Retour",
+    "hi": "Enter / Return",
+    "ar": "إدخال / Return",
+    "bn": "Enter / Return",
+    "pt": "Enter / Return"
   },
   "Entf / Backspace": {
     "de": "Entf / Backspace",
@@ -2357,7 +3827,12 @@
     "es": "Supr / Retroceso",
     "zh": "Delete / 退格",
     "ja": "Delete / Backspace",
-    "ru": "Delete / Backspace"
+    "ru": "Delete / Backspace",
+    "fr": "Suppr / Retour arrière",
+    "hi": "Delete / Backspace",
+    "ar": "Delete / Backspace",
+    "bn": "Delete / Backspace",
+    "pt": "Delete / Backspace"
   },
   "Leertaste": {
     "de": "Leertaste",
@@ -2365,7 +3840,12 @@
     "es": "Barra espaciadora",
     "zh": "空格键",
     "ja": "スペース",
-    "ru": "Пробел"
+    "ru": "Пробел",
+    "fr": "Barre d'espace",
+    "hi": "Spacebar",
+    "ar": "مفتاح المسافة",
+    "bn": "স্পেসবার",
+    "pt": "Barra de espaço"
   },
   "Kontextmenü / Shift+F10": {
     "de": "Kontextmenü / Shift+F10",
@@ -2373,7 +3853,12 @@
     "es": "Tecla de menú / Mayús+F10",
     "zh": "菜单键 / Shift+F10",
     "ja": "メニューキー / Shift+F10",
-    "ru": "Клавиша меню / Shift+F10"
+    "ru": "Клавиша меню / Shift+F10",
+    "fr": "Menu contextuel / Maj+F10",
+    "hi": "संदर्भ मेनू / Shift+F10",
+    "ar": "قائمة السياق / Shift+F10",
+    "bn": "প্রসঙ্গ মেনু / Shift+F10",
+    "pt": "Menu de contexto / Shift+F10"
   },
   "Kachel auf anderes Board verschieben / duplizieren": {
     "de": "Kachel auf anderes Board verschieben / duplizieren",
@@ -2381,7 +3866,12 @@
     "es": "Mover / duplicar mosaico a otro tablero",
     "zh": "将磁贴移动/复制到其他看板",
     "ja": "タイルを別のボードへ移動／複製",
-    "ru": "Переместить / дублировать плитку на другую доску"
+    "ru": "Переместить / дублировать плитку на другую доску",
+    "fr": "Déplacer / dupliquer la tuile vers un autre tableau",
+    "hi": "टाइल को दूसरे बोर्ड पर ले जाएँ / डुप्लिकेट करें",
+    "ar": "نقل البطاقة إلى لوحة أخرى / تكرارها",
+    "bn": "টাইলটি অন্য বোর্ডে সরান / নকল করুন",
+    "pt": "Mover / duplicar o bloco para outro quadro"
   },
   "Kachelfarbe ändern": {
     "de": "Kachelfarbe ändern",
@@ -2389,6 +3879,37 @@
     "es": "Cambiar color del mosaico",
     "zh": "更改磁贴颜色",
     "ja": "タイルの色を変更",
-    "ru": "Изменить цвет плитки"
+    "ru": "Изменить цвет плитки",
+    "fr": "Changer la couleur de la tuile",
+    "hi": "टाइल का रंग बदलें",
+    "ar": "تغيير لون البلاط",
+    "bn": "টাইলের রং পরিবর্তন করুন",
+    "pt": "Alterar cor do bloco"
+  },
+  "Ja": {
+    "de": "Ja",
+    "en": "Yes",
+    "es": "Sí",
+    "zh": "是",
+    "ja": "はい",
+    "ru": "Да",
+    "fr": "Oui",
+    "hi": "हाँ",
+    "ar": "نعم",
+    "bn": "হ্যাঁ",
+    "pt": "Sim"
+  },
+  "Nein": {
+    "de": "Nein",
+    "en": "No",
+    "es": "No",
+    "zh": "否",
+    "ja": "いいえ",
+    "ru": "Нет",
+    "fr": "Non",
+    "hi": "नहीं",
+    "ar": "لا",
+    "bn": "না",
+    "pt": "Não"
   }
 }

@@ -2,13 +2,13 @@
 
 # ProfiPrompt — Local-First AI Prompt Management & Versioning Workstation
 
-**English** | [Deutsch](README_de.md) | [Español](README_es.md)
+**English** | [Deutsch](README_de.md) | [Español](README_es.md) | [简体中文](README_zh.md) | [日本語](README_ja.md) | [Русский](README_ru.md) | [Français](README_fr.md) | [हिन्दी](README_hi.md) | [العربية](README_ar.md) | [বাংলা](README_bn.md) | [Português](README_pt.md)
 
 [![Version: 1.0.2](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/file-bricks/ProfiPrompt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 344 passed](https://img.shields.io/badge/Pytest-344%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 354 passed](https://img.shields.io/badge/Pytest-354%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -139,7 +139,7 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 |  | - RunAsInvoker Isolation: Unprivileged user execution without UAC or root (INV-UNPRIV-05)  |  |
 |  | - Prompt Tree & Search: Filterable hierarchy with version tags, category chips & counts     |  |
 |  | - Visual Kanban Boards: Drag-and-drop tiles, board transfer/duplicate & custom tile colors  |  |
-|  | - Live Trilingual/6-Lang UI: Real-time i18n switch across DE, EN, ES, ZH, JA, RU without    |  |
+|  | - Live 11-locale UI: EN/DE/ES/ZH/JA/RU/FR/HI/AR/BN/PT; dynamic retranslation                |  |
 |  |   restart via dynamic retranslation bus and shared translation registry                   |  |
 |  | - Multi-Mode Clipboard Engine: 4 instant copy modes (Body, Title, Result, Markdown) (INV)   |  |
 |  +--------------------------------------------------------------------------------------------+  |
@@ -177,6 +177,10 @@ ProfiPrompt is purposefully engineered to serve 4 primary stakeholder personas a
 +==================================================================================================+
 ```
 
+### Runtime UI Language Coverage
+
+Desktop and the read-only PWA companion offer the same 11 app-owned UI locales: English, German, Spanish, Simplified Chinese, Japanese, Russian, French, Hindi, Arabic, Bengali, and Portuguese. This runtime list is independent of the README language navigation. The desktop stores its selection in application settings; the PWA stores it with browser UI preferences, separate from the imported library. Arabic sets the app-owned interface to right-to-left. Native OS or browser file pickers are outside the app translation catalog and follow the host platform's localization. Imported prompt, board, and tag content remains as authored when the UI language changes.
+
 ### System Component Flowchart
 
 ```mermaid
@@ -200,7 +204,7 @@ flowchart TD
 
     subgraph Companion["Web / PWA Mobile Companion"]
         PWA["Read-Only Browser UI (Offline Shell)"]
-        LocalCache["Service Worker v4 Cache & LocalStorage"]
+        LocalCache["Service Worker v7 Cache & LocalStorage"]
     end
 
     UI --> PM
@@ -314,7 +318,7 @@ Never get locked into a proprietary application format:
 
 The repository includes a complete, standalone mobile and browser companion located in `web_companion/`:
 - **Read-Only Inspection:** View and search exported prompt libraries on any smartphone, tablet, or secondary monitor.
-- **Offline Service Worker v4:** Fully functional without an active internet connection once loaded.
+- **Offline Service Worker v7:** Fully functional without an active internet connection once loaded.
 - **PWA Installation:** Install to homescreen on iOS (Safari) and Android (Chrome) as an offline standalone web app.
 - **Safe Area Inset Support:** Polished UI layout tailored for modern mobile notches and home indicators.
 
@@ -370,7 +374,7 @@ ProfiPrompt/
 │   ├── banner.svg              # Vector SVG branding banner
 │   └── banner_v2.svg           # Extended visual vector asset
 ├── locales/                    # Translation catalogs
-│   └── translations.json       # Bilingual strings (DE / EN)
+│   └── translations.json       # Desktop UI catalog (11 runtime locales)
 ├── screenshots/                # Application UI screenshots
 │   └── main.png                # Main dashboard screenshot
 ├── src/                        # Core PySide6 desktop application
@@ -395,7 +399,7 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # PWA install manifest
 │   ├── service-worker.js       # Offline service worker cache engine
 │   └── tests/                  # Node.js automated test suite (46 tests)
-├── tests/                      # Automated Pytest regression test suite (293+ tests)
+├── tests/                      # Automated Pytest regression test suite (354 tests)
 ├── CHANGELOG.md                # Keep a Changelog revision history
 ├── CONTRIBUTING.md             # Bilingual contributing guidelines & runtime invariants
 ├── EXPORTFORMAT.md             # Standardized specification for library JSON
@@ -419,10 +423,10 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Testing & Quality Assurance
 
-ProfiPrompt is backed by **390 automated tests** (344 Python Pytest + 46 Node.js Web Companion, 100% green) verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
+ProfiPrompt is backed by **400 automated tests** (354 Python Pytest + 46 Node.js Web Companion, 100% green) verifying core logic, persistence, clipboard operations, dialog resilience, and web companion functionality:
 
 ```bash
-# Run Python Pytest test suite (344 passed, 3 skipped)
+# Run Python Pytest test suite (354 passed, 3 skipped)
 pytest -v
 
 # Run Web Companion Node.js test suite (46 passed)
