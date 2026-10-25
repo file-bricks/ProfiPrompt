@@ -1,4 +1,6 @@
-from PySide6 import QtWidgets
+from PySide6 import QtCore, QtWidgets
+
+import pytest
 
 import i18n
 from dialog_button_localizer import DialogButtonLocalizer, install_standard_button_localizer
@@ -28,10 +30,24 @@ def _assert_labels(button_box, expected, standards=BUTTONS):
         assert button.text() == text
 
 
-def test_qt_standard_button_labels_follow_every_complete_app_locale(qapp):
+def test_qt_standard_button_labels_follow_every_complete_app_locale(qapp, monkeypatch):
+    localizer = install_standard_button_localizer(qapp)
+    assert localizer.parent() is qapp
+    assert getattr(qapp, "_profiprompt_dialog_button_localizer") is localizer
+    assert install_standard_button_localizer(qapp) is localizer
+
+    with monkeypatch.context() as scoped:
+        scoped.setattr(
+            localizer,
+            "_belongs_to_file_dialog",
+            lambda widget: pytest.fail("Unrelated widgets must skip the ancestry walk"),
+        )
+        unrelated_widget = QtWidgets.QWidget()
+        show_event = QtCore.QEvent(QtCore.QEvent.Type.Show)
+        assert localizer.eventFilter(unrelated_widget, show_event) is False
+
     translator = i18n.get_translator()
     original = translator.get_language()
-    install_standard_button_localizer(qapp)
     try:
         for locale in LOCALES:
             assert translator.set_language(locale)

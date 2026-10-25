@@ -18,7 +18,7 @@ _DIALOG_BUTTONBOX_BUTTON_KEYS = {
     QtWidgets.QDialogButtonBox.StandardButton.Yes: "Ja",
     QtWidgets.QDialogButtonBox.StandardButton.No: "Nein",
 }
-_INSTALLED: dict[int, "DialogButtonLocalizer"] = {}
+_LOCALIZER_ATTRIBUTE = "_profiprompt_dialog_button_localizer"
 
 
 class DialogButtonLocalizer(QtCore.QObject):
@@ -26,6 +26,15 @@ class DialogButtonLocalizer(QtCore.QObject):
 
     def eventFilter(self, watched, event):
         if event.type() != QtCore.QEvent.Type.Show:
+            return False
+        if not isinstance(
+            watched,
+            (
+                QtWidgets.QMessageBox,
+                QtWidgets.QDialog,
+                QtWidgets.QDialogButtonBox,
+            ),
+        ):
             return False
         if self._belongs_to_file_dialog(watched):
             return False
@@ -67,10 +76,10 @@ def install_standard_button_localizer(app=None) -> DialogButtonLocalizer:
     app = app or QtWidgets.QApplication.instance()
     if app is None:
         raise RuntimeError("QApplication must exist before installing dialog localization")
-    existing = _INSTALLED.get(id(app))
-    if existing is not None:
+    existing = getattr(app, _LOCALIZER_ATTRIBUTE, None)
+    if isinstance(existing, DialogButtonLocalizer):
         return existing
     localizer = DialogButtonLocalizer(app)
+    setattr(app, _LOCALIZER_ATTRIBUTE, localizer)
     app.installEventFilter(localizer)
-    _INSTALLED[id(app)] = localizer
     return localizer
