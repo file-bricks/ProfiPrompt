@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import ast
 import re
 from pathlib import Path
+
+from packaging.markers import default_environment
+from packaging.requirements import Requirement
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,6 +29,40 @@ def test_dependency_vulnerability_floors() -> None:
     # PEP 621 dependencies section
     assert "dependencies = [" in pyproject_text, "pyproject.toml must define project.dependencies"
     assert "PySide6>=6.5.0" in pyproject_text, "pyproject.toml must specify PySide6>=6.5.0"
+
+    runtime_requirements = [
+        Requirement(line)
+        for line in req_text.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    project_dependency_block = re.search(
+        r"(?m)^dependencies\s*=\s*(\[[\s\S]*?\])", pyproject_text
+    )
+    assert project_dependency_block is not None
+    project_requirements = [
+        Requirement(item)
+        for item in ast.literal_eval(project_dependency_block.group(1))
+    ]
+    assert {str(item) for item in runtime_requirements} == {
+        str(item) for item in project_requirements
+    }
+    for python_version in ("3.10", "3.11", "3.12", "3.13"):
+        for platform in ("linux", "win32", "darwin"):
+            environment = default_environment() | {
+                "python_version": python_version,
+                "sys_platform": platform,
+            }
+            applicable = [
+                item for item in runtime_requirements
+                if item.marker is None or item.marker.evaluate(environment)
+            ]
+            assert len(applicable) == 1, (python_version, platform)
+            specifier = applicable[0].specifier
+            broken_runtime = platform == "linux" and python_version in {"3.10", "3.11"}
+            assert ("6.12.0" in specifier) is not broken_runtime
+            assert "6.11.2" in specifier
+            assert "6.12.1" in specifier
+            assert "6.4.9" not in specifier
 
     # Dev optional dependencies floor (pytest >= 9.1.1 protects against CVE-2025-7117 / GHSA-6w46-j5rx-g56g)
     assert "[project.optional-dependencies]" in pyproject_text, "pyproject.toml must define optional-dependencies"
