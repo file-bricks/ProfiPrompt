@@ -10,6 +10,12 @@ import {
   serializeLibrary,
   summarizeLibrary,
 } from "./library.js";
+import {
+  applyLocale,
+  loadLocaleCatalog,
+  normalizeLanguage,
+  translate,
+} from "./i18n.js";
 
 window.addEventListener("error", (event) => {
   document.body.dataset.appError = event.message || "unknown-error";
@@ -34,6 +40,7 @@ const state = {
   query: "",
   copyMode: "all",
   includeMetadata: true,
+  language: "de",
 };
 
 const elements = {
@@ -43,6 +50,7 @@ const elements = {
   searchInput: document.querySelector("#search-input"),
   copyMode: document.querySelector("#copy-mode"),
   includeMetadata: document.querySelector("#include-metadata"),
+  languageSelect: document.querySelector("#language-select"),
   copyButton: document.querySelector("#copy-button"),
   installApp: document.querySelector("#install-app"),
   mobileGuidePlatform: document.querySelector("#mobile-guide-platform"),
@@ -76,10 +84,13 @@ const elements = {
 let deferredInstallPrompt = null;
 let toastTimer = null;
 
-bootstrap();
+void bootstrap();
 
-function bootstrap() {
+async function bootstrap() {
+  await loadLocaleCatalog();
   restoreState();
+  state.language = normalizeLanguage(state.language);
+  applyLocale(state.language);
   bindEvents();
   registerServiceWorker();
   void maybeLoadLibraryFromQuery();
@@ -87,6 +98,14 @@ function bootstrap() {
 }
 
 function bindEvents() {
+  elements.languageSelect.addEventListener("change", (event) => {
+    const language = normalizeLanguage(event.target.value);
+    state.language = language;
+    applyLocale(language);
+    elements.searchInput.setAttribute("placeholder", t("search.placeholder"));
+    persistUiState();
+    render();
+  });
   elements.importFile.addEventListener("change", onImportFileChange);
   elements.importTrigger.addEventListener("click", openImportPicker);
   elements.clearLibrary.addEventListener("click", clearLibrary);
@@ -149,7 +168,7 @@ async function onImportFileChange(event) {
   }
   try {
     const raw = await file.text();
-    const payload = normalizeLibraryPayload(JSON.parse(raw));
+    const payload = normalizeLibraryPayload(JSON.parse(raw), localeOptions());
     state.library = payload;
     state.boardId = "all";
     state.promptId = payload.prompts[0]?.id ?? null;
@@ -162,9 +181,9 @@ async function onImportFileChange(event) {
     persistUiState();
     ensureSelection();
     render();
-    showToast(`Bibliothek geladen: ${payload.prompts.length} Prompts.`);
+    showToast(t("toast.imported", { count: payload.prompts.length }));
   } catch (error) {
-    showToast(error instanceof Error ? error.message : "Import fehlgeschlagen.");
+    showToast(t("error.import_failed", { detail: error instanceof Error ? error.message : "" }));
   } finally {
     event.target.value = "";
   }
@@ -179,9 +198,9 @@ async function maybeLoadLibraryFromQuery() {
   try {
     const response = await fetch(libraryPath, { cache: "no-store" });
     if (!response.ok) {
-      throw new Error(`Demo-Bibliothek konnte nicht geladen werden (${response.status}).`);
+      throw new Error(t("error.demo_load", { status: response.status }));
     }
-    const payload = normalizeLibraryPayload(await response.json());
+    const payload = normalizeLibraryPayload(await response.json(), localeOptions());
     state.library = payload;
     state.boardId = "all";
     state.promptId = payload.prompts[0]?.id ?? null;
@@ -194,9 +213,9 @@ async function maybeLoadLibraryFromQuery() {
     persistUiState();
     ensureSelection();
     render();
-    showToast("Demo-Bibliothek geladen.");
+    showToast(t("toast.demo_loaded"));
   } catch (error) {
-    showToast(error instanceof Error ? error.message : "Demo-Bibliothek fehlgeschlagen.");
+    showToast(t("error.demo_failed", { detail: error instanceof Error ? error.message : "" }));
   }
 }
 
@@ -208,7 +227,7 @@ function clearLibrary() {
   try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
   persistUiState();
   render();
-  showToast("Lokale Bibliothek gelöscht.");
+  showToast(t("toast.library_cleared"));
 }
 
 async function copySelection() {
@@ -220,21 +239,25 @@ async function copySelection() {
   const text = buildCopyText(prompt, version, {
     mode: state.copyMode,
     includeMetadata: state.includeMetadata,
+    labels: {
+      resultHeading: t("copy.result_heading"),
+      tagsHeading: t("copy.tags_heading", { tags: (version?.tags?.length ? version.tags : prompt.tags).join(", ") || "–" }),
+    },
   });
   try {
     await navigator.clipboard.writeText(text);
     closeCopyFallback();
-    showToast("Auswahl in die Zwischenablage kopiert.");
+    showToast(t("toast.copy_success"));
     return;
   } catch {
     if (fallbackCopy(text)) {
       closeCopyFallback();
-      showToast("Auswahl in die Zwischenablage kopiert.");
+      showToast(t("toast.copy_success"));
       return;
     }
   }
   openCopyFallback(text);
-  showToast("Zwischenablage blockiert. Bitte Text manuell kopieren.");
+  showToast(t("toast.clipboard_blocked"));
 }
 
 function fallbackCopy(text) {
@@ -256,6 +279,7 @@ function fallbackCopy(text) {
 
 function openCopyFallback(text) {
   elements.copyFallbackText.value = text;
+  elements.copyFallbackText.dir = "auto";
   elements.copyFallback.hidden = false;
   selectFallbackCopyText();
 }
@@ -281,12 +305,6 @@ function restoreState() {
   }
 
   try {
-    state.library = parseStoredLibrary(storedLibrary);
-  } catch {
-    try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
-  }
-
-  try {
     const ui = storedUi ? JSON.parse(storedUi) : {};
     state.boardId = typeof ui.boardId === "string" ? ui.boardId : "all";
     state.promptId = typeof ui.promptId === "string" ? ui.promptId : null;
@@ -294,13 +312,21 @@ function restoreState() {
     state.query = typeof ui.query === "string" ? ui.query : "";
     state.copyMode = typeof ui.copyMode === "string" ? ui.copyMode : "all";
     state.includeMetadata = ui.includeMetadata !== false;
+    state.language = normalizeLanguage(typeof ui.language === "string" ? ui.language : "de");
   } catch {
     try { localStorage.removeItem(STORAGE_KEYS.ui); } catch { /* storage blocked */ }
+  }
+
+  try {
+    state.library = parseStoredLibrary(storedLibrary, localeOptions());
+  } catch {
+    try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
   }
 
   elements.searchInput.value = state.query;
   elements.copyMode.value = state.copyMode;
   elements.includeMetadata.checked = state.includeMetadata;
+  elements.languageSelect.value = state.language;
   ensureSelection();
 }
 
@@ -315,6 +341,7 @@ function persistUiState() {
         query: state.query,
         copyMode: state.copyMode,
         includeMetadata: state.includeMetadata,
+        language: state.language,
       }),
     );
   } catch {
@@ -362,6 +389,7 @@ function getVisiblePrompts() {
   return filterPrompts(state.library, {
     query: state.query,
     boardId: state.boardId,
+    locale: state.language,
   });
 }
 
@@ -382,6 +410,7 @@ function renderQuickGuide() {
     userAgent: navigator.userAgent,
     hasInstallPrompt: Boolean(deferredInstallPrompt),
     hasLibrary: state.library != null,
+    t,
   });
   const platform = detectClientPlatform(navigator.userAgent);
   elements.mobileGuidePlatform.textContent = guide.platformLabel;
@@ -394,7 +423,7 @@ function renderQuickGuide() {
 
 function renderStats() {
   if (!state.library) {
-    elements.libraryStatus.textContent = "Keine Bibliothek geladen";
+    elements.libraryStatus.textContent = t("status.no_library");
     elements.statPrompts.textContent = "0";
     elements.statVersions.textContent = "0";
     elements.statBoards.textContent = "0";
@@ -404,8 +433,8 @@ function renderStats() {
 
   const summary = summarizeLibrary(state.library);
   const exportedAt = state.library.app.exported_at
-    ? new Date(state.library.app.exported_at).toLocaleString("de-DE")
-    : "unbekannt";
+    ? new Date(state.library.app.exported_at).toLocaleString(state.language)
+    : t("date.unknown");
   elements.libraryStatus.textContent = `${state.library.app.name} ${state.library.app.version} · ${exportedAt}`;
   elements.statPrompts.textContent = String(summary.promptCount);
   elements.statVersions.textContent = String(summary.versionCount);
@@ -417,14 +446,14 @@ function renderBoards() {
   elements.boardList.innerHTML = "";
   if (!state.library) {
     elements.boardCount.textContent = "0";
-    elements.boardList.append(buildEmptyState("Boards erscheinen nach dem ersten Import."));
+    elements.boardList.append(buildEmptyState(t("board.empty")));
     return;
   }
 
   const allButton = buildBoardCard({
     id: "all",
-    title: "Alle Prompts",
-    description: "Ohne Board-Filter",
+    title: t("board.all"),
+    description: t("board.no_filter"),
     count: state.library.prompts.length,
     active: state.boardId === "all",
   });
@@ -435,7 +464,7 @@ function renderBoards() {
     const card = buildBoardCard({
       id: board.id,
       title: board.title,
-      description: board.description || "Keine Beschreibung",
+      description: board.description || t("board.no_description"),
       count,
       active: state.boardId === board.id,
     });
@@ -450,10 +479,10 @@ function buildBoardCard({ id, title, description, count, active }) {
   button.className = `board-card${active ? " is-active" : ""}`;
   button.innerHTML = `
     <div class="board-card__title">
-      <span>${escapeHtml(title)}</span>
+      <span dir="auto">${escapeHtml(title)}</span>
       <span class="pill">${count}</span>
     </div>
-    <p class="board-card__body">${escapeHtml(description)}</p>
+    <p class="board-card__body" dir="auto">${escapeHtml(description)}</p>
   `;
   button.addEventListener("click", () => {
     state.boardId = id;
@@ -467,14 +496,14 @@ function buildBoardCard({ id, title, description, count, active }) {
 function renderPrompts() {
   elements.promptList.innerHTML = "";
   const prompts = getVisiblePrompts();
-  elements.promptCount.textContent = `${prompts.length} Treffer`;
+  elements.promptCount.textContent = t("prompt.count", { count: prompts.length });
 
   if (!state.library) {
-    elements.promptList.append(buildEmptyState("Importiere zuerst eine Bibliothek."));
+    elements.promptList.append(buildEmptyState(t("prompt.import_first")));
     return;
   }
   if (!prompts.length) {
-    elements.promptList.append(buildEmptyState("Für diese Suche oder dieses Board gibt es keine Treffer."));
+    elements.promptList.append(buildEmptyState(t("prompt.no_results")));
     return;
   }
 
@@ -484,12 +513,12 @@ function renderPrompts() {
     card.className = `prompt-card${state.promptId === prompt.id ? " is-active" : ""}`;
     card.innerHTML = `
       <div class="prompt-card__title">
-        <span>${escapeHtml(prompt.title)}</span>
-        <span class="pill">${prompt.versions.length} Versionen</span>
+        <span dir="auto">${escapeHtml(prompt.title)}</span>
+        <span class="pill">${prompt.versions.length} ${escapeHtml(t("stats.versions"))}</span>
       </div>
-      <p class="prompt-card__body">${escapeHtml(prompt.purpose || "Ohne Zweckbeschreibung")}</p>
+      <p class="prompt-card__body" dir="auto">${escapeHtml(prompt.purpose || t("detail.no_purpose"))}</p>
       <div class="tag-list">
-        ${prompt.tags.slice(0, 4).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
+        ${prompt.tags.slice(0, 4).map((tag) => `<span class="tag" dir="auto">${escapeHtml(tag)}</span>`).join("")}
       </div>
     `;
     card.addEventListener("click", () => {
@@ -509,60 +538,72 @@ function renderDetail() {
   elements.versionSelect.innerHTML = "";
 
   if (!prompt) {
-    elements.detailTitle.textContent = "Noch nichts ausgewählt";
+    elements.detailTitle.textContent = t("detail.empty_title");
+    elements.detailTitle.dir = "auto";
     elements.detailPurpose.textContent =
       state.library == null
-        ? "Lade eine Bibliothek und wähle links ein Prompt oder Board."
-        : "Wähle ein Prompt aus der Trefferliste.";
-    elements.detailTextLabel.textContent = "Aktueller Stand";
-    elements.detailText.textContent = "Noch kein Prompt gewählt.";
-    elements.detailResult.textContent = "Kein Ergebnis vorhanden.";
+        ? t("detail.empty_purpose")
+        : t("detail.choose_prompt");
+    elements.detailPurpose.dir = "auto";
+    elements.detailTextLabel.textContent = t("detail.current_state");
+    elements.detailText.textContent = t("detail.empty_text");
+    elements.detailText.dir = "auto";
+    elements.detailResult.textContent = t("detail.empty_result");
+    elements.detailResult.dir = "auto";
     elements.copyButton.disabled = true;
     elements.versionSelect.disabled = true;
     return;
   }
 
   elements.detailTitle.textContent = prompt.title;
-  elements.detailPurpose.textContent = prompt.purpose || "Ohne Zweckbeschreibung";
+  elements.detailTitle.dir = "auto";
+  elements.detailPurpose.textContent = prompt.purpose || t("detail.no_purpose");
+  elements.detailPurpose.dir = "auto";
   elements.copyButton.disabled = false;
   elements.versionSelect.disabled = false;
-  elements.detailTextLabel.textContent = version ? `Version ${version.version_number}` : "Aktueller Stand";
+  elements.detailTextLabel.textContent = version
+    ? t("detail.current_version", { number: version.version_number })
+    : t("detail.current_state");
 
   const activeTags = version?.tags?.length ? version.tags : prompt.tags;
   const meta = [
-    { label: "Tags", value: activeTags.length ? activeTags.join(", ") : "–" },
-    { label: "Aktualisiert", value: formatDate(version?.updated_at ?? prompt.updated_at) },
-    { label: "Erstellt", value: formatDate(prompt.created_at) },
+    { label: t("meta.tags"), value: activeTags.length ? activeTags.join(", ") : "–" },
+    { label: t("meta.updated"), value: formatDate(version?.updated_at ?? prompt.updated_at) },
+    { label: t("meta.created"), value: formatDate(prompt.created_at) },
   ];
   const boards = state.library.boards.filter((board) =>
     board.items.some((item) => item.prompt_id === prompt.id),
   );
   if (boards.length) {
-    meta.push({ label: "Boards", value: boards.map((board) => board.title).join(", ") });
+    meta.push({ label: t("meta.boards"), value: boards.map((board) => board.title).join(", ") });
   }
   for (const entry of meta) {
     const chip = document.createElement("span");
     chip.className = "tag";
     chip.textContent = `${entry.label}: ${entry.value}`;
+    chip.dir = "auto";
     elements.detailMeta.append(chip);
   }
 
-  const currentOption = new Option("Aktueller Prompt", "", state.versionId === "", state.versionId === "");
+  const currentOption = new Option(t("detail.current_prompt"), "", state.versionId === "", state.versionId === "");
   elements.versionSelect.append(currentOption);
   const versions = [...prompt.versions].sort((left, right) => right.version_number - left.version_number);
   for (const currentVersion of versions) {
     const option = new Option(
-      `Version ${currentVersion.version_number}: ${currentVersion.title}`,
+      t("version.option", { number: currentVersion.version_number, title: currentVersion.title }),
       currentVersion.id,
       state.versionId === currentVersion.id,
       state.versionId === currentVersion.id,
     );
+    option.dir = "auto";
     elements.versionSelect.append(option);
   }
 
   elements.detailText.textContent = version?.text ?? prompt.text ?? "";
+  elements.detailText.dir = "auto";
   elements.detailResult.textContent =
-    (version?.result ?? prompt.last_result ?? "").trim() || "Kein Ergebnis vorhanden.";
+    (version?.result ?? prompt.last_result ?? "").trim() || t("detail.empty_result");
+  elements.detailResult.dir = "auto";
 }
 
 function buildEmptyState(text) {
@@ -573,6 +614,7 @@ function buildEmptyState(text) {
 }
 
 function showToast(message) {
+  elements.toast.dir = "auto";
   elements.toast.textContent = message;
   elements.toast.hidden = false;
   window.clearTimeout(toastTimer);
@@ -586,7 +628,15 @@ function formatDate(value) {
     return "–";
   }
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("de-DE");
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString(state.language);
+}
+
+function t(key, values = {}) {
+  return translate(key, state.language, values);
+}
+
+function localeOptions() {
+  return { language: state.language, t };
 }
 
 function escapeHtml(value) {
@@ -604,7 +654,7 @@ function registerServiceWorker() {
   }
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js").catch(() => {
-      showToast("Service Worker konnte nicht registriert werden.");
+      showToast(t("error.service_worker_registration"));
     });
   });
 }

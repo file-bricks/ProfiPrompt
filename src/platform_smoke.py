@@ -34,7 +34,7 @@ class SmokeSettings:
     def get_include_metadata(self) -> bool:
         return self._include_metadata
 
-    SUPPORTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")
+    SUPPORTED_LANGUAGES = ("en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt")
 
     def get_language(self) -> str:
         lang = self.qs.value("ui/language", "de", type=str)

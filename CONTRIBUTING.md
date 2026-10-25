@@ -22,7 +22,7 @@ ProfiPrompt is an open-source, local-first PySide6 desktop workstation and offli
 7. **Local Clipboard Safety (`INV-COPY-07`)**: Clipboard copying features (Title, Prompt, Result, Full Document) operate directly through native OS memory with sanitization and zero external logging.
 8. **Deterministic Multi-Format Rendering (`INV-PRINT-08`)**: High-fidelity document generation for TXT and PDF formats through Qt's vector print engine with robust parent directory creation.
 9. **Read-Only Companion Isolation (`INV-PWA-09`)**: The Web/PWA companion (`web_companion/`) is strictly read-only, ensuring browser sessions cannot accidentally alter or corrupt the master desktop database.
-10. **Open Source Governance & 48h SLA (`INV-SLA-10`)**: MIT License, canonical attribution (`NOTICE`), multilingual parity (DE, EN, ES, ZH, JA, RU), and binding 48h response / 5-day triage security SLA.
+10. **Open Source Governance & 48h SLA (`INV-SLA-10`)**: MIT License, canonical attribution (`NOTICE`), multilingual parity (EN, DE, ES, ZH, JA, RU, FR, HI, AR, BN, PT), and binding 48h response / 5-day triage security SLA.
 
 ### Version Freeze & Release Governance
 

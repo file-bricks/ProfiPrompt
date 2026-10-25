@@ -1,7 +1,7 @@
 """
 manage_translations.py - Multi-Language Scanner & Parity Validator
 ===================================================================
-Policy P-006 Tier-2 6-Sprachen-Standard (DE, EN, ES, ZH, JA, RU).
+Runtime translation parity for the current 11-locale World-Set (EN, DE, ES, ZH, JA, RU, FR, HI, AR, BN, PT).
 
 Verwendung:
     python manage_translations.py --check
@@ -29,7 +29,7 @@ TRANSLATION_FILE = "locales/translations.json"
 
 
 def check_translations(source_dir: str = ".") -> int:
-    """Prüft translations.json auf 100% Parität über alle 6 Sprachen."""
+    """Prüft translations.json auf 100% Parität über alle 11 Laufzeitsprachen."""
     trans_file = Path(source_dir) / TRANSLATION_FILE
     if not trans_file.is_file():
         print(f"[!] Übersetzungsdatei nicht gefunden: {trans_file}")
@@ -71,7 +71,7 @@ def check_translations(source_dir: str = ".") -> int:
         print("\n[!] Translation Parity Check FEHLGESCHLAGEN.")
         return 1
 
-    print("\n[ok] 100% Parität über alle 6 Sprachen nach Policy P-006.")
+    print("\n[ok] 100% Parität über alle 11 Laufzeitsprachen nach Policy P-006.")
     return 0
 
 
@@ -97,7 +97,7 @@ def scan_and_update(source_dir: str = ".") -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="ProfiPrompt Translation Manager & Parity Validator")
-    parser.add_argument("--check", action="store_true", help="Prüfe 100% Parität über alle 6 Sprachen")
+    parser.add_argument("--check", action="store_true", help="Prüfe 100% Parität über alle 11 Laufzeitsprachen")
     parser.add_argument("--scan", action="store_true", help="Scanne Python-Dateien nach neuen Strings")
     parser.add_argument("--dir", default=".", help="Projektverzeichnis (Default: .)")
 

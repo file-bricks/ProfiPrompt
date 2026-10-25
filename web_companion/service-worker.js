@@ -1,9 +1,11 @@
-const CACHE_NAME = "profiprompt-companion-v4";
+const CACHE_NAME = "profiprompt-companion-v7";
 const ASSETS = [
   "./",
   "./index.html",
   "./app.css",
   "./app.js",
+  "./i18n.js",
+  "./translations.json",
   "./library.js",
   "./manifest.webmanifest",
   "./service-worker.js",
@@ -53,7 +55,14 @@ self.addEventListener("fetch", (event) => {
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
         return response;
-      }).catch(() => new Response("Offline", { status: 503, statusText: "Service Unavailable" }));
+      }).catch(() => {
+        if (event.request.mode === "navigate") {
+          return caches.match("./index.html").then((shell) =>
+            shell ?? new Response("", { status: 503, statusText: "Service Unavailable" }),
+          );
+        }
+        return new Response("", { status: 503, statusText: "Service Unavailable" });
+      });
     }),
   );
 });

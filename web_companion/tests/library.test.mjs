@@ -179,3 +179,50 @@ test("buildMobileGuide explains install and copy flows per platform", () => {
   assert.match(androidGuide.installText, /Installieren-Schaltfläche/);
   assert.match(androidGuide.importText, /lokal gespeichert/);
 });
+
+
+test("changing UI locale does not translate or rewrite imported user-authored fields", () => {
+  const payload = makeLibrary();
+  payload.tags = ["z", "ä", "a", "ب"];
+  const en = normalizeLibraryPayload(payload, { language: "en", t: () => "translated" });
+  const ar = normalizeLibraryPayload(payload, { language: "ar", t: () => "translated" });
+  assert.deepEqual(ar, en);
+  assert.deepEqual(ar.prompts, payload.prompts);
+  assert.deepEqual(ar.boards, payload.boards);
+  assert.equal(ar.prompts[0].id, "p1");
+  assert.equal(ar.prompts[0].title, "Code Review");
+  assert.equal(ar.prompts[0].text, "Prüfe den Patch auf Regressionen.");
+});
+
+
+test("locale changes preserve prompt, board, and tag names that match UI words", () => {
+  const source = makeLibrary();
+  source.prompts[0].title = "Datei";
+  source.prompts[0].tags = ["Schließen", "Datei"];
+  source.prompts[0].versions[0].title = "Schließen";
+  source.boards[0].title = "Schließen";
+  source.boards[0].description = "Datei";
+  source.tags = ["Schließen", "Datei"];
+
+  for (const language of ["en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt"]) {
+    const localizedUi = { Datei: `File:${language}`, Schließen: `Close:${language}` };
+    const normalized = normalizeLibraryPayload(source, {
+      language,
+      t: (key) => localizedUi[key] ?? `UI:${language}:${key}`,
+    });
+    assert.equal(normalized.prompts[0].title, "Datei");
+    assert.deepEqual(normalized.prompts[0].tags, ["Schließen", "Datei"]);
+    assert.equal(normalized.prompts[0].versions[0].title, "Schließen");
+    assert.equal(normalized.boards[0].title, "Schließen");
+    assert.equal(normalized.boards[0].description, "Datei");
+    assert.deepEqual(normalized.tags, ["Datei", "Schließen"]);
+
+    const restored = parseStoredLibrary(JSON.stringify(normalized), {
+      language,
+      t: (key) => localizedUi[key] ?? `UI:${language}:${key}`,
+    });
+    assert.equal(restored.prompts[0].title, "Datei");
+    assert.equal(restored.boards[0].title, "Schließen");
+    assert.deepEqual(restored.tags, ["Datei", "Schließen"]);
+  }
+});

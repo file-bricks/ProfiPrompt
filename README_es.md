@@ -2,13 +2,13 @@
 
 # ProfiPrompt — Estación de trabajo Local-First para gestión y control de versiones de prompts de IA
 
-[English](README.md) | [Deutsch](README_de.md) | **Español**
+[English](README.md) | [Deutsch](README_de.md) | **Español** | [简体中文](README_zh.md) | [日本語](README_ja.md) | [Русский](README_ru.md) | [Français](README_fr.md) | [हिन्दी](README_hi.md) | [العربية](README_ar.md) | [বাংলা](README_bn.md) | [Português](README_pt.md)
 
 [![Version: 1.0.2](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/file-bricks/ProfiPrompt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![UI: PySide6 (Qt6)](https://img.shields.io/badge/PySide6-Qt6-green.svg)](https://www.qt.io/)
-[![Pytest: 344 passed](https://img.shields.io/badge/Pytest-344%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
+[![Pytest: 354 passed](https://img.shields.io/badge/Pytest-354%20passed%20%7C%20100%25-brightgreen.svg)](tests/)
 [![Web Companion: 46 passed](https://img.shields.io/badge/Web%20Companion-46%20passed-brightgreen.svg)](web_companion/)
 [![Platform: Windows | macOS | Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
 [![Privacy: 100% Local-First](https://img.shields.io/badge/privacy-100%25%20Local--First%20%7C%20Zero--Egress-success.svg)]()
@@ -126,7 +126,7 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 <a id="sec-04"></a><a id="architecture"></a><a id="architektur"></a><a id="arquitectura"></a>
 ## 4. Arquitectura y flujo de datos
 
-### Topología arquitectónica de cuatro niveles
+### Topología arquitectónica de cuatro vistas
 
 ```text
 +==================================================================================================+
@@ -139,7 +139,7 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 |  | - Aislamiento RunAsInvoker: Ejecución en modo usuario sin privilegios ni UAC (INV-UNPRIV-05) |  |
 |  | - Árbol de prompts y búsqueda: Jerarquía filtrable con etiquetas de versión y contadores     |  |
 |  | - Tableros Kanban visuales: Tarjetas arrastrables, transferir/duplicar y colores a medida   |  |
-|  | - UI multilingüe en vivo: Cambio de idioma en tiempo real (DE, EN, ES, ZH, JA, RU) sin      |  |
+|  | - Interfaz en 11 idiomas: EN/DE/ES/ZH/JA/RU/FR/HI/AR/BN/PT; cambio dinámico                 |  |
 |  |   reiniciar mediante bus de eventos de retraducción y registro compartido de traducción      |  |
 |  | - Motor de portapapeles multimodal: 4 modos de copia inmediata (Cuerpo, Título, etc.) (INV)   |  |
 |  +--------------------------------------------------------------------------------------------+  |
@@ -177,6 +177,10 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 +==================================================================================================+
 ```
 
+### Idiomas de la interfaz en tiempo de ejecución
+
+La aplicación de escritorio y su compañero PWA de solo lectura ofrecen los mismos 11 idiomas de la interfaz propia: inglés, alemán, español, chino simplificado, japonés, ruso, francés, hindi, árabe, bengalí y portugués. Esta cobertura en tiempo de ejecución es independiente de la navegación de idiomas del README. La aplicación de escritorio guarda la selección en sus ajustes; la PWA la guarda con las preferencias de interfaz del navegador, separada de la biblioteca importada. En árabe, la interfaz de la aplicación se muestra de derecha a izquierda. Los selectores de archivos nativos del sistema operativo o del navegador quedan fuera del catálogo de traducción de la aplicación y siguen la localización de la plataforma anfitriona. Al cambiar el idioma de la interfaz, los prompts, tableros y etiquetas importados se muestran como fueron escritos.
+
 ### Diagrama de componentes del sistema
 
 ```mermaid
@@ -200,7 +204,7 @@ flowchart TD
 
     subgraph Companion["Compañero móvil Web / PWA"]
         PWA["UI de navegador de solo lectura (Shell offline)"]
-        LocalCache["Caché de Service Worker v4 y LocalStorage"]
+        LocalCache["Caché de Service Worker v7 y LocalStorage"]
     end
 
     UI --> PM
@@ -314,7 +318,7 @@ Sin dependencia de formatos propietarios:
 
 El repositorio incluye un compañero móvil y de navegador independiente ubicado en `web_companion/`:
 - **Inspección de solo lectura:** Visualice y busque bibliotecas de prompts exportadas en teléfonos, tabletas o monitores auxiliares.
-- **Service Worker v4 offline:** Totalmente funcional sin conexión a internet tras la carga inicial.
+- **Service Worker v7 offline:** Totalmente funcional sin conexión a internet tras la carga inicial.
 - **Instalación como PWA:** Añádalo a la pantalla de inicio en iOS (Safari) y Android (Chrome) como aplicación web independiente sin conexión.
 - **Soporte para áreas seguras (Safe Area Insets):** Interfaz adaptada a muescas y barras de gestos modernas.
 
@@ -370,7 +374,7 @@ ProfiPrompt/
 │   ├── banner.svg              # Pancarta en formato SVG vectorial
 │   └── banner_v2.svg           # Recurso vectorial ampliado
 ├── locales/                    # Catálogos de traducción
-│   └── translations.json       # Cadenas multilingües (6 idiomas)
+│   └── translations.json       # Catálogo de interfaz de 11 idiomas de ejecución
 ├── screenshots/                # Capturas de pantalla de la interfaz
 │   └── main.png                # Captura del panel principal
 ├── src/                        # Aplicación de escritorio PySide6
@@ -395,7 +399,7 @@ ProfiPrompt/
 │   ├── manifest.webmanifest    # Manifiesto de instalación PWA
 │   ├── service-worker.js       # Motor de caché de service worker sin conexión
 │   └── tests/                  # Suite de pruebas automatizadas en Node.js (46 pruebas)
-├── tests/                      # Suite de pruebas de regresión en Pytest (293+ pruebas)
+├── tests/                      # Suite de pruebas de regresión en Pytest (354 pruebas)
 ├── CHANGELOG.md                # Registro de cambios (Keep a Changelog)
 ├── CONTRIBUTING.md             # Directrices de contribución e invariantes de tiempo de ejecución
 ├── EXPORTFORMAT.md             # Especificación estandarizada de biblioteca JSON
@@ -419,13 +423,13 @@ ProfiPrompt/
 <a id="sec-14"></a><a id="testing"></a><a id="qa"></a><a id="qualitaetssicherung"></a><a id="pruebas"></a>
 ## 14. Pruebas y control de calidad
 
-ProfiPrompt cuenta con el respaldo de **390 pruebas automatizadas** (344 Python Pytest + 46 Node.js Web Companion, 100% superadas) que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
+ProfiPrompt cuenta con el respaldo de **400 pruebas automatizadas** (354 Python Pytest + 46 Node.js Web Companion, 100% superadas) que validan la lógica de negocio, la persistencia de datos, el portapapeles, la robustez de los diálogos, la paridad lingüística y la funcionalidad del compañero web:
 
 ```bash
-# Ejecutar suite de pruebas unitarias y de integración de Python (344 superadas, 3 omitidas)
+# Ejecutar suite de pruebas unitarias y de integración de Python (354 superadas, 3 omitidas)
 pytest -v
 
-# Validar paridad del 100% de traducciones en los 6 idiomas (Policy P-006)
+# Validar paridad del 100% de traducciones en los 11 idiomas (Policy P-006)
 python manage_translations.py --check
 
 # Ejecutar suite de pruebas en Node.js del compañero Web (46 superadas)

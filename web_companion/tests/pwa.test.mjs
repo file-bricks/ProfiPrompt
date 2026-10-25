@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { applyLocale, getAvailableLanguages, loadLocaleCatalog, REQUIRED_UI_KEYS, translate } from "../i18n.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
@@ -12,6 +13,8 @@ const swSrc = readFileSync(resolve(root, "service-worker.js"), "utf8");
 const indexSrc = readFileSync(resolve(root, "index.html"), "utf8");
 const appSrc = readFileSync(resolve(root, "app.js"), "utf8");
 const cssSrc = readFileSync(resolve(root, "app.css"), "utf8");
+const localeCatalog = JSON.parse(readFileSync(resolve(root, "translations.json"), "utf8"));
+const WORLDSET_LOCALES = ["en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt"];
 
 // --- manifest tests ---
 
@@ -71,8 +74,8 @@ test("SW CACHE_NAME enthält 'profiprompt'", () => {
   assert.match(swSrc, /profiprompt/i);
 });
 
-test("SW CACHE_NAME ist v4 (nicht mehr v3)", () => {
-  assert.match(swSrc, /profiprompt-companion-v4/);
+test("SW CACHE_NAME ist v7 und enthält die lokalisierte Offline-Laufzeit", () => {
+  assert.match(swSrc, /profiprompt-companion-v7/);
   assert.doesNotMatch(swSrc, /profiprompt-companion-v2/);
 });
 
@@ -170,4 +173,96 @@ test("app.css enthält safe-area-inset-Werte für .shell", () => {
 
 test("app.css nutzt env(safe-area-inset-bottom) im toast", () => {
   assert.match(cssSrc, /safe-area-inset-bottom/);
+});
+
+
+async function loadBoundLocaleCatalog() {
+  const previousFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify(localeCatalog), { status: 200 });
+  try {
+    return await loadLocaleCatalog();
+  } finally {
+    globalThis.fetch = previousFetch;
+  }
+}
+
+test("PWA locale catalog is complete for all 94 keys and 11 World-Set locales", async () => {
+  assert.equal(Object.keys(localeCatalog).length, 94);
+  assert.equal(REQUIRED_UI_KEYS.length, 94);
+  assert.equal(new Set(REQUIRED_UI_KEYS).size, 94);
+  for (const key of REQUIRED_UI_KEYS) {
+    assert.ok(localeCatalog[key], `PWA locale key missing: ${key}`);
+    for (const locale of WORLDSET_LOCALES) {
+      assert.equal(typeof localeCatalog[key][locale], "string", `${key} missing ${locale}`);
+      assert.ok(localeCatalog[key][locale].trim(), `${key} empty for ${locale}`);
+    }
+  }
+  assert.deepEqual(await loadBoundLocaleCatalog(), WORLDSET_LOCALES);
+});
+
+test("PWA applies Arabic RTL, translated labels, and localized language selection", async () => {
+  await loadBoundLocaleCatalog();
+  const attributes = {};
+  const html = { setAttribute: (name, value) => { attributes[name] = value; } };
+  const description = {};
+  const heading = { dataset: { i18n: "board.heading" }, textContent: "" };
+  const languageLabel = { dataset: { i18n: "language.label" }, textContent: "" };
+  const placeholder = { dataset: { i18nPlaceholder: "search.placeholder" }, setAttribute(name, value) { this[name] = value; } };
+  const languageSelect = {
+    dataset: { i18nAriaLabel: "language.label" },
+    options: WORLDSET_LOCALES.map((value) => ({ value, disabled: true })),
+    attrs: {},
+    setAttribute(name, value) { this.attrs[name] = value; },
+    value: "",
+    disabled: true,
+  };
+  const root = {
+    documentElement: html,
+    title: "",
+    querySelector(selector) {
+      if (selector === 'meta[name="description"]') return description;
+      if (selector === "#language-select") return languageSelect;
+      return null;
+    },
+    querySelectorAll(selector) {
+      if (selector === "[data-i18n]") return [heading, languageLabel];
+      if (selector === "[data-i18n-placeholder]") return [placeholder];
+      if (selector === "[data-i18n-aria-label]") return [languageSelect];
+      return [];
+    },
+  };
+
+  applyLocale("ar", root);
+  assert.equal(attributes.lang, "ar");
+  assert.equal(attributes.dir, "rtl");
+  assert.equal(languageSelect.value, "ar");
+  assert.equal(languageSelect.disabled, false);
+  assert.ok(languageSelect.options.every((option) => option.disabled === false));
+  assert.equal(languageSelect.attrs["aria-label"], translate("language.label", "ar"));
+  assert.equal(heading.textContent, translate("board.heading", "ar"));
+  assert.equal(languageLabel.textContent, translate("language.label", "ar"));
+  assert.equal(placeholder.placeholder, translate("search.placeholder", "ar"));
+  assert.equal(description.content, translate("html.description", "ar"));
+  assert.equal(root.title, translate("html.title", "ar"));
+});
+
+test("PWA persists locale only with UI state and leaves the library record separate", () => {
+  assert.match(appSrc, /elements\.languageSelect\.addEventListener\("change"/);
+  assert.match(appSrc, /applyLocale\(language\);[\s\S]{0,180}persistUiState\(\)/);
+  assert.match(appSrc, /state\.language = normalizeLanguage\(typeof ui\.language === "string" \? ui\.language : "de"\)/);
+  const uiState = appSrc.slice(appSrc.indexOf("function persistUiState"), appSrc.indexOf("function ensureSelection"));
+  assert.match(uiState, /STORAGE_KEYS\.ui/);
+  assert.match(uiState, /language:\s*state\.language/);
+  assert.doesNotMatch(uiState, /STORAGE_KEYS\.library/);
+  assert.match(appSrc, /error\.service_worker_registration/);
+  assert.match(indexSrc, /id="language-select"[^>]*data-i18n-aria-label="language\.label"/);
+  assert.match(indexSrc, /<html lang="de" dir="ltr">/);
+});
+
+
+test("offline navigation uses the cached localized shell without an untranslated response body", () => {
+  assert.match(swSrc, /event\.request\.mode === "navigate"/);
+  assert.match(swSrc, /caches\.match\("\.\/index\.html"\)/);
+  assert.match(swSrc, /new Response\("", \{ status: 503/);
+  assert.doesNotMatch(swSrc, /new Response\("Offline"/);
 });

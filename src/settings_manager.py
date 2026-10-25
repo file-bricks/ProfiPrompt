@@ -42,18 +42,31 @@ class SettingsManager(QtCore.QObject):
             self.qs.sync()
             self.copyModeChanged.emit(mode)
 
-    SUPPORTED_LANGUAGES = ("de", "en", "es", "zh", "ja", "ru")
+    SUPPORTED_LANGUAGES = ("en", "de", "es", "zh", "ja", "ru", "fr", "hi", "ar", "bn", "pt")
+
+    def _available_languages(self):
+        try:
+            from i18n import TranslationSystem, app_base_dir
+            catalog_dir = app_base_dir()
+        except Exception:
+            catalog_dir = Path(__file__).resolve().parent.parent
+        try:
+            return TranslationSystem("de", app_dir=catalog_dir, auto_register=False).get_available_languages()
+        except Exception:
+            return ("de",)
 
     def get_language(self) -> str:
-        """Gespeicherte UI-Sprache ('de', 'en', 'es', 'zh', 'ja', 'ru'), Default 'de'."""
+        """Gespeicherte UI-Sprache; incomplete locale catalogs fall back to 'de'."""
         lang = self.qs.value("ui/language", "de", type=str)
-        return lang if lang in self.SUPPORTED_LANGUAGES else "de"
+        return lang if lang in self._available_languages() else "de"
 
     def set_language(self, lang: str):
         """Persistiert die UI-Sprache in den QSettings."""
-        if lang in self.SUPPORTED_LANGUAGES:
+        if lang in self._available_languages():
             self.qs.setValue("ui/language", lang)
             self.qs.sync()
+            return True
+        return False
 
     # --- Theme (Welle-1 U2: Hell/Dunkel) ---
     def get_theme(self) -> str:
