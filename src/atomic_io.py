@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import os
 import stat
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Iterable
@@ -25,7 +26,7 @@ def resolve_path(path: str | Path) -> Path:
 
 
 def is_protected_path(target: str | Path, protected_paths: Iterable[str | Path] | None) -> bool:
-    """Check whether target matches or aliases any protected path."""
+    """Check whether target matches, aliases, or contains any protected path."""
     if not protected_paths:
         return False
     target_resolved = resolve_path(target)
@@ -36,6 +37,9 @@ def is_protected_path(target: str | Path, protected_paths: Iterable[str | Path] 
             prot_resolved = resolve_path(protected)
             if target_resolved == prot_resolved:
                 return True
+            # Reject if target is an ancestor directory containing a protected path
+            if target_resolved in prot_resolved.parents:
+                return True
             if target_resolved.exists() and prot_resolved.exists():
                 try:
                     if os.path.samefile(target_resolved, prot_resolved):
@@ -45,6 +49,35 @@ def is_protected_path(target: str | Path, protected_paths: Iterable[str | Path] 
         except (OSError, RuntimeError, ValueError):
             continue
     return False
+
+
+def _atomic_replace_with_retry(
+    tmp_path: Path,
+    target_path: Path,
+    max_retries: int = 10,
+    initial_delay: float = 0.01,
+) -> None:
+    """Atomically replace target_path with tmp_path, retrying on transient Windows file locks."""
+    delay = initial_delay
+    for attempt in range(max_retries):
+        if target_path.exists():
+            try:
+                os.chmod(target_path, stat.S_IWRITE | stat.S_IREAD)
+            except OSError:
+                pass
+        try:
+            os.replace(tmp_path, target_path)
+            return
+        except (PermissionError, OSError) as exc:
+            # On Windows, transient locks from antivirus, indexers, or OneDrive cause
+            # PermissionError [WinError 5] or OSError [WinError 32] (sharing violation).
+            winerror = getattr(exc, "winerror", None)
+            is_transient = winerror in (5, 32) or isinstance(exc, PermissionError)
+            if is_transient and attempt < max_retries - 1:
+                time.sleep(delay)
+                delay = min(delay * 2, 0.25)
+                continue
+            raise
 
 
 def atomic_write_text(
@@ -64,6 +97,10 @@ def atomic_write_text(
     - Preserves existing target file untouched if writing or replace fails.
     """
     target_path = Path(target)
+    if target_path.is_dir() or str(target).endswith(("/", "\\")):
+        raise IsADirectoryError(
+            f"Zielpfad '{target_path}' ist ein Verzeichnis und kann nicht direkt als Datei geschrieben werden."
+        )
     if is_protected_path(target_path, protected_paths):
         raise PermissionError(
             f"Zielpfad '{target_path}' darf keine geschützte Bibliotheksdatei überschreiben."
@@ -81,13 +118,7 @@ def atomic_write_text(
             # A failed durability check must preserve the previous file.
             os.fsync(f.fileno())
 
-        if target_path.exists():
-            try:
-                os.chmod(target_path, stat.S_IWRITE | stat.S_IREAD)
-            except OSError:
-                pass
-
-        os.replace(tmp_path, target_path)
+        _atomic_replace_with_retry(tmp_path, target_path)
         return target_path
     finally:
         if tmp_path.exists():
@@ -122,6 +153,11 @@ def atomic_publish_file(
     tmp_path = Path(source_tmp)
     target_path = Path(target)
 
+    if target_path.is_dir() or str(target).endswith(("/", "\\")):
+        raise IsADirectoryError(
+            f"Zielpfad '{target_path}' ist ein Verzeichnis und kann nicht direkt publiziert werden."
+        )
+
     if is_protected_path(target_path, protected_paths):
         raise PermissionError(
             f"Zielpfad '{target_path}' darf keine geschützte Bibliotheksdatei überschreiben."
@@ -138,12 +174,7 @@ def atomic_publish_file(
 
     try:
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        if target_path.exists():
-            try:
-                os.chmod(target_path, stat.S_IWRITE | stat.S_IREAD)
-            except OSError:
-                pass
-        os.replace(tmp_path, target_path)
+        _atomic_replace_with_retry(tmp_path, target_path)
         return target_path
     finally:
         if tmp_path.exists():

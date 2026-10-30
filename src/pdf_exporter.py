@@ -114,8 +114,31 @@ def export_single_prompt_with_versions(prompt, settings, path: str, parent=None,
     html = "<html><body>" + "".join(parts) + "</body></html>"
     return _safe_export_html_to_pdf(html, path, parent, protected_paths=protected_paths)
 
+DEFAULT_PDF_EXPORT_NAME = "prompt.pdf"
+
+
+def resolve_pdf_export_path(path: str | Path, default_name: str = DEFAULT_PDF_EXPORT_NAME) -> Path:
+    """Resolve a PDF export path, ensuring directories and trailing slashes append default_name, and .pdf is preserved."""
+    raw_str = str(path).strip()
+    if not raw_str:
+        return Path(default_name)
+    p = Path(raw_str)
+    if p.is_dir() or raw_str.endswith(("/", "\\")):
+        return p / default_name
+    if not p.suffix:
+        return p.with_suffix(".pdf")
+    return p
+
+
 def _export_html_to_pdf(html: str, path: str, parent=None, protected_paths: Optional[Iterable[str | Path]] = None) -> bool:
-    target_path = Path(path)
+    raw_path = Path(path)
+    if is_protected_path(raw_path, protected_paths):
+        msg = f"Zielpfad '{raw_path}' darf keine geschützte Bibliotheksdatei überschreiben."
+        if parent:
+            QMessageBox.critical(parent, tr("Fehler"), tr("PDF-Export fehlgeschlagen:\n{error}", error=msg))
+        return False
+
+    target_path = resolve_pdf_export_path(raw_path)
     if is_protected_path(target_path, protected_paths):
         msg = f"Zielpfad '{target_path}' darf keine geschützte Bibliotheksdatei überschreiben."
         if parent:

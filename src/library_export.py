@@ -14,6 +14,27 @@ from models import Board, Prompt, board_to_dict, prompt_to_dict
 SCHEMA_VERSION = "profiprompt-library-v1"
 APP_NAME = "ProfiPrompt"
 APP_VERSION = __version__
+DEFAULT_LIBRARY_EXPORT_NAME = "profiprompt-library-v1.json"
+
+
+def resolve_library_export_path(path: str | Path) -> Path:
+    """Resolve an export path into a validated target file path.
+
+    Handles directory paths and trailing slashes by appending the canonical
+    export filename 'profiprompt-library-v1.json'. Appends '.json' if extension
+    is missing.
+    """
+    raw_str = str(path).strip()
+    if not raw_str:
+        return Path(DEFAULT_LIBRARY_EXPORT_NAME)
+
+    p = Path(raw_str)
+    if p.is_dir() or raw_str.endswith(("/", "\\")):
+        return p / DEFAULT_LIBRARY_EXPORT_NAME
+
+    if not p.suffix:
+        return p.with_suffix(".json")
+    return p
 
 
 def build_library_export(storage, exported_at: str | None = None) -> dict[str, Any]:
@@ -43,13 +64,14 @@ def build_library_export(storage, exported_at: str | None = None) -> dict[str, A
 
 def write_library_export(storage, path: str | Path) -> dict[str, Any]:
     """Write the portable library export as UTF-8 JSON and return the payload."""
+    target_path = resolve_library_export_path(path)
     payload = build_library_export(storage)
     protected = []
     if hasattr(storage, "prompts_file"):
         protected.append(storage.prompts_file)
     if hasattr(storage, "boards_file"):
         protected.append(storage.boards_file)
-    atomic_write_json(path, payload, indent=2, protected_paths=protected)
+    atomic_write_json(target_path, payload, indent=2, protected_paths=protected)
     return payload
 
 

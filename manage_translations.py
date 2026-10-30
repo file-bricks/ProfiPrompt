@@ -14,7 +14,7 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -26,11 +26,22 @@ from translator import TranslationSystem
 
 SUPPORTED_LANGUAGES = TranslationSystem.SUPPORTED_LANGUAGES
 TRANSLATION_FILE = "locales/translations.json"
+APP_DIR = Path(__file__).resolve().parent
 
 
-def check_translations(source_dir: str = ".") -> int:
+def _resolve_source_dir(source_dir: Optional[str] = None) -> Path:
+    """Löst das Quellverzeichnis CWD-unabhängig auf."""
+    if source_dir and source_dir != ".":
+        return Path(source_dir)
+    if (Path(".") / TRANSLATION_FILE).is_file():
+        return Path(".")
+    return APP_DIR
+
+
+def check_translations(source_dir: Optional[str] = None) -> int:
     """Prüft translations.json auf 100% Parität über alle 6 Sprachen."""
-    trans_file = Path(source_dir) / TRANSLATION_FILE
+    base_dir = _resolve_source_dir(source_dir)
+    trans_file = base_dir / TRANSLATION_FILE
     if not trans_file.is_file():
         print(f"[!] Übersetzungsdatei nicht gefunden: {trans_file}")
         return 1
@@ -75,9 +86,10 @@ def check_translations(source_dir: str = ".") -> int:
     return 0
 
 
-def scan_and_update(source_dir: str = ".") -> int:
-    ts = TranslationSystem("de", app_dir=Path(source_dir))
-    stats = ts.scan_and_update(Path(source_dir))
+def scan_and_update(source_dir: Optional[str] = None) -> int:
+    base_dir = _resolve_source_dir(source_dir)
+    ts = TranslationSystem("de", app_dir=base_dir)
+    stats = ts.scan_and_update(base_dir)
     print(f"[+] Gesamt: {stats['total']} Keys in {ts.translations_file}")
     if stats["added"]:
         print(f"[+] {len(stats['added'])} neue Keys hinzugefügt.")

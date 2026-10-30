@@ -23,12 +23,28 @@ from pdf_exporter import (
 
 _ICON_DIR = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "icons")
 
+WINDOWS_RESERVED_NAMES = {
+    "CON", "PRN", "AUX", "NUL",
+    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+}
+
 
 def sanitize_export_filename(name: Optional[str], default: str = "prompt") -> str:
-    """Bereinigt Dateinamen für den Export von verbotenen Zeichen unter Windows."""
+    """Bereinigt Dateinamen für den Export von verbotenen Zeichen und Windows-Gerätenamen."""
     if not name:
         return default
+    # Verbotene Steuer- und Trennzeichen unter Windows ersetzen
     clean = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '_', str(name)).strip(' ._')
+    if not clean:
+        return default
+    # Windows-reservierte Gerätenamen (CON, PRN, AUX, NUL, COM1-9, LPT1-9) neutralisieren
+    stem = clean.split('.')[0].upper()
+    if stem in WINDOWS_RESERVED_NAMES:
+        clean = f"_{clean}"
+    # Überlängen kürzen, um MAX_PATH-Probleme unter Windows zu vermeiden
+    if len(clean) > 120:
+        clean = clean[:120].rstrip(' ._')
     return clean or default
 
 

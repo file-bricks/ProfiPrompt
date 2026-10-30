@@ -5,6 +5,20 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bugsweep & Dateisystem-Resilienz (2026-10-30)
+
+- **Windows-atomare Dateisystem-Resilienz (`src/atomic_io.py`):**
+  - `_atomic_replace_with_retry` implementiert: Fängt transiente Windows-Sperren (`PermissionError [WinError 5]` und `OSError [WinError 32]` Sharing Violation durch OneDrive-Sync, Antivirus oder Search Indexer) bei atomaren Schreibvorgängen mit exponentieller Backoff-Retry-Schleife (bis zu 10 Versuche) sauber ab.
+  - Verzeichnisschutz & Ancestor-Check: `is_protected_path()` erkennt jetzt auch Verzeichnispfade und übergeordnete Verzeichnisse geschützter Bibliotheksdateien (`storage.data_dir`); `atomic_write_text()` und `atomic_publish_file()` weisen Verzeichnispfade mit `IsADirectoryError` ab.
+- **Export-Pfadauflösung & Format-Resilienz (`src/library_export.py`, `src/pdf_exporter.py`):**
+  - `resolve_library_export_path()` und `resolve_pdf_export_path()` implementiert: Verzeichnispfade und Pfade mit Schrägstrichen (`/` oder `\`) werden automatisch auf die kanonischen Standarddateinamen (`profiprompt-library-v1.json`, `prompt.pdf`) aufgelöst; fehlende Dateiendungen werden ergänzt.
+- **Windows-Gerätenamen & Dateinamen-Sanitization (`src/dashboard.py`):**
+  - `sanitize_export_filename()` neutralisiert Windows-reservierte Gerätenamen (`CON`, `PRN`, `AUX`, `NUL`, `COM1-9`, `LPT1-9`) mit vorangestelltem Unterstrich (`_CON`) und begrenzt Dateinamen auf 120 Zeichen zur Vermeidung von `MAX_PATH`-Ausnahmen.
+- **CWD-Unabhängigkeit für Übersetzungsmanagement (`manage_translations.py`):**
+  - `manage_translations.py` bindet `source_dir` robust an das Skriptverzeichnis (`APP_DIR`), sodass `--check` und `--scan` aus beliebigen Arbeitsverzeichnissen fehlerfrei ausgeführt werden können.
+- **Automatisierte Vertragstests (`tests/test_bugsweep_export_path_and_atomic_replace_20261030.py`):**
+  - 8 neue hermetische Regressionstests für alle 5 Facetten implementiert (8/8 passed).
+
 ### Pfad B / Marketing, Discoverability, Visual Architecture & Level 1 SBOM (2026-10-11)
 
 - **Trilinguale ASCII Vier-Ebenen-Architekturtopologie (`README.md`, `README_de.md`, `README_es.md`):**
