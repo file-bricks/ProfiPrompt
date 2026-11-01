@@ -70,7 +70,7 @@ class Storage:
     
     def get_prompt(self, prompt_id: str) -> Optional[Prompt]:
         for p in self.load_prompts():
-            if p.id == prompt_id:
+            if p and getattr(p, "id", None) == prompt_id:
                 return p
         return None
 
@@ -91,7 +91,7 @@ class Storage:
     @_locked
     def upsert_prompt(self, prompt: Prompt):
         prompts = self.load_prompts(strict=True)
-        idx = next((i for i, p in enumerate(prompts) if p.id == prompt.id), -1)
+        idx = next((i for i, p in enumerate(prompts) if p and getattr(p, "id", None) == prompt.id), -1)
         if idx >= 0:
             prompts[idx] = prompt
         else:
@@ -100,14 +100,17 @@ class Storage:
 
     @_locked
     def delete_prompt(self, prompt_id: str):
-        prompts = [p for p in self.load_prompts(strict=True) if p.id != prompt_id]
+        prompts = [p for p in self.load_prompts(strict=True) if p and getattr(p, "id", None) != prompt_id]
         boards = self.load_boards(strict=True)
         self._write_prompts(prompts)
-        # Bugsweep 2026-09-18 BUG-VD03: Verwaiste Board-Referenzen entfernen
+        # Bugsweep 2026-09-18 BUG-VD03 / 2026-11-01: Verwaiste Board-Referenzen entfernen (None-resilient)
         changed = False
         for b in boards:
-            orig_len = len(b.items)
-            b.items = [it for it in b.items if it and it.prompt_id != prompt_id]
+            if not b:
+                continue
+            items = getattr(b, "items", None) or []
+            orig_len = len(items)
+            b.items = [it for it in items if it and getattr(it, "prompt_id", None) != prompt_id]
             if len(b.items) != orig_len:
                 changed = True
         if changed:
@@ -161,8 +164,11 @@ class Storage:
         self._write_prompts(prompts)
         changed = False
         for b in boards:
-            orig_len = len(b.items)
-            b.items = [it for it in (getattr(b, "items", []) or []) if not (it and getattr(it, "prompt_id", None) == prompt_id and getattr(it, "version_id", None) == version_id)]
+            if not b:
+                continue
+            items = getattr(b, "items", None) or []
+            orig_len = len(items)
+            b.items = [it for it in items if not (it and getattr(it, "prompt_id", None) == prompt_id and getattr(it, "version_id", None) == version_id)]
             if len(b.items) != orig_len:
                 changed = True
         if changed:
@@ -216,7 +222,7 @@ class Storage:
     @_locked
     def upsert_board(self, board: Board):
         boards = self.load_boards(strict=True)
-        idx = next((i for i, b in enumerate(boards) if b.id == board.id), -1)
+        idx = next((i for i, b in enumerate(boards) if b and getattr(b, "id", None) == board.id), -1)
         if idx >= 0:
             boards[idx] = board
         else:
@@ -225,7 +231,7 @@ class Storage:
 
     @_locked
     def delete_board(self, board_id: str):
-        boards = [b for b in self.load_boards(strict=True) if b.id != board_id]
+        boards = [b for b in self.load_boards(strict=True) if b and getattr(b, "id", None) != board_id]
         self._write_boards(boards)
 
     @_locked
@@ -260,9 +266,10 @@ class Storage:
     def remove_item_from_board(self, board_id: str, prompt_id: str, version_id: Optional[str] = None) -> bool:
         boards = self.load_boards(strict=True)
         for board in boards:
-            if board.id == board_id:
-                for index, item in enumerate(board.items):
-                    if item and item.prompt_id == prompt_id and item.version_id == version_id:
+            if board and getattr(board, "id", None) == board_id:
+                items = getattr(board, "items", None) or []
+                for index, item in enumerate(items):
+                    if item and getattr(item, "prompt_id", None) == prompt_id and getattr(item, "version_id", None) == version_id:
                         board.items.pop(index)
                         self._write_boards(boards)
                         return True

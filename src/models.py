@@ -94,20 +94,33 @@ def board_to_dict(b: Board) -> Dict[str, Any]:
     return asdict(b)
 
 
-def version_from_dict(v: Dict[str, Any]) -> Version:
-    """Reconstruct a Version from a dict (feldweise, schema-drift-robust)."""
-    # Bugsweep 19 BUG-01: feldweise statt Version(**v) -> ein unbekannter ODER fehlender Key
-    # in alten/fremden JSONs (z.B. library_export-Import) brach sonst den GANZEN load_prompts
-    # mit TypeError/KeyError (der JSONDecodeError-Guard greift dafuer NICHT). id/prompt_id hart
-    # (echter Bruch statt Zombie-Objekt mit id=None), Rest mit Defaults -> alle Felder erhalten.
+def _normalize_tags(raw: Any) -> List[str]:
+    """Normalisiert Tags robust zu einer Liste getrimmter, nicht-leerer Strings.
+
+    Unterstützt kommagetrennte Strings ('coding, python') sowie Listen/Iterables
+    mit beliebigen Typen, filtert None-Werte und Leerstrings aus.
+    """
+    if isinstance(raw, str):
+        return [t.strip() for t in raw.split(",") if t.strip()]
+    if isinstance(raw, (list, tuple, set)):
+        return [str(t).strip() for t in raw if t is not None and str(t).strip()]
+    return []
+
+
+def version_from_dict(v: Dict[str, Any], default_prompt_id: str = "") -> Version:
+    """Reconstruct a Version from a dict (feldweise, schema-drift-robust).
+
+    Bugsweep 2026-11-01: Defensive .get()-Defaults mit gen_id() für fehlende/leere IDs
+    und default_prompt_id-Vererbung verhindern KeyError bei unvollständigen Version-Dicts.
+    """
     return Version(
-        id=v["id"],
-        prompt_id=v["prompt_id"],
+        id=v.get("id") or gen_id(),
+        prompt_id=v.get("prompt_id") or default_prompt_id,
         version_number=v.get("version_number") or 0,
         title=v.get("title") or "",
         text=v.get("text") or "",
         result=v.get("result") or "",
-        tags=v.get("tags") or [],
+        tags=_normalize_tags(v.get("tags")),
         created_at=v.get("created_at") or now_iso(),
         updated_at=v.get("updated_at") or now_iso(),
     )
@@ -116,19 +129,23 @@ def version_from_dict(v: Dict[str, Any]) -> Version:
 def prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     """Reconstruct a Prompt (and its Versions) from a dict (feldweise, schema-drift-robust).
 
-    Bugsweep 28 BUG-PS01: title=d["title"] warf KeyError bei alten/fremden JSON-Exporten
-    ohne 'title'-Feld und riss den gesamten load_prompts mit — exakt der Failure-Mode,
-    den version_from_dict/boarditem_from_dict in Sweep 19 bereits behoben hatten.
-    id bleibt hart (Zombie-Objekt mit id=None wäre schlechter), Rest mit .get()-Defaults.
+    Bugsweep 28 BUG-PS01 / Bugsweep 2026-11-01: title=d["title"] warf KeyError bei alten/fremden
+    JSON-Exporten ohne 'title'-Feld und riss den gesamten load_prompts mit. Fehlendes 'id' wirft
+    weiterhin KeyError (Zombie-Schutz), aber explizites id=None oder Leerstring wird defensiv
+    durch gen_id() ersetzt. default_prompt_id-Vererbung an verschachtelte Versionen und robuste
+    Tag-Normalisierung (_normalize_tags).
     """
+    if "id" not in d:
+        raise KeyError("id")
+    prompt_id = d["id"] or gen_id()
     versions_data = d.get("versions") or []
-    versions = [version_from_dict(v) for v in versions_data if isinstance(v, dict)]
+    versions = [version_from_dict(v, default_prompt_id=prompt_id) for v in versions_data if isinstance(v, dict)]
     return Prompt(
-        id=d["id"],
+        id=prompt_id,
         title=d.get("title") or "",
         purpose=d.get("purpose") or "",
         text=d.get("text") or "",
-        tags=d.get("tags") or [],
+        tags=_normalize_tags(d.get("tags")),
         last_result=d.get("last_result") or "",
         created_at=d.get("created_at") or now_iso(),
         updated_at=d.get("updated_at") or now_iso(),

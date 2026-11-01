@@ -5,6 +5,20 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Bugsweep: Schema-Drift, None-Resilienz & Tag-Normalisierung (2026-11-01)
+
+- **Schema-Drift-Resilienz & Vererbung (`src/models.py`):**
+  - `prompt_from_dict`: Explizites `id=None` oder leerer String wird defensiv durch `gen_id()` ersetzt (behebt unvollständige Imports).
+  - `version_from_dict`: Fehlende oder leere `id` und `prompt_id` werden defensiv abgefangen (`v.get("id") or gen_id()`, `v.get("prompt_id") or default_prompt_id`), sodass verschachtelte Versionen ohne redundante Prompt-ID fehlerfrei deserialisiert werden und kein `KeyError` die gesamte Prompt-Bibliothek leert.
+  - `_normalize_tags`: Robuste Normalisierung von Tags aus Strings (z. B. `'coding, python'`) oder heterogenen Listen (Bereinigung von None, Leerstrings und Whitespace) verhindert Zeichen-Zerlegung und Filter-Fehler im Dashboard.
+- **None- und Collection-Resilienz in der Speicher-Engine (`src/storage.py`):**
+  - `get_prompt`: Defensive `p and getattr(p, "id", None) == prompt_id`-Prüfung verhindert `AttributeError` bei None-Einträgen in der Prompt-Liste.
+  - `delete_prompt` & `delete_version`: Defensive `getattr(b, "items", None) or []`-Absicherung verhindert `TypeError: object of type 'NoneType' has no len()` und `AttributeError`, wenn Boards ohne Items-Attribut oder mit `items = None` geladen werden; sichert synchrone Konsistenz zwischen Prompts und Boards.
+  - `delete_board` & `upsert_board` / `upsert_prompt`: Lückenlose Absicherung gegen `None`-Einträge in Board- und Prompt-Listen.
+  - `remove_item_from_board`: Lückenlose Absicherung gegen `board is None` und `board.items is None`.
+- **Automatisierte Vertragstests (`tests/test_bugsweep_models_storage_resilience_20261101.py`):**
+  - 9 neue hermetische Regressionstests für alle Facetten implementiert (9/9 passed).
+
 ### Bugsweep & Dateisystem-Resilienz (2026-10-30)
 
 - **Windows-atomare Dateisystem-Resilienz (`src/atomic_io.py`):**
