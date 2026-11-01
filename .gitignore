@@ -44,6 +44,8 @@ LOCK.permissions.json
 *.lock
 uv.lock
 !package-lock.json
+*MARKETING-LOG.txt
+*STATUS-LOG.txt
 
 # ---- Persönliche / sensible Daten ----
 _USER/
@@ -101,6 +103,8 @@ ehthumbs.db
 .pytest_cache/
 .pytest_temp/
 .pytest_tmp*/
+pytest_out.txt
+pytest*.txt
 
 # ---- Projektspezifisch ----
 .prompt_manager/

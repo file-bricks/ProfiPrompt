@@ -30,6 +30,7 @@ Wenn Sie eine Sicherheitslücke oder ein Datenschutzrisiko in ProfiPrompt entdec
 2. **Direkter E-Mail-Kontakt:** Alternativ können Sie sich an unsere Sicherheitskoordinatoren wenden:
    - security@file-bricks.org
    - security@open-bricks.org
+   - security@ellmos.ai
    - support@lukasgeiger.com
 
 ### Reaktionszeiten & SLAs
@@ -72,6 +73,7 @@ If you discover a security vulnerability or sensitive data issue in ProfiPrompt:
 2. **Direct Security Email:** Alternatively, email our security coordinators directly:
    - security@file-bricks.org
    - security@open-bricks.org
+   - security@ellmos.ai
    - support@lukasgeiger.com
 
 ### Response SLAs & Vulnerability Handling

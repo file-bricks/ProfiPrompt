@@ -32,8 +32,28 @@ def test_dependency_vulnerability_floors() -> None:
     assert "ruff>=0.9.0" in pyproject_text, "pyproject.toml dev dependencies must require ruff>=0.9.0"
     assert "pyinstaller>=6.10.0" in pyproject_text, "pyproject.toml build dependencies must require pyinstaller>=6.10.0"
 
+    # Pytest tool configuration minversion floor
+    assert 'minversion = "9.1.1"' in pyproject_text, "pyproject.toml pytest.ini_options must pin minversion = '9.1.1'"
+
     # Check author contact email
     assert "support@lukasgeiger.com" in pyproject_text, "pyproject.toml must use official support email"
+
+
+def test_pep639_license_specification_and_classifier_exclusion() -> None:
+    """Ensure pyproject.toml adheres to PEP 639 and GITHUB-POLICY section 4."""
+    pyproject_file = ROOT / "pyproject.toml"
+    assert pyproject_file.is_file()
+    pyproject_text = pyproject_file.read_text(encoding="utf-8")
+
+    assert 'license = "MIT"' in pyproject_text, "license should be string 'MIT' under PEP 639"
+    assert "license-files =" in pyproject_text, "license-files must be explicitly declared"
+
+    # Assert no OSI license classifier in classifiers
+    assert "License :: OSI Approved" not in pyproject_text, (
+        "Obsolete/conflicting License :: OSI Approved classifier found in pyproject.toml. "
+        "Under PEP 639 and GITHUB-POLICY §4, OSI license classifiers are prohibited "
+        "when license expression is defined."
+    )
 
 
 def test_third_party_licenses_complete_and_accurate() -> None:
@@ -56,13 +76,15 @@ def test_third_party_licenses_complete_and_accurate() -> None:
     ]
 
     for pkg, spdx in required_packages:
-        assert pkg in content, f"Package {pkg} missing from THIRD_PARTY_LICENSES.txt"
+        assert f"Package: {pkg}" in content, f"Package {pkg} missing from THIRD_PARTY_LICENSES.txt"
         assert spdx in content, f"SPDX identifier {spdx} for {pkg} missing from THIRD_PARTY_LICENSES.txt"
 
     # Ensure structured schema fields exist
+    assert "Package:" in content, "Package: field missing in THIRD_PARTY_LICENSES.txt"
     assert "License:" in content, "License: field missing in THIRD_PARTY_LICENSES.txt"
     assert "URL:" in content, "URL: field missing in THIRD_PARTY_LICENSES.txt"
     assert "SPDX:" in content, "SPDX: field missing in THIRD_PARTY_LICENSES.txt"
+    assert "Notice:" in content, "Notice: field missing in THIRD_PARTY_LICENSES.txt"
 
 
 def test_gitignore_security_and_multi_host_hardening() -> None:
@@ -71,9 +93,12 @@ def test_gitignore_security_and_multi_host_hardening() -> None:
     assert gitignore_file.is_file(), ".gitignore must exist"
     content = gitignore_file.read_text(encoding="utf-8")
 
-    # Secrets and certificate protection
-    for pat in ["credentials.json", "*.pfx", "*.pem", "*.key", "keyring/", "secrets.*"]:
-        assert pat in content, f"Secret pattern {pat} missing in .gitignore"
+    # Secrets, test artifact and marketing log protection
+    for pat in [
+        "credentials.json", "*.pfx", "*.pem", "*.key", "keyring/", "secrets.*",
+        "pytest_out.txt", "pytest*.txt", "*MARKETING-LOG.txt"
+    ]:
+        assert pat in content, f"Secret/hygiene pattern {pat} missing in .gitignore"
 
     # Multi-host sync hardening
     for host_pat in [
@@ -130,9 +155,18 @@ def test_security_policy_bilingual_and_sla() -> None:
     assert "## Deutsch" in sec_text, "SECURITY.md must contain German section"
     assert "## English" in sec_text, "SECURITY.md must contain English section"
 
-    # Contact addresses
+    # Contact addresses & Advisory URL
     assert "security@file-bricks.org" in sec_text, "SECURITY.md must list security@file-bricks.org"
+    assert "security@open-bricks.org" in sec_text, "SECURITY.md must list security@open-bricks.org"
+    assert "security@ellmos.ai" in sec_text, "SECURITY.md must list security@ellmos.ai"
     assert "support@lukasgeiger.com" in sec_text, "SECURITY.md must list support@lukasgeiger.com"
+    assert "https://github.com/file-bricks/ProfiPrompt/security/advisories/new" in sec_text, (
+        "SECURITY.md must provide direct link to create security advisories"
+    )
+
+    # Pyproject.toml Security Advisories link
+    pyproject_text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert '"Security Advisories" = "https://github.com/file-bricks/ProfiPrompt/security/advisories/new"' in pyproject_text
 
     # SLA commitment
     assert "48" in sec_text, "SECURITY.md must define 48-hour response SLA"
@@ -280,9 +314,16 @@ def test_llms_txt_and_pyproject_marketing_metadata_parity() -> None:
     pyproject_text = pyproject_file.read_text(encoding="utf-8")
     assert "THIRD_PARTY_LICENSES.md" in pyproject_text
     assert "Plain-Text Licenses" in pyproject_text
-    assert "MARKETING-LOG.txt" in pyproject_text
+    assert "Security Advisories" in pyproject_text
     assert "NOTICE" in pyproject_text
     assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt", "CONTRIBUTING.md"]' in pyproject_text
+
+
+def test_internal_marketing_log_not_tracked_in_git() -> None:
+    """Verify MARKETING-LOG.txt is untracked in git per GITHUB-POLICY.md §3 and T-20260926-455218633."""
+    import subprocess
+    res = subprocess.run(["git", "ls-files", "MARKETING-LOG.txt"], cwd=str(ROOT), capture_output=True, text=True)
+    assert not res.stdout.strip(), "MARKETING-LOG.txt must not be tracked in git repository"
 
 
 def test_canonical_root_notice_attribution() -> None:

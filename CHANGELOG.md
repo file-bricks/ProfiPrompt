@@ -5,6 +5,24 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Security & License Audit: PEP 639 Compliance, 5-Field SBOM, Pytest Floor & Advisory Link (2026-11-01)
+
+- **PEP 639 Lizenz-Compliance (`pyproject.toml`):**
+  - Standardisierung der Lizenz-Metadaten auf PEP 639 `license = "MIT"` mit `license-files = [...]` und Bereinigung des obsoleten/widersprüchlichen Classifiers `License :: OSI Approved :: MIT License` aus `classifiers` gem. GITHUB-POLICY § 4 (schützt vor `InvalidConfigError` bei `pip install`).
+- **Pytest Security Vulnerability Floor (`pyproject.toml`):**
+  - Verankerung von `minversion = "9.1.1"` in `[tool.pytest.ini_options]` zum Schutz vor CVE-2025-7117 / GHSA-6w46-j5rx-g56g (flankiert durch Dev-Dependency `pytest>=9.1.1`).
+- **Standardisiertes 5-Felder-SBOM-Inventar (`THIRD_PARTY_LICENSES.txt`):**
+  - Vollständige Umstellung aller 10 Abhängigkeiten (PySide6, shiboken6, PyInstaller, pyinstaller-hooks-contrib, altgraph, packaging, pytest, pluggy, iniconfig, ruff) auf das kanonische 5-Felder-Schema (`Package:`, `License:`, `SPDX:`, `URL:`, `Notice:`) mit Re-Audit-Bestätigung auf Stand 2026-11-01.
+- **Sicherheitsrichtlinie & Private Security Advisories (`SECURITY.md`, `pyproject.toml`):**
+  - Direkter Link zur vertraulichen GitHub Security Advisory Einreichung (`https://github.com/file-bricks/ProfiPrompt/security/advisories/new`) in `pyproject.toml` unter `[project.urls]` ("Security Advisories") hinterlegt; offizielle Sicherheitskontaktadressen `security@file-bricks.org`, `security@open-bricks.org`, `security@ellmos.ai` und `support@lukasgeiger.com` bekräftigt.
+- **Repository- und Gitignore-Hygiene (`.gitignore`, `pyproject.toml`):**
+  - Entkopplung der internen Marketing-Logdatei `MARKETING-LOG.txt` aus dem Git-Tracking (`git rm --cached`, lokal erhalten) gem. GITHUB-POLICY § 3 und Ticket T-20260926-455218633; Aufnahme von `*MARKETING-LOG.txt` und `*STATUS-LOG.txt` in `.gitignore`; Entfernung der Marketing-Log URL aus `pyproject.toml`.
+  - Härtung von `.gitignore` gegen Test-Artefakt-Muster (`pytest_out.txt`, `pytest*.txt`).
+- **Automatisierte Vertragstests (`tests/test_security_license_contract.py`):**
+  - Vertragstests für PEP 639 Compliance, Pytest 9.1.1 Minversion-Floor, 5-Felder-SBOM-Schema, Security-Advisories-URL, Gitignore-Härtung und Git-Untracked-Status von `MARKETING-LOG.txt` implementiert/erweitert (32/32 passed).
+- **Strikte Versions-Freeze-Disziplin per `T-20260920-167562623`:**
+  - Version 1.0.2 unverändert eingefroren (kein Versions-Bump).
+
 ### Bugsweep: Schema-Drift, None-Resilienz & Tag-Normalisierung (2026-11-01)
 
 - **Schema-Drift-Resilienz & Vererbung (`src/models.py`):**
