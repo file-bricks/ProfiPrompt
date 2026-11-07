@@ -29,19 +29,33 @@ TRANSLATION_FILE = "locales/translations.json"
 APP_DIR = Path(__file__).resolve().parent
 
 
+def resolve_translation_file(source_dir: Optional[str] = None) -> Path:
+    """Löst die translations.json CWD-unabhängig und deterministisch auf."""
+    if source_dir and source_dir != ".":
+        candidate = Path(source_dir)
+        if candidate.is_file():
+            return candidate
+        f1 = candidate / TRANSLATION_FILE
+        if f1.is_file():
+            return f1
+        f2 = candidate / "translations.json"
+        if f2.is_file():
+            return f2
+    return APP_DIR / TRANSLATION_FILE
+
+
 def _resolve_source_dir(source_dir: Optional[str] = None) -> Path:
     """Löst das Quellverzeichnis CWD-unabhängig auf."""
     if source_dir and source_dir != ".":
-        return Path(source_dir)
-    if (Path(".") / TRANSLATION_FILE).is_file():
-        return Path(".")
+        candidate = Path(source_dir)
+        if candidate.is_dir():
+            return candidate
     return APP_DIR
 
 
 def check_translations(source_dir: Optional[str] = None) -> int:
     """Prüft translations.json auf 100% Parität über alle 6 Sprachen."""
-    base_dir = _resolve_source_dir(source_dir)
-    trans_file = base_dir / TRANSLATION_FILE
+    trans_file = resolve_translation_file(source_dir)
     if not trans_file.is_file():
         print(f"[!] Übersetzungsdatei nicht gefunden: {trans_file}")
         return 1

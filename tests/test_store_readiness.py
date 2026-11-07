@@ -122,6 +122,82 @@ AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Category
 Productivity / AI Tools
+
+---
+
+## Español
+
+### Descripción corta (máx. 100 caracteres)
+Gestor de prompts de IA: cree, versione, organice en tableros y exporte sus prompts.
+
+### Descripción (máx. 10.000 caracteres)
+ProfiPrompt con Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests y
+30 Web/PWA-Smoke-Tests.
+
+### Palabras clave
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### Categoría
+Productivity / AI Tools
+
+---
+
+## 简体中文
+
+### 简短描述 (最多 100 个字符)
+AI提示词管理器：创建、版本化、在看板中整理并导出您的提示词。
+
+### 详细说明 (最多 10,000 个字符)
+ProfiPrompt 包含 Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests 与
+30 Web/PWA-Smoke-Tests。
+
+### 关键词
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### 类别
+Productivity / AI Tools
+
+---
+
+## 日本語
+
+### 簡単な説明 (最大 100 文字)
+AIプロンプト管理：プロンプトの作成、バージョン管理、ボード整理、エクスポート。
+
+### 詳細な説明 (最大 10,000 文字)
+ProfiPrompt は Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests および
+30 Web/PWA-Smoke-Tests を含みます。
+
+### キーワード
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### カテゴリ
+Productivity / AI Tools
+
+---
+
+## Русский
+
+### Краткое описание (макс. 100 символов)
+Менеджер AI-промптов: создание, версионирование, организация на досках и экспорт.
+
+### Описание (макс. 10 000 символов)
+ProfiPrompt включает Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests и
+30 Web/PWA-Smoke-Tests.
+
+### Ключевые слова
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### Категория
+Productivity / AI Tools
 """,
         encoding="utf-8",
     )
@@ -190,6 +266,14 @@ def test_parse_store_listing_sections_reads_both_languages():
     assert sections["Deutsch"]["category"] == "Productivity / AI Tools"
     assert sections["English"]["short_description"].startswith("AI Prompt Manager:")
     assert sections["English"]["category"] == "Productivity / AI Tools"
+    assert sections["Español"]["short_description"].startswith("Gestor de prompts")
+    assert sections["Español"]["category"] == "Productivity / AI Tools"
+    assert sections["简体中文"]["short_description"].startswith("AI提示词管理器")
+    assert sections["简体中文"]["category"] == "Productivity / AI Tools"
+    assert sections["日本語"]["short_description"].startswith("AIプロンプト管理")
+    assert sections["日本語"]["category"] == "Productivity / AI Tools"
+    assert sections["Русский"]["short_description"].startswith("Менеджер AI-промптов")
+    assert sections["Русский"]["category"] == "Productivity / AI Tools"
 
 
 def test_validate_store_listing_flags_overlong_short_description_and_missing_category(tmp_path):
@@ -248,6 +332,82 @@ https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests and
 AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
 
 ### Category
+Productivity / AI Tools
+
+---
+
+## Español
+
+### Descripción corta (máx. 100 caracteres)
+Gestor de prompts de IA: cree, versione, organice en tableros y exporte sus prompts.
+
+### Descripción (máx. 10.000 caracteres)
+ProfiPrompt con Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests y
+30 Web/PWA-Smoke-Tests.
+
+### Palabras clave
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### Categoría
+Productivity / AI Tools
+
+---
+
+## 简体中文
+
+### 简短描述 (最多 100 个字符)
+AI提示词管理器：创建、版本化、在看板中整理并导出您的提示词。
+
+### 详细说明 (最多 10,000 个字符)
+ProfiPrompt 包含 Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests 与
+30 Web/PWA-Smoke-Tests。
+
+### 关键词
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### 类别
+Productivity / AI Tools
+
+---
+
+## 日本語
+
+### 簡単な説明 (最大 100 文字)
+AIプロンプト管理：プロンプトの作成、バージョン管理、ボード整理、エクスポート。
+
+### 詳細な説明 (最大 10,000 文字)
+ProfiPrompt は Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests および
+30 Web/PWA-Smoke-Tests を含みます。
+
+### キーワード
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### カテゴリ
+Productivity / AI Tools
+
+---
+
+## Русский
+
+### Краткое описание (макс. 100 символов)
+Менеджер AI-промптов: создание, версионирование, организация на досках и экспорт.
+
+### Описание (макс. 10 000 символов)
+ProfiPrompt включает Web/PWA-Companion, profiprompt-library-v1.json,
+https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md,
+https://github.com/file-bricks/ProfiPrompt/issues, 41 Python-Tests и
+30 Web/PWA-Smoke-Tests.
+
+### Ключевые слова
+AI Prompt, Prompt Manager, Prompt Library, Prompt Organizer, LLM
+
+### Категория
 Productivity / AI Tools
 """,
         encoding="utf-8",

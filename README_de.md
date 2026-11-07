@@ -2,7 +2,7 @@
 
 # ProfiPrompt — Lokale KI-Prompt-Verwaltung & Versionierungs-Workstation
 
-[English](README.md) | **Deutsch** | [Español](README_es.md)
+[English](README.md) · **Deutsch** · [Español](README_es.md) · [简体中文](README_zh.md) · [日本語](README_ja.md) · [Русский](README_ru.md)
 
 [![Version: 1.0.2](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/file-bricks/ProfiPrompt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

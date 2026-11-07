@@ -9,7 +9,76 @@
   "capabilities": "internetClient,runFullTrust",
   "category": "Productivity",
   "age_rating": "3+",
+  "license": "MIT",
   "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
   "support_url": "https://github.com/file-bricks/ProfiPrompt/issues",
-  "languages": "en-us,de-de"
+  "languages": [
+    "de-DE",
+    "en-US",
+    "es-ES",
+    "zh-CN",
+    "ja-JP",
+    "ru-RU"
+  ],
+  "description_de": "Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts mit Boards und Offline-Schutz.",
+  "description_en": "Desktop tool to manage, version, and organize AI prompts locally in offline boards.",
+  "description_es": "Herramienta de escritorio para gestionar y versionar prompts de IA en tableros locales.",
+  "description_zh": "用于在本地离线看板中管理、版本化和整理AI提示词的桌面工具。",
+  "description_ja": "ローカルボードでAIプロンプトを整理・バージョン管理するデスクトップツール。",
+  "description_ru": "Десктопный инструмент для управления и версионирования AI-промптов на локальных досках.",
+  "keywords": "Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, Prompt Organizer, Prompt Versioning, LLM Tools",
+  "keywords_de": [
+    "prompt manager",
+    "prompt engineering",
+    "ki prompts",
+    "prompt bibliothek",
+    "prompt organizer",
+    "prompt verwaltung",
+    "llm tools"
+  ],
+  "keywords_en": [
+    "prompt manager",
+    "prompt engineering",
+    "ai prompts",
+    "prompt library",
+    "prompt organizer",
+    "prompt versioning",
+    "llm tools"
+  ],
+  "keywords_es": [
+    "gestor de prompts",
+    "ingenieria de prompts",
+    "prompts ia",
+    "biblioteca prompts",
+    "organizador prompts",
+    "versionado prompts",
+    "herramientas llm"
+  ],
+  "keywords_zh": [
+    "提示词管理器",
+    "提示词工程",
+    "ai提示词",
+    "提示词库",
+    "提示词整理",
+    "提示词版本管理",
+    "llm工具"
+  ],
+  "keywords_ja": [
+    "プロンプト管理",
+    "プロンプト作成",
+    "aiプロンプト",
+    "プロンプト保管庫",
+    "プロンプト整理",
+    "バージョン管理",
+    "llmツール"
+  ],
+  "keywords_ru": [
+    "менеджер промптов",
+    "инженерия промптов",
+    "ии промпты",
+    "библиотека промптов",
+    "органайзер промптов",
+    "версии промптов",
+    "llm инструменты"
+  ]
 }

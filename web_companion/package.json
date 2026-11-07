@@ -1,6 +1,6 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node --test tests/library.test.mjs tests/accessibility.test.mjs tests/pwa.test.mjs"
+    "test": "node --test tests/library.test.mjs tests/accessibility.test.mjs tests/pwa.test.mjs tests/companion_i18n.test.mjs"
   }
 }

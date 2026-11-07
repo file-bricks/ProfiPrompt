@@ -16,12 +16,24 @@
     "../../LICENSE"
   ],
   "enable_i18n": true,
+  "languages": [
+    "de-DE",
+    "en-US",
+    "es-ES",
+    "zh-CN",
+    "ja-JP",
+    "ru-RU"
+  ],
   "capabilities": "internetClient,runFullTrust",
   "privacy_url": "https://github.com/file-bricks/ProfiPrompt/blob/master/PRIVACY_POLICY.md",
   "support_url": "https://github.com/file-bricks/ProfiPrompt/issues",
   "category": "Productivity",
   "age_rating": "3+",
-  "description_de": "Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts. Board-System, Kachel-Ansicht, Clipboard-Integration, TXT/PDF-Export. Offline-First.",
-  "description_en": "Desktop tool for managing and versioning AI prompts. Board system, tile view, clipboard integration, TXT/PDF export. Offline-first.",
-  "keywords": "Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, Prompt Organizer, Prompt Template, LLM"
+  "description_de": "Desktop-Tool zur Verwaltung und Versionierung von AI-Prompts mit Boards und Offline-Schutz.",
+  "description_en": "Desktop tool to manage, version, and organize AI prompts locally in offline boards.",
+  "description_es": "Herramienta de escritorio para gestionar y versionar prompts de IA en tableros locales.",
+  "description_zh": "用于在本地离线看板中管理、版本化和整理AI提示词的桌面工具。",
+  "description_ja": "ローカルボードでAIプロンプトを整理・バージョン管理するデスクトップツール。",
+  "description_ru": "Десктопный инструмент для управления и версионирования AI-промптов на локальных досках.",
+  "keywords": "Prompt Manager, Prompt Engineering, AI Prompts, Prompt Library, Prompt Organizer, Prompt Versioning, LLM Tools"
 }

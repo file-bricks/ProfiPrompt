@@ -5,6 +5,30 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### I18N Expansion: Tier-2 6-Sprachen Store-Packaging, Web-Companion & Multilingual Docs (2026-11-07)
+
+- **Store-Packaging & Manifest-Harmonisierung (`store_package.json`, `releases/windowsstore/store_settings.json`):**
+  - Erweiterung des Store-Manifests auf alle 6 Tier-2 Zielsprachen (`de-DE`, `en-US`, `es-ES`, `zh-CN`, `ja-JP`, `ru-RU`).
+  - Hinterlegung store-konformer Kurzbeschreibungen (strikt <= 100 Zeichen) und bis zu 7 suchrelevanten Fachbegriffen ohne Fremdmarken gem. Microsoft Store Richtlinie 10.1.3 für alle Sprachen.
+  - Bereitstellung von 4 neuen Staging-Dateien (`store_listing_es.md`, `store_listing_zh.md`, `store_listing_ja.md`, `store_listing_ru.md`) in `releases/windowsstore/`.
+- **Store-Listing Erweiterung (`STORE_LISTING.md`, `scripts/check_store_readiness.py`):**
+  - Ausbau von `STORE_LISTING.md` um vollständige Abschnitte für Spanisch, vereinfachtes Chinesisch, Japanisch und Russisch.
+  - Erweiterung der Validierungs- und Linterlogik in `scripts/check_store_readiness.py` (`LISTING_FIELD_LABELS`) zur automatisierten Prüfung aller 6 Sprachen im Store-Paket.
+- **Web-Companion Tier-2 Mehrsprachigkeit (`web_companion/`):**
+  - Neue Lokalisierungsschicht `web_companion/i18n.js` mit 100% Parität über alle 6 Sprachen (60 Übersetzungsschlüssel je Sprache, Fallback-Kette, Parameter-Interpolation).
+  - UI-Sprachauswahl (`#lang-select`) in `web_companion/index.html` und dynamische Umschaltung ohne Seiten-Reload in `app.js` mit `localStorage`-Persistenz (`profiprompt_companion_lang`).
+  - Cache-Update in `web_companion/service-worker.js` (`./i18n.js` in Cache-Assets registriert).
+  - Hermetische Test-Suite `web_companion/tests/companion_i18n.test.mjs` (6 Tests, 46/46 Web-Companion Tests grün).
+- **Globale Einstiegsdokumentation (`README_zh.md`, `README_ja.md`, `README_ru.md`):**
+  - Vollständige multilinguale Einstiegsdokumentationen für Chinesisch (vereinfacht), Japanisch und Russisch mit 1:1 Abschnittsparität über alle 17 Schnellnavigations-Punkte, Personas `[PERSONA-1]` bis `[PERSONA-4]`, Vier-Ebenen-ASCII-Architekturtopologie und allen 10 Invarianten (`INV-LOCAL-01` bis `INV-SLA-10`).
+  - Reziproke 6-Sprachen-Sprachleiste in allen 6 README-Dateien harmonisiert.
+- **CLI-Gate & CWD-Unabhängigkeitshärtung (`manage_translations.py`):**
+  - Implementierung von `resolve_translation_file()` und gehärtetem `_resolve_source_dir()`, um Phantom-Dateien aus fremden Arbeitsverzeichnissen auszuschließen.
+- **Automatisierte Vertragstests (`tests/test_i18n_expansion.py`):**
+  - 5 hermetische Vertragstests implementiert, die Store-Packaging, Store-Listing, Web-Companion-Parität, CWD-Unabhängigkeit und wechselseitige README-Parität kontinuierlich validieren (368 Pytest + 46 Node Tests 100% grün).
+- **Strikte Versions-Freeze-Disziplin:**
+  - Version 1.0.2 unverändert beibehalten (kein Versions-Bump).
+
 ### Security & License Audit: PEP 639 Compliance, 5-Field SBOM, Pytest Floor & Advisory Link (2026-11-01)
 
 - **PEP 639 Lizenz-Compliance (`pyproject.toml`):**

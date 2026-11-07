@@ -45,6 +45,30 @@ LISTING_FIELD_LABELS = {
         "keywords": "Keywords",
         "category": "Category",
     },
+    "Español": {
+        "short_description": "Descripción corta",
+        "description": "Descripción",
+        "keywords": "Palabras clave",
+        "category": "Categoría",
+    },
+    "简体中文": {
+        "short_description": "简短描述",
+        "description": "详细说明",
+        "keywords": "关键词",
+        "category": "类别",
+    },
+    "日本語": {
+        "short_description": "簡単な説明",
+        "description": "詳細な説明",
+        "keywords": "キーワード",
+        "category": "カテゴリ",
+    },
+    "Русский": {
+        "short_description": "Краткое описание",
+        "description": "Описание",
+        "keywords": "Ключевые слова",
+        "category": "Категория",
+    },
 }
 
 # Microsoft Store: maximal 7 Suchbegriffe je Sprach-Listing.
@@ -261,6 +285,19 @@ def validate_store_package(root: Path | None = None) -> list[str]:
     capabilities = {part.strip() for part in str(package.get("capabilities", "")).split(",") if part.strip()}
     if "runFullTrust" not in capabilities:
         findings.append("Store-Paket muss runFullTrust enthalten.")
+
+    languages = package.get("languages")
+    if languages:
+        expected_langs = ["de-DE", "en-US", "es-ES", "zh-CN", "ja-JP", "ru-RU"]
+        if isinstance(languages, list):
+            for lang in expected_langs:
+                if lang not in languages:
+                    findings.append(f"store_package.json fehlt Sprache: {lang}")
+        elif isinstance(languages, str):
+            langs_str = languages.lower()
+            for lang in ["de-de", "en-us", "es-es", "zh-cn", "ja-jp", "ru-ru"]:
+                if lang not in langs_str:
+                    findings.append(f"store_package.json fehlt Sprache: {lang}")
 
     return findings
 

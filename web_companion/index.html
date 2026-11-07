@@ -29,12 +29,25 @@
         </div>
         <div class="hero__panel">
           <div class="hero__panel-row">
-            <span class="hero__label">Status</span>
+            <span class="hero__label" data-i18n="status_label">Status</span>
             <strong id="library-status">Keine Bibliothek geladen</strong>
           </div>
           <div class="hero__panel-row">
-            <span class="hero__label">Speicher</span>
-            <strong>Lokal im Browser</strong>
+            <span class="hero__label" data-i18n="storage_label">Speicher</span>
+            <strong data-i18n="storage_local">Lokal im Browser</strong>
+          </div>
+          <div class="hero__panel-row">
+            <span class="hero__label">Sprache</span>
+            <label class="field" style="margin: 0; min-width: 130px;">
+              <select id="lang-select" aria-label="Sprachauswahl / Language">
+                <option value="de">Deutsch (DE)</option>
+                <option value="en">English (EN)</option>
+                <option value="es">Español (ES)</option>
+                <option value="zh">简体中文 (ZH)</option>
+                <option value="ja">日本語 (JA)</option>
+                <option value="ru">Русский (RU)</option>
+              </select>
+            </label>
           </div>
           <div class="hero__actions">
             <input
@@ -48,7 +61,7 @@
             <button id="import-trigger" class="button button--primary" type="button">
               Bibliothek importieren
             </button>
-            <button id="clear-library" class="button button--ghost" type="button">
+            <button id="clear-library" class="button button--ghost" type="button" data-i18n="btn_clear">
               Bibliothek löschen
             </button>
           </div>
@@ -58,26 +71,26 @@
       <main class="workspace">
         <section class="stats" aria-label="Bibliotheksstatistik">
           <article class="stat-card">
-            <span class="stat-card__label">Prompts</span>
+            <span class="stat-card__label" data-i18n="stat_prompts">Prompts</span>
             <strong id="stat-prompts">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Versionen</span>
+            <span class="stat-card__label" data-i18n="stat_versions">Versionen</span>
             <strong id="stat-versions">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Boards</span>
+            <span class="stat-card__label" data-i18n="stat_boards">Boards</span>
             <strong id="stat-boards">0</strong>
           </article>
           <article class="stat-card">
-            <span class="stat-card__label">Tags</span>
+            <span class="stat-card__label" data-i18n="stat_tags">Tags</span>
             <strong id="stat-tags">0</strong>
           </article>
         </section>
 
         <section class="toolbar" aria-label="Suche und Kopieroptionen">
           <label class="field field--search">
-            <span>Suche</span>
+            <span data-i18n="search_label">Suche</span>
             <input
               id="search-input"
               type="search"
@@ -86,19 +99,19 @@
             >
           </label>
           <label class="field">
-            <span>Kopiermodus</span>
+            <span data-i18n="copy_mode_label">Kopiermodus</span>
             <select id="copy-mode">
-              <option value="all">Alles</option>
-              <option value="title">Titel</option>
-              <option value="text">Prompttext</option>
-              <option value="result">Ergebnis</option>
+              <option value="all" data-i18n="opt_copy_all">Alles</option>
+              <option value="title" data-i18n="opt_copy_title">Titel</option>
+              <option value="text" data-i18n="opt_copy_text">Prompttext</option>
+              <option value="result" data-i18n="opt_copy_result">Ergebnis</option>
             </select>
           </label>
           <label class="field field--checkbox">
             <input id="include-metadata" type="checkbox" checked>
-            <span>Tags beim Kopieren anhängen</span>
+            <span data-i18n="chk_include_metadata">Tags beim Kopieren anhängen</span>
           </label>
-          <button id="install-app" class="button button--ghost" type="button" hidden>
+          <button id="install-app" class="button button--ghost" type="button" data-i18n="btn_install_pwa" hidden>
             PWA installieren
           </button>
         </section>

@@ -10,6 +10,21 @@ import {
   serializeLibrary,
   summarizeLibrary,
 } from "./library.js";
+import {
+  SUPPORTED_LANGUAGES,
+  LANGUAGE_NAMES,
+  TRANSLATIONS,
+  getTranslation,
+  t,
+} from "./i18n.js";
+
+export {
+  SUPPORTED_LANGUAGES,
+  LANGUAGE_NAMES,
+  TRANSLATIONS,
+  getTranslation,
+  t,
+};
 
 window.addEventListener("error", (event) => {
   document.body.dataset.appError = event.message || "unknown-error";
@@ -24,6 +39,7 @@ window.addEventListener("unhandledrejection", (event) => {
 const STORAGE_KEYS = {
   library: "profiprompt-companion-library",
   ui: "profiprompt-companion-ui",
+  lang: "profiprompt_companion_lang",
 };
 
 const state = {
@@ -34,6 +50,7 @@ const state = {
   query: "",
   copyMode: "all",
   includeMetadata: true,
+  lang: "de",
 };
 
 const elements = {
@@ -45,6 +62,7 @@ const elements = {
   includeMetadata: document.querySelector("#include-metadata"),
   copyButton: document.querySelector("#copy-button"),
   installApp: document.querySelector("#install-app"),
+  langSelect: document.querySelector("#lang-select"),
   mobileGuidePlatform: document.querySelector("#mobile-guide-platform"),
   mobileGuideInstall: document.querySelector("#mobile-guide-install"),
   mobileGuideImport: document.querySelector("#mobile-guide-import"),
@@ -80,13 +98,48 @@ bootstrap();
 
 function bootstrap() {
   restoreState();
+  applyLanguage(state.lang);
   bindEvents();
   registerServiceWorker();
   void maybeLoadLibraryFromQuery();
   render();
 }
 
+export function setLanguage(lang) {
+  const chosen = SUPPORTED_LANGUAGES.includes(lang) ? lang : "de";
+  state.lang = chosen;
+  try {
+    localStorage.setItem(STORAGE_KEYS.lang, chosen);
+  } catch {
+    // storage unavailable
+  }
+  applyLanguage(chosen);
+  render();
+}
+
+export function applyLanguage(lang) {
+  const chosen = SUPPORTED_LANGUAGES.includes(lang) ? lang : "de";
+  document.documentElement.lang = chosen;
+  if (elements.langSelect) {
+    elements.langSelect.value = chosen;
+  }
+  if (elements.searchInput) {
+    elements.searchInput.placeholder = t("search_placeholder", {}, chosen);
+  }
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (key) {
+      el.textContent = t(key, {}, chosen);
+    }
+  });
+}
+
 function bindEvents() {
+  if (elements.langSelect) {
+    elements.langSelect.addEventListener("change", (event) => {
+      setLanguage(event.target.value);
+    });
+  }
   elements.importFile.addEventListener("change", onImportFileChange);
   elements.importTrigger.addEventListener("click", openImportPicker);
   elements.clearLibrary.addEventListener("click", clearLibrary);
@@ -208,7 +261,7 @@ function clearLibrary() {
   try { localStorage.removeItem(STORAGE_KEYS.library); } catch { /* storage blocked */ }
   persistUiState();
   render();
-  showToast("Lokale Bibliothek gelöscht.");
+  showToast(t("toast_library_cleared", {}, state.lang));
 }
 
 async function copySelection() {
@@ -224,17 +277,17 @@ async function copySelection() {
   try {
     await navigator.clipboard.writeText(text);
     closeCopyFallback();
-    showToast("Auswahl in die Zwischenablage kopiert.");
+    showToast(t("toast_copied", {}, state.lang));
     return;
   } catch {
     if (fallbackCopy(text)) {
       closeCopyFallback();
-      showToast("Auswahl in die Zwischenablage kopiert.");
+      showToast(t("toast_copied", {}, state.lang));
       return;
     }
   }
   openCopyFallback(text);
-  showToast("Zwischenablage blockiert. Bitte Text manuell kopieren.");
+  showToast(t("toast_copy_blocked", {}, state.lang));
 }
 
 function fallbackCopy(text) {
@@ -296,6 +349,15 @@ function restoreState() {
     state.includeMetadata = ui.includeMetadata !== false;
   } catch {
     try { localStorage.removeItem(STORAGE_KEYS.ui); } catch { /* storage blocked */ }
+  }
+
+  try {
+    const storedLang = localStorage.getItem(STORAGE_KEYS.lang);
+    if (storedLang && SUPPORTED_LANGUAGES.includes(storedLang)) {
+      state.lang = storedLang;
+    }
+  } catch {
+    // storage blocked
   }
 
   elements.searchInput.value = state.query;
@@ -394,7 +456,7 @@ function renderQuickGuide() {
 
 function renderStats() {
   if (!state.library) {
-    elements.libraryStatus.textContent = "Keine Bibliothek geladen";
+    elements.libraryStatus.textContent = t("status_no_library", {}, state.lang);
     elements.statPrompts.textContent = "0";
     elements.statVersions.textContent = "0";
     elements.statBoards.textContent = "0";
@@ -403,8 +465,9 @@ function renderStats() {
   }
 
   const summary = summarizeLibrary(state.library);
+  const locale = state.lang === "de" ? "de-DE" : (state.lang === "en" ? "en-US" : (state.lang === "es" ? "es-ES" : (state.lang === "zh" ? "zh-CN" : (state.lang === "ja" ? "ja-JP" : "ru-RU"))));
   const exportedAt = state.library.app.exported_at
-    ? new Date(state.library.app.exported_at).toLocaleString("de-DE")
+    ? new Date(state.library.app.exported_at).toLocaleString(locale)
     : "unbekannt";
   elements.libraryStatus.textContent = `${state.library.app.name} ${state.library.app.version} · ${exportedAt}`;
   elements.statPrompts.textContent = String(summary.promptCount);
@@ -417,14 +480,14 @@ function renderBoards() {
   elements.boardList.innerHTML = "";
   if (!state.library) {
     elements.boardCount.textContent = "0";
-    elements.boardList.append(buildEmptyState("Boards erscheinen nach dem ersten Import."));
+    elements.boardList.append(buildEmptyState(t("boards_empty_state", {}, state.lang)));
     return;
   }
 
   const allButton = buildBoardCard({
     id: "all",
-    title: "Alle Prompts",
-    description: "Ohne Board-Filter",
+    title: t("board_all_title", {}, state.lang),
+    description: t("board_all_desc", {}, state.lang),
     count: state.library.prompts.length,
     active: state.boardId === "all",
   });
@@ -435,7 +498,7 @@ function renderBoards() {
     const card = buildBoardCard({
       id: board.id,
       title: board.title,
-      description: board.description || "Keine Beschreibung",
+      description: board.description || t("board_empty_desc", {}, state.lang),
       count,
       active: state.boardId === board.id,
     });
@@ -467,14 +530,14 @@ function buildBoardCard({ id, title, description, count, active }) {
 function renderPrompts() {
   elements.promptList.innerHTML = "";
   const prompts = getVisiblePrompts();
-  elements.promptCount.textContent = `${prompts.length} Treffer`;
+  elements.promptCount.textContent = t("prompts_count_matches", { count: prompts.length }, state.lang);
 
   if (!state.library) {
-    elements.promptList.append(buildEmptyState("Importiere zuerst eine Bibliothek."));
+    elements.promptList.append(buildEmptyState(t("prompts_empty_import", {}, state.lang)));
     return;
   }
   if (!prompts.length) {
-    elements.promptList.append(buildEmptyState("Für diese Suche oder dieses Board gibt es keine Treffer."));
+    elements.promptList.append(buildEmptyState(t("prompts_empty_search", {}, state.lang)));
     return;
   }
 
@@ -482,12 +545,14 @@ function renderPrompts() {
     const card = document.createElement("button");
     card.type = "button";
     card.className = `prompt-card${state.promptId === prompt.id ? " is-active" : ""}`;
+    const versionsPill = t("prompt_versions_pill", { count: prompt.versions.length }, state.lang);
+    const purposeText = prompt.purpose || t("prompt_no_purpose", {}, state.lang);
     card.innerHTML = `
       <div class="prompt-card__title">
         <span>${escapeHtml(prompt.title)}</span>
-        <span class="pill">${prompt.versions.length} Versionen</span>
+        <span class="pill">${escapeHtml(versionsPill)}</span>
       </div>
-      <p class="prompt-card__body">${escapeHtml(prompt.purpose || "Ohne Zweckbeschreibung")}</p>
+      <p class="prompt-card__body">${escapeHtml(purposeText)}</p>
       <div class="tag-list">
         ${prompt.tags.slice(0, 4).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
       </div>
@@ -509,36 +574,38 @@ function renderDetail() {
   elements.versionSelect.innerHTML = "";
 
   if (!prompt) {
-    elements.detailTitle.textContent = "Noch nichts ausgewählt";
+    elements.detailTitle.textContent = t("detail_empty_title", {}, state.lang);
     elements.detailPurpose.textContent =
       state.library == null
-        ? "Lade eine Bibliothek und wähle links ein Prompt oder Board."
-        : "Wähle ein Prompt aus der Trefferliste.";
-    elements.detailTextLabel.textContent = "Aktueller Stand";
-    elements.detailText.textContent = "Noch kein Prompt gewählt.";
-    elements.detailResult.textContent = "Kein Ergebnis vorhanden.";
+        ? t("detail_empty_purpose", {}, state.lang)
+        : t("detail_empty_select_prompt", {}, state.lang);
+    elements.detailTextLabel.textContent = t("version_badge_current", {}, state.lang);
+    elements.detailText.textContent = t("card_prompt_empty", {}, state.lang);
+    elements.detailResult.textContent = t("card_result_empty", {}, state.lang);
     elements.copyButton.disabled = true;
     elements.versionSelect.disabled = true;
     return;
   }
 
   elements.detailTitle.textContent = prompt.title;
-  elements.detailPurpose.textContent = prompt.purpose || "Ohne Zweckbeschreibung";
+  elements.detailPurpose.textContent = prompt.purpose || t("prompt_no_purpose", {}, state.lang);
   elements.copyButton.disabled = false;
   elements.versionSelect.disabled = false;
-  elements.detailTextLabel.textContent = version ? `Version ${version.version_number}` : "Aktueller Stand";
+  elements.detailTextLabel.textContent = version
+    ? t("version_badge_num", { version: version.version_number }, state.lang)
+    : t("version_badge_current", {}, state.lang);
 
   const activeTags = version?.tags?.length ? version.tags : prompt.tags;
   const meta = [
-    { label: "Tags", value: activeTags.length ? activeTags.join(", ") : "–" },
-    { label: "Aktualisiert", value: formatDate(version?.updated_at ?? prompt.updated_at) },
-    { label: "Erstellt", value: formatDate(prompt.created_at) },
+    { label: t("meta_tags", {}, state.lang), value: activeTags.length ? activeTags.join(", ") : "–" },
+    { label: t("meta_updated", {}, state.lang), value: formatDate(version?.updated_at ?? prompt.updated_at) },
+    { label: t("meta_created", {}, state.lang), value: formatDate(prompt.created_at) },
   ];
   const boards = state.library.boards.filter((board) =>
     board.items.some((item) => item.prompt_id === prompt.id),
   );
   if (boards.length) {
-    meta.push({ label: "Boards", value: boards.map((board) => board.title).join(", ") });
+    meta.push({ label: t("meta_boards", {}, state.lang), value: boards.map((board) => board.title).join(", ") });
   }
   for (const entry of meta) {
     const chip = document.createElement("span");
@@ -547,12 +614,13 @@ function renderDetail() {
     elements.detailMeta.append(chip);
   }
 
-  const currentOption = new Option("Aktueller Prompt", "", state.versionId === "", state.versionId === "");
+  const currentOption = new Option(t("version_current_prompt", {}, state.lang), "", state.versionId === "", state.versionId === "");
   elements.versionSelect.append(currentOption);
   const versions = [...prompt.versions].sort((left, right) => right.version_number - left.version_number);
   for (const currentVersion of versions) {
+    const optLabel = t("version_num_title", { version: currentVersion.version_number, title: currentVersion.title }, state.lang);
     const option = new Option(
-      `Version ${currentVersion.version_number}: ${currentVersion.title}`,
+      optLabel,
       currentVersion.id,
       state.versionId === currentVersion.id,
       state.versionId === currentVersion.id,
@@ -562,7 +630,7 @@ function renderDetail() {
 
   elements.detailText.textContent = version?.text ?? prompt.text ?? "";
   elements.detailResult.textContent =
-    (version?.result ?? prompt.last_result ?? "").trim() || "Kein Ergebnis vorhanden.";
+    (version?.result ?? prompt.last_result ?? "").trim() || t("card_result_empty", {}, state.lang);
 }
 
 function buildEmptyState(text) {

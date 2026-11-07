@@ -2,7 +2,7 @@
 
 # ProfiPrompt — Estación de trabajo Local-First para gestión y control de versiones de prompts de IA
 
-[English](README.md) | [Deutsch](README_de.md) | **Español**
+[English](README.md) · [Deutsch](README_de.md) · **Español** · [简体中文](README_zh.md) · [日本語](README_ja.md) · [Русский](README_ru.md)
 
 [![Version: 1.0.2](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/file-bricks/ProfiPrompt/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -161,7 +161,7 @@ ProfiPrompt está diseñado específicamente para servir a 4 personas interesada
 |  | - Almacenamiento Local-First: Persistencia JSON 100% offline en ~/.prompt_manager/ (INV-01)   |  |
 |  | - Autonomía offline total: Gestión de prompts aislada sin dependencia de la nube (INV-02)   |  |
 |  | - Seguridad atómica: Archivo temporal + os.replace atómico contra corrupción de datos (INV)|  |
-|  | - Capa de respaldo tolerante a fallos: Preservación de copias .bak y exportaciones (INV-06)  |  |
+|  | - Capa de respaldo tolerante a fallos: Preservación de copias .bak y exportaciones (INV-BAK)  |  |
 |  | - Serialización determinista: Codificación UTF-8 con formato determinista y esquemas         |  |
 |  +--------------------------------------------------------------------------------------------+  |
 |                                                |                                                 |
