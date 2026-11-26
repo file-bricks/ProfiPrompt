@@ -151,3 +151,21 @@ Optionale Felder (additiv, seit 2026-10-06):
 ## Implementierung
 
 Der Desktop-Export wird über `library_export.write_library_export()` erzeugt und im Datei-Menü als `Bibliothek (JSON)` angeboten. Die JSON-Ausgabe nutzt `ensure_ascii=False`, damit deutsche Umlaute und nichtlateinische Zeichen lesbar erhalten bleiben.
+
+## Additive Erweiterung `manifest` (Cloud-Sync / Host-Slots, v1-kompatibel)
+
+Für den dateibasierten Host-Slot-Sync (`<sync_ordner>/profiprompt/<HOST>/profiprompt@<HOST>.json` und `profiprompt-browser@<SLOT>.json`) ergänzt `FileSlotBackend` additiv das Top-Level-Objekt `manifest`:
+
+```json
+"manifest": {
+  "app": "profiprompt",
+  "version": "1.0.2",
+  "host": "ASUS-GEI",
+  "updated_at": "2026-11-26T12:00:00+00:00",
+  "item_count": 42,
+  "board_count": 3,
+  "schema_version": "profiprompt-library-v1"
+}
+```
+
+Der verlustfreie Desktop-Import (`src/library_import.py`) validiert Prompts und Boards gemeinsam im Speicher, schreibt Prompts stets vor Boards und stellt abweichende lokale Einträge in eine Drei-Wege-Konfliktliste (`Lokal behalten` / `Als neue Version anlegen` / `Fremdstand übernehmen`).

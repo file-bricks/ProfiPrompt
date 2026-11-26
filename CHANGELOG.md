@@ -5,6 +5,13 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
+### Synchronisierung (Dateimodus mit Host-Slots + Servermodus) & Desktop-JSON-Import (2026-11-26, T-20261122-787921511)
+
+- **Verlustfreier JSON-Merge-Import (`src/library_import.py`):** Neuer Desktop-Importer für `profiprompt-library-v1` (Menü `Datei -> Bibliothek importieren (JSON) …`), validiert Prompts und Boards gemeinsam im Speicher, speichert Prompts stets vor Boards, bereinigt verwaiste Board-Referenzen und liefert abweichende Einträge für die Drei-Wege-Konfliktlösung (`Lokal behalten` / `Als neue Version anlegen` / `Fremdstand übernehmen`).
+- **Sync-Backends (`src/sync_backend.py`):** Einheitliche `SyncBackend`-Schicht mit `NullBackend` (`Aus`, Standard), `ServerBackend` (stdlib `urllib.request` gegen `prompt-sync-server` mit getrennten `prompt`/`board`-Kinds, ETag/`304`, `409 Conflict`, `410 Gone`, Offline-Queue, TLS-Guard und Keyring-/0600-Token-Ablage) sowie `FileSlotBackend` (`.SYNC`-Host-Slots `profiprompt@<HOST>.json`, gegenseitige Sichtbarkeit mit `profiprompt-browser`, A7-Konfliktkopie-Filter, Modi `never`/`once`/`on_start`, lokale `deleted_ids`-Sperrliste).
+- **UI & i18n (`src/sync_settings_dialog.py`, `src/profiprompt.py`, `src/settings_manager.py`, `locales/translations.json`):** Neuer Einstellungsdialog unter `Bearbeiten -> Synchronisierung …`, Drei-Wege-Konfliktdialog, 3-s-Debounce, Intervall-Timer, einfach registrierter `aboutToQuit`-Hook und alle 6 UI-Sprachen nachgezogen.
+- **Format & Tests (`src/library_export.py`, `EXPORTFORMAT.md`, `tests/test_sync_and_import.py`):** Additives `manifest`-Feld im Exportformat dokumentiert; umfassende Test-Suite inkl. Vertragstests, A7-Filter, Server-Roundtrip (`304`/`409`/`410`/Offline-Queue) und Offscreen-Dialog-Smoke.
+
 ### I18N Expansion: Tier-2 6-Sprachen Store-Packaging, Web-Companion & Multilingual Docs (2026-11-07)
 
 - **Store-Packaging & Manifest-Harmonisierung (`store_package.json`, `releases/windowsstore/store_settings.json`):**

@@ -37,7 +37,12 @@ def resolve_library_export_path(path: str | Path) -> Path:
     return p
 
 
-def build_library_export(storage, exported_at: str | None = None) -> dict[str, Any]:
+def build_library_export(
+    storage,
+    exported_at: str | None = None,
+    *,
+    manifest: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """Build a portable export payload from the current Storage state."""
     # Production Storage must not replace a backup with an empty/partial export
     # after a failed read. Small in-memory providers retain the existing protocol.
@@ -48,7 +53,7 @@ def build_library_export(storage, exported_at: str | None = None) -> dict[str, A
         boards = storage.load_boards()
     exported_at = exported_at or datetime.now(timezone.utc).isoformat()
 
-    return {
+    payload: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "app": {
             "name": APP_NAME,
@@ -60,6 +65,9 @@ def build_library_export(storage, exported_at: str | None = None) -> dict[str, A
         "prompts": [prompt_to_dict(prompt) for prompt in prompts],
         "boards": [board_to_dict(board) for board in boards],
     }
+    if manifest is not None:
+        payload["manifest"] = dict(manifest)
+    return payload
 
 
 def write_library_export(storage, path: str | Path) -> dict[str, Any]:

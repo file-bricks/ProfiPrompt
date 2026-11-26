@@ -8,8 +8,9 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QFileDialog,
 )
+from pathlib import Path
 from PySide6.QtGui import QAction, QActionGroup, QPalette, QColor
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 
 from settings_manager import SettingsManager
 from storage import Storage
@@ -20,6 +21,9 @@ from board_manager import BoardManager
 from copy_settings_dialog import CopySettingsDialog
 from clipboard_manager import ClipboardManager
 from library_export import write_library_export
+from library_import import merge_library_payload
+from sync_backend import FileSlotBackend, NullBackend, ServerBackend, SyncStateStore, TokenStorage
+from sync_settings_dialog import ConflictResolutionDialog, SyncSettingsDialog
 from atomic_io import atomic_write_text
 from pdf_exporter import (
     export_all_prompts,
@@ -102,6 +106,24 @@ class MainWindow(QMainWindow):
         bus.copyRequested.connect(self.handle_copy_request)
         bus.dragRequested.connect(self.handle_drag_request)
 
+        # Sync-Koordinator (3-s-Debounce, Intervall, einfach registrierter aboutToQuit-Hook)
+        self.sync_state_store = SyncStateStore(self.settings.get_data_path())
+        self.token_storage = TokenStorage()
+        self._sync_debounce = QTimer(self)
+        self._sync_debounce.setSingleShot(True)
+        self._sync_debounce.setInterval(3000)
+        self._sync_debounce.timeout.connect(self._run_background_sync_push)
+        self._sync_interval = QTimer(self)
+        self._sync_interval.timeout.connect(self._run_background_sync_pull)
+        self._quit_hook_registered = False
+        bus.promptsChanged.connect(self._schedule_sync_push)
+        bus.boardsChanged.connect(self._schedule_sync_push)
+        self._configure_sync_timers()
+        if self.app is not None and not self._quit_hook_registered:
+            self.app.aboutToQuit.connect(self._on_app_about_to_quit)
+            self._quit_hook_registered = True
+        QTimer.singleShot(500, self._run_background_sync_pull)
+
     def _t(self, key: str, **kwargs) -> str:
         """Uebersetzt key in die aktuelle Sprache (Fallback: key selbst)."""
         return tr(key, **kwargs)
@@ -124,6 +146,7 @@ class MainWindow(QMainWindow):
         m_file.addAction(self._action(_t("Alle Prompts (TXT)"), self.export_all_txt, status_tip=_t("Alle Prompts als TXT-Datei exportieren")))
         m_file.addAction(self._action(_t("Alle Prompts (PDF)"), self.export_all_pdf, status_tip=_t("Alle Prompts als PDF-Datei exportieren")))
         m_file.addAction(self._action(_t("Bibliothek (JSON)"), self.export_library_json, status_tip=_t("Gesamte Bibliothek im JSON-Format sichern")))
+        m_file.addAction(self._action(_t("Bibliothek importieren (JSON) …"), self.import_library_json, status_tip=_t("JSON-Bibliothek zusammenführen (ohne Überschreiben)")))
         m_file.addSeparator()
         m_file.addAction(self._action(_t("Aktueller Prompt (TXT)"), self.export_current_prompt_txt, status_tip=_t("Ausgewählten Prompt als TXT exportieren")))
         m_file.addAction(self._action(_t("Aktueller Prompt (PDF)"), self.export_current_prompt_pdf, status_tip=_t("Ausgewählten Prompt als PDF exportieren")))
@@ -138,6 +161,7 @@ class MainWindow(QMainWindow):
         m_edit.addAction(self._action(_t("Neuen Prompt erstellen"), self.dashboard.create_prompt, shortcut="Ctrl+N", status_tip=_t("Neuen Prompt erstellen")))
         m_edit.addAction(self._action(_t("Kopier-Einstellungen …"), self.open_copy_settings, shortcut="Ctrl+Shift+C", status_tip=_t("Kopier-Einstellungen öffnen")))
         m_edit.addAction(self._action(_t("Darstellung …"), self.open_appearance_settings, shortcut="Ctrl+,", status_tip=_t("Darstellungseinstellungen öffnen")))
+        m_edit.addAction(self._action(_t("Synchronisierung …"), self.open_sync_settings, status_tip=_t("Synchronisierungs-Einstellungen (Dateimodus / Server) öffnen")))
 
         # Ansicht (Alt+A)
         m_view = menubar.addMenu(_t("&Ansicht"))
@@ -380,6 +404,114 @@ class MainWindow(QMainWindow):
     # --- Handlers ---
     def open_copy_settings(self):
         CopySettingsDialog(self.settings, self).exec()
+
+    def import_library_json(self):
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Bibliothek importieren (JSON)",
+            "",
+            "JSON (*.json)",
+        )
+        if not path:
+            return
+        try:
+            res = merge_library_payload(self.storage, Path(path), source_label=Path(path).name)
+            if res.conflicts:
+                dlg = ConflictResolutionDialog(res.conflicts, self)
+                if dlg.exec() == dlg.DialogCode.Accepted:
+                    choices = dlg.resolutions()
+                    res = merge_library_payload(
+                        self.storage,
+                        Path(path),
+                        source_label=Path(path).name,
+                        conflict_resolver=lambda c: choices.get(f"{c.kind}:{c.item_id}", "keep_local"),
+                    )
+            self.dashboard.reload()
+            self.boardManager.reload()
+            QMessageBox.information(
+                self,
+                "Import",
+                f"Import abgeschlossen: +{res.added_prompts} Prompts, ~{res.updated_prompts} aktualisiert, "
+                f"+{res.added_boards} Boards, {len(res.conflicts)} ungelöste Konflikte.",
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Fehler", f"JSON-Import fehlgeschlagen:\n{e}")
+
+    def _active_sync_backend(self):
+        mode = self.settings.get_sync_mode()
+        if mode == "file":
+            folder = self.settings.get_sync_folder()
+            if folder and Path(folder).is_dir():
+                return FileSlotBackend(self.storage, self.sync_state_store, sync_dir=Path(folder))
+            return NullBackend()
+        if mode == "server":
+            url = self.settings.get_sync_server_url()
+            if not url:
+                return NullBackend()
+            try:
+                return ServerBackend(
+                    self.storage,
+                    self.sync_state_store,
+                    server_url=url,
+                    namespace=self.settings.get_sync_namespace(),
+                    token_storage=self.token_storage,
+                )
+            except Exception:
+                return NullBackend()
+        return NullBackend()
+
+    def _configure_sync_timers(self):
+        mode = self.settings.get_sync_mode()
+        if mode in ("file", "server"):
+            self._sync_interval.setInterval(self.settings.get_sync_interval_sec() * 1000)
+            if not self._sync_interval.isActive():
+                self._sync_interval.start()
+        else:
+            self._sync_interval.stop()
+            self._sync_debounce.stop()
+
+    def _schedule_sync_push(self):
+        if self.settings.get_sync_mode() in ("file", "server"):
+            self._sync_debounce.start()
+
+    def _run_background_sync_pull(self):
+        backend = self._active_sync_backend()
+        if isinstance(backend, NullBackend):
+            return
+        try:
+            res = backend.pull()
+            if res.upserts > 0 or res.tombstones > 0:
+                self.dashboard.reload()
+                self.boardManager.reload()
+        except Exception:
+            pass
+
+    def _run_background_sync_push(self):
+        backend = self._active_sync_backend()
+        if isinstance(backend, NullBackend):
+            return
+        try:
+            backend.push()
+        except Exception:
+            pass
+
+    def _on_app_about_to_quit(self):
+        self._sync_debounce.stop()
+        self._sync_interval.stop()
+        self._run_background_sync_push()
+
+    def open_sync_settings(self):
+        dlg = SyncSettingsDialog(
+            self.storage,
+            self.settings,
+            state_store=self.sync_state_store,
+            token_storage=self.token_storage,
+            parent=self,
+        )
+        if dlg.exec() == dlg.DialogCode.Accepted:
+            self._configure_sync_timers()
+            self.dashboard.reload()
+            self.boardManager.reload()
 
     def open_appearance_settings(self):
         """Darstellung (U2 Theme + U3 Kachelfarben); wendet Aenderungen live an."""
