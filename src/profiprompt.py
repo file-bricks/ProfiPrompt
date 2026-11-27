@@ -1,5 +1,6 @@
 from typing import Optional
 import sys
+import threading
 from app_version import __version__
 from PySide6.QtWidgets import (
     QApplication,
@@ -10,7 +11,7 @@ from PySide6.QtWidgets import (
 )
 from pathlib import Path
 from PySide6.QtGui import QAction, QActionGroup, QPalette, QColor
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, Signal
 
 from settings_manager import SettingsManager
 from storage import Storage
@@ -65,6 +66,8 @@ def apply_dark_theme(app):
     return apply_theme(app, "dark")
 
 class MainWindow(QMainWindow):
+    _backgroundPullCompleted = Signal(int, int)
+
     def __init__(self, storage: Storage, settings: SettingsManager):
         super().__init__()
         self.storage = storage
@@ -106,9 +109,18 @@ class MainWindow(QMainWindow):
         bus.copyRequested.connect(self.handle_copy_request)
         bus.dragRequested.connect(self.handle_drag_request)
 
-        # Sync-Koordinator (3-s-Debounce, Intervall, einfach registrierter aboutToQuit-Hook)
+        # Sync-Koordinator (3-s-Debounce, Intervall, off-main-thread Worker, aboutToQuit-Hook)
         self.sync_state_store = SyncStateStore(self.settings.get_data_path())
         self.token_storage = TokenStorage()
+        self._sync_op_lock = threading.Lock()
+        self._sync_state_lock = threading.Lock()
+        self._sync_threads: list[threading.Thread] = []
+        self._sync_pull_running = False
+        self._sync_push_running = False
+        self._sync_closing = False
+        self._backgroundPullCompleted.connect(
+            self._on_background_sync_pull_done, Qt.ConnectionType.QueuedConnection
+        )
         self._sync_debounce = QTimer(self)
         self._sync_debounce.setSingleShot(True)
         self._sync_debounce.setInterval(3000)
@@ -474,31 +486,100 @@ class MainWindow(QMainWindow):
         if self.settings.get_sync_mode() in ("file", "server"):
             self._sync_debounce.start()
 
+    def _spawn_sync_worker(self, kind: str, work_fn) -> None:
+        thread_ref: list[threading.Thread] = []
+
+        def _runner():
+            try:
+                work_fn()
+            finally:
+                with self._sync_state_lock:
+                    if kind == "pull":
+                        self._sync_pull_running = False
+                    else:
+                        self._sync_push_running = False
+                    if thread_ref and thread_ref[0] in self._sync_threads:
+                        self._sync_threads.remove(thread_ref[0])
+
+        t = threading.Thread(target=_runner, name=f"profiprompt-sync-{kind}", daemon=True)
+        thread_ref.append(t)
+        with self._sync_state_lock:
+            self._sync_threads.append(t)
+        t.start()
+
+    def _on_background_sync_pull_done(self, upserts: int, tombstones: int) -> None:
+        if self._sync_closing:
+            return
+        if upserts > 0 or tombstones > 0:
+            self.dashboard.reload()
+            self.boardManager.reload()
+
     def _run_background_sync_pull(self):
+        if self._sync_closing:
+            return
         backend = self._active_sync_backend()
         if isinstance(backend, NullBackend):
             return
-        try:
-            res = backend.pull()
-            if res.upserts > 0 or res.tombstones > 0:
-                self.dashboard.reload()
-                self.boardManager.reload()
-        except Exception:
-            pass
+        with self._sync_state_lock:
+            if self._sync_pull_running or self._sync_closing:
+                return
+            self._sync_pull_running = True
 
-    def _run_background_sync_push(self):
+        def _worker():
+            try:
+                with self._sync_op_lock:
+                    res = backend.pull()
+                if not self._sync_closing and (res.upserts > 0 or res.tombstones > 0):
+                    self._backgroundPullCompleted.emit(int(res.upserts), int(res.tombstones))
+            except Exception:
+                pass
+
+        self._spawn_sync_worker("pull", _worker)
+
+    def _run_background_sync_push(self, *, synchronous: bool = False):
         backend = self._active_sync_backend()
         if isinstance(backend, NullBackend):
             return
-        try:
-            backend.push()
-        except Exception:
-            pass
+        if synchronous:
+            try:
+                with self._sync_op_lock:
+                    backend.push()
+            except Exception:
+                pass
+            return
+        if self._sync_closing:
+            return
+        with self._sync_state_lock:
+            if self._sync_push_running or self._sync_closing:
+                return
+            self._sync_push_running = True
 
-    def _on_app_about_to_quit(self):
+        def _worker():
+            try:
+                with self._sync_op_lock:
+                    backend.push()
+            except Exception:
+                pass
+
+        self._spawn_sync_worker("push", _worker)
+
+    def _stop_and_join_sync_workers(self) -> None:
+        self._sync_closing = True
         self._sync_debounce.stop()
         self._sync_interval.stop()
-        self._run_background_sync_push()
+        with self._sync_state_lock:
+            threads = list(self._sync_threads)
+        for t in threads:
+            if t.is_alive() and t is not threading.current_thread():
+                t.join(timeout=2.0)
+
+    def closeEvent(self, event):
+        self._stop_and_join_sync_workers()
+        super().closeEvent(event)
+
+    def _on_app_about_to_quit(self):
+        self._stop_and_join_sync_workers()
+        self._run_background_sync_push(synchronous=True)
 
     def open_sync_settings(self):
         dlg = SyncSettingsDialog(

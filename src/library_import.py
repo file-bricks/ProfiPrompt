@@ -7,31 +7,44 @@ diverging local entries (conflicts are returned for explicit 3-way resolution).
 
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Literal, Optional, Sequence, Tuple
 
-from models import (
-    Board,
-    BoardItem,
-    Prompt,
-    Version,
-    board_from_dict,
-    board_to_dict,
-    gen_id,
-    now_iso,
-    prompt_from_dict,
-    prompt_to_dict,
-)
+import models as _models
 
 ConflictChoice = Literal["keep_local", "keep_copy", "take_remote"]
+MAX_LIBRARY_PAYLOAD_BYTES = 16 * 1024 * 1024
 
 
-def canonical_prompt_hash(prompt: Prompt | Dict[str, Any]) -> str:
+def _coerce_prompt(prompt: Any) -> _models.Prompt:
+    """Coerce dict, live Prompt, or cross-module/reloaded Prompt dataclass safely."""
+    if isinstance(prompt, _models.Prompt):
+        return prompt
+    if isinstance(prompt, dict):
+        return _models.prompt_from_dict(prompt)
+    if dataclasses.is_dataclass(prompt) and not isinstance(prompt, type):
+        return _models.prompt_from_dict(dataclasses.asdict(prompt))
+    return _models.prompt_from_dict(prompt)
+
+
+def _coerce_board(board: Any) -> _models.Board:
+    """Coerce dict, live Board, or cross-module/reloaded Board dataclass safely."""
+    if isinstance(board, _models.Board):
+        return board
+    if isinstance(board, dict):
+        return _models.board_from_dict(board)
+    if dataclasses.is_dataclass(board) and not isinstance(board, type):
+        return _models.board_from_dict(dataclasses.asdict(board))
+    return _models.board_from_dict(board)
+
+
+def canonical_prompt_hash(prompt: _models.Prompt | Dict[str, Any]) -> str:
     """Deterministic content hash for a Prompt including its nested Versions."""
-    p = prompt if isinstance(prompt, Prompt) else prompt_from_dict(prompt)
+    p = _coerce_prompt(prompt)
     comparable = {
         "id": p.id,
         "title": p.title,
@@ -56,9 +69,9 @@ def canonical_prompt_hash(prompt: Prompt | Dict[str, Any]) -> str:
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
-def canonical_board_hash(board: Board | Dict[str, Any]) -> str:
+def canonical_board_hash(board: _models.Board | Dict[str, Any]) -> str:
     """Deterministic content hash for a Board including its ordered BoardItems."""
-    b = board if isinstance(board, Board) else board_from_dict(board)
+    b = _coerce_board(board)
     comparable = {
         "id": b.id,
         "title": b.title,
@@ -106,12 +119,18 @@ class LibraryImportResult:
     imported_hashes: Dict[str, str] = field(default_factory=dict)
 
 
-def parse_library_payload(raw: Dict[str, Any] | str | Path) -> Tuple[List[Prompt], List[Board], Dict[str, Any]]:
+def parse_library_payload(raw: Dict[str, Any] | str | Path) -> Tuple[List[_models.Prompt], List[_models.Board], Dict[str, Any]]:
     """Parse and validate a profiprompt-library-v1 JSON payload in memory."""
     if isinstance(raw, Path):
-        data = json.loads(raw.read_text(encoding="utf-8"))
+        if raw.is_symlink():
+            raise ValueError(f"Symlink-Importdatei abgelehnt: {raw}")
+        if raw.stat().st_size > MAX_LIBRARY_PAYLOAD_BYTES:
+            raise ValueError(f"Importdatei überschreitet Größenlimit ({MAX_LIBRARY_PAYLOAD_BYTES} Bytes): {raw}")
+        data = json.loads(raw.read_text(encoding="utf-8-sig"))
     elif isinstance(raw, str):
-        data = json.loads(raw)
+        if len(raw.encode("utf-8")) > MAX_LIBRARY_PAYLOAD_BYTES:
+            raise ValueError(f"Import-JSON überschreitet Größenlimit ({MAX_LIBRARY_PAYLOAD_BYTES} Bytes).")
+        data = json.loads(raw.lstrip("\ufeff"))
     elif isinstance(raw, dict):
         data = raw
     else:
@@ -125,23 +144,23 @@ def parse_library_payload(raw: Dict[str, Any] | str | Path) -> Tuple[List[Prompt
     if not isinstance(raw_prompts, list) or not isinstance(raw_boards, list):
         raise ValueError("Ungültige profiprompt-library-v1-Struktur: prompts und boards müssen Listen sein.")
 
-    prompts: List[Prompt] = []
+    prompts: List[_models.Prompt] = []
     seen_prompt_ids: set[str] = set()
     for entry in raw_prompts:
         if not isinstance(entry, dict) or not entry.get("id"):
             continue
-        p = prompt_from_dict(entry)
+        p = _models.prompt_from_dict(entry)
         if p.id in seen_prompt_ids:
             continue
         seen_prompt_ids.add(p.id)
         prompts.append(p)
 
-    boards: List[Board] = []
+    boards: List[_models.Board] = []
     seen_board_ids: set[str] = set()
     for entry in raw_boards:
         if not isinstance(entry, dict) or not entry.get("id"):
             continue
-        b = board_from_dict(entry)
+        b = _models.board_from_dict(entry)
         if b.id in seen_board_ids:
             continue
         seen_board_ids.add(b.id)
@@ -151,10 +170,10 @@ def parse_library_payload(raw: Dict[str, Any] | str | Path) -> Tuple[List[Prompt
     return prompts, boards, manifest
 
 
-def _prune_board_items_for_existing_prompts(board: Board, valid_prompt_ids: set[str]) -> Board:
+def _prune_board_items_for_existing_prompts(board: _models.Board, valid_prompt_ids: set[str]) -> _models.Board:
     """Ensure every BoardItem points to an existing prompt (prevent dangling refs)."""
     cleaned_items = [it for it in (board.items or []) if it.prompt_id in valid_prompt_ids]
-    return Board(
+    return _models.Board(
         id=board.id,
         title=board.title,
         description=board.description,
@@ -188,8 +207,8 @@ def merge_library_payload(
 
     local_prompts = list(storage.load_prompts())
     local_boards = list(storage.load_boards())
-    prompt_by_id: Dict[str, Prompt] = {p.id: p for p in local_prompts}
-    board_by_id: Dict[str, Board] = {b.id: b for b in local_boards}
+    prompt_by_id: Dict[str, _models.Prompt] = {p.id: p for p in local_prompts}
+    board_by_id: Dict[str, _models.Board] = {b.id: b for b in local_boards}
 
     result = LibraryImportResult()
     prompts_changed = False
@@ -234,8 +253,8 @@ def merge_library_payload(
             item_id=inc_p.id,
             title=loc_p.title or inc_p.title or inc_p.id,
             source=source_label,
-            local_payload=prompt_to_dict(loc_p),
-            remote_payload=prompt_to_dict(inc_p),
+            local_payload=_models.prompt_to_dict(loc_p),
+            remote_payload=_models.prompt_to_dict(inc_p),
             local_updated_at=loc_p.updated_at,
             remote_updated_at=inc_p.updated_at,
         )
@@ -253,10 +272,10 @@ def merge_library_payload(
             prompts_changed = True
         elif choice == "keep_copy":
             # Take remote as main prompt and preserve local text losslessly as a new Version
-            merged_p = prompt_from_dict(prompt_to_dict(inc_p))
+            merged_p = _models.prompt_from_dict(_models.prompt_to_dict(inc_p))
             next_vnum = max((v.version_number for v in merged_p.versions), default=0) + 1
-            preserved = Version(
-                id=gen_id(),
+            preserved = _models.Version(
+                id=_models.gen_id(),
                 prompt_id=merged_p.id,
                 version_number=next_vnum,
                 title=f"{loc_p.title or 'Lokal'} (lokale Kopie)",
@@ -264,7 +283,7 @@ def merge_library_payload(
                 result=loc_p.last_result,
                 tags=list(loc_p.tags or []),
                 created_at=loc_p.created_at,
-                updated_at=now_iso(),
+                updated_at=_models.now_iso(),
             )
             # Also carry over any local versions missing in remote
             remote_v_ids = {v.id for v in merged_p.versions}
@@ -272,7 +291,7 @@ def merge_library_payload(
                 if lv.id not in remote_v_ids:
                     merged_p.versions.append(lv)
             merged_p.versions.append(preserved)
-            merged_p.updated_at = now_iso()
+            merged_p.updated_at = _models.now_iso()
             idx = next(i for i, p in enumerate(local_prompts) if p.id == inc_p.id)
             local_prompts[idx] = merged_p
             prompt_by_id[inc_p.id] = merged_p
@@ -324,8 +343,8 @@ def merge_library_payload(
             item_id=cleaned_inc_b.id,
             title=loc_b.title or cleaned_inc_b.title or cleaned_inc_b.id,
             source=source_label,
-            local_payload=board_to_dict(loc_b),
-            remote_payload=board_to_dict(cleaned_inc_b),
+            local_payload=_models.board_to_dict(loc_b),
+            remote_payload=_models.board_to_dict(cleaned_inc_b),
             local_updated_at=loc_b.created_at,
             remote_updated_at=cleaned_inc_b.created_at,
         )
@@ -343,14 +362,14 @@ def merge_library_payload(
             boards_changed = True
         elif choice == "keep_copy":
             # Take remote under original ID and keep local board as a copy with a fresh ID
-            copy_id = gen_id()
-            local_copy = Board(
+            copy_id = _models.gen_id()
+            local_copy = _models.Board(
                 id=copy_id,
                 title=f"{loc_b.title or 'Board'} (lokale Kopie)",
                 description=loc_b.description,
                 items=[
-                    BoardItem(
-                        id=gen_id(),
+                    _models.BoardItem(
+                        id=_models.gen_id(),
                         board_id=copy_id,
                         prompt_id=it.prompt_id,
                         version_id=it.version_id,
@@ -358,7 +377,7 @@ def merge_library_payload(
                     )
                     for it in loc_b.items
                 ],
-                created_at=now_iso(),
+                created_at=_models.now_iso(),
             )
             idx = next(i for i, b in enumerate(local_boards) if b.id == cleaned_inc_b.id)
             local_boards[idx] = cleaned_inc_b

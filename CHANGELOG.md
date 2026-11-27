@@ -5,7 +5,7 @@ Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/).
 
 ## [Unreleased]
 
-### Synchronisierung (Dateimodus mit Host-Slots + Servermodus) & Desktop-JSON-Import (2026-11-26, T-20261122-787921511)
+### Synchronisierung (Dateimodus mit Host-Slots + Servermodus) & Desktop-JSON-Import (2026-11-26)
 
 - **Verlustfreier JSON-Merge-Import (`src/library_import.py`):** Neuer Desktop-Importer für `profiprompt-library-v1` (Menü `Datei -> Bibliothek importieren (JSON) …`), validiert Prompts und Boards gemeinsam im Speicher, speichert Prompts stets vor Boards, bereinigt verwaiste Board-Referenzen und liefert abweichende Einträge für die Drei-Wege-Konfliktlösung (`Lokal behalten` / `Als neue Version anlegen` / `Fremdstand übernehmen`).
 - **Sync-Backends (`src/sync_backend.py`):** Einheitliche `SyncBackend`-Schicht mit `NullBackend` (`Aus`, Standard), `ServerBackend` (stdlib `urllib.request` gegen `prompt-sync-server` mit getrennten `prompt`/`board`-Kinds, ETag/`304`, `409 Conflict`, `410 Gone`, Offline-Queue, TLS-Guard und Keyring-/0600-Token-Ablage) sowie `FileSlotBackend` (`.SYNC`-Host-Slots `profiprompt@<HOST>.json`, gegenseitige Sichtbarkeit mit `profiprompt-browser`, A7-Konfliktkopie-Filter, Modi `never`/`once`/`on_start`, lokale `deleted_ids`-Sperrliste).

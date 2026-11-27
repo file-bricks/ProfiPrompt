@@ -9,7 +9,7 @@ from typing import Any
 
 from atomic_io import atomic_write_json
 from app_version import __version__
-from models import Board, Prompt, board_to_dict, prompt_to_dict
+import models as _models
 
 SCHEMA_VERSION = "profiprompt-library-v1"
 APP_NAME = "ProfiPrompt"
@@ -62,8 +62,8 @@ def build_library_export(
         },
         "stats": _build_stats(prompts, boards),
         "tags": _collect_tags(prompts),
-        "prompts": [prompt_to_dict(prompt) for prompt in prompts],
-        "boards": [board_to_dict(board) for board in boards],
+        "prompts": [_models.prompt_to_dict(prompt) for prompt in prompts],
+        "boards": [_models.board_to_dict(board) for board in boards],
     }
     if manifest is not None:
         payload["manifest"] = dict(manifest)
@@ -83,7 +83,7 @@ def write_library_export(storage, path: str | Path) -> dict[str, Any]:
     return payload
 
 
-def _build_stats(prompts: list[Prompt], boards: list[Board]) -> dict[str, int]:
+def _build_stats(prompts: list[_models.Prompt], boards: list[_models.Board]) -> dict[str, int]:
     return {
         "prompt_count": len(prompts),
         "version_count": sum(len(prompt.versions) for prompt in prompts if prompt and prompt.versions),
@@ -92,7 +92,7 @@ def _build_stats(prompts: list[Prompt], boards: list[Board]) -> dict[str, int]:
     }
 
 
-def _collect_tags(prompts: list[Prompt]) -> list[str]:
+def _collect_tags(prompts: list[_models.Prompt]) -> list[str]:
     tags: set[str] = set()
     for prompt in prompts:
         if prompt and prompt.tags:

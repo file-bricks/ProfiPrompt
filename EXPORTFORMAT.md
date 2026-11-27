@@ -160,7 +160,7 @@ Für den dateibasierten Host-Slot-Sync (`<sync_ordner>/profiprompt/<HOST>/profip
 "manifest": {
   "app": "profiprompt",
   "version": "1.0.2",
-  "host": "ASUS-GEI",
+  "host": "HOST-A",
   "updated_at": "2026-11-26T12:00:00+00:00",
   "item_count": 42,
   "board_count": 3,

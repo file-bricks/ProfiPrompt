@@ -42,18 +42,7 @@ from library_import import (
     canonical_prompt_hash,
     merge_library_payload,
 )
-from models import (
-    Board,
-    BoardItem,
-    Prompt,
-    Version,
-    board_from_dict,
-    board_to_dict,
-    gen_id,
-    now_iso,
-    prompt_from_dict,
-    prompt_to_dict,
-)
+import models as _models
 
 logger = logging.getLogger(__name__)
 
@@ -67,10 +56,11 @@ SLOT_IMPORT_MODES = ("never", "once", "on_start")
 DEFAULT_SYNC_MODE = "off"
 DEFAULT_NAMESPACE = "profiprompt"
 DEFAULT_HTTP_TIMEOUT = 10.0
+MAX_SLOT_FILE_BYTES = 16 * 1024 * 1024
 
 NAMESPACE_RE = re.compile(r"\A[a-z0-9_-]{1,32}\Z")
 HOST_CLEAN_RE = re.compile(r"[^A-Za-z0-9._-]+")
-TAILSCALE_IPV4_NET = ipaddress.ip_network("100.64.0.0/10")
+TAILSCALE_IPV4_NET = ipaddress.IPv4Network((0x64400000, 10))
 TAILSCALE_IPV6_NET = ipaddress.ip_network("fd7a:115c:a1e0::/48")
 REDIRECT_STATUS_CODES = frozenset({300, 301, 302, 303, 305, 306, 307, 308})
 VISIBLE_SLOT_APPS = ("profiprompt", "profiprompt-browser")
@@ -159,16 +149,58 @@ def validate_server_url(raw_url: str) -> str:
     if scheme == "http" and not (is_loopback_host(host) or is_tailscale_host(host)):
         raise SyncTransportError(
             "Unverschlüsseltes http:// ist nur für Loopback (127.0.0.1 / localhost) "
-            "oder Tailscale (100.64.0.0/10) zulässig. Für andere Ziele bitte https:// nutzen."
+            "oder Tailscale (100.64/10) zulässig. Für andere Ziele bitte https:// nutzen."
         )
     return cleaned
 
 
-def _atomic_write_json(target: Path, data: Dict[str, Any], *, restricted: bool = False) -> None:
-    target = Path(target)
+def _assert_no_symlink_in_ancestors(target: Path, containment_root: Optional[Path] = None) -> None:
     if target.is_symlink() or (target.exists() and target.is_dir()):
         raise OSError(f"Ziel ist Symlink oder Verzeichnis: {target}")
+    if containment_root is not None:
+        root = Path(containment_root)
+        if root.is_symlink():
+            raise OSError(f"Sync-Wurzelverzeichnis ist ein Symlink: {root}")
+        root_resolved = root.resolve()
+        try:
+            rel_parts = target.parent.relative_to(root).parts
+        except ValueError:
+            rel_parts = ()
+        cur = root
+        for part in rel_parts:
+            cur = cur / part
+            if cur.is_symlink():
+                raise OSError(f"Elternverzeichnis ist ein Symlink: {cur}")
+        if target.parent.exists():
+            if target.parent.is_symlink():
+                raise OSError(f"Elternverzeichnis ist ein Symlink: {target.parent}")
+            if not target.parent.resolve().is_relative_to(root_resolved):
+                raise OSError(f"Zielpfad verlässt Sync-Verzeichnis: {target}")
+    # Check deepest existing ancestor directory itself is not a user symlink
+    anc = target.parent
+    while anc and not anc.exists():
+        parent = anc.parent
+        if parent == anc:
+            break
+        anc = parent
+    if anc and anc.exists() and anc.is_symlink():
+        raise OSError(f"Elternverzeichnis ist ein Symlink: {anc}")
+
+
+def _atomic_write_json(
+    target: Path,
+    data: Dict[str, Any],
+    *,
+    restricted: bool = False,
+    containment_root: Optional[Path] = None,
+) -> None:
+    target = Path(target)
+    _assert_no_symlink_in_ancestors(target, containment_root=containment_root)
     target.parent.mkdir(parents=True, exist_ok=True)
+    if target.parent.is_symlink():
+        raise OSError(f"Elternverzeichnis ist ein Symlink: {target.parent}")
+    if containment_root is not None and not target.parent.resolve().is_relative_to(Path(containment_root).resolve()):
+        raise OSError(f"Zielpfad verlässt Sync-Verzeichnis: {target}")
     tmp = target.parent / f".{target.name}.{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp"
     encoded = (json.dumps(data, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
@@ -314,7 +346,7 @@ class PushResult:
 
 @dataclass(frozen=True)
 class ForeignSlotInfo:
-    slot_key: str  # e.g. "profiprompt@WORKSTATION-LG"
+    slot_key: str  # e.g. "profiprompt@HOST-A"
     app: str
     host: str
     path: Path
@@ -480,7 +512,9 @@ class ServerBackend(SyncBackend):
             with self._opener.open(req, timeout=self.timeout) as resp:
                 status = int(resp.status)
                 resp_headers = {k.lower(): v for k, v in resp.headers.items()}
-                raw = resp.read()
+                raw = resp.read(MAX_SLOT_FILE_BYTES + 1)
+                if len(raw) > MAX_SLOT_FILE_BYTES:
+                    raise SyncTransportError(f"Server-Antwort überschreitet Größenlimit ({MAX_SLOT_FILE_BYTES} Bytes).")
                 parsed = json.loads(raw.decode("utf-8")) if raw else None
                 return status, resp_headers, parsed
         except urllib_error.HTTPError as exc:
@@ -488,7 +522,7 @@ class ServerBackend(SyncBackend):
             resp_headers = {k.lower(): v for k, v in (exc.headers.items() if exc.headers else [])}
             if status in REDIRECT_STATUS_CODES:
                 raise SyncTransportError(f"Unerwarteter Redirect ({status}).") from exc
-            raw = exc.read()
+            raw = exc.read(MAX_SLOT_FILE_BYTES + 1)
             parsed = None
             if raw:
                 try:
@@ -535,7 +569,7 @@ class ServerBackend(SyncBackend):
             ms = round((time.perf_counter() - t0) * 1000.0, 1)
             return ConnectionStatus(ok=False, latency_ms=ms, detail=str(exc))
 
-    def _current_local_snapshot(self) -> Tuple[Dict[str, Prompt], Dict[str, Board], Dict[str, str]]:
+    def _current_local_snapshot(self) -> Tuple[Dict[str, _models.Prompt], Dict[str, _models.Board], Dict[str, str]]:
         prompts = {p.id: p for p in self.storage.load_prompts()}
         boards = {b.id: b for b in self.storage.load_boards()}
         hashes: Dict[str, str] = {}
@@ -559,7 +593,7 @@ class ServerBackend(SyncBackend):
             if known_hashes.get(key) == h:
                 continue
             kind, item_id = key.split(":", 1)
-            payload = prompt_to_dict(prompts[item_id]) if kind == "prompt" else board_to_dict(boards[item_id])
+            payload = _models.prompt_to_dict(prompts[item_id]) if kind == "prompt" else _models.board_to_dict(boards[item_id])
             base_rev = queue.get(key, {}).get("base_rev", int(item_revs.get(key, 0)))
             queue[key] = {"id": item_id, "kind": kind, "op": "upsert", "base_rev": int(base_rev), "payload": payload}
 
@@ -626,7 +660,7 @@ class ServerBackend(SyncBackend):
             payload["id"] = item_id
 
             if kind == "prompt":
-                rem_p = prompt_from_dict(payload)
+                rem_p = _models.prompt_from_dict(payload)
                 rem_hash = canonical_prompt_hash(rem_p)
                 loc_p = prompt_by_id.get(item_id)
                 if loc_p is None:
@@ -653,8 +687,8 @@ class ServerBackend(SyncBackend):
                             item_id=item_id,
                             title=loc_p.title or rem_p.title or item_id,
                             source=f"server:{self.namespace}",
-                            local_payload=prompt_to_dict(loc_p),
-                            remote_payload=prompt_to_dict(rem_p),
+                            local_payload=_models.prompt_to_dict(loc_p),
+                            remote_payload=_models.prompt_to_dict(rem_p),
                             local_updated_at=loc_p.updated_at,
                             remote_updated_at=rem_p.updated_at,
                             remote_rev=rev,
@@ -672,11 +706,11 @@ class ServerBackend(SyncBackend):
                                 result.upserts += 1
                                 prompts_changed = True
                             elif choice == "keep_copy":
-                                merged_p = prompt_from_dict(prompt_to_dict(rem_p))
+                                merged_p = _models.prompt_from_dict(_models.prompt_to_dict(rem_p))
                                 next_v = max((v.version_number for v in merged_p.versions), default=0) + 1
                                 merged_p.versions.append(
-                                    Version(
-                                        id=gen_id(),
+                                    _models.Version(
+                                        id=_models.gen_id(),
                                         prompt_id=merged_p.id,
                                         version_number=next_v,
                                         title=f"{loc_p.title or 'Lokal'} (lokale Kopie)",
@@ -684,7 +718,7 @@ class ServerBackend(SyncBackend):
                                         result=loc_p.last_result,
                                         tags=list(loc_p.tags or []),
                                         created_at=loc_p.created_at,
-                                        updated_at=now_iso(),
+                                        updated_at=_models.now_iso(),
                                     )
                                 )
                                 idx = next(i for i, p in enumerate(local_prompts) if p.id == item_id)
@@ -698,7 +732,7 @@ class ServerBackend(SyncBackend):
                                 # keep_local -> update base_rev so next push overwrites cleanly
                                 item_revs[key] = rev
             else:
-                rem_b = board_from_dict(payload)
+                rem_b = _models.board_from_dict(payload)
                 rem_hash = canonical_board_hash(rem_b)
                 loc_b = board_by_id.get(item_id)
                 if loc_b is None:
@@ -725,8 +759,8 @@ class ServerBackend(SyncBackend):
                             item_id=item_id,
                             title=loc_b.title or rem_b.title or item_id,
                             source=f"server:{self.namespace}",
-                            local_payload=board_to_dict(loc_b),
-                            remote_payload=board_to_dict(rem_b),
+                            local_payload=_models.board_to_dict(loc_b),
+                            remote_payload=_models.board_to_dict(rem_b),
                             local_updated_at=loc_b.created_at,
                             remote_updated_at=rem_b.created_at,
                             remote_rev=rev,
@@ -744,14 +778,14 @@ class ServerBackend(SyncBackend):
                                 result.upserts += 1
                                 boards_changed = True
                             elif choice == "keep_copy":
-                                copy_id = gen_id()
-                                local_copy = Board(
+                                copy_id = _models.gen_id()
+                                local_copy = _models.Board(
                                     id=copy_id,
                                     title=f"{loc_b.title or 'Board'} (lokale Kopie)",
                                     description=loc_b.description,
                                     items=[
-                                        BoardItem(
-                                            id=gen_id(),
+                                        _models.BoardItem(
+                                            id=_models.gen_id(),
                                             board_id=copy_id,
                                             prompt_id=it.prompt_id,
                                             version_id=it.version_id,
@@ -759,7 +793,7 @@ class ServerBackend(SyncBackend):
                                         )
                                         for it in loc_b.items
                                     ],
-                                    created_at=now_iso(),
+                                    created_at=_models.now_iso(),
                                 )
                                 idx = next(i for i, b in enumerate(local_boards) if b.id == item_id)
                                 local_boards[idx] = rem_b
@@ -798,7 +832,7 @@ class ServerBackend(SyncBackend):
                             item_id=item_id,
                             title=loc_p.title or item_id,
                             source=f"server:{self.namespace} (gelöscht)",
-                            local_payload=prompt_to_dict(loc_p),
+                            local_payload=_models.prompt_to_dict(loc_p),
                             remote_payload={"id": item_id, "deleted": True},
                             local_updated_at=loc_p.updated_at,
                             remote_updated_at=str(tomb.get("deleted_at") or ""),
@@ -822,7 +856,7 @@ class ServerBackend(SyncBackend):
                             item_id=item_id,
                             title=loc_b.title or item_id,
                             source=f"server:{self.namespace} (gelöscht)",
-                            local_payload=board_to_dict(loc_b),
+                            local_payload=_models.board_to_dict(loc_b),
                             remote_payload={"id": item_id, "deleted": True},
                             local_updated_at=loc_b.created_at,
                             remote_updated_at=str(tomb.get("deleted_at") or ""),
@@ -840,7 +874,7 @@ class ServerBackend(SyncBackend):
         state["etag"] = resp_headers.get("etag", f'"rev-{new_lib_rev}"')
         state["item_revs"] = item_revs
         state["item_hashes"] = item_hashes
-        state["last_sync_at"] = now_iso()
+        state["last_sync_at"] = _models.now_iso()
         self.state_store.save_state(state)
         return result
 
@@ -920,7 +954,7 @@ class ServerBackend(SyncBackend):
             state["etag"] = f'"rev-{state["library_rev"]}"'
         state["item_revs"] = item_revs
         state["item_hashes"] = item_hashes
-        state["last_sync_at"] = now_iso()
+        state["last_sync_at"] = _models.now_iso()
         self.state_store.save_state(state)
         self.state_store.save_queue(queue)
         return result
@@ -932,7 +966,7 @@ class ServerBackend(SyncBackend):
 
 
 def is_conflict_copy_filename(filename: str, app: str, host: str) -> bool:
-    """Detect OneDrive/cloud conflict copies like ``profiprompt@ASUS-GEI-WORKSTATION.json`` (A7)."""
+    """Detect OneDrive/cloud conflict copies like ``profiprompt@HOST-A-HOST-B.json`` (A7)."""
     expected = f"{app}@{host}.json"
     if filename == expected:
         return False
@@ -959,9 +993,11 @@ class FileSlotBackend(SyncBackend):
         self.state_store = state_store
         self.sync_dir = Path(sync_dir)
         self.app_name = app_name
-        self.host_name = (host_name or get_host_slot_name()).strip().upper()
-        if not self.host_name:
-            raise SyncError("Host-Slot-Name darf nicht leer sein.")
+        raw_host = (host_name or get_host_slot_name()).strip()
+        cleaned_host = HOST_CLEAN_RE.sub("-", raw_host).strip("._-").upper()
+        if not cleaned_host or "/" in raw_host or "\\" in raw_host or ".." in raw_host:
+            raise SyncError("Host-Slot-Name ungültig oder leer.")
+        self.host_name = cleaned_host
 
     @property
     def own_slot_key(self) -> str:
@@ -973,11 +1009,11 @@ class FileSlotBackend(SyncBackend):
 
     def test_connection(self) -> ConnectionStatus:
         t0 = time.perf_counter()
-        if not self.sync_dir.exists() or not self.sync_dir.is_dir():
+        if self.sync_dir.is_symlink() or not self.sync_dir.exists() or not self.sync_dir.is_dir():
             return ConnectionStatus(
                 ok=False,
                 latency_ms=round((time.perf_counter() - t0) * 1000.0, 1),
-                detail=f"Sync-Ordner existiert nicht: {self.sync_dir}",
+                detail=f"Sync-Ordner existiert nicht oder ist ungültig: {self.sync_dir}",
             )
         slots, warnings = self.discover_foreign_slots()
         ms = round((time.perf_counter() - t0) * 1000.0, 1)
@@ -989,6 +1025,14 @@ class FileSlotBackend(SyncBackend):
             item_count=len(slots),
         )
 
+    def _safe_contained_path(self, path: Path, sync_root: Path) -> bool:
+        try:
+            if path.is_symlink():
+                return False
+            return path.resolve().is_relative_to(sync_root)
+        except OSError:
+            return False
+
     def discover_foreign_slots(self) -> Tuple[List[ForeignSlotInfo], List[str]]:
         """Discover foreign ProfiPrompt & ProfiPrompt-Browser slots; flag A7 conflict copies."""
         state = self.state_store.load_state()
@@ -996,39 +1040,78 @@ class FileSlotBackend(SyncBackend):
         found: List[ForeignSlotInfo] = []
         warnings: List[str] = []
 
+        if self.sync_dir.is_symlink() or not self.sync_dir.is_dir():
+            warnings.append(f"Sync-Ordner ungültig oder Symlink ignoriert: {self.sync_dir}")
+            return found, warnings
+        try:
+            sync_root = self.sync_dir.resolve()
+        except OSError:
+            warnings.append(f"Sync-Ordner nicht auflösbar: {self.sync_dir}")
+            return found, warnings
+
         for app in VISIBLE_SLOT_APPS:
             app_root = self.sync_dir / app
-            if not app_root.is_dir():
+            if app_root.is_symlink():
+                warnings.append(f"Symlink-Verzeichnis ignoriert: {app_root.name}")
+                continue
+            if not app_root.is_dir() or not self._safe_contained_path(app_root, sync_root):
                 continue
             for host_dir in sorted(app_root.iterdir()):
-                if not host_dir.is_dir():
+                if host_dir.is_symlink():
+                    warnings.append(f"Symlink-Slot-Ordner ignoriert: {host_dir.name}")
+                    continue
+                if not host_dir.is_dir() or not self._safe_contained_path(host_dir, sync_root):
                     continue
                 host = host_dir.name
                 canonical_name = f"{app}@{host}.json"
                 for child in sorted(host_dir.iterdir()):
+                    if child.is_symlink():
+                        warnings.append(f"Symlink ignoriert: {child.name}")
+                        continue
                     if not child.is_file():
                         continue
                     if is_conflict_copy_filename(child.name, app, host):
                         warnings.append(f"Konfliktkopie/Temp ignoriert: {child.name}")
                         continue
                 slot_file = host_dir / canonical_name
-                if not slot_file.is_file():
+                if slot_file.is_symlink():
+                    warnings.append(f"Symlink-Slot-Datei ignoriert: {slot_file.name}")
+                    continue
+                if not slot_file.is_file() or not self._safe_contained_path(slot_file, sync_root):
                     continue
                 slot_key = f"{app}@{host}"
                 if slot_key.upper() == self.own_slot_key.upper():
                     continue
                 try:
-                    raw = json.loads(slot_file.read_text(encoding="utf-8"))
+                    file_stat = slot_file.stat()
+                except OSError:
+                    warnings.append(f"Slot nicht lesbar: {slot_file.name}")
+                    continue
+                if file_stat.st_size > MAX_SLOT_FILE_BYTES:
+                    warnings.append(f"Slot überschreitet Größenlimit ({file_stat.st_size} Bytes): {slot_file.name}")
+                    continue
+                try:
+                    raw = json.loads(slot_file.read_text(encoding="utf-8-sig"))
                 except (OSError, json.JSONDecodeError, UnicodeDecodeError):
                     warnings.append(f"Slot nicht lesbar: {slot_file.name}")
                     continue
+                if not isinstance(raw, dict):
+                    warnings.append(f"Ungültiges Slot-Root-Format (kein JSON-Objekt): {slot_file.name}")
+                    continue
                 manifest = raw.get("manifest") if isinstance(raw.get("manifest"), dict) else {}
+                app_meta = raw.get("app") if isinstance(raw.get("app"), dict) else {}
                 updated_at = str(
                     manifest.get("updated_at")
-                    or (raw.get("app") or {}).get("exported_at")
-                    or datetime.fromtimestamp(slot_file.stat().st_mtime, tz=timezone.utc).isoformat()
+                    or app_meta.get("exported_at")
+                    or datetime.fromtimestamp(file_stat.st_mtime, tz=timezone.utc).isoformat()
                 )
-                item_count = int(manifest.get("item_count", len(raw.get("prompts") or [])))
+                raw_prompts = raw.get("prompts")
+                fallback_count = len(raw_prompts) if isinstance(raw_prompts, list) else 0
+                raw_count = manifest.get("item_count")
+                if isinstance(raw_count, int) and not isinstance(raw_count, bool) and raw_count >= 0:
+                    item_count = raw_count
+                else:
+                    item_count = fallback_count
                 found.append(
                     ForeignSlotInfo(
                         slot_key=slot_key,
@@ -1053,8 +1136,10 @@ class FileSlotBackend(SyncBackend):
 
     def push(self, *, conflict_resolver=None, force: bool = False) -> PushResult:
         """Export own library atomically to own host slot (never writes into foreign slots)."""
+        if self.sync_dir.is_symlink():
+            raise SyncError(f"Sync-Ordner darf kein Symlink sein: {self.sync_dir}")
         payload = build_library_export(self.storage)
-        updated_at = now_iso()
+        updated_at = _models.now_iso()
         payload["manifest"] = {
             "app": self.app_name,
             "version": APP_VERSION,
@@ -1077,7 +1162,7 @@ class FileSlotBackend(SyncBackend):
         if not force and state.get("last_exported_hash") == content_hash and self.own_slot_path.is_file():
             return PushResult()
 
-        _atomic_write_json(self.own_slot_path, payload)
+        _atomic_write_json(self.own_slot_path, payload, containment_root=self.sync_dir)
         state["last_exported_hash"] = content_hash
         state["last_sync_at"] = updated_at
         self.state_store.save_state(state)
@@ -1095,6 +1180,7 @@ class FileSlotBackend(SyncBackend):
         slot_cursors = dict(state.get("slot_cursors") or {})
         slot_hashes = dict(state.get("slot_item_hashes") or {})
         deleted_ids = list(state.get("deleted_ids") or [])
+        sync_root = self.sync_dir.resolve() if not self.sync_dir.is_symlink() and self.sync_dir.exists() else None
 
         result = PullResult(warnings=warnings)
 
@@ -1103,6 +1189,9 @@ class FileSlotBackend(SyncBackend):
             if mode == "never":
                 continue
             if mode == "on_start" and slot_cursors.get(slot.slot_key, "") >= slot.updated_at:
+                continue
+            if sync_root is None or not self._safe_contained_path(slot.path, sync_root):
+                result.warnings.append(f"Unsicherer Slot-Pfad ignoriert: {slot.path.name}")
                 continue
 
             merge_res = merge_library_payload(
@@ -1124,14 +1213,14 @@ class FileSlotBackend(SyncBackend):
             merged_hash_map = dict(slot_hashes.get(slot.slot_key) or {})
             merged_hash_map.update(merge_res.imported_hashes)
             slot_hashes[slot.slot_key] = merged_hash_map
-            slot_cursors[slot.slot_key] = slot.updated_at
-
-            if mode == "once":
-                slot_modes[slot.slot_key] = "never"
+            if not merge_res.conflicts:
+                slot_cursors[slot.slot_key] = slot.updated_at
+                if mode == "once":
+                    slot_modes[slot.slot_key] = "never"
 
         state["slot_modes"] = slot_modes
         state["slot_cursors"] = slot_cursors
         state["slot_item_hashes"] = slot_hashes
-        state["last_sync_at"] = now_iso()
+        state["last_sync_at"] = _models.now_iso()
         self.state_store.save_state(state)
         return result

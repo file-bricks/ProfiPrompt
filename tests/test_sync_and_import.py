@@ -201,35 +201,35 @@ def test_file_slot_backend_single_writer_mutual_visibility_and_a7_filter(tmp_pat
     sync_dir = tmp_path / "cloud_sync"
     sync_dir.mkdir()
 
-    # Host A (ASUS-GEI) exports its own slot
+    # Host A (HOST-A) exports its own slot
     st_a = Storage(tmp_path / "data_a")
     st_a.upsert_prompt(_sample_prompt("p1", "Von A", "Text A"))
     st_a.upsert_board(_sample_board("b1", "p1", "Board A"))
-    backend_a = FileSlotBackend(st_a, SyncStateStore(tmp_path / "data_a"), sync_dir=sync_dir, host_name="ASUS-GEI")
+    backend_a = FileSlotBackend(st_a, SyncStateStore(tmp_path / "data_a"), sync_dir=sync_dir, host_name="HOST-A")
 
     push_a = backend_a.push()
-    assert "profiprompt@ASUS-GEI" in push_a.applied_revs
-    expected_slot = sync_dir / "profiprompt" / "ASUS-GEI" / "profiprompt@ASUS-GEI.json"
+    assert "profiprompt@HOST-A" in push_a.applied_revs
+    expected_slot = sync_dir / "profiprompt" / "HOST-A" / "profiprompt@HOST-A.json"
     assert expected_slot.is_file()
     written = json.loads(expected_slot.read_text(encoding="utf-8"))
     assert written["manifest"]["app"] == "profiprompt"
-    assert written["manifest"]["host"] == "ASUS-GEI"
+    assert written["manifest"]["host"] == "HOST-A"
 
     # Drop an A7 conflict copy + a ProfiPrompt-Browser slot
-    conflict_copy = expected_slot.parent / "profiprompt@ASUS-GEI-WORKSTATION-LG.json"
+    conflict_copy = expected_slot.parent / "profiprompt@HOST-A-HOST-B.json"
     conflict_copy.write_text("{}", encoding="utf-8")
-    assert is_conflict_copy_filename(conflict_copy.name, "profiprompt", "ASUS-GEI")
+    assert is_conflict_copy_filename(conflict_copy.name, "profiprompt", "HOST-A")
 
-    browser_slot_dir = sync_dir / "profiprompt-browser" / "EDGE-HOME"
+    browser_slot_dir = sync_dir / "profiprompt-browser" / "BROWSER-A"
     browser_slot_dir.mkdir(parents=True)
-    browser_slot = browser_slot_dir / "profiprompt-browser@EDGE-HOME.json"
+    browser_slot = browser_slot_dir / "profiprompt-browser@BROWSER-A.json"
     browser_slot.write_text(
         json.dumps(
             {
                 "schema_version": "profiprompt-library-v1",
                 "manifest": {
                     "app": "profiprompt-browser",
-                    "host": "EDGE-HOME",
+                    "host": "BROWSER-A",
                     "updated_at": "2026-11-26T12:00:00Z",
                     "item_count": 1,
                 },
@@ -249,33 +249,33 @@ def test_file_slot_backend_single_writer_mutual_visibility_and_a7_filter(tmp_pat
         encoding="utf-8",
     )
 
-    # Host B discovers BOTH profiprompt@ASUS-GEI and profiprompt-browser@EDGE-HOME, warns on A7 conflict copy
+    # Host B discovers BOTH profiprompt@HOST-A and profiprompt-browser@BROWSER-A, warns on A7 conflict copy
     st_b = Storage(tmp_path / "data_b")
     state_b = SyncStateStore(tmp_path / "data_b")
-    backend_b = FileSlotBackend(st_b, state_b, sync_dir=sync_dir, host_name="WORKSTATION-LG")
+    backend_b = FileSlotBackend(st_b, state_b, sync_dir=sync_dir, host_name="HOST-B")
     slots, warnings = backend_b.discover_foreign_slots()
     slot_keys = {s.slot_key for s in slots}
-    assert "profiprompt@ASUS-GEI" in slot_keys
-    assert "profiprompt-browser@EDGE-HOME" in slot_keys
-    assert any("profiprompt@ASUS-GEI-WORKSTATION-LG.json" in w for w in warnings)
+    assert "profiprompt@HOST-A" in slot_keys
+    assert "profiprompt-browser@BROWSER-A" in slot_keys
+    assert any("profiprompt@HOST-A-HOST-B.json" in w for w in warnings)
 
     # Default mode is 'never' -> pull imports 0
     assert backend_b.pull().upserts == 0
 
-    # Set ASUS-GEI to 'once' and Browser to 'on_start' -> both imported, 'once' resets to 'never'
-    backend_b.set_slot_import_mode("profiprompt@ASUS-GEI", "once")
-    backend_b.set_slot_import_mode("profiprompt-browser@EDGE-HOME", "on_start")
+    # Set HOST-A to 'once' and Browser to 'on_start' -> both imported, 'once' resets to 'never'
+    backend_b.set_slot_import_mode("profiprompt@HOST-A", "once")
+    backend_b.set_slot_import_mode("profiprompt-browser@BROWSER-A", "on_start")
     res_b = backend_b.pull()
     assert res_b.upserts == 3  # p1, b1, p_browser
     assert st_b.get_prompt("p1").text == "Text A"
     assert st_b.get_prompt("p_browser").text == "Browser-Prompt"
-    assert state_b.load_state()["slot_modes"]["profiprompt@ASUS-GEI"] == "never"
+    assert state_b.load_state()["slot_modes"]["profiprompt@HOST-A"] == "never"
 
     # Local deletion blocklist prevents re-import on subsequent pull
     st_b.delete_prompt("p_browser")
     state_b.record_local_delete("prompt", "p_browser")
     state_b_raw = state_b.load_state()
-    state_b_raw["slot_cursors"]["profiprompt-browser@EDGE-HOME"] = ""
+    state_b_raw["slot_cursors"]["profiprompt-browser@BROWSER-A"] = ""
     state_b.save_state(state_b_raw)
     backend_b.pull()
     assert st_b.get_prompt("p_browser") is None
@@ -538,3 +538,170 @@ def test_sync_settings_dialog_smoke_offscreen(tmp_path: Path, monkeypatch):
     dlg.mode_combo.setCurrentIndex(0)
     assert isinstance(dlg.build_backend_from_fields(), NullBackend)
     dlg.close()
+
+
+def test_models_reload_does_not_break_canonical_hashes_or_merge(tmp_path: Path):
+    import importlib
+    import models as models_mod
+
+    importlib.reload(models_mod)
+    p = models_mod.Prompt(id="p_rel", title="Reloaded", purpose="Test", text="Body")
+    b = models_mod.Board(id="b_rel", title="Board")
+    assert len(canonical_prompt_hash(p)) == 64
+    assert len(canonical_board_hash(b)) == 64
+
+    st = Storage(tmp_path / "reloaded_data")
+    st.upsert_prompt(p)
+    res = merge_library_payload(
+        st,
+        {
+            "schema_version": "profiprompt-library-v1",
+            "prompts": [{"id": "p_rel", "title": "Reloaded", "purpose": "Test", "text": "Changed"}],
+            "boards": [],
+        },
+        source_label="peer",
+    )
+    assert len(res.conflicts) == 1
+
+
+def test_file_slot_security_malformed_json_and_conflict_cursor_preservation(tmp_path: Path, monkeypatch):
+    import sync_backend as sb_mod
+
+    sync_dir = tmp_path / "sync_sec"
+    host_a = sync_dir / "profiprompt" / "HOST-A"
+    host_a.mkdir(parents=True)
+
+    # Non-dict JSON root + malformed item_count must not crash discovery
+    bad_json_dir = sync_dir / "profiprompt" / "HOST-BAD"
+    bad_json_dir.mkdir(parents=True)
+    (bad_json_dir / "profiprompt@HOST-BAD.json").write_text('["not-an-object"]', encoding="utf-8")
+
+    host_c = sync_dir / "profiprompt" / "HOST-C"
+    host_c.mkdir(parents=True)
+    (host_c / "profiprompt@HOST-C.json").write_text(
+        json.dumps({"manifest": {"item_count": "not-an-int", "updated_at": "2026-11-26T08:00:00Z"}, "prompts": []}),
+        encoding="utf-8",
+    )
+
+    # Conflict cursor & 'once' mode MUST NOT advance when conflicts remain unresolved
+    (host_a / "profiprompt@HOST-A.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "profiprompt-library-v1",
+                "manifest": {"app": "profiprompt", "host": "HOST-A", "updated_at": "2026-11-26T10:00:00Z", "item_count": 1},
+                "prompts": [{"id": "p1", "title": "Host A", "purpose": "QA", "text": "Remote A"}],
+                "boards": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    # Symlink rejection when OS permits symlinks
+    outside = tmp_path / "secret.json"
+    outside.write_text('{"prompts": [{"id": "secret", "text": "leak"}]}', encoding="utf-8")
+    sym_dir = sync_dir / "profiprompt" / "HOST-SYM"
+    sym_dir.mkdir(parents=True)
+    sym_file = sym_dir / "profiprompt@HOST-SYM.json"
+    symlink_supported = False
+    try:
+        sym_file.symlink_to(outside)
+        symlink_supported = True
+    except (OSError, NotImplementedError):
+        pass
+
+    st_b = Storage(tmp_path / "local_b")
+    st_b.upsert_prompt(_sample_prompt("p1", "Local", "Local text"))
+    state_b = SyncStateStore(tmp_path / "local_b")
+    backend_b = FileSlotBackend(st_b, state_b, sync_dir=sync_dir, host_name="HOST-B")
+
+    discovered, warnings = backend_b.discover_foreign_slots()
+    keys = {s.slot_key for s in discovered}
+    assert "profiprompt@HOST-A" in keys
+    assert "profiprompt@HOST-C" in keys
+    assert "profiprompt@HOST-BAD" not in keys
+    if symlink_supported:
+        assert "profiprompt@HOST-SYM" not in keys
+
+    backend_b.set_slot_import_mode("profiprompt@HOST-A", "once")
+    pull_unresolved = backend_b.pull()
+    assert len(pull_unresolved.conflicts) == 1
+    saved_after_unresolved = state_b.load_state()
+    assert saved_after_unresolved["slot_modes"]["profiprompt@HOST-A"] == "once"
+    assert not saved_after_unresolved["slot_cursors"].get("profiprompt@HOST-A")
+
+    # Resolving the conflict advances cursor and resets 'once' -> 'never'
+    pull_resolved = backend_b.pull(conflict_resolver=lambda _: "take_remote")
+    assert pull_resolved.upserts == 1
+    assert pull_resolved.conflicts == []
+    saved_after_resolved = state_b.load_state()
+    assert saved_after_resolved["slot_modes"]["profiprompt@HOST-A"] == "never"
+    assert saved_after_resolved["slot_cursors"]["profiprompt@HOST-A"] == "2026-11-26T10:00:00Z"
+
+    # Oversized slot file skipped cleanly with warning
+    monkeypatch.setattr(sb_mod, "MAX_SLOT_FILE_BYTES", 32)
+    _, oversize_warnings = backend_b.discover_foreign_slots()
+    assert any("Größenlimit" in w for w in oversize_warnings)
+
+    if symlink_supported:
+        sym_parent = tmp_path / "sym_parent"
+        real_parent = tmp_path / "real_parent"
+        real_parent.mkdir()
+        sym_parent.symlink_to(real_parent, target_is_directory=True)
+        with pytest.raises(OSError):
+            sb_mod._atomic_write_json(sym_parent / "out.json", {"ok": True}, containment_root=sync_dir)
+
+
+def test_mainwindow_background_sync_runs_off_ui_thread(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("QT_QPA_PLATFORM", "offscreen")
+    from PySide6.QtWidgets import QApplication
+    from profiprompt import MainWindow
+    from platform_smoke import SmokeSettings
+    from sync_backend import PullResult, PushResult
+
+    app = QApplication.instance() or QApplication([])
+    st = Storage(tmp_path / "mw_data")
+    settings = SmokeSettings(data_path=tmp_path / "mw_data")
+
+    pull_threads = []
+    push_threads = []
+    pull_gate = threading.Event()
+    pull_done = threading.Event()
+    push_done = threading.Event()
+
+    class BlockingFakeBackend:
+        def pull(self):
+            pull_threads.append(threading.current_thread())
+            pull_gate.wait(timeout=2.0)
+            st.upsert_prompt(_sample_prompt("p_bg", "From Worker", "Off UI thread"))
+            pull_done.set()
+            return PullResult(upserts=1)
+
+        def push(self):
+            push_threads.append(threading.current_thread())
+            push_done.set()
+            return PushResult(applied_revs={"slot": 1})
+
+    win = MainWindow(st, settings)
+    reload_calls = []
+    win.dashboard.reload = lambda: reload_calls.append("dash")
+    win.boardManager.reload = lambda: reload_calls.append("board")
+    win._active_sync_backend = lambda: BlockingFakeBackend()
+
+    # Calling _run_background_sync_pull must return IMMEDIATELY even while worker waits on pull_gate
+    t0 = time.monotonic()
+    win._run_background_sync_pull()
+    assert time.monotonic() - t0 < 0.2
+    pull_gate.set()
+    assert pull_done.wait(timeout=2.0)
+    win._run_background_sync_push()
+    assert push_done.wait(timeout=2.0)
+
+    deadline = time.monotonic() + 2.0
+    while len(reload_calls) < 2 and time.monotonic() < deadline:
+        app.processEvents()
+        time.sleep(0.01)
+
+    assert pull_threads and pull_threads[0] is not threading.main_thread()
+    assert push_threads and push_threads[0] is not threading.main_thread()
+    assert "dash" in reload_calls and "board" in reload_calls
+    win.close()
