@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
@@ -23,10 +24,47 @@ from storage import Storage
 class SmokeSettings:
     """Kleines Settings-Double, damit der Smoke keine User-Settings anfasst."""
 
-    def __init__(self) -> None:
+    def __init__(self, data_path: Path | None = None) -> None:
         self._copy_mode = CopyMode.ALL
         self._include_metadata = True
+        self._data_path = Path(data_path) if data_path is not None else None
         self.qs = _MemorySettingsStore()
+
+    def get_data_path(self) -> Path:
+        if self._data_path is None:
+            self._data_path = Path(tempfile.mkdtemp(prefix="profiprompt-smoke-data-"))
+        self._data_path.mkdir(parents=True, exist_ok=True)
+        return self._data_path
+
+    def get_sync_mode(self) -> str:
+        return "off"
+
+    def set_sync_mode(self, mode: str) -> None:
+        self.qs.setValue("sync/mode", mode)
+
+    def get_sync_folder(self) -> str:
+        return ""
+
+    def set_sync_folder(self, folder: str) -> None:
+        self.qs.setValue("sync/folder", folder)
+
+    def get_sync_server_url(self) -> str:
+        return ""
+
+    def set_sync_server_url(self, url: str) -> None:
+        self.qs.setValue("sync/server_url", url)
+
+    def get_sync_namespace(self) -> str:
+        return "profiprompt"
+
+    def set_sync_namespace(self, namespace: str) -> None:
+        self.qs.setValue("sync/namespace", namespace)
+
+    def get_sync_interval_sec(self) -> int:
+        return 300
+
+    def set_sync_interval_sec(self, seconds: int) -> None:
+        self.qs.setValue("sync/interval_sec", int(seconds))
 
     def get_copy_mode(self) -> CopyMode:
         return self._copy_mode
@@ -169,7 +207,7 @@ def run_platform_smoke(output_dir: str | Path, *, headless: bool = True) -> dict
         raise RuntimeError("Native Windows platform required for release screenshots.")
     apply_dark_theme(app)
 
-    settings = SmokeSettings()
+    settings = SmokeSettings(data_path=output_dir / "data")
     storage = Storage(output_dir / "data")
     prompt, version = seed_smoke_storage(storage)
 

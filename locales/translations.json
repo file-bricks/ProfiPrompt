@@ -2390,5 +2390,37 @@
     "zh": "更改磁贴颜色",
     "ja": "タイルの色を変更",
     "ru": "Изменить цвет плитки"
+  },
+  "Bibliothek importieren (JSON) …": {
+    "de": "Bibliothek importieren (JSON) …",
+    "en": "Import Library (JSON) …",
+    "es": "Importar biblioteca (JSON) …",
+    "zh": "导入库 (JSON) …",
+    "ja": "ライブラリをインポート (JSON) …",
+    "ru": "Импорт библиотеки (JSON) …"
+  },
+  "JSON-Bibliothek zusammenführen (ohne Überschreiben)": {
+    "de": "JSON-Bibliothek zusammenführen (ohne Überschreiben)",
+    "en": "Merge JSON library (non-destructive)",
+    "es": "Combinar biblioteca JSON (sin sobrescribir)",
+    "zh": "合并 JSON 库（不覆盖）",
+    "ja": "JSONライブラリを結合（上書きなし）",
+    "ru": "Объединить JSON-библиотеку (без перезаписи)"
+  },
+  "Synchronisierung …": {
+    "de": "Synchronisierung …",
+    "en": "Synchronization …",
+    "es": "Sincronización …",
+    "zh": "同步 …",
+    "ja": "同期 …",
+    "ru": "Синхронизация …"
+  },
+  "Synchronisierungs-Einstellungen (Dateimodus / Server) öffnen": {
+    "de": "Synchronisierungs-Einstellungen (Dateimodus / Server) öffnen",
+    "en": "Open synchronization settings (File slots / Server)",
+    "es": "Abrir ajustes de sincronización (archivos / servidor)",
+    "zh": "打开同步设置（文件槽 / 服务器）",
+    "ja": "同期設定を開く（ファイル / サーバー）",
+    "ru": "Открыть настройки синхронизации (файлы / сервер)"
   }
 }

@@ -102,3 +102,46 @@ class SettingsManager(QtCore.QObject):
             self.qs.setValue("copy/include_metadata", flag)
             self.qs.sync()
             self.includeMetadataChanged.emit(flag)
+
+    # --- Synchronisierung (Aus | Dateibasiert | Server) ---
+    SYNC_MODES = ("off", "file", "server")
+
+    def get_sync_mode(self) -> str:
+        val = self.qs.value("sync/mode", "off", type=str)
+        return val if val in self.SYNC_MODES else "off"
+
+    def set_sync_mode(self, mode: str):
+        if mode in self.SYNC_MODES:
+            self.qs.setValue("sync/mode", mode)
+            self.qs.sync()
+
+    def get_sync_folder(self) -> str:
+        return self.qs.value("sync/folder", "", type=str).strip()
+
+    def set_sync_folder(self, folder: str):
+        self.qs.setValue("sync/folder", (folder or "").strip())
+        self.qs.sync()
+
+    def get_sync_server_url(self) -> str:
+        return self.qs.value("sync/server_url", "", type=str).strip()
+
+    def set_sync_server_url(self, url: str):
+        self.qs.setValue("sync/server_url", (url or "").strip())
+        self.qs.sync()
+
+    def get_sync_namespace(self) -> str:
+        val = self.qs.value("sync/namespace", "profiprompt", type=str).strip()
+        return val or "profiprompt"
+
+    def set_sync_namespace(self, namespace: str):
+        self.qs.setValue("sync/namespace", (namespace or "profiprompt").strip() or "profiprompt")
+        self.qs.sync()
+
+    def get_sync_interval_sec(self) -> int:
+        raw = self.qs.value("sync/interval_sec", 300, type=int)
+        return max(30, min(3600, int(raw or 300)))
+
+    def set_sync_interval_sec(self, seconds: int):
+        clamped = max(30, min(3600, int(seconds)))
+        self.qs.setValue("sync/interval_sec", clamped)
+        self.qs.sync()
